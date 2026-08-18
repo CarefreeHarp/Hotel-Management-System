@@ -8,6 +8,16 @@ El diseño de la interfaz está disponible en Figma:
 
 **Figma:** https://www.figma.com/design/AzKmb3UaMsc4t8JZCZXiL4/AtlanSuites?node-id=0-1&t=7kqsdjcguR88f6c0-1
 
+### Identidad visual
+
+#### Logo
+
+![Logo de Atlan Suites](images/atlan-suites-logo.jpeg)
+
+#### Paleta de colores
+
+![Paleta de colores de Atlan Suites](images/atlan-suites-color-palette.jpeg)
+
 ---
 
 # Diagrama Entidad–Relación (ER)
