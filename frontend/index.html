@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atlan Suites — A Quiet Luxury on the Water</title>
+
+  <!-- GOOGLE FONTS PARA LOS FONTS :) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="scroll-progress" id="scroll-progress"></div>
+
+  <!-- HEADER CON EL NAV -->
+  <header class="site-header">
+    <a href="#hero" class="brand-mark">
+      <img src="assets/logo.png" alt="Atlan Suites" class="brand-logo">
+    </a>
+
+    <nav class="main-nav" id="main-nav">
+      <a href="#hero" class="nav-link is-active">Home</a>
+      <a href="#video-section" class="nav-link">The View</a>
+      <a href="#rooms-section" class="nav-link">Suites</a>
+      <a href="#experiences-section" class="nav-link">Experiences</a>
+    </nav>
+
+    <div class="header-actions">
+      <a href="#book-section" class="btn btn-primary">Book now</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <video class="hero-video" autoplay muted loop playsinline poster="assets/hero-poster.jpg">
+        <source src="assets/montage.mp4" type="video/mp4">
+      </video>
+      <div class="hero-veil"></div>
+
+      <h1 class="hero-title">Atlan Suites</h1>
+
+      <div class="hero-card fade-in">
+        <p class="eyebrow">Arrival</p>
+        <p class="hero-card-headline">Where the coastline<br>slows everything down</p>
+        <button type="button" class="btn btn-gold" data-scroll-target="#room-grid">See the suites</button>
+      </div>
+
+      <div class="hero-meta">
+        <span class="hero-meta-item">Bali, Indonesia</span>
+        <span class="hero-meta-item">Featured amenities</span>
+      </div>
+    </section>
+
+    <!-- VIDEO PANORAMICO -->
+    <section class="video-section" id="video-section">
+      <div class="video-frame fade-in">
+        <div class="youtube-facade" data-youtube-id="1La4QzGeaaQ" role="button" tabindex="0"
+             aria-label="Play panoramic video of Atlan Suites">
+          <div class="youtube-facade-thumb">
+            <img src="assets/video-thumbnail.jpg" alt="" onerror="this.style.display='none'">
+          </div>
+          <div class="youtube-facade-overlay"></div>
+          <div class="youtube-facade-play">▶</div>
+        </div>
+
+        <p class="eyebrow video-frame-label">The View</p>
+        <h2 class="video-frame-headline">The reef begins<br>where the deck ends</h2>
+
+        <div class="video-caption">
+          <p class="eyebrow">Now playing</p>
+          <p class="video-caption-text">A slow, unedited pass over the bay at first light — filmed from the rooftop deck.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HABITACIONES-->
+    <section class="rooms-section" id="rooms-section">
+      <span class="rooms-watermark" aria-hidden="true">AS</span>
+
+      <div class="rooms-intro fade-in">
+        <p class="eyebrow">Suites</p>
+        <h2 class="section-title">Three suites,<br>one shared view</h2>
+        <p class="section-text">Every suite faces the water in its own way — a balcony, a garden terrace, or a private rooftop pool. Pick the version of stillness that suits you.</p>
+        <button type="button" class="btn btn-outline-light" data-scroll-target="#room-grid">View rooms</button>
+      </div>
+
+      <p class="eyebrow rooms-label fade-in">Featured rooms</p>
+
+      <div class="room-grid" id="room-grid">
+        <!-- AQUI TA LA ANIMACION DEL 180 TURN -->
+        <article class="room-card room-card--ocean fade-in">
+          <div class="room-card-inner">
+            <div class="room-card-face room-card-front">
+              <p class="eyebrow">Ocean facing</p>
+              <div class="room-card-swatch">
+                <img src="https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0020-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=540px:*" alt="Ocean View Suite" onerror="this.style.display='none'">
+              </div>
+              <h3 class="room-card-name">Ocean View Suite</h3>
+              <p class="room-card-sub">45 m² · King bed · Balcony</p>
+              <button type="button" class="btn btn-pill room-card-flip-btn">Details →</button>
+            </div>
+            <div class="room-card-face room-card-back">
+              <p class="eyebrow">What's inside</p>
+              <h3 class="room-card-name">Ocean View Suite</h3>
+              <p class="room-card-back-text">
+                Floor-to-ceiling windows open onto a private balcony facing the water.
+                Soaking tub, rainfall shower, and a reading nook dressed in linen.
+              </p>
+              <ul class="room-card-list">
+                <li>Free Wi-Fi</li>
+                <li>Breakfast included</li>
+                <li>Late checkout</li>
+              </ul>
+              <button type="button" class="btn btn-pill room-card-flip-btn">← Back</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="room-card room-card--garden fade-in">
+          <div class="room-card-inner">
+            <div class="room-card-face room-card-front">
+              <p class="eyebrow">Garden facing</p>
+              <div class="room-card-swatch">
+                <img src="https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=540px:*" alt="Garden Junior Suite" onerror="this.style.display='none'">
+              </div>
+              <h3 class="room-card-name">Garden Junior Suite</h3>
+              <p class="room-card-sub">38 m² · Queen bed · Terrace</p>
+              <button type="button" class="btn btn-pill room-card-flip-btn">Details →</button>
+            </div>
+            <div class="room-card-face room-card-back">
+              <p class="eyebrow">What's inside</p>
+              <h3 class="room-card-name">Garden Junior Suite</h3>
+              <p class="room-card-back-text">
+                A quieter corner of the property, set among the gardens with a
+                private terrace and daybed for slow afternoons.
+              </p>
+              <ul class="room-card-list">
+                <li>Garden access</li>
+                <li>Minibar included</li>
+                <li>Yoga mats on request</li>
+              </ul>
+              <button type="button" class="btn btn-pill room-card-flip-btn">← Back</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="room-card room-card--rooftop fade-in">
+          <div class="room-card-inner">
+            <div class="room-card-face room-card-front">
+              <p class="eyebrow">Rooftop, top floor</p>
+              <div class="room-card-swatch">
+                <img src="https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-dpssw-junior-suite-12993:Wide-Hor?wid=540&fit=constrain" alt="Atlan Penthouse" onerror="this.style.display='none'">
+              </div>
+              <h3 class="room-card-name">Atlan Penthouse</h3>
+              <p class="room-card-sub">72 m² · King bed · Rooftop pool</p>
+              <button type="button" class="btn btn-pill room-card-flip-btn">Details →</button>
+            </div>
+            <div class="room-card-face room-card-back">
+              <p class="eyebrow">What's inside</p>
+              <h3 class="room-card-name">Atlan Penthouse</h3>
+              <p class="room-card-back-text">
+                The top floor, entirely to yourself. A private plunge pool,
+                open-air lounge, and uninterrupted views of the coastline.
+              </p>
+              <ul class="room-card-list">
+                <li>Private plunge pool</li>
+                <li>Butler service</li>
+                <li>Airport transfer included</li>
+              </ul>
+              <button type="button" class="btn btn-pill room-card-flip-btn">← Back</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- EXPERIENCIAS-->
+    <section class="experiences-section" id="experiences-section">
+      <p class="eyebrow experiences-eyebrow fade-in">Experiences</p>
+
+      <article class="experience-feature fade-in">
+        <div class="experience-feature-media">
+          <img src="https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-bejana-restaurant-16761:Classic-Hor?wid=1200&fit=constrain" alt="" onerror="this.style.display='none'">
+        </div>
+        <div class="experience-feature-overlay"></div>
+        <div class="experience-feature-content">
+          <p class="eyebrow">Featured experience</p>
+          <h3 class="experience-feature-name">Sunset Catamaran</h3>
+          <p class="experience-feature-sub">Every evening at 5:30, weather permitting</p>
+        </div>
+      </article>
+
+      <div class="experience-info fade-in">
+        <p class="eyebrow">Dining and wellness</p>
+        <h2 class="section-title">Built around<br>the tide</h2>
+        <p class="section-text">From dawn dive briefings to late dinners on the sand, the day is loosely scheduled around the water, not the clock.</p>
+        <button type="button" class="btn btn-outline-dark" data-scroll-target="#book-section">Reserve your stay</button>
+      </div>
+
+      <div class="experience-chip fade-in">
+        <p class="eyebrow">Spa</p>
+        <p class="experience-chip-name">The Tide Room spa</p>
+        <p class="experience-chip-sub">Open daily, 8am – 8pm</p>
+      </div>
+    </section>
+
+    <!-- RESERVAR-->
+    <section class="book-section" id="book-section">
+      <div class="book-intro fade-in">
+        <p class="eyebrow">Reserve</p>
+        <h2 class="section-title book-title">Book your<br>stay</h2>
+        <a href="#book-section" class="btn btn-gold">Book now</a>
+      </div>
+
+      <div class="book-contact fade-in">
+        <p class="eyebrow">Contact</p>
+        <p class="book-contact-line">reservations@atlansuites.com<br>+62 361 555 0142</p>
+        <hr class="book-divider">
+        <p class="eyebrow">Location</p>
+        <p class="book-contact-line">Jl. Pantai Berawa, Canggu, Bali</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <img src="assets/logo.png" alt="Atlan Suites" class="footer-logo">
+    <span class="footer-label">Est. in Bali</span>
+    <span class="footer-label">© 2026 Atlan Suites</span>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
