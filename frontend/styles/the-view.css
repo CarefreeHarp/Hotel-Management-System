@@ -1,0 +1,12 @@
+/* THE VIEW */
+.video-section { padding: var(--gap-section) var(--pad-inline); background: var(--color-mist); }
+.video-frame { position: relative; border-radius: 6px; overflow: hidden; aspect-ratio: 16 / 8; background: var(--color-charcoal); }
+.youtube-facade { position: absolute; inset: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.youtube-facade-thumb { position: absolute; inset: 0; z-index: 0; background: linear-gradient(135deg, var(--color-slate), var(--color-charcoal)); }
+.youtube-facade-thumb img, .video-frame iframe { width: 100%; height: 100%; object-fit: cover; display: block; }
+.youtube-facade-overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(17,20,23,.15), rgba(17,20,23,.75)); }
+.youtube-facade-play { position: relative; z-index: 2; width: 68px; height: 68px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(244,246,248,.15); border: 1px solid rgba(244,246,248,.4); color: #fff; font-size: 1.1rem; padding-left: 4px; transition: transform .3s var(--ease), background .3s var(--ease); }
+.youtube-facade:hover .youtube-facade-play { transform: scale(1.08); background: var(--color-gold); }
+.video-frame-label { position: absolute; top: 1.5rem; right: 1.5rem; color: var(--color-text-muted); }
+.video-frame-headline { position: absolute; left: 2rem; bottom: 2rem; color: #fff; font-family: var(--font-display); font-size: clamp(1.6rem, 3.5vw, 2.4rem); }
+.video-frame iframe { position: absolute; inset: 0; border: none; }

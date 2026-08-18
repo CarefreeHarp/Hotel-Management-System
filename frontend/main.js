@@ -1,19 +1,3 @@
-const navToggle = document.getElementById('nav-toggle');
-const mainNav = document.getElementById('main-nav');
-
-navToggle.addEventListener('click', () => {
-  const isOpen = mainNav.classList.toggle('is-open');
-  navToggle.setAttribute('aria-expanded', isOpen);
-});
-
-// close the mobile menu after picking a link
-mainNav.querySelectorAll('.nav-link').forEach((link) => {
-  link.addEventListener('click', () => {
-    mainNav.classList.remove('is-open');
-    navToggle.setAttribute('aria-expanded', 'false');
-  });
-});
-
 // FADE IN DE LOS ELEMENTOS EN LA PAGINA
 const fadeTargets = document.querySelectorAll('.fade-in');
 
@@ -92,6 +76,85 @@ document.querySelectorAll('[data-scroll-target]').forEach((button) => {
 // CLICK PARA VOLTEAR LAS TARJETAS DE HABITACIONES 
 document.querySelectorAll('.room-card-flip-btn').forEach((button) => {
   button.addEventListener('click', () => {
-    button.closest('.room-card').classList.toggle('is-flipped');
+    button.closest('.room-card').classList.toggle(
+      'is-flipped',
+      button.dataset.cardAction === 'details'
+    );
+  });
+});
+
+// Los detalles de cada suite usan controles propios para no interferir con el carrusel principal.
+document.querySelectorAll('.room-detail-carousel').forEach((detailCarousel) => {
+  detailCarousel.classList.remove('carousel', 'slide');
+  detailCarousel.removeAttribute('data-bs-interval');
+
+  const slidesContainer = detailCarousel.querySelector('.carousel-inner');
+  slidesContainer.classList.replace('carousel-inner', 'room-detail-slides');
+
+  const slides = [...slidesContainer.children];
+  slides.forEach((slide) => {
+    slide.classList.remove('carousel-item', 'active');
+    slide.classList.add('room-detail-slide');
+  });
+  slides[0].classList.add('is-active');
+
+  detailCarousel.querySelectorAll('.room-detail-controls button').forEach((button) => {
+    const direction = button.dataset.bsSlide;
+    button.removeAttribute('data-bs-target');
+    button.removeAttribute('data-bs-slide');
+
+    button.addEventListener('click', () => {
+      const currentIndex = slides.findIndex((slide) => slide.classList.contains('is-active'));
+      const nextIndex = direction === 'next'
+        ? (currentIndex + 1) % slides.length
+        : (currentIndex - 1 + slides.length) % slides.length;
+
+      slides[currentIndex].classList.remove('is-active');
+      slides[nextIndex].classList.add('is-active');
+    });
+  });
+});
+
+// Al cambiar de suite, el carrusel vuelve a mostrar la cara principal.
+const suiteCarousel = document.getElementById('room-grid');
+
+// Agrupa tres tarjetas por página para el carrusel principal de Suites.
+const suiteCarouselInner = suiteCarousel.querySelector(':scope > .carousel-inner');
+const suiteCards = [...suiteCarouselInner.children].map((item) => item.querySelector('.room-card'));
+suiteCarouselInner.replaceChildren();
+
+const suitePages = [];
+for (let index = 0; index < suiteCards.length; index += 3) {
+  const page = document.createElement('div');
+  page.className = `carousel-item${index === 0 ? ' active' : ''}`;
+
+  const pageGrid = document.createElement('div');
+  pageGrid.className = 'suite-carousel-page';
+  suiteCards.slice(index, index + 3).forEach((card) => pageGrid.append(card));
+
+  page.append(pageGrid);
+  suiteCarouselInner.append(page);
+  suitePages.push(page);
+}
+
+const suiteIndicators = suiteCarousel.querySelector('.carousel-indicators');
+suiteIndicators.replaceChildren();
+suitePages.forEach((_, index) => {
+  const indicator = document.createElement('button');
+  indicator.type = 'button';
+  indicator.dataset.bsTarget = '#room-grid';
+  indicator.dataset.bsSlideTo = index;
+  indicator.setAttribute('aria-label', `Suite page ${index + 1}`);
+  if (index === 0) {
+    indicator.classList.add('active');
+    indicator.setAttribute('aria-current', 'true');
+  }
+  suiteIndicators.append(indicator);
+});
+
+suiteCarousel.addEventListener('slide.bs.carousel', (event) => {
+  if (event.target !== suiteCarousel) return;
+  suiteCarousel.querySelectorAll('.room-card.is-flipped').forEach((card) => {
+    card.classList.remove('is-flipped');
   });
 });
