@@ -1,482 +1,1157 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Atlan Suites — A Quiet Luxury on the Water</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Atlan Suites — A Quiet Luxury on the Water</title>
 
-  <!-- GOOGLE FONTS PARA LOS FONTS :) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="styles/common.css">
-</head>
-<body>
+    <!-- GOOGLE FONTS PARA LOS FONTS :) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="styles/common.css" />
+  </head>
+  <body>
+    <div class="scroll-progress" id="scroll-progress" role="progressbar" aria-label="Page scroll progress" aria-valuemin="0" aria-valuemax="100"></div>
 
-  <div class="scroll-progress" id="scroll-progress"></div>
+    <!-- HEADER CON EL NAV -->
+    <header class="site-header navbar navbar-expand-md">
+      <a href="#hero" class="brand-mark">
+        <img
+          src="assets/logo-transparent.png"
+          alt="Atlan Suites"
+          class="brand-logo"
+        />
+      </a>
 
-  <!-- HEADER CON EL NAV -->
-  <header class="site-header navbar navbar-expand-md">
-    <a href="#hero" class="brand-mark">
-      <img src="assets/logo-transparent.png" alt="Atlan Suites" class="brand-logo">
-    </a>
-
-    <div class="collapse navbar-collapse" id="main-nav">
-      <nav class="main-nav navbar-nav flex-column flex-md-row">
-        <a href="#hero" class="nav-link flex-fill">Home</a>
-        <a href="#video-section" class="nav-link flex-fill">The hotel</a>
-        <a href="#rooms-section" class="nav-link flex-fill">Suites</a>
-        <a href="#experiences-section" class="nav-link flex-fill">Experiences</a>
-      </nav>
-    </div>
-
-    <div class="header-actions">
-      <a href="#book-section" class="btn btn-primary">Book now<span aria-hidden="true">↗</span></a>
-      <button class="nav-toggle navbar-toggler d-flex d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </header>
-
-  <main>
-
-    <!-- HERO -->
-    <section class="hero" id="hero">
-      <img src="assets/home_photo.jpg" alt="Atlan Suites in Singapore" class="hero-image">
-      <div class="hero-veil"></div>
-
-      <h1 class="hero-title">Atlan Suites</h1>
-
-      <div class="hero-card fade-in">
-        <p class="eyebrow">Welcome</p>
-        <p class="hero-card-headline">Welcome<br>to Atlan</p>
-        <button type="button" class="btn btn-gold" data-scroll-target="#video-section">Explore hotel <span aria-hidden="true">↗</span></button>
+      <div class="collapse navbar-collapse" id="main-nav">
+        <nav class="main-nav navbar-nav flex-column flex-md-row">
+          <a href="#hero" class="nav-link flex-fill">Home</a>
+          <a href="#video-section" class="nav-link flex-fill">The hotel</a>
+          <a href="#rooms-section" class="nav-link flex-fill">Suites</a>
+          <a href="#experiences-section" class="nav-link flex-fill"
+            >Experiences</a
+          >
+        </nav>
       </div>
 
-      <div class="hero-meta d-flex flex-column flex-sm-row">
-        <span class="hero-meta-item">Singapore</span>
-        <span class="hero-meta-item">Featured amenities</span>
+      <div class="header-actions">
+        <a href="#book-section" class="btn btn-primary"
+          >Book now<span aria-hidden="true">↗</span></a
+        >
+        <button
+          class="nav-toggle navbar-toggler d-flex d-md-none"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#main-nav"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+          aria-controls="main-nav"
+        >
+          <span></span><span></span><span></span>
+        </button>
       </div>
-    </section>
+    </header>
 
-    <!-- VIDEO PANORAMICO -->
-    <section class="video-section" id="video-section">
-      <div class="video-frame fade-in">
-        <div class="youtube-facade" data-youtube-id="MMIe_QzrnT0" role="button" tabindex="0"
-             aria-label="Play panoramic video of Atlan Suites">
-          <div class="youtube-facade-thumb">
-            <img src="assets/video-thumbnail.jpg" alt="" onerror="this.style.display='none'">
+    <main>
+      <!-- HERO -->
+      <section class="hero" id="hero" aria-labelledby="hero-title">
+        <img
+          src="assets/home_photo.png"
+          alt="Atlan Suites in Singapore"
+          class="hero-image"
+        />
+        <div class="hero-veil" aria-hidden="true"></div>
+
+        <h1 class="hero-title" id="hero-title">Atlan Suites</h1>
+
+        <aside class="hero-card fade-in" aria-label="Welcome to Atlan Suites">
+          <p class="eyebrow">Welcome</p>
+          <p class="hero-card-headline">Welcome<br />to Atlan</p>
+          <button
+            type="button"
+            class="btn btn-gold"
+            data-scroll-target="#video-section"
+          >
+            Explore hotel <span aria-hidden="true">↗</span>
+          </button>
+        </aside>
+
+        <p class="hero-meta d-flex flex-column flex-sm-row">
+          <span class="hero-meta-item">Singapore</span>
+        </p>
+      </section>
+
+      <!-- THE HOTEL: VIDEO CONTROLADO POR SCROLL -->
+      <section class="video-section" id="video-section" aria-labelledby="hotel-title">
+        <h2 class="visually-hidden" id="hotel-title">The hotel</h2>
+        <video
+          class="scroll-video"
+          muted
+          playsinline
+          preload="auto"
+          aria-label="Aerial view of Atlan Suites in Singapore"
+        >
+          <source src="Hotel_video.mp4" type="video/mp4" />
+        </video>
+        <aside class="video-view-card">
+          <span class="eyebrow">The hotel</span>
+          <h3>Hotel drone view</h3>
+        </aside>
+      </section>
+
+      <!-- HABITACIONES-->
+      <section class="rooms-section" id="rooms-section" aria-labelledby="rooms-title">
+        <span class="rooms-watermark" aria-hidden="true"
+          >Rooms<br />And<br />Suites</span
+        >
+
+        <div class="rooms-heading-row row g-4 align-items-end">
+          <header class="rooms-intro fade-in col-12 col-lg-5">
+            <p class="eyebrow">Rooms and suites</p>
+            <h2 class="section-title rooms-title" id="rooms-title">Rooms and<br />Suites</h2>
+            <button
+              type="button"
+              class="btn btn-outline-light"
+              data-scroll-target="#room-grid"
+            >
+              View rooms
+            </button>
+          </header>
+          <aside class="rooms-description fade-in col-12 col-lg-4 offset-lg-2">
+            <span class="eyebrow">Rooms and suites description</span>
+            <p>
+              Our rooms and suites are designed as serene private retreats,
+              pairing generous spaces, handcrafted details and refined comforts
+              with the calm of the coast. Every stay is shaped for deep rest,
+              quiet mornings and effortless luxury.
+            </p>
+          </aside>
+        </div>
+
+        <p class="eyebrow rooms-label fade-in">Featured rooms</p>
+
+        <div
+          class="room-carousel carousel slide fade-in"
+          id="room-grid"
+          data-bs-interval="false"
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Suites carousel"
+        >
+          <div class="carousel-indicators">
+            <button
+              type="button"
+              data-bs-target="#room-grid"
+              data-bs-slide-to="0"
+              class="active"
+              aria-current="true"
+              aria-label="Ocean View Suite"
+            ></button>
+            <button
+              type="button"
+              data-bs-target="#room-grid"
+              data-bs-slide-to="1"
+              aria-label="Garden Junior Suite"
+            ></button>
+            <button
+              type="button"
+              data-bs-target="#room-grid"
+              data-bs-slide-to="2"
+              aria-label="Atlan Penthouse"
+            ></button>
+            <button
+              type="button"
+              data-bs-target="#room-grid"
+              data-bs-slide-to="3"
+              aria-label="Marina King Room"
+            ></button>
+            <button
+              type="button"
+              data-bs-target="#room-grid"
+              data-bs-slide-to="4"
+              aria-label="Skyline Family Suite"
+            ></button>
+            <button
+              type="button"
+              data-bs-target="#room-grid"
+              data-bs-slide-to="5"
+              aria-label="Garden Residence"
+            ></button>
+            <button
+              type="button"
+              data-bs-target="#room-grid"
+              data-bs-slide-to="6"
+              aria-label="Harbour Loft"
+            ></button>
+            <button
+              type="button"
+              data-bs-target="#room-grid"
+              data-bs-slide-to="7"
+              aria-label="Presidential Suite"
+            ></button>
           </div>
-          <div class="youtube-facade-overlay"></div>
-          <div class="youtube-facade-play">▶</div>
-        </div>
 
-        <p class="eyebrow video-frame-label">The View</p>
-        <h2 class="video-frame-headline">The reef begins<br>where the deck ends</h2>
-
-      </div>
-    </section>
-
-    <!-- HABITACIONES-->
-    <section class="rooms-section" id="rooms-section">
-      <span class="rooms-watermark" aria-hidden="true">Rooms<br>And<br>Suites</span>
-
-      <div class="rooms-heading-row row g-4 align-items-end">
-        <div class="rooms-intro fade-in col-12 col-lg-5">
-          <p class="eyebrow">Rooms and suites</p>
-          <h2 class="section-title rooms-title">Rooms and<br>Suites</h2>
-          <button type="button" class="btn btn-outline-light" data-scroll-target="#room-grid">View rooms</button>
-        </div>
-        <div class="rooms-description fade-in col-12 col-lg-4 offset-lg-2">
-          <span class="eyebrow">Rooms and suites description</span>
-          <p>Our rooms and suites are designed as serene private retreats, pairing generous spaces, handcrafted details and refined comforts with the calm of the coast. Every stay is shaped for deep rest, quiet mornings and effortless luxury.</p>
-        </div>
-      </div>
-
-      <p class="eyebrow rooms-label fade-in">Featured rooms</p>
-
-      <div class="room-carousel carousel slide fade-in" id="room-grid" data-bs-interval="false">
-        <div class="carousel-indicators">
-          <button type="button" data-bs-target="#room-grid" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Ocean View Suite"></button>
-          <button type="button" data-bs-target="#room-grid" data-bs-slide-to="1" aria-label="Garden Junior Suite"></button>
-          <button type="button" data-bs-target="#room-grid" data-bs-slide-to="2" aria-label="Atlan Penthouse"></button>
-          <button type="button" data-bs-target="#room-grid" data-bs-slide-to="3" aria-label="Marina King Room"></button>
-          <button type="button" data-bs-target="#room-grid" data-bs-slide-to="4" aria-label="Skyline Family Suite"></button>
-          <button type="button" data-bs-target="#room-grid" data-bs-slide-to="5" aria-label="Garden Residence"></button>
-          <button type="button" data-bs-target="#room-grid" data-bs-slide-to="6" aria-label="Harbour Loft"></button>
-          <button type="button" data-bs-target="#room-grid" data-bs-slide-to="7" aria-label="Presidential Suite"></button>
-        </div>
-
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <article class="room-card room-card--ocean">
-          <div class="room-card-inner">
-            <div class="room-card-face room-card-front">
-              <p class="eyebrow">Ocean facing</p>
-              <div class="room-card-swatch">
-                <img src="https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0020-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=540px:*" alt="Ocean View Suite" onerror="this.style.display='none'">
-              </div>
-              <h3 class="room-card-name">Ocean View Suite</h3>
-              <p class="room-card-sub">45 m² · King bed · Balcony</p>
-              <button type="button" class="btn btn-pill room-card-flip-btn" data-card-action="details">Details →</button>
-            </div>
-            <div class="room-card-face room-card-back">
-              <div class="room-detail-carousel carousel slide" id="ocean-suite-details" data-bs-interval="false">
-                <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <p class="eyebrow">The space</p>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <article class="room-card room-card--ocean">
+                <div class="room-card-inner">
+                  <div class="room-card-face room-card-front">
+                    <p class="eyebrow">Ocean facing</p>
+                    <div class="room-card-swatch">
+                      <img
+                        src="https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0020-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=540px:*"
+                        alt="Ocean View Suite"
+                        onerror="this.style.display = 'none'"
+                      />
+                    </div>
                     <h3 class="room-card-name">Ocean View Suite</h3>
-                    <p class="room-card-back-text">Floor-to-ceiling windows open onto a private balcony facing the water. A soaking tub, rainfall shower and linen reading nook make room for slow mornings.</p>
+                    <p class="room-card-sub">45 m² · King bed · Balcony</p>
+                    <button
+                      type="button"
+                      class="btn btn-pill room-card-flip-btn"
+                      data-card-action="details"
+                    >
+                      Details →
+                    </button>
                   </div>
-                  <div class="carousel-item">
-                    <p class="eyebrow">Amenities</p>
-                    <h3 class="room-card-name">Included with your stay</h3>
-                    <ul class="room-card-list"><li>Free Wi-Fi</li><li>Breakfast included</li><li>Late checkout</li></ul>
+                  <div class="room-card-face room-card-back">
+                    <div
+                      class="room-detail-carousel carousel slide"
+                      id="ocean-suite-details"
+                      data-bs-interval="false"
+                    >
+                      <div class="carousel-inner">
+                        <div class="carousel-item active">
+                          <p class="eyebrow">The space</p>
+                          <h3 class="room-card-name">Ocean View Suite</h3>
+                          <p class="room-card-back-text">
+                            Floor-to-ceiling windows open onto a private balcony
+                            facing the water. A soaking tub, rainfall shower and
+                            linen reading nook make room for slow mornings.
+                          </p>
+                        </div>
+                        <div class="carousel-item">
+                          <p class="eyebrow">Amenities</p>
+                          <h3 class="room-card-name">
+                            Included with your stay
+                          </h3>
+                          <ul class="room-card-list">
+                            <li>Free Wi-Fi</li>
+                            <li>Breakfast included</li>
+                            <li>Late checkout</li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="room-detail-controls">
+                        <button
+                          type="button"
+                          data-bs-target="#ocean-suite-details"
+                          data-bs-slide="prev"
+                          aria-label="Previous Ocean View Suite detail"
+                        >
+                          ←
+                        </button>
+                        <span>Details</span>
+                        <button
+                          type="button"
+                          data-bs-target="#ocean-suite-details"
+                          data-bs-slide="next"
+                          aria-label="Next Ocean View Suite detail"
+                        >
+                          →
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      class="btn btn-pill room-card-flip-btn"
+                      data-card-action="back"
+                    >
+                      ← Back
+                    </button>
                   </div>
                 </div>
-                <div class="room-detail-controls">
-                  <button type="button" data-bs-target="#ocean-suite-details" data-bs-slide="prev" aria-label="Previous Ocean View Suite detail">←</button>
-                  <span>Details</span>
-                  <button type="button" data-bs-target="#ocean-suite-details" data-bs-slide="next" aria-label="Next Ocean View Suite detail">→</button>
-                </div>
-              </div>
-              <button type="button" class="btn btn-pill room-card-flip-btn" data-card-action="back">← Back</button>
+              </article>
             </div>
-          </div>
-            </article>
-          </div>
 
-          <div class="carousel-item">
-            <article class="room-card room-card--garden">
-          <div class="room-card-inner">
-            <div class="room-card-face room-card-front">
-              <p class="eyebrow">Garden facing</p>
-              <div class="room-card-swatch">
-                <img src="https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=540px:*" alt="Garden Junior Suite" onerror="this.style.display='none'">
-              </div>
-              <h3 class="room-card-name">Garden Junior Suite</h3>
-              <p class="room-card-sub">38 m² · Queen bed · Terrace</p>
-              <button type="button" class="btn btn-pill room-card-flip-btn" data-card-action="details">Details →</button>
-            </div>
-            <div class="room-card-face room-card-back">
-              <div class="room-detail-carousel carousel slide" id="garden-suite-details" data-bs-interval="false">
-                <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <p class="eyebrow">The space</p>
+            <div class="carousel-item">
+              <article class="room-card room-card--garden">
+                <div class="room-card-inner">
+                  <div class="room-card-face room-card-front">
+                    <p class="eyebrow">Garden facing</p>
+                    <div class="room-card-swatch">
+                      <img
+                        src="https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=540px:*"
+                        alt="Garden Junior Suite"
+                        onerror="this.style.display = 'none'"
+                      />
+                    </div>
                     <h3 class="room-card-name">Garden Junior Suite</h3>
-                    <p class="room-card-back-text">A quieter corner of the property, set among lush gardens with a private terrace and daybed for slow afternoons.</p>
+                    <p class="room-card-sub">38 m² · Queen bed · Terrace</p>
+                    <button
+                      type="button"
+                      class="btn btn-pill room-card-flip-btn"
+                      data-card-action="details"
+                    >
+                      Details →
+                    </button>
                   </div>
-                  <div class="carousel-item">
-                    <p class="eyebrow">Amenities</p>
-                    <h3 class="room-card-name">Included with your stay</h3>
-                    <ul class="room-card-list"><li>Garden access</li><li>Minibar included</li><li>Yoga mats on request</li></ul>
+                  <div class="room-card-face room-card-back">
+                    <div
+                      class="room-detail-carousel carousel slide"
+                      id="garden-suite-details"
+                      data-bs-interval="false"
+                    >
+                      <div class="carousel-inner">
+                        <div class="carousel-item active">
+                          <p class="eyebrow">The space</p>
+                          <h3 class="room-card-name">Garden Junior Suite</h3>
+                          <p class="room-card-back-text">
+                            A quieter corner of the property, set among lush
+                            gardens with a private terrace and daybed for slow
+                            afternoons.
+                          </p>
+                        </div>
+                        <div class="carousel-item">
+                          <p class="eyebrow">Amenities</p>
+                          <h3 class="room-card-name">
+                            Included with your stay
+                          </h3>
+                          <ul class="room-card-list">
+                            <li>Garden access</li>
+                            <li>Minibar included</li>
+                            <li>Yoga mats on request</li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="room-detail-controls">
+                        <button
+                          type="button"
+                          data-bs-target="#garden-suite-details"
+                          data-bs-slide="prev"
+                          aria-label="Previous Garden Junior Suite detail"
+                        >
+                          ←
+                        </button>
+                        <span>Details</span>
+                        <button
+                          type="button"
+                          data-bs-target="#garden-suite-details"
+                          data-bs-slide="next"
+                          aria-label="Next Garden Junior Suite detail"
+                        >
+                          →
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      class="btn btn-pill room-card-flip-btn"
+                      data-card-action="back"
+                    >
+                      ← Back
+                    </button>
                   </div>
                 </div>
-                <div class="room-detail-controls">
-                  <button type="button" data-bs-target="#garden-suite-details" data-bs-slide="prev" aria-label="Previous Garden Junior Suite detail">←</button>
-                  <span>Details</span>
-                  <button type="button" data-bs-target="#garden-suite-details" data-bs-slide="next" aria-label="Next Garden Junior Suite detail">→</button>
-                </div>
-              </div>
-              <button type="button" class="btn btn-pill room-card-flip-btn" data-card-action="back">← Back</button>
+              </article>
             </div>
-          </div>
-            </article>
-          </div>
 
-          <div class="carousel-item">
-            <article class="room-card room-card--ocean">
-          <div class="room-card-inner">
-            <div class="room-card-face room-card-front">
-              <p class="eyebrow">Rooftop, top floor</p>
-              <div class="room-card-swatch">
-                <img src="https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-dpssw-junior-suite-12993:Wide-Hor?wid=540&fit=constrain" alt="Atlan Penthouse" onerror="this.style.display='none'">
-              </div>
-              <h3 class="room-card-name">Atlan Penthouse</h3>
-              <p class="room-card-sub">72 m² · King bed · Rooftop pool</p>
-              <button type="button" class="btn btn-pill room-card-flip-btn" data-card-action="details">Details →</button>
-            </div>
-            <div class="room-card-face room-card-back">
-              <div class="room-detail-carousel carousel slide" id="penthouse-details" data-bs-interval="false">
-                <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <p class="eyebrow">The space</p>
+            <div class="carousel-item">
+              <article class="room-card room-card--ocean">
+                <div class="room-card-inner">
+                  <div class="room-card-face room-card-front">
+                    <p class="eyebrow">Rooftop, top floor</p>
+                    <div class="room-card-swatch">
+                      <img
+                        src="https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-dpssw-junior-suite-12993:Wide-Hor?wid=540&fit=constrain"
+                        alt="Atlan Penthouse"
+                        onerror="this.style.display = 'none'"
+                      />
+                    </div>
                     <h3 class="room-card-name">Atlan Penthouse</h3>
-                    <p class="room-card-back-text">The top floor, entirely to yourself. A private plunge pool, open-air lounge and uninterrupted views make it the hotel’s most secluded escape.</p>
+                    <p class="room-card-sub">72 m² · King bed · Rooftop pool</p>
+                    <button
+                      type="button"
+                      class="btn btn-pill room-card-flip-btn"
+                      data-card-action="details"
+                    >
+                      Details →
+                    </button>
                   </div>
-                  <div class="carousel-item">
-                    <p class="eyebrow">Amenities</p>
-                    <h3 class="room-card-name">Included with your stay</h3>
-                    <ul class="room-card-list"><li>Private plunge pool</li><li>Butler service</li><li>Airport transfer included</li></ul>
+                  <div class="room-card-face room-card-back">
+                    <div
+                      class="room-detail-carousel carousel slide"
+                      id="penthouse-details"
+                      data-bs-interval="false"
+                    >
+                      <div class="carousel-inner">
+                        <div class="carousel-item active">
+                          <p class="eyebrow">The space</p>
+                          <h3 class="room-card-name">Atlan Penthouse</h3>
+                          <p class="room-card-back-text">
+                            The top floor, entirely to yourself. A private
+                            plunge pool, open-air lounge and uninterrupted views
+                            make it the hotel’s most secluded escape.
+                          </p>
+                        </div>
+                        <div class="carousel-item">
+                          <p class="eyebrow">Amenities</p>
+                          <h3 class="room-card-name">
+                            Included with your stay
+                          </h3>
+                          <ul class="room-card-list">
+                            <li>Private plunge pool</li>
+                            <li>Butler service</li>
+                            <li>Airport transfer included</li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="room-detail-controls">
+                        <button
+                          type="button"
+                          data-bs-target="#penthouse-details"
+                          data-bs-slide="prev"
+                          aria-label="Previous Atlan Penthouse detail"
+                        >
+                          ←
+                        </button>
+                        <span>Details</span>
+                        <button
+                          type="button"
+                          data-bs-target="#penthouse-details"
+                          data-bs-slide="next"
+                          aria-label="Next Atlan Penthouse detail"
+                        >
+                          →
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      class="btn btn-pill room-card-flip-btn"
+                      data-card-action="back"
+                    >
+                      ← Back
+                    </button>
                   </div>
                 </div>
-                <div class="room-detail-controls">
-                  <button type="button" data-bs-target="#penthouse-details" data-bs-slide="prev" aria-label="Previous Atlan Penthouse detail">←</button>
-                  <span>Details</span>
-                  <button type="button" data-bs-target="#penthouse-details" data-bs-slide="next" aria-label="Next Atlan Penthouse detail">→</button>
+              </article>
+            </div>
+
+            <div class="carousel-item">
+              <article class="room-card room-card--garden">
+                <div class="room-card-inner">
+                  <div class="room-card-face room-card-front">
+                    <p class="eyebrow">Marina facing</p>
+                    <div class="room-card-swatch">
+                      <img
+                        src="https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=540px:*"
+                        alt="Marina King Room"
+                        onerror="this.style.display = 'none'"
+                      />
+                    </div>
+                    <h3 class="room-card-name">Marina King Room</h3>
+                    <p class="room-card-sub">42 m² · King bed · Bay window</p>
+                    <button
+                      type="button"
+                      class="btn btn-pill room-card-flip-btn"
+                      data-card-action="details"
+                    >
+                      Details →
+                    </button>
+                  </div>
+                  <div class="room-card-face room-card-back">
+                    <div
+                      class="room-detail-carousel carousel slide"
+                      id="marina-king-details"
+                      data-bs-interval="false"
+                    >
+                      <div class="carousel-inner">
+                        <div class="carousel-item active">
+                          <p class="eyebrow">The space</p>
+                          <h3 class="room-card-name">Marina King Room</h3>
+                          <p class="room-card-back-text">
+                            A quiet bay-facing room with warm wood finishes, a
+                            deep lounge chair and gentle city views.
+                          </p>
+                        </div>
+                        <div class="carousel-item">
+                          <p class="eyebrow">Amenities</p>
+                          <h3 class="room-card-name">
+                            Included with your stay
+                          </h3>
+                          <ul class="room-card-list">
+                            <li>King bed</li>
+                            <li>Espresso service</li>
+                            <li>Evening turndown</li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="room-detail-controls">
+                        <button
+                          type="button"
+                          data-bs-target="#marina-king-details"
+                          data-bs-slide="prev"
+                          aria-label="Previous Marina King Room detail"
+                        >
+                          ←</button
+                        ><span>Details</span
+                        ><button
+                          type="button"
+                          data-bs-target="#marina-king-details"
+                          data-bs-slide="next"
+                          aria-label="Next Marina King Room detail"
+                        >
+                          →
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      class="btn btn-pill room-card-flip-btn"
+                      data-card-action="back"
+                    >
+                      ← Back
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <button type="button" class="btn btn-pill room-card-flip-btn" data-card-action="back">← Back</button>
+              </article>
+            </div>
+
+            <div class="carousel-item">
+              <article class="room-card room-card--ocean">
+                <div class="room-card-inner">
+                  <div class="room-card-face room-card-front">
+                    <p class="eyebrow">City panorama</p>
+                    <div class="room-card-swatch">
+                      <img
+                        src="https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0020-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=540px:*"
+                        alt="Skyline Family Suite"
+                        onerror="this.style.display = 'none'"
+                      />
+                    </div>
+                    <h3 class="room-card-name">Skyline Family Suite</h3>
+                    <p class="room-card-sub">
+                      64 m² · Two bedrooms · City view
+                    </p>
+                    <button
+                      type="button"
+                      class="btn btn-pill room-card-flip-btn"
+                      data-card-action="details"
+                    >
+                      Details →
+                    </button>
+                  </div>
+                  <div class="room-card-face room-card-back">
+                    <div
+                      class="room-detail-carousel carousel slide"
+                      id="skyline-family-details"
+                      data-bs-interval="false"
+                    >
+                      <div class="carousel-inner">
+                        <div class="carousel-item active">
+                          <p class="eyebrow">The space</p>
+                          <h3 class="room-card-name">Skyline Family Suite</h3>
+                          <p class="room-card-back-text">
+                            Two connected bedrooms and a generous living room
+                            give every guest room to settle in.
+                          </p>
+                        </div>
+                        <div class="carousel-item">
+                          <p class="eyebrow">Amenities</p>
+                          <h3 class="room-card-name">
+                            Included with your stay
+                          </h3>
+                          <ul class="room-card-list">
+                            <li>Two bedrooms</li>
+                            <li>Family minibar</li>
+                            <li>Daily breakfast</li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="room-detail-controls">
+                        <button
+                          type="button"
+                          data-bs-target="#skyline-family-details"
+                          data-bs-slide="prev"
+                          aria-label="Previous Skyline Family Suite detail"
+                        >
+                          ←</button
+                        ><span>Details</span
+                        ><button
+                          type="button"
+                          data-bs-target="#skyline-family-details"
+                          data-bs-slide="next"
+                          aria-label="Next Skyline Family Suite detail"
+                        >
+                          →
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      class="btn btn-pill room-card-flip-btn"
+                      data-card-action="back"
+                    >
+                      ← Back
+                    </button>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <div class="carousel-item">
+              <article class="room-card room-card--garden">
+                <div class="room-card-inner">
+                  <div class="room-card-face room-card-front">
+                    <p class="eyebrow">Garden residence</p>
+                    <div class="room-card-swatch">
+                      <img
+                        src="https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-dpssw-junior-suite-12993:Wide-Hor?wid=540&fit=constrain"
+                        alt="Garden Residence"
+                        onerror="this.style.display = 'none'"
+                      />
+                    </div>
+                    <h3 class="room-card-name">Garden Residence</h3>
+                    <p class="room-card-sub">
+                      58 m² · King bed · Private terrace
+                    </p>
+                    <button
+                      type="button"
+                      class="btn btn-pill room-card-flip-btn"
+                      data-card-action="details"
+                    >
+                      Details →
+                    </button>
+                  </div>
+                  <div class="room-card-face room-card-back">
+                    <div
+                      class="room-detail-carousel carousel slide"
+                      id="garden-residence-details"
+                      data-bs-interval="false"
+                    >
+                      <div class="carousel-inner">
+                        <div class="carousel-item active">
+                          <p class="eyebrow">The space</p>
+                          <h3 class="room-card-name">Garden Residence</h3>
+                          <p class="room-card-back-text">
+                            An indoor-outdoor residence with a lush private
+                            terrace for breakfast, reading and quiet evenings.
+                          </p>
+                        </div>
+                        <div class="carousel-item">
+                          <p class="eyebrow">Amenities</p>
+                          <h3 class="room-card-name">
+                            Included with your stay
+                          </h3>
+                          <ul class="room-card-list">
+                            <li>Private terrace</li>
+                            <li>Soaking tub</li>
+                            <li>In-room breakfast</li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="room-detail-controls">
+                        <button
+                          type="button"
+                          data-bs-target="#garden-residence-details"
+                          data-bs-slide="prev"
+                          aria-label="Previous Garden Residence detail"
+                        >
+                          ←</button
+                        ><span>Details</span
+                        ><button
+                          type="button"
+                          data-bs-target="#garden-residence-details"
+                          data-bs-slide="next"
+                          aria-label="Next Garden Residence detail"
+                        >
+                          →
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      class="btn btn-pill room-card-flip-btn"
+                      data-card-action="back"
+                    >
+                      ← Back
+                    </button>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <div class="carousel-item">
+              <article class="room-card room-card--ocean">
+                <div class="room-card-inner">
+                  <div class="room-card-face room-card-front">
+                    <p class="eyebrow">Harbour view</p>
+                    <div class="room-card-swatch">
+                      <img
+                        src="https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=540px:*"
+                        alt="Harbour Loft"
+                        onerror="this.style.display = 'none'"
+                      />
+                    </div>
+                    <h3 class="room-card-name">Harbour Loft</h3>
+                    <p class="room-card-sub">68 m² · King bed · Lounge area</p>
+                    <button
+                      type="button"
+                      class="btn btn-pill room-card-flip-btn"
+                      data-card-action="details"
+                    >
+                      Details →
+                    </button>
+                  </div>
+                  <div class="room-card-face room-card-back">
+                    <div
+                      class="room-detail-carousel carousel slide"
+                      id="harbour-loft-details"
+                      data-bs-interval="false"
+                    >
+                      <div class="carousel-inner">
+                        <div class="carousel-item active">
+                          <p class="eyebrow">The space</p>
+                          <h3 class="room-card-name">Harbour Loft</h3>
+                          <p class="room-card-back-text">
+                            A loft-style stay with a separate lounge and broad
+                            views over Singapore’s lively waterfront.
+                          </p>
+                        </div>
+                        <div class="carousel-item">
+                          <p class="eyebrow">Amenities</p>
+                          <h3 class="room-card-name">
+                            Included with your stay
+                          </h3>
+                          <ul class="room-card-list">
+                            <li>Separate lounge</li>
+                            <li>Premium bar</li>
+                            <li>Harbour views</li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="room-detail-controls">
+                        <button
+                          type="button"
+                          data-bs-target="#harbour-loft-details"
+                          data-bs-slide="prev"
+                          aria-label="Previous Harbour Loft detail"
+                        >
+                          ←</button
+                        ><span>Details</span
+                        ><button
+                          type="button"
+                          data-bs-target="#harbour-loft-details"
+                          data-bs-slide="next"
+                          aria-label="Next Harbour Loft detail"
+                        >
+                          →
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      class="btn btn-pill room-card-flip-btn"
+                      data-card-action="back"
+                    >
+                      ← Back
+                    </button>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <div class="carousel-item">
+              <article class="room-card room-card--ocean">
+                <div class="room-card-inner">
+                  <div class="room-card-face room-card-front">
+                    <p class="eyebrow">Signature collection</p>
+                    <div class="room-card-swatch">
+                      <img
+                        src="https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-dpssw-junior-suite-12993:Wide-Hor?wid=540&fit=constrain"
+                        alt="Presidential Suite"
+                        onerror="this.style.display = 'none'"
+                      />
+                    </div>
+                    <h3 class="room-card-name">Presidential Suite</h3>
+                    <p class="room-card-sub">
+                      110 m² · Two bedrooms · Private dining
+                    </p>
+                    <button
+                      type="button"
+                      class="btn btn-pill room-card-flip-btn"
+                      data-card-action="details"
+                    >
+                      Details →
+                    </button>
+                  </div>
+                  <div class="room-card-face room-card-back">
+                    <div
+                      class="room-detail-carousel carousel slide"
+                      id="presidential-suite-details"
+                      data-bs-interval="false"
+                    >
+                      <div class="carousel-inner">
+                        <div class="carousel-item active">
+                          <p class="eyebrow">The space</p>
+                          <h3 class="room-card-name">Presidential Suite</h3>
+                          <p class="room-card-back-text">
+                            Our most expansive residence, with private dining,
+                            two bedrooms and a dedicated host for every detail.
+                          </p>
+                        </div>
+                        <div class="carousel-item">
+                          <p class="eyebrow">Amenities</p>
+                          <h3 class="room-card-name">
+                            Included with your stay
+                          </h3>
+                          <ul class="room-card-list">
+                            <li>Private dining room</li>
+                            <li>Dedicated host</li>
+                            <li>Airport transfer</li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="room-detail-controls">
+                        <button
+                          type="button"
+                          data-bs-target="#presidential-suite-details"
+                          data-bs-slide="prev"
+                          aria-label="Previous Presidential Suite detail"
+                        >
+                          ←</button
+                        ><span>Details</span
+                        ><button
+                          type="button"
+                          data-bs-target="#presidential-suite-details"
+                          data-bs-slide="next"
+                          aria-label="Next Presidential Suite detail"
+                        >
+                          →
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      class="btn btn-pill room-card-flip-btn"
+                      data-card-action="back"
+                    >
+                      ← Back
+                    </button>
+                  </div>
+                </div>
+              </article>
             </div>
           </div>
-            </article>
-          </div>
 
-          <div class="carousel-item">
-            <article class="room-card room-card--garden">
-              <div class="room-card-inner">
-                <div class="room-card-face room-card-front">
-                  <p class="eyebrow">Marina facing</p><div class="room-card-swatch"><img src="https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=540px:*" alt="Marina King Room" onerror="this.style.display='none'"></div>
-                  <h3 class="room-card-name">Marina King Room</h3><p class="room-card-sub">42 m² · King bed · Bay window</p><button type="button" class="btn btn-pill room-card-flip-btn" data-card-action="details">Details →</button>
-                </div>
-                <div class="room-card-face room-card-back">
-                  <div class="room-detail-carousel carousel slide" id="marina-king-details" data-bs-interval="false"><div class="carousel-inner"><div class="carousel-item active"><p class="eyebrow">The space</p><h3 class="room-card-name">Marina King Room</h3><p class="room-card-back-text">A quiet bay-facing room with warm wood finishes, a deep lounge chair and gentle city views.</p></div><div class="carousel-item"><p class="eyebrow">Amenities</p><h3 class="room-card-name">Included with your stay</h3><ul class="room-card-list"><li>King bed</li><li>Espresso service</li><li>Evening turndown</li></ul></div></div><div class="room-detail-controls"><button type="button" data-bs-target="#marina-king-details" data-bs-slide="prev" aria-label="Previous Marina King Room detail">←</button><span>Details</span><button type="button" data-bs-target="#marina-king-details" data-bs-slide="next" aria-label="Next Marina King Room detail">→</button></div></div>
-                  <button type="button" class="btn btn-pill room-card-flip-btn" data-card-action="back">← Back</button>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <div class="carousel-item">
-            <article class="room-card room-card--ocean">
-              <div class="room-card-inner">
-                <div class="room-card-face room-card-front">
-                  <p class="eyebrow">City panorama</p><div class="room-card-swatch"><img src="https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0020-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=540px:*" alt="Skyline Family Suite" onerror="this.style.display='none'"></div>
-                  <h3 class="room-card-name">Skyline Family Suite</h3><p class="room-card-sub">64 m² · Two bedrooms · City view</p><button type="button" class="btn btn-pill room-card-flip-btn" data-card-action="details">Details →</button>
-                </div>
-                <div class="room-card-face room-card-back">
-                  <div class="room-detail-carousel carousel slide" id="skyline-family-details" data-bs-interval="false"><div class="carousel-inner"><div class="carousel-item active"><p class="eyebrow">The space</p><h3 class="room-card-name">Skyline Family Suite</h3><p class="room-card-back-text">Two connected bedrooms and a generous living room give every guest room to settle in.</p></div><div class="carousel-item"><p class="eyebrow">Amenities</p><h3 class="room-card-name">Included with your stay</h3><ul class="room-card-list"><li>Two bedrooms</li><li>Family minibar</li><li>Daily breakfast</li></ul></div></div><div class="room-detail-controls"><button type="button" data-bs-target="#skyline-family-details" data-bs-slide="prev" aria-label="Previous Skyline Family Suite detail">←</button><span>Details</span><button type="button" data-bs-target="#skyline-family-details" data-bs-slide="next" aria-label="Next Skyline Family Suite detail">→</button></div></div>
-                  <button type="button" class="btn btn-pill room-card-flip-btn" data-card-action="back">← Back</button>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <div class="carousel-item">
-            <article class="room-card room-card--garden">
-              <div class="room-card-inner">
-                <div class="room-card-face room-card-front">
-                  <p class="eyebrow">Garden residence</p><div class="room-card-swatch"><img src="https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-dpssw-junior-suite-12993:Wide-Hor?wid=540&fit=constrain" alt="Garden Residence" onerror="this.style.display='none'"></div>
-                  <h3 class="room-card-name">Garden Residence</h3><p class="room-card-sub">58 m² · King bed · Private terrace</p><button type="button" class="btn btn-pill room-card-flip-btn" data-card-action="details">Details →</button>
-                </div>
-                <div class="room-card-face room-card-back">
-                  <div class="room-detail-carousel carousel slide" id="garden-residence-details" data-bs-interval="false"><div class="carousel-inner"><div class="carousel-item active"><p class="eyebrow">The space</p><h3 class="room-card-name">Garden Residence</h3><p class="room-card-back-text">An indoor-outdoor residence with a lush private terrace for breakfast, reading and quiet evenings.</p></div><div class="carousel-item"><p class="eyebrow">Amenities</p><h3 class="room-card-name">Included with your stay</h3><ul class="room-card-list"><li>Private terrace</li><li>Soaking tub</li><li>In-room breakfast</li></ul></div></div><div class="room-detail-controls"><button type="button" data-bs-target="#garden-residence-details" data-bs-slide="prev" aria-label="Previous Garden Residence detail">←</button><span>Details</span><button type="button" data-bs-target="#garden-residence-details" data-bs-slide="next" aria-label="Next Garden Residence detail">→</button></div></div>
-                  <button type="button" class="btn btn-pill room-card-flip-btn" data-card-action="back">← Back</button>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <div class="carousel-item">
-            <article class="room-card room-card--ocean">
-              <div class="room-card-inner">
-                <div class="room-card-face room-card-front">
-                  <p class="eyebrow">Harbour view</p><div class="room-card-swatch"><img src="https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=540px:*" alt="Harbour Loft" onerror="this.style.display='none'"></div>
-                  <h3 class="room-card-name">Harbour Loft</h3><p class="room-card-sub">68 m² · King bed · Lounge area</p><button type="button" class="btn btn-pill room-card-flip-btn" data-card-action="details">Details →</button>
-                </div>
-                <div class="room-card-face room-card-back">
-                  <div class="room-detail-carousel carousel slide" id="harbour-loft-details" data-bs-interval="false"><div class="carousel-inner"><div class="carousel-item active"><p class="eyebrow">The space</p><h3 class="room-card-name">Harbour Loft</h3><p class="room-card-back-text">A loft-style stay with a separate lounge and broad views over Singapore’s lively waterfront.</p></div><div class="carousel-item"><p class="eyebrow">Amenities</p><h3 class="room-card-name">Included with your stay</h3><ul class="room-card-list"><li>Separate lounge</li><li>Premium bar</li><li>Harbour views</li></ul></div></div><div class="room-detail-controls"><button type="button" data-bs-target="#harbour-loft-details" data-bs-slide="prev" aria-label="Previous Harbour Loft detail">←</button><span>Details</span><button type="button" data-bs-target="#harbour-loft-details" data-bs-slide="next" aria-label="Next Harbour Loft detail">→</button></div></div>
-                  <button type="button" class="btn btn-pill room-card-flip-btn" data-card-action="back">← Back</button>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <div class="carousel-item">
-            <article class="room-card room-card--ocean">
-              <div class="room-card-inner">
-                <div class="room-card-face room-card-front">
-                  <p class="eyebrow">Signature collection</p><div class="room-card-swatch"><img src="https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-dpssw-junior-suite-12993:Wide-Hor?wid=540&fit=constrain" alt="Presidential Suite" onerror="this.style.display='none'"></div>
-                  <h3 class="room-card-name">Presidential Suite</h3><p class="room-card-sub">110 m² · Two bedrooms · Private dining</p><button type="button" class="btn btn-pill room-card-flip-btn" data-card-action="details">Details →</button>
-                </div>
-                <div class="room-card-face room-card-back">
-                  <div class="room-detail-carousel carousel slide" id="presidential-suite-details" data-bs-interval="false"><div class="carousel-inner"><div class="carousel-item active"><p class="eyebrow">The space</p><h3 class="room-card-name">Presidential Suite</h3><p class="room-card-back-text">Our most expansive residence, with private dining, two bedrooms and a dedicated host for every detail.</p></div><div class="carousel-item"><p class="eyebrow">Amenities</p><h3 class="room-card-name">Included with your stay</h3><ul class="room-card-list"><li>Private dining room</li><li>Dedicated host</li><li>Airport transfer</li></ul></div></div><div class="room-detail-controls"><button type="button" data-bs-target="#presidential-suite-details" data-bs-slide="prev" aria-label="Previous Presidential Suite detail">←</button><span>Details</span><button type="button" data-bs-target="#presidential-suite-details" data-bs-slide="next" aria-label="Next Presidential Suite detail">→</button></div></div>
-                  <button type="button" class="btn btn-pill room-card-flip-btn" data-card-action="back">← Back</button>
-                </div>
-              </div>
-            </article>
-          </div>
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#room-grid"
+            data-bs-slide="prev"
+            aria-label="Previous suite"
+          >
+            <span aria-hidden="true">←</span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#room-grid"
+            data-bs-slide="next"
+            aria-label="Next suite"
+          >
+            <span aria-hidden="true">→</span>
+          </button>
         </div>
+      </section>
 
-        <button class="carousel-control-prev" type="button" data-bs-target="#room-grid" data-bs-slide="prev" aria-label="Previous suite">
-          <span aria-hidden="true">←</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#room-grid" data-bs-slide="next" aria-label="Next suite">
-          <span aria-hidden="true">→</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- EXPERIENCIAS-->
-    <section class="experiences-section" id="experiences-section">
-      <span class="experiences-watermark" aria-hidden="true">Experiences</span>
-      <div class="row g-4">
-        <article class="experience-feature-card fade-in col-12 col-lg-5">
-          <img src="https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-bejana-restaurant-16761:Classic-Hor?wid=1200&fit=constrain" alt="Sunset Catamaran">
-          <div class="experience-feature-overlay"></div>
-          <div class="experience-feature-content">
-            <p class="eyebrow">Featured experience</p>
-            <h3>Sunset<br>Catamaran</h3>
-            <p>Every evening at 5:30 pm</p>
-          </div>
-        </article>
-        <div class="experience-info fade-in col-12 col-lg-7">
-          <p class="eyebrow">Dining, wellness and adventure</p>
-          <h2 class="section-title">Experiences</h2>
-          <p class="section-text">Choose the rhythm of your day, from first light on the reef to dinner on the sand.</p>
-          <button type="button" class="btn btn-outline-dark experience-cta" data-scroll-target="#experience-grid">Explore experiences <span aria-hidden="true">↗</span></button>
-        </div>
-
-        <div class="experience-grid row g-4 col-12" id="experience-grid">
-          <article class="experience-card col-12 col-md-6 col-xl-3 fade-in">
-            <div class="experience-card-inner">
-              <div class="experience-card-face experience-card-front">
-                <img src="https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-bejana-restaurant-16761:Classic-Hor?wid=1200&fit=constrain" alt="Sunset Catamaran" onerror="this.style.display='none'">
-                <div class="experience-card-overlay"></div>
-                <div class="experience-card-content">
-                  <p class="eyebrow">On the water</p><h3>Sunset Catamaran</h3><p>Daily at 5:30 pm</p>
-                </div>
-              </div>
-              <div class="experience-card-face experience-card-back">
-                <p class="eyebrow">Sunset Catamaran</p><h3>Golden hour at sea</h3>
-                <p>Set sail along the coast with chilled drinks, small plates and an unobstructed sunset.</p>
-                <ul><li>90-minute cruise</li><li>Welcome drink included</li><li>Limited to 12 guests</li></ul>
-              </div>
+      <!-- EXPERIENCIAS-->
+      <section class="experiences-section" id="experiences-section" aria-labelledby="experiences-title">
+        <span class="experiences-watermark" aria-hidden="true"
+          >Experiences</span
+        >
+        <div class="row g-4">
+          <article class="experience-feature-card fade-in col-12 col-lg-5">
+            <img
+              src="https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-bejana-restaurant-16761:Classic-Hor?wid=1200&fit=constrain"
+              alt="Sunset Catamaran"
+            />
+            <div class="experience-feature-overlay"></div>
+            <div class="experience-feature-content">
+              <p class="eyebrow">Featured experience</p>
+              <h3>Sunset<br />Catamaran</h3>
+              <p>Every evening at 5:30 pm</p>
             </div>
           </article>
+          <header class="experience-info fade-in col-12 col-lg-7">
+            <p class="eyebrow">Dining, wellness and adventure</p>
+            <h2 class="section-title" id="experiences-title">Experiences</h2>
+            <p class="section-text">
+              Choose the rhythm of your day, from first light on the reef to
+              dinner on the sand.
+            </p>
+            <button
+              type="button"
+              class="btn btn-outline-dark experience-cta"
+              data-scroll-target="#experience-grid"
+            >
+              Explore experiences <span aria-hidden="true">↗</span>
+            </button>
+          </header>
 
-          <article class="experience-card col-12 col-md-6 col-xl-3 fade-in">
-            <div class="experience-card-inner">
-              <div class="experience-card-face experience-card-front">
-                <img src="https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0020-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=540px:*" alt="Reef discovery dive" onerror="this.style.display='none'">
-                <div class="experience-card-overlay"></div>
-                <div class="experience-card-content">
-                  <p class="eyebrow">Adventure</p><h3>Reef Discovery Dive</h3><p>Every morning at 8:00 am</p>
+          <div class="experience-grid row g-4 col-12" id="experience-grid">
+            <article class="experience-card col-12 col-md-6 col-xl-3 fade-in">
+              <div class="experience-card-inner">
+                <div class="experience-card-face experience-card-front">
+                  <img
+                    src="https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-bejana-restaurant-16761:Classic-Hor?wid=1200&fit=constrain"
+                    alt="Sunset Catamaran"
+                    onerror="this.style.display = 'none'"
+                  />
+                  <div class="experience-card-overlay"></div>
+                  <div class="experience-card-content">
+                    <p class="eyebrow">On the water</p>
+                    <h3>Sunset Catamaran</h3>
+                    <p>Daily at 5:30 pm</p>
+                  </div>
+                </div>
+                <div class="experience-card-face experience-card-back">
+                  <p class="eyebrow">Sunset Catamaran</p>
+                  <h3>Golden hour at sea</h3>
+                  <p>
+                    Set sail along the coast with chilled drinks, small plates
+                    and an unobstructed sunset.
+                  </p>
+                  <ul>
+                    <li>90-minute cruise</li>
+                    <li>Welcome drink included</li>
+                    <li>Limited to 12 guests</li>
+                  </ul>
                 </div>
               </div>
-              <div class="experience-card-face experience-card-back">
-                <p class="eyebrow">Reef Discovery Dive</p><h3>Meet the reef</h3>
-                <p>A relaxed guided dive for curious beginners and returning underwater explorers.</p>
-                <ul><li>Certified instructor</li><li>Equipment included</li><li>All levels welcome</li></ul>
-              </div>
-            </div>
-          </article>
+            </article>
 
-          <article class="experience-card col-12 col-md-6 col-xl-3 fade-in">
-            <div class="experience-card-inner">
-              <div class="experience-card-face experience-card-front">
-                <img src="https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=540px:*" alt="Tide Room spa ritual" onerror="this.style.display='none'">
-                <div class="experience-card-overlay"></div>
-                <div class="experience-card-content">
-                  <p class="eyebrow">Wellness</p><h3>Tide Room Ritual</h3><p>Daily, 8:00 am – 8:00 pm</p>
+            <article class="experience-card col-12 col-md-6 col-xl-3 fade-in">
+              <div class="experience-card-inner">
+                <div class="experience-card-face experience-card-front">
+                  <img
+                    src="https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0020-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=540px:*"
+                    alt="Reef discovery dive"
+                    onerror="this.style.display = 'none'"
+                  />
+                  <div class="experience-card-overlay"></div>
+                  <div class="experience-card-content">
+                    <p class="eyebrow">Adventure</p>
+                    <h3>Reef Discovery Dive</h3>
+                    <p>Every morning at 8:00 am</p>
+                  </div>
+                </div>
+                <div class="experience-card-face experience-card-back">
+                  <p class="eyebrow">Reef Discovery Dive</p>
+                  <h3>Meet the reef</h3>
+                  <p>
+                    A relaxed guided dive for curious beginners and returning
+                    underwater explorers.
+                  </p>
+                  <ul>
+                    <li>Certified instructor</li>
+                    <li>Equipment included</li>
+                    <li>All levels welcome</li>
+                  </ul>
                 </div>
               </div>
-              <div class="experience-card-face experience-card-back">
-                <p class="eyebrow">Tide Room Ritual</p><h3>Restore slowly</h3>
-                <p>A warm salt soak, traditional Balinese massage and herbal tea in a private treatment room.</p>
-                <ul><li>75-minute treatment</li><li>Natural local oils</li><li>Advance booking advised</li></ul>
-              </div>
-            </div>
-          </article>
+            </article>
 
-          <article class="experience-card col-12 col-md-6 col-xl-3 fade-in">
-            <div class="experience-card-inner">
-              <div class="experience-card-face experience-card-front">
-                <img src="https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-dpssw-junior-suite-12993:Wide-Hor?wid=540&fit=constrain" alt="Balinese cooking class" onerror="this.style.display='none'">
-                <div class="experience-card-overlay"></div>
-                <div class="experience-card-content">
-                  <p class="eyebrow">Dining</p><h3>Balinese Table</h3><p>Tuesdays and Fridays</p>
+            <article class="experience-card col-12 col-md-6 col-xl-3 fade-in">
+              <div class="experience-card-inner">
+                <div class="experience-card-face experience-card-front">
+                  <img
+                    src="https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=540px:*"
+                    alt="Tide Room spa ritual"
+                    onerror="this.style.display = 'none'"
+                  />
+                  <div class="experience-card-overlay"></div>
+                  <div class="experience-card-content">
+                    <p class="eyebrow">Wellness</p>
+                    <h3>Tide Room Ritual</h3>
+                    <p>Daily, 8:00 am – 8:00 pm</p>
+                  </div>
+                </div>
+                <div class="experience-card-face experience-card-back">
+                  <p class="eyebrow">Tide Room Ritual</p>
+                  <h3>Restore slowly</h3>
+                  <p>
+                    A warm salt soak, traditional Balinese massage and herbal
+                    tea in a private treatment room.
+                  </p>
+                  <ul>
+                    <li>75-minute treatment</li>
+                    <li>Natural local oils</li>
+                    <li>Advance booking advised</li>
+                  </ul>
                 </div>
               </div>
-              <div class="experience-card-face experience-card-back">
-                <p class="eyebrow">Balinese Table</p><h3>Cook with the island</h3>
-                <p>Learn to prepare a seasonal Balinese lunch with the chefs who know the market best.</p>
-                <ul><li>Market-inspired menu</li><li>Lunch included</li><li>Small-group class</li></ul>
+            </article>
+
+            <article class="experience-card col-12 col-md-6 col-xl-3 fade-in">
+              <div class="experience-card-inner">
+                <div class="experience-card-face experience-card-front">
+                  <img
+                    src="https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-dpssw-junior-suite-12993:Wide-Hor?wid=540&fit=constrain"
+                    alt="Balinese cooking class"
+                    onerror="this.style.display = 'none'"
+                  />
+                  <div class="experience-card-overlay"></div>
+                  <div class="experience-card-content">
+                    <p class="eyebrow">Dining</p>
+                    <h3>Balinese Table</h3>
+                    <p>Tuesdays and Fridays</p>
+                  </div>
+                </div>
+                <div class="experience-card-face experience-card-back">
+                  <p class="eyebrow">Balinese Table</p>
+                  <h3>Cook with the island</h3>
+                  <p>
+                    Learn to prepare a seasonal Balinese lunch with the chefs
+                    who know the market best.
+                  </p>
+                  <ul>
+                    <li>Market-inspired menu</li>
+                    <li>Lunch included</li>
+                    <li>Small-group class</li>
+                  </ul>
+                </div>
               </div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="site-footer" id="book-section">
-    <div class="container-fluid">
-      <div class="footer-cta row gy-4 align-items-center">
-        <div class="col-12 col-lg-6">
-          <p class="eyebrow">Reserve</p>
-          <h2>Book your<br>stay</h2>
-          <span class="footer-book-button">Book now <span aria-hidden="true">↗</span></span>
-        </div>
-        <div class="col-12 col-lg-4 offset-lg-2">
-          <div class="footer-contact-card">
-            <p class="eyebrow">Contact</p>
-            <p>reservations@atlansuites.com<br>+65 6555 0142</p>
-            <hr>
-            <p class="eyebrow">Hotel location</p>
-            <p>Singapore</p>
+            </article>
           </div>
         </div>
-      </div>
+      </section>
+    </main>
 
-      <div class="footer-brand d-block mx-auto">
-        <img src="assets/logo-transparent.png" alt="Atlan Suites" class="footer-logo">
-        <small>Singapore</small>
-      </div>
-
-      <div class="row gy-5 footer-content">
-        <div class="col-12 col-sm-6 col-lg-3">
-          <h2 class="footer-heading">Discover Atlan</h2>
-          <ul class="footer-links">
-            <li><span>About us</span></li>
-            <li><span>Our suites</span></li>
-            <li><span>Experiences</span></li>
-            <li><span>Contact us</span></li>
-          </ul>
-        </div>
-
-        <div class="col-12 col-sm-6 col-lg-3">
-          <h2 class="footer-heading">Useful information</h2>
-          <ul class="footer-links">
-            <li><span>Reservations</span></li>
-            <li><span>Travel guide</span></li>
-            <li><span>Amenities</span></li>
-            <li><span>Frequently asked questions</span></li>
-          </ul>
-        </div>
-
-        <div class="col-12 col-sm-6 col-lg-3">
-          <h2 class="footer-heading">Connect with us</h2>
-          <div class="social-links" aria-label="Social media">
-            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="assets/logotipo-de-instagram.png" alt=""></a>
-            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img src="assets/facebook.png" alt=""></a>
-            <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><img src="assets/youtube.png" alt=""></a>
-            <a href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X"><img src="assets/gorjeo.png" alt=""></a>
+    <!-- FOOTER -->
+    <footer class="site-footer" id="book-section">
+      <div class="container-fluid">
+        <section class="footer-cta row gy-4 align-items-center" aria-labelledby="booking-title">
+          <div class="col-12 col-lg-6">
+            <p class="eyebrow">Reserve</p>
+            <h2 id="booking-title">Book your<br />stay</h2>
+            <span class="footer-book-button"
+              >Book now <span aria-hidden="true">↗</span></span
+            >
           </div>
+          <div class="col-12 col-lg-4 offset-lg-2">
+            <address class="footer-contact-card">
+              <p class="eyebrow">Contact</p>
+              <p>reservations@atlansuites.com<br />+65 6555 0142</p>
+              <hr />
+              <p class="eyebrow">Hotel location</p>
+              <p>Singapore</p>
+            </address>
+          </div>
+        </section>
+
+        <figure class="footer-brand d-block mx-auto">
+          <img
+            src="assets/logo-transparent.png"
+            alt="Atlan Suites"
+            class="footer-logo"
+          />
+          <figcaption>Singapore</figcaption>
+        </figure>
+
+        <div class="row gy-5 footer-content">
+          <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="discover-title">
+            <h2 class="footer-heading" id="discover-title">Discover Atlan</h2>
+            <ul class="footer-links">
+              <li><span>About us</span></li>
+              <li><span>Our suites</span></li>
+              <li><span>Experiences</span></li>
+              <li><span>Contact us</span></li>
+            </ul>
+          </section>
+
+          <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="information-title">
+            <h2 class="footer-heading" id="information-title">Useful information</h2>
+            <ul class="footer-links">
+              <li><span>Reservations</span></li>
+              <li><span>Travel guide</span></li>
+              <li><span>Amenities</span></li>
+              <li><span>Frequently asked questions</span></li>
+            </ul>
+          </section>
+
+          <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="social-title">
+            <h2 class="footer-heading" id="social-title">Connect with us</h2>
+            <nav class="social-links" aria-label="Social media">
+              <a
+                href="https://www.instagram.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                ><img src="assets/logotipo-de-instagram.png" alt=""
+              /></a>
+              <a
+                href="https://www.facebook.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                ><img src="assets/facebook.png" alt=""
+              /></a>
+              <a
+                href="https://www.youtube.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
+                ><img src="assets/youtube.png" alt=""
+              /></a>
+              <a
+                href="https://x.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="X"
+                ><img src="assets/gorjeo.png" alt=""
+              /></a>
+            </nav>
+          </section>
+
+          <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="newsletter-title">
+            <h2 class="footer-heading" id="newsletter-title">Get inspired</h2>
+            <p class="footer-newsletter-text">
+              Subscribe to our newsletter for the latest stories and offers.
+            </p>
+            <button class="footer-subscribe" type="button">Subscribe</button>
+          </section>
         </div>
 
-        <div class="col-12 col-sm-6 col-lg-3">
-          <h2 class="footer-heading">Get inspired</h2>
-          <p class="footer-newsletter-text">Subscribe to our newsletter for the latest stories and offers.</p>
-          <span class="footer-subscribe">Subscribe</span>
+        <div
+          class="footer-bottom d-flex flex-column flex-md-row justify-content-center align-items-center gap-2"
+        >
+          <div class="footer-legal">
+            <span>Privacy notice</span>
+            <span>Terms of use</span>
+            <span>Accessibility</span>
+          </div>
+          <span>© 2026 Atlan Suites. All rights reserved.</span>
         </div>
       </div>
+    </footer>
 
-      <div class="footer-bottom d-flex flex-column flex-md-row justify-content-center align-items-center gap-2">
-        <div class="footer-legal">
-          <span>Privacy notice</span>
-          <span>Terms of use</span>
-          <span>Accessibility</span>
-        </div>
-        <span>© 2026 Atlan Suites. All rights reserved.</span>
-      </div>
-    </div>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  <script src="main.js"></script>
-</body>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="main.js"></script>
+  </body>
 </html>

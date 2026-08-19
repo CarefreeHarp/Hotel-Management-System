@@ -15,32 +15,55 @@ const fadeObserver = new IntersectionObserver(
 
 fadeTargets.forEach((target) => fadeObserver.observe(target));
 
-// ESTA PARTE SI LA SAQUE DE GOOGLE, ES PARA QUE MUESTRE EL VIDEO SIN
-// NECESIDAD DE CARGAR EL IFRAME DE YOUTUBE HASTA QUE LE DEN CLICK
-const facade = document.querySelector('.youtube-facade');
-
-function playPanoramicVideo() {
-  const videoId = facade.dataset.youtubeId;
-  const iframe = document.createElement('iframe');
-  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-  iframe.title = 'Atlan Suites panoramic video';
-  iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
-  iframe.allowFullscreen = true;
-  facade.replaceWith(iframe);
-}
-
-facade.addEventListener('click', playPanoramicVideo);
-facade.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter' || event.key === ' ') {
-    event.preventDefault();
-    playPanoramicVideo();
-  }
-});
-
-// CAMBIA EL ESTADO DEL HEADER APENAS SALE DEL HERO
 const header = document.querySelector('.site-header');
 const hero = document.getElementById('hero');
 
+// VIDEO DE THE HOTEL: reproducción normal al entrar en la sección.
+const scrollVideo = document.querySelector('.scroll-video');
+const videoSection = document.getElementById('video-section');
+scrollVideo.playbackRate = 2;
+let isHotelVideoLocked = false;
+let hasHotelVideoFinished = false;
+
+function startHotelVideo() {
+  if (isHotelVideoLocked || hasHotelVideoFinished) return;
+  isHotelVideoLocked = true;
+  scrollVideo.currentTime = 0;
+  window.scrollTo({ top: videoSection.offsetTop });
+  header.classList.add('is-video-section');
+  scrollVideo.play().catch(() => {});
+}
+
+const hotelVideoObserver = new IntersectionObserver(([entry]) => {
+  if (entry.isIntersecting) startHotelVideo();
+}, { threshold: 0.2 });
+hotelVideoObserver.observe(videoSection);
+scrollVideo.addEventListener('ended', () => {
+  isHotelVideoLocked = false;
+  hasHotelVideoFinished = true;
+});
+
+const isAtHotelVideo = () => scrollY >= videoSection.offsetTop - 1;
+addEventListener('scroll', () => {
+  if (!hasHotelVideoFinished && scrollY >= videoSection.offsetTop) startHotelVideo();
+  if (isHotelVideoLocked && scrollY > videoSection.offsetTop) {
+    window.scrollTo({ top: videoSection.offsetTop });
+  }
+}, { passive: true });
+addEventListener('wheel', (event) => {
+  if (isHotelVideoLocked && isAtHotelVideo() && event.deltaY > 0) event.preventDefault();
+}, { passive: false });
+addEventListener('keydown', (event) => {
+  if (isHotelVideoLocked && isAtHotelVideo() && [' ', 'ArrowDown', 'PageDown', 'End'].includes(event.key)) event.preventDefault();
+});
+let touchY = 0;
+addEventListener('touchstart', (event) => { touchY = event.touches[0].clientY; }, { passive: true });
+addEventListener('touchmove', (event) => {
+  if (isHotelVideoLocked && isAtHotelVideo() && event.touches[0].clientY < touchY) event.preventDefault();
+  touchY = event.touches[0].clientY;
+}, { passive: false });
+
+// CAMBIA EL ESTADO DEL HEADER APENAS SALE DEL HERO
 const headerObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -52,6 +75,18 @@ const headerObserver = new IntersectionObserver(
 
 headerObserver.observe(hero);
 
+const updateHeaderScroll = () => header.classList.toggle('is-scrolled', scrollY > 10);
+addEventListener('scroll', updateHeaderScroll, { passive: true });
+updateHeaderScroll();
+
+const updateVideoHeader = () => {
+  const { top, bottom } = videoSection.getBoundingClientRect();
+  const isVideoActive = top <= 0 && bottom >= innerHeight;
+  header.classList.toggle('is-video-section', isVideoActive);
+};
+addEventListener('scroll', updateVideoHeader, { passive: true });
+updateVideoHeader();
+
 // BARRA DE PROGRESO DE SCROLL 
 const scrollProgress = document.getElementById('scroll-progress');
 
@@ -60,6 +95,7 @@ function updateScrollProgress() {
   const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
   const percent = maxScroll > 0 ? (scrolled / maxScroll) * 100 : 0;
   scrollProgress.style.width = `${percent}%`;
+  scrollProgress.setAttribute('aria-valuenow', Math.round(percent));
 }
 
 window.addEventListener('scroll', updateScrollProgress);

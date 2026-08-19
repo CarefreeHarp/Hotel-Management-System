@@ -1,12 +1,6 @@
-/* THE VIEW */
-.video-section { padding: var(--gap-section) var(--pad-inline); background: var(--color-mist); }
-.video-frame { position: relative; border-radius: 6px; overflow: hidden; aspect-ratio: 16 / 8; background: var(--color-charcoal); }
-.youtube-facade { position: absolute; inset: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.youtube-facade-thumb { position: absolute; inset: 0; z-index: 0; background: linear-gradient(135deg, var(--color-slate), var(--color-charcoal)); }
-.youtube-facade-thumb img, .video-frame iframe { width: 100%; height: 100%; object-fit: cover; display: block; }
-.youtube-facade-overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(17,20,23,.15), rgba(17,20,23,.75)); }
-.youtube-facade-play { position: relative; z-index: 2; width: 68px; height: 68px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(244,246,248,.15); border: 1px solid rgba(244,246,248,.4); color: #fff; font-size: 1.1rem; padding-left: 4px; transition: transform .3s var(--ease), background .3s var(--ease); }
-.youtube-facade:hover .youtube-facade-play { transform: scale(1.08); background: var(--color-gold); }
-.video-frame-label { position: absolute; top: 1.5rem; right: 1.5rem; color: var(--color-text-muted); }
-.video-frame-headline { position: absolute; left: 2rem; bottom: 2rem; color: #fff; font-family: var(--font-display); font-size: clamp(1.6rem, 3.5vw, 2.4rem); }
-.video-frame iframe { position: absolute; inset: 0; border: none; }
+/* THE HOTEL */
+.video-section { position: relative; height: 100vh; height: 100dvh; overflow: hidden; background: var(--color-ink); }
+.scroll-video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.video-view-card { position: absolute; right: clamp(.1rem, .5vw, .7rem); bottom: clamp(.65rem, 1.5vw, 1.5rem); z-index: 10; width: min(32rem, calc(100% - 1rem)); padding: 2.3rem 2.5rem 2.45rem; color: var(--color-text-light); background: rgba(18, 22, 28, .42); border: 1px solid rgba(244, 246, 248, .32); border-left: 4px solid var(--color-gold); backdrop-filter: blur(14px); box-shadow: 0 18px 42px rgba(0, 0, 0, .25); pointer-events: none; }
+.video-view-card .eyebrow { color: rgba(244, 246, 248, .65); }
+.video-view-card h3 { margin: .9rem 0 0; font-family: var(--font-display); font-size: clamp(2.4rem, 4.5vw, 4rem); font-weight: 400; line-height: .94; }
