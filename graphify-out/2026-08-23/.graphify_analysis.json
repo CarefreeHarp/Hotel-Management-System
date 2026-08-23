@@ -1,0 +1,229 @@
+{
+  "communities": {
+    "0": [
+      "demo_src_main_resources_static_js_index_main",
+      "demo_src_main_resources_static_js_index_main_fadeobserver",
+      "demo_src_main_resources_static_js_index_main_fadetargets",
+      "demo_src_main_resources_static_js_index_main_header",
+      "demo_src_main_resources_static_js_index_main_headerobserver",
+      "demo_src_main_resources_static_js_index_main_hero",
+      "demo_src_main_resources_static_js_index_main_isathotelvideo",
+      "demo_src_main_resources_static_js_index_main_scrollprogress",
+      "demo_src_main_resources_static_js_index_main_scrollvideo",
+      "demo_src_main_resources_static_js_index_main_suitecards",
+      "demo_src_main_resources_static_js_index_main_suitecarousel",
+      "demo_src_main_resources_static_js_index_main_suitecarouselinner",
+      "demo_src_main_resources_static_js_index_main_suiteindicators",
+      "demo_src_main_resources_static_js_index_main_suitepages",
+      "demo_src_main_resources_static_js_index_main_updateheaderscroll",
+      "demo_src_main_resources_static_js_index_main_updatescrollprogress",
+      "demo_src_main_resources_static_js_index_main_updatevideoheader",
+      "demo_src_main_resources_static_js_index_main_videosection"
+    ],
+    "1": [
+      "demo_src_main_java_com_example_demo_entitys_servicio",
+      "demo_src_main_java_com_example_demo_entitys_servicio_servicio",
+      "demo_src_main_java_com_example_demo_repository_serviciorepositorymemoria",
+      "demo_src_main_java_com_example_demo_repository_serviciorepositorymemoria_serviciorepositorymemoria",
+      "demo_src_main_java_com_example_demo_repository_serviciorepositorymemoria_serviciorepositorymemoria_obtenerpornombreurl",
+      "demo_src_main_java_com_example_demo_repository_serviciorepositorymemoria_serviciorepositorymemoria_serviciorepositorymemoria",
+      "demo_src_main_java_com_example_demo_service_studentserviceimpl",
+      "demo_src_main_java_com_example_demo_service_studentserviceimpl_studentserviceimpl",
+      "demo_src_main_java_com_example_demo_service_studentserviceimpl_studentserviceimpl_getservicebynombreurl",
+      "demo_src_main_java_com_example_demo_service_studentserviceimpl_studentserviceimpl_studentserviceimpl",
+      "lombok_allargsconstructor",
+      "lombok_data",
+      "lombok_noargsconstructor",
+      "org_springframework_stereotype_repository",
+      "org_springframework_stereotype_service",
+      "override"
+    ],
+    "2": [
+      "demo_src_main_java_com_example_demo_controller_indexcontroller",
+      "demo_src_main_java_com_example_demo_controller_indexcontroller_indexcontroller",
+      "demo_src_main_java_com_example_demo_controller_indexcontroller_indexcontroller_index",
+      "demo_src_main_java_com_example_demo_controller_servicecontroller",
+      "demo_src_main_java_com_example_demo_controller_servicecontroller_servicecontroller",
+      "demo_src_main_java_com_example_demo_controller_servicecontroller_servicecontroller_especifico",
+      "demo_src_main_java_com_example_demo_service_servicioservice",
+      "demo_src_main_java_com_example_demo_service_servicioservice_servicioservice",
+      "demo_src_main_java_com_example_demo_service_servicioservice_servicioservice_getservicebynombreurl",
+      "org_springframework_stereotype_controller",
+      "org_springframework_ui_model",
+      "org_springframework_web_bind_annotation_getmapping",
+      "org_springframework_web_bind_annotation_requestmapping",
+      "servicio"
+    ],
+    "3": [
+      "demo_mvnw",
+      "demo_mvnw__entry",
+      "demo_mvnw_clean",
+      "demo_mvnw_die",
+      "demo_mvnw_exec_maven",
+      "demo_mvnw_hash_string",
+      "demo_mvnw_native_path",
+      "demo_mvnw_set_java_home",
+      "demo_mvnw_trim",
+      "demo_mvnw_verbose"
+    ],
+    "4": [
+      "demo_src_test_java_com_example_demo_demoapplicationtests",
+      "demo_src_test_java_com_example_demo_demoapplicationtests_demoapplicationtests",
+      "demo_src_test_java_com_example_demo_demoapplicationtests_demoapplicationtests_contextloads",
+      "org_junit_jupiter_api_test",
+      "org_springframework_boot_test_context_springboottest"
+    ],
+    "5": [
+      "demo_src_main_java_com_example_demo_demoapplication",
+      "demo_src_main_java_com_example_demo_demoapplication_demoapplication",
+      "demo_src_main_java_com_example_demo_demoapplication_demoapplication_main",
+      "org_springframework_boot_autoconfigure_springbootapplication"
+    ],
+    "6": [
+      "demo_src_main_resources_static_js_servicio_especifico_servicio_especifico",
+      "demo_src_main_resources_static_js_servicio_especifico_servicio_especifico_galleryimages",
+      "demo_src_main_resources_static_js_servicio_especifico_servicio_especifico_serviceheader",
+      "demo_src_main_resources_static_js_servicio_especifico_servicio_especifico_updateserviceheaderscroll"
+    ],
+    "7": [
+      "demo_src_main_resources_static_js_index_main_hotelvideoobserver",
+      "demo_src_main_resources_static_js_index_main_starthotelvideo"
+    ],
+    "8": [
+      "com_example_demo_entitys_servicio"
+    ],
+    "9": [
+      "com_example_demo_repository_serviciorepository"
+    ],
+    "10": [
+      "demo_src_main_java_com_example_demo_repository_serviciorepositorymemoria_java_servicio"
+    ],
+    "11": [
+      "java_security_provider_service"
+    ],
+    "12": [
+      "pkg_com_example_demo"
+    ],
+    "13": [
+      "servicioservice"
+    ]
+  },
+  "cohesion": {
+    "0": 0.1111111111111111,
+    "1": 0.23333333333333334,
+    "2": 0.24175824175824176,
+    "3": 0.3333333333333333,
+    "4": 0.6,
+    "5": 0.6666666666666666,
+    "6": 0.5,
+    "7": 1.0,
+    "8": 1.0,
+    "9": 1.0,
+    "10": 1.0,
+    "11": 1.0,
+    "12": 1.0,
+    "13": 1.0
+  },
+  "gods": [
+    {
+      "id": "demo_src_main_java_com_example_demo_entitys_servicio_servicio",
+      "label": "Servicio",
+      "degree": 13
+    },
+    {
+      "id": "demo_src_main_java_com_example_demo_repository_serviciorepositorymemoria_serviciorepositorymemoria",
+      "label": "ServicioRepositoryMemoria",
+      "degree": 8
+    },
+    {
+      "id": "demo_src_main_java_com_example_demo_service_studentserviceimpl_studentserviceimpl",
+      "label": "StudentServiceImpl",
+      "degree": 6
+    },
+    {
+      "id": "demo_src_main_java_com_example_demo_controller_servicecontroller_servicecontroller",
+      "label": "ServiceController",
+      "degree": 5
+    },
+    {
+      "id": "demo_src_main_java_com_example_demo_service_servicioservice_servicioservice",
+      "label": "ServicioService",
+      "degree": 5
+    },
+    {
+      "id": "demo_src_main_java_com_example_demo_controller_indexcontroller_indexcontroller",
+      "label": "IndexController",
+      "degree": 3
+    },
+    {
+      "id": "demo_src_test_java_com_example_demo_demoapplicationtests_demoapplicationtests",
+      "label": "DemoApplicationTests",
+      "degree": 3
+    },
+    {
+      "id": "demo_src_main_java_com_example_demo_demoapplication_demoapplication",
+      "label": "DemoApplication",
+      "degree": 3
+    },
+    {
+      "id": "demo_src_main_resources_static_js_index_main_starthotelvideo",
+      "label": "startHotelVideo()",
+      "degree": 2
+    },
+    {
+      "id": "demo_src_main_resources_static_js_index_main_hotelvideoobserver",
+      "label": "hotelVideoObserver",
+      "degree": 2
+    }
+  ],
+  "surprises": [
+    {
+      "source": "StudentServiceImpl",
+      "target": "ServicioService",
+      "source_files": [
+        "demo/src/main/java/com/example/demo/service/StudentServiceImpl.java",
+        "demo/src/main/java/com/example/demo/service/ServicioService.java"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "implements",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "ServiceController",
+      "target": "ServicioService",
+      "source_files": [
+        "demo/src/main/java/com/example/demo/controller/ServiceController.java",
+        "demo/src/main/java/com/example/demo/service/ServicioService.java"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "cross-file semantic connection"
+    },
+    {
+      "source": "ServicioRepositoryMemoria",
+      "target": "Servicio",
+      "source_files": [
+        "demo/src/main/java/com/example/demo/repository/ServicioRepositoryMemoria.java",
+        "demo/src/main/java/com/example/demo/entitys/Servicio.java"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "cross-file semantic connection"
+    },
+    {
+      "source": "StudentServiceImpl",
+      "target": "ServicioRepositoryMemoria",
+      "source_files": [
+        "demo/src/main/java/com/example/demo/service/StudentServiceImpl.java",
+        "demo/src/main/java/com/example/demo/repository/ServicioRepositoryMemoria.java"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "cross-file semantic connection"
+    }
+  ],
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
+}
