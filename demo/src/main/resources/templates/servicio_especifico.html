@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="es" xmlns:th="https://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${servicio.nombre + ' | Atlan Suites'}">
+      Servicio | Atlan Suites
+    </title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" th:href="@{/css/index/common.css}" />
+    <link
+      rel="stylesheet"
+      th:href="@{/css/servicio_especifico/servicio_especifico.css}"
+    />
+  </head>
+  <body class="service-page">
+    <header class="site-header navbar navbar-expand-md">
+      <a th:href="@{/}" class="brand-mark">
+        <img
+          th:src="@{/images/servicio_especifico/logo-transparent.png}"
+          alt="Atlan Suites"
+          class="brand-logo"
+        />
+      </a>
+      <div class="collapse navbar-collapse" id="main-nav">
+        <nav
+          class="main-nav navbar-nav flex-column flex-md-row"
+          aria-label="Main navigation"
+        >
+          <a th:href="@{/}" class="nav-link flex-fill">Home</a>
+          <a th:href="@{/#video-section}" class="nav-link flex-fill"
+            >The hotel</a
+          >
+          <a th:href="@{/#rooms-section}" class="nav-link flex-fill">Suites</a>
+          <a th:href="@{/#experiences-section}" class="nav-link flex-fill"
+            >Experiences</a
+          >
+        </nav>
+      </div>
+      <div class="header-actions">
+        <a href="#reservation" class="btn btn-primary"
+          >Book now <span aria-hidden="true">↗</span></a
+        >
+        <button
+          class="nav-toggle navbar-toggler d-flex d-md-none"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#main-nav"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+          aria-controls="main-nav"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section
+        class="service-hero"
+        th:style="|--service-hero-image: url('${servicio.imagenPrincipalUrl}');|"
+      >
+        <div class="hero-content">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a th:href="@{/}">Atlan Suites</a><span>/</span><span>Services</span
+            ><span>/</span>
+            <span th:text="${servicio.nombre}">Service</span>
+          </nav>
+          <p class="eyebrow" th:text="${servicio.categoria}">Category</p>
+          <h1 th:text="${servicio.nombre}">Service</h1>
+          <p class="hero-summary" th:text="${servicio.resumen}">
+            A memorable experience during your stay.
+          </p>
+          <a href="#reservation" class="btn btn-gold"
+            >Reserve this service <span aria-hidden="true">↗</span></a
+          >
+        </div>
+      </section>
+
+      <section class="service-overview" aria-labelledby="about-title">
+        <div class="overview-copy">
+          <p class="eyebrow">Service details</p>
+          <h2 id="about-title">Everything about this experience.</h2>
+          <p class="description" th:text="${servicio.descripcion}">
+            Service description.
+          </p>
+
+          <ul class="benefits" th:if="${!#lists.isEmpty(servicio.beneficios)}">
+            <li
+              class="benefit"
+              th:each="beneficio, state : ${servicio.beneficios}"
+            >
+              <span class="benefit-number" th:text="|0${state.index + 1}|"
+                >01</span
+              >
+              <p th:text="${beneficio}">Benefit</p>
+            </li>
+          </ul>
+          <p class="empty-state" th:if="${#lists.isEmpty(servicio.beneficios)}">
+            No additional benefits are currently listed.
+          </p>
+        </div>
+
+        <dl class="service-facts" aria-label="Service information">
+          <div class="fact">
+            <dt>Service ID</dt>
+            <dd><strong th:text="|#${servicio.id}|">#1</strong></dd>
+          </div>
+          <div class="fact">
+            <dt>Name</dt>
+            <dd><strong th:text="${servicio.nombre}">Service</strong></dd>
+          </div>
+          <div class="fact">
+            <dt>URL name</dt>
+            <dd><strong th:text="${servicio.nombreUrl}">service-url-name</strong></dd>
+          </div>
+          <div class="fact">
+            <dt>Category</dt>
+            <dd><strong th:text="${servicio.categoria}">Category</strong></dd>
+          </div>
+          <div class="fact">
+            <dt>Price</dt>
+            <dd><strong
+              th:text="|COP ${#numbers.formatDecimal(servicio.precio, 0, 'POINT', 0, 'COMMA')}|"
+              >COP 0</strong
+            ></dd>
+          </div>
+          <div class="fact">
+            <dt>Duration</dt>
+            <dd><strong th:text="${servicio.duracion}">Not specified</strong></dd>
+          </div>
+          <div class="fact">
+            <dt>Availability</dt>
+            <dd><strong th:text="${servicio.disponibilidad}">Not specified</strong></dd>
+          </div>
+          <div class="fact">
+            <dt>Location</dt>
+            <dd><strong th:text="${servicio.ubicacion}">Not specified</strong></dd>
+          </div>
+          <div class="fact">
+            <dt>Status</dt>
+            <dd><strong
+              class="status"
+              th:classappend="${!servicio.activo} ? ' inactive' : ''"
+              th:text="${servicio.activo} ? 'Active' : 'Inactive'"
+              >Active</strong
+            ></dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="gallery-section" aria-labelledby="gallery-title">
+        <div class="gallery-heading">
+          <div>
+            <p class="eyebrow">Visual tour</p>
+            <h2 id="gallery-title">Service gallery</h2>
+          </div>
+          <p>
+            Images associated with
+            <span th:text="${servicio.nombre}">this service</span>.
+          </p>
+        </div>
+
+        <ul
+          class="gallery-grid"
+          th:if="${!#lists.isEmpty(servicio.imagenesGaleriaUrls)}"
+        >
+          <li
+            th:each="imagenUrl, state : ${servicio.imagenesGaleriaUrls}"
+            class="gallery-card"
+          >
+            <figure>
+              <img
+                th:src="${imagenUrl}"
+                th:alt="|${servicio.nombre} — image ${state.index + 1}|"
+                loading="lazy"
+              />
+              <figcaption th:text="|Image ${state.index + 1}|">Image 1</figcaption>
+            </figure>
+          </li>
+        </ul>
+        <p
+          class="empty-state gallery-empty"
+          th:if="${#lists.isEmpty(servicio.imagenesGaleriaUrls)}"
+        >
+          No gallery images are available for this service.
+        </p>
+      </section>
+
+      <section id="reservation" class="reservation-cta">
+        <div>
+          <p class="eyebrow">Atlan Suites</p>
+          <h2>Ready to enjoy this service?</h2>
+          <p>Our concierge will help you arrange every detail.</p>
+        </div>
+        <a href="mailto:reservas@atlansuites.com" class="btn btn-gold"
+          >Book now <span aria-hidden="true">↗</span></a
+        >
+      </section>
+    </main>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script th:src="@{/js/servicio_especifico/servicio_especifico.js}"></script>
+  </body>
+</html>
