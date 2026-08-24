@@ -73,11 +73,6 @@
         th:style="|--service-hero-image: url('${servicio.imagenPrincipalUrl}');|"
       >
         <div class="hero-content">
-          <nav class="breadcrumb" aria-label="Breadcrumb">
-            <a th:href="@{/}">Atlan Suites</a><span>/</span><span>Services</span
-            ><span>/</span>
-            <span th:text="${servicio.nombre}">Service</span>
-          </nav>
           <p class="eyebrow" th:text="${servicio.categoria}">Category</p>
           <h1 th:text="${servicio.nombre}">Service</h1>
           <p class="hero-summary" th:text="${servicio.resumen}">
@@ -124,7 +119,9 @@
           </div>
           <div class="fact">
             <dt>URL name</dt>
-            <dd><strong th:text="${servicio.nombreUrl}">service-url-name</strong></dd>
+            <dd>
+              <strong th:text="${servicio.nombreUrl}">service-url-name</strong>
+            </dd>
           </div>
           <div class="fact">
             <dt>Category</dt>
@@ -132,31 +129,43 @@
           </div>
           <div class="fact">
             <dt>Price</dt>
-            <dd><strong
-              th:text="|COP ${#numbers.formatDecimal(servicio.precio, 0, 'POINT', 0, 'COMMA')}|"
-              >COP 0</strong
-            ></dd>
+            <dd>
+              <strong
+                th:text="|COP ${#numbers.formatDecimal(servicio.precio, 0, 'POINT', 0, 'COMMA')}|"
+                >COP 0</strong
+              >
+            </dd>
           </div>
           <div class="fact">
             <dt>Duration</dt>
-            <dd><strong th:text="${servicio.duracion}">Not specified</strong></dd>
+            <dd>
+              <strong th:text="${servicio.duracion}">Not specified</strong>
+            </dd>
           </div>
           <div class="fact">
             <dt>Availability</dt>
-            <dd><strong th:text="${servicio.disponibilidad}">Not specified</strong></dd>
+            <dd>
+              <strong th:text="${servicio.disponibilidad}"
+                >Not specified</strong
+              >
+            </dd>
           </div>
           <div class="fact">
             <dt>Location</dt>
-            <dd><strong th:text="${servicio.ubicacion}">Not specified</strong></dd>
+            <dd>
+              <strong th:text="${servicio.ubicacion}">Not specified</strong>
+            </dd>
           </div>
           <div class="fact">
             <dt>Status</dt>
-            <dd><strong
-              class="status"
-              th:classappend="${!servicio.activo} ? ' inactive' : ''"
-              th:text="${servicio.activo} ? 'Active' : 'Inactive'"
-              >Active</strong
-            ></dd>
+            <dd>
+              <strong
+                class="status"
+                th:classappend="${!servicio.activo} ? ' inactive' : ''"
+                th:text="${servicio.activo} ? 'Active' : 'Inactive'"
+                >Active</strong
+              >
+            </dd>
           </div>
         </dl>
       </section>
@@ -187,7 +196,9 @@
                 th:alt="|${servicio.nombre} — image ${state.index + 1}|"
                 loading="lazy"
               />
-              <figcaption th:text="|Image ${state.index + 1}|">Image 1</figcaption>
+              <figcaption th:text="|Image ${state.index + 1}|">
+                Image 1
+              </figcaption>
             </figure>
           </li>
         </ul>
@@ -205,9 +216,6 @@
           <h2>Ready to enjoy this service?</h2>
           <p>Our concierge will help you arrange every detail.</p>
         </div>
-        <a href="mailto:reservas@atlansuites.com" class="btn btn-gold"
-          >Book now <span aria-hidden="true">↗</span></a
-        >
       </section>
     </main>
 
