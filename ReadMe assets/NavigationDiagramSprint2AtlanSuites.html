@@ -1,0 +1,780 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Hotel Navigation Map</title><style>
+:root{color-scheme:dark;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;background:#111827;color:#f9fafb}body{min-width:1100px;overflow:hidden}header{height:64px;padding:18px 24px 10px;background:#111827;display:flex;align-items:center;gap:18px}h1{margin:0;font-size:22px}#hint{color:#9ca3af;font-size:13px}#diagram{position:relative;width:100%;height:calc(100vh - 64px);padding:6px 14px 14px;overflow:hidden;background:#111827}#diagram svg{display:block;width:100%;height:100%;background:#111827!important;user-select:none;cursor:grab;touch-action:none}#diagram svg.dragging{cursor:grabbing}#diagram svg .graph>polygon{fill:#111827!important;stroke:transparent!important}.node{cursor:pointer;transition:opacity .16s ease,filter .16s ease}.edge{transition:opacity .16s ease,filter .16s ease}.edge path{stroke:#ef4444!important}.edge polygon{stroke:#ef4444!important;fill:#ef4444!important}.edge text{fill:#ef4444!important;paint-order:stroke;stroke:#111827;stroke-width:4px;stroke-linejoin:round;font-weight:700}svg.is-focused .node:not(.is-related),svg.is-focused .edge:not(.is-related){opacity:.025}svg.is-focused .node.is-related,svg.is-focused .edge.is-related{opacity:1;filter:drop-shadow(0 0 5px rgba(255,255,255,.16))}svg.is-focused .edge.is-related text{stroke-width:5px;font-weight:800}.legend{position:fixed;right:22px;top:18px;display:flex;gap:14px;align-items:center;font-size:12px;color:#d1d5db;pointer-events:none;z-index:3}.legend span{display:inline-flex;align-items:center;gap:6px}.swatch{width:12px;height:12px;border-radius:3px;display:inline-block}.regular{background:#ff7556}.future{background:#39a852}.context{background:#6b7280}
+</style></head><body><header><h1>Hotel Navigation Map</h1></header><div class="legend"><span><i class="swatch regular"></i>Pantalla diseñada para el Sprint 2</span><span><i class="swatch future"></i>Pantalla por diseñar</span><span><i class="swatch context"></i>System destination</span></div><main id="diagram"><svg id="my-svg" width="2030pt" height="1097pt"
+ viewBox="0.00 0.00 2030.15 1097.40" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(40.95 1072.2)">
+<title>G</title>
+<polygon fill="#111827" stroke="transparent" points="-40.95,25.2 -40.95,-1072.2 1989.2,-1072.2 1989.2,25.2 -40.95,25.2"/>
+
+<g id="edge&#45;0&#45;home&#45;suites" class="edge">
+<title>home&#45;&gt;suites</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M981.4,-1015.75C836.09,-962.77 261.79,-753.39 98.51,-693.86"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="99.07,-691.09 90.6,-690.98 97.15,-696.35 99.07,-691.09"/>
+<text text-anchor="middle" x="521.02" y="-856.97" font-family="Arial" font-size="10.50" fill="#ef4444">Suites</text>
+</g>
+
+<g id="edge&#45;1&#45;home&#45;bookNow" class="edge">
+<title>home&#45;&gt;bookNow</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M983.07,-1008.83C871.6,-948.68 499.17,-764.84 358.97,-700.44"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="360.11,-697.88 351.67,-697.09 357.78,-702.97 360.11,-697.88"/>
+<text text-anchor="middle" x="646.01" y="-841.52" font-family="Arial" font-size="10.50" fill="#ef4444">BookNow</text>
+</g>
+
+<g id="edge&#45;2&#45;home&#45;experiences" class="edge">
+<title>home&#45;&gt;experiences</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M993.21,-1008.93C925.5,-949.69 718.77,-768.8 643.12,-702.6"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="644.92,-700.46 637.05,-697.3 641.23,-704.67 644.92,-700.46"/>
+<text text-anchor="middle" x="785.52" y="-856.62" font-family="Arial" font-size="10.50" fill="#ef4444">Experiences</text>
+</g>
+
+<g id="edge&#45;3&#45;home&#45;explore" class="edge">
+<title>home&#45;&gt;explore</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1024.81,-1008.93C1054.97,-950.28 1146.44,-772.42 1181.3,-704.63"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1183.91,-705.69 1185.08,-697.3 1178.93,-703.13 1183.91,-705.69"/>
+<text text-anchor="middle" x="1135.43" y="-856.74" font-family="Arial" font-size="10.50" fill="#ef4444">ExploreHotel</text>
+</g>
+
+<g id="edge&#45;4&#45;home&#45;exitWeb" class="edge">
+<title>home&#45;&gt;exitWeb</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1002.69,-1008.57C962.29,-943.73 833.04,-727.74 775.8,-530.2 753.38,-452.84 759.47,-430.61 754.8,-350.2 748.17,-236.24 757.88,-100.01 762.63,-44"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="765.42,-44.23 763.32,-36.02 759.85,-43.75 765.42,-44.23"/>
+<text text-anchor="middle" x="746.3" y="-533.79" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;76&#45;navbar&#45;home" class="edge">
+<title>navbar&#45;&gt;home</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1015,-906.72C1015,-937.22 1015,-975.39 1015,-1000.67"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1012.2,-1000.72 1015,-1008.72 1017.8,-1000.73 1012.2,-1000.72"/>
+<text text-anchor="middle" x="1000.5" y="-961.57" font-family="Arial" font-size="10.50" fill="#ef4444">Home</text>
+</g>
+
+<g id="edge&#45;77&#45;navbar&#45;suites" class="edge">
+<title>navbar&#45;&gt;suites</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M967.97,-845.98C803.84,-810.27 257.77,-707.93 98.78,-683.14"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="98.96,-680.33 90.62,-681.89 98.1,-685.87 98.96,-680.33"/>
+<text text-anchor="middle" x="514.89" y="-763.78" font-family="Arial" font-size="10.50" fill="#ef4444">Suites</text>
+</g>
+
+<g id="edge&#45;78&#45;navbar&#45;bookNow" class="edge">
+<title>navbar&#45;&gt;bookNow</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M967.87,-846.05C842.6,-814.29 501.62,-727.85 363.88,-692.93"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="364.34,-690.16 355.9,-690.9 362.96,-695.58 364.34,-690.16"/>
+<text text-anchor="middle" x="637.05" y="-759.99" font-family="Arial" font-size="10.50" fill="#ef4444">Book Now</text>
+</g>
+
+<g id="edge&#45;79&#45;navbar&#45;experiences" class="edge">
+<title>navbar&#45;&gt;experiences</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M972.48,-834.01C901.45,-798.86 758.44,-734.31 676.46,-700.21"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="677.18,-697.48 668.72,-697 675.04,-702.65 677.18,-697.48"/>
+<text text-anchor="middle" x="792" y="-755.12" font-family="Arial" font-size="10.50" fill="#ef4444">Experiences</text>
+</g>
+
+<g id="edge&#45;80&#45;navbar&#45;gettingHere" class="edge">
+<title>navbar&#45;&gt;gettingHere</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1005.37,-810.22C995.52,-776.64 980.64,-732.92 969.43,-705.14"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="971.87,-703.73 966.22,-697.41 966.7,-705.87 971.87,-703.73"/>
+<text text-anchor="middle" x="956.66" y="-744.93" font-family="Arial" font-size="10.50" fill="#ef4444">Getting Here</text>
+</g>
+
+<g id="edge&#45;81&#45;navbar&#45;explore" class="edge">
+<title>navbar&#45;&gt;explore</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1053.12,-827.56C1090.87,-792.63 1147,-736.12 1176.11,-703.43"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1178.38,-705.08 1181.55,-697.22 1174.17,-701.39 1178.38,-705.08"/>
+<text text-anchor="middle" x="1077.64" y="-767.46" font-family="Arial" font-size="10.50" fill="#ef4444">Explore the Hotel</text>
+</g>
+
+<g id="edge&#45;82&#45;navbar&#45;restaurant" class="edge">
+<title>navbar&#45;&gt;restaurant</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1061.03,-842.58C1141.58,-810.68 1306.79,-738.13 1383.8,-700.82"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1385.46,-703.13 1391.42,-697.1 1383,-698.09 1385.46,-703.13"/>
+<text text-anchor="middle" x="1200.81" y="-775.76" font-family="Arial" font-size="10.50" fill="#ef4444">Restaurant</text>
+</g>
+
+<g id="edge&#45;83&#45;navbar&#45;awards" class="edge">
+<title>navbar&#45;&gt;awards</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1062.81,-848.43C1177.32,-820.23 1467.15,-738.88 1593.99,-699.52"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1594.94,-702.16 1601.74,-697.11 1593.27,-696.81 1594.94,-702.16"/>
+<text text-anchor="middle" x="1301.3" y="-779.23" font-family="Arial" font-size="10.50" fill="#ef4444">Hotel Awards</text>
+</g>
+
+<g id="edge&#45;84&#45;navbar&#45;servicesCards" class="edge">
+<title>navbar&#45;&gt;servicesCards</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1063.28,-851.46C1208.21,-826.27 1640.36,-738.14 1817.73,-697.94"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1818.54,-700.62 1825.72,-696.12 1817.3,-695.16 1818.54,-700.62"/>
+<text text-anchor="middle" x="1424.36" y="-780.56" font-family="Arial" font-size="10.50" fill="#ef4444">Services</text>
+</g>
+
+<g id="edge&#45;7&#45;suites&#45;navbar" class="edge">
+<title>suites&#45;&gt;navbar</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M90.66,-687.52C235.58,-719.86 781.12,-822.35 958.73,-850.88"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="958.32,-853.65 966.66,-852.14 959.2,-848.12 958.32,-853.65"/>
+<text text-anchor="middle" x="510.47" y="-777.15" font-family="Arial" font-size="10.50" fill="#ef4444">Navbar</text>
+</g>
+
+<g id="edge&#45;5&#45;suites&#45;suiteDetail" class="edge">
+<title>suites&#45;&gt;suiteDetail</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M59.46,-658.83C62.28,-628.65 62.49,-569.94 60.12,-535.35"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="62.89,-534.85 59.46,-527.1 57.3,-535.3 62.89,-534.85"/>
+<text text-anchor="middle" x="34.25" y="-584.47" font-family="Arial" font-size="10.50" fill="#ef4444">ViewDetails</text>
+</g>
+
+<g id="edge&#45;6&#45;suites&#45;bookNow" class="edge">
+<title>suites&#45;&gt;bookNow</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M90.55,-678C131.08,-678 197.94,-678 246.24,-678"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="246.43,-680.8 254.43,-678 246.43,-675.2 246.43,-680.8"/>
+<text text-anchor="middle" x="149.67" y="-681.6" font-family="Arial" font-size="10.50" fill="#ef4444">BookNow</text>
+</g>
+
+<g id="edge&#45;8&#45;suites&#45;previous" class="edge">
+<title>suites&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M90.68,-663.94C152.38,-639.25 282.49,-585.42 387.7,-530.2 557.02,-441.33 587.09,-397.68 754.8,-305.8 952.07,-197.73 1195.86,-85.28 1297.27,-39.4"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1298.48,-41.93 1304.61,-36.08 1296.17,-36.83 1298.48,-41.93"/>
+<text text-anchor="middle" x="725.3" y="-309.4" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;9&#45;suiteDetail&#45;home" class="edge">
+<title>suiteDetail&#45;&gt;home</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M96.18,-527.03C154.96,-554.43 266.07,-607.06 358.7,-655.8 596.71,-781.05 875.11,-944.81 976.01,-1004.74"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="974.65,-1007.19 982.96,-1008.88 977.51,-1002.38 974.65,-1007.19"/>
+<text text-anchor="middle" x="517.17" y="-748.72" font-family="Arial" font-size="10.50" fill="#ef4444">BotonHome</text>
+</g>
+
+<g id="edge&#45;10&#45;suiteDetail&#45;suites" class="edge">
+<title>suiteDetail&#45;&gt;suites</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M50.54,-527.17C47.72,-557.35 47.51,-616.06 49.88,-650.65"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="47.11,-651.15 50.54,-658.9 52.7,-650.7 47.11,-651.15"/>
+<text text-anchor="middle" x="16.25" y="-596.73" font-family="Arial" font-size="10.50" fill="#ef4444">BackToSuites</text>
+</g>
+
+<g id="edge&#45;11&#45;suiteDetail&#45;bookNow" class="edge">
+<title>suiteDetail&#45;&gt;bookNow</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M83.19,-527.17C129.17,-558.44 220.18,-620.32 270.14,-654.3"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="268.72,-656.72 276.91,-658.9 271.87,-652.09 268.72,-656.72"/>
+<text text-anchor="middle" x="157.06" y="-596.64" font-family="Arial" font-size="10.50" fill="#ef4444">BookNow</text>
+</g>
+
+<g id="edge&#45;12&#45;suiteDetail&#45;previous" class="edge">
+<title>suiteDetail&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M105.17,-488.94C309.32,-411.4 1076.78,-119.88 1289.84,-38.95"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1291,-41.51 1297.48,-36.05 1289.01,-36.27 1291,-41.51"/>
+<text text-anchor="middle" x="671.81" y="-266.1" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;13&#45;bookNow&#45;home" class="edge">
+<title>bookNow&#45;&gt;home</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M336.93,-697.17C452,-759.27 845.2,-953.19 973.88,-1011.43"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="972.81,-1014.02 981.26,-1014.75 975.11,-1008.91 972.81,-1014.02"/>
+<text text-anchor="middle" x="628.97" y="-862.88" font-family="Arial" font-size="10.50" fill="#ef4444">BotonHome</text>
+</g>
+
+<g id="edge&#45;14&#45;bookNow&#45;checkAvailability" class="edge">
+<title>bookNow&#45;&gt;checkAvailability</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M309.46,-658.83C312.28,-628.65 312.49,-569.94 310.12,-535.35"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="312.89,-534.85 309.46,-527.1 307.3,-535.3 312.89,-534.85"/>
+<text text-anchor="middle" x="271.75" y="-584.47" font-family="Arial" font-size="10.50" fill="#ef4444">CheckAvailability</text>
+</g>
+
+<g id="edge&#45;15&#45;bookNow&#45;previous" class="edge">
+<title>bookNow&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M327.64,-658.79C368.61,-624.07 457.85,-548.62 533.8,-485.8 631.41,-405.06 648.05,-374.01 754.8,-305.8 941.53,-186.48 1184.97,-82.43 1291.34,-39.25"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1292.7,-41.72 1299.07,-36.13 1290.6,-36.53 1292.7,-41.72"/>
+<text text-anchor="middle" x="749.11" y="-294.45" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;16&#45;checkAvailability&#45;home" class="edge">
+<title>checkAvailability&#45;&gt;home</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M329.06,-527.16C373.12,-562.12 469.88,-638.34 553.3,-700.2 711.01,-817.15 903.66,-951.14 980.74,-1004.39"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="979.22,-1006.75 987.4,-1008.99 982.4,-1002.14 979.22,-1006.75"/>
+<text text-anchor="middle" x="625.42" y="-777.41" font-family="Arial" font-size="10.50" fill="#ef4444">BotonHome</text>
+</g>
+
+<g id="edge&#45;18&#45;checkAvailability&#45;bookNow" class="edge">
+<title>checkAvailability&#45;&gt;bookNow</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M300.54,-527.17C297.72,-557.35 297.51,-616.06 299.88,-650.65"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="297.11,-651.15 300.54,-658.9 302.7,-650.7 297.11,-651.15"/>
+<text text-anchor="middle" x="265.25" y="-596.73" font-family="Arial" font-size="10.50" fill="#ef4444">ModifySearch</text>
+</g>
+
+<g id="edge&#45;17&#45;checkAvailability&#45;guestDetails" class="edge">
+<title>checkAvailability&#45;&gt;guestDetails</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M309.52,-488.75C312.26,-459.44 312.47,-403.51 310.16,-370.11"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="312.95,-369.88 309.51,-362.13 307.37,-370.33 312.95,-369.88"/>
+<text text-anchor="middle" x="284.75" y="-416.93" font-family="Arial" font-size="10.50" fill="#ef4444">SelectSuite</text>
+</g>
+
+<g id="edge&#45;19&#45;checkAvailability&#45;previous" class="edge">
+<title>checkAvailability&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M345.45,-488.94C509.63,-411.59 1125.71,-121.32 1299.25,-39.56"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1300.65,-41.99 1306.69,-36.05 1298.26,-36.93 1300.65,-41.99"/>
+<text text-anchor="middle" x="796.81" y="-265.98" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;20&#45;guestDetails&#45;home" class="edge">
+<title>guestDetails&#45;&gt;home</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M328.46,-362.05C399.65,-419.97 612.29,-593.8 676.7,-655.8 804.47,-778.79 942.44,-940.9 994,-1002.64"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="992.02,-1004.63 999.29,-1008.99 996.32,-1001.05 992.02,-1004.63"/>
+<text text-anchor="middle" x="713.45" y="-667.38" font-family="Arial" font-size="10.50" fill="#ef4444">BotonHome</text>
+</g>
+
+<g id="edge&#45;22&#45;guestDetails&#45;checkAvailability" class="edge">
+<title>guestDetails&#45;&gt;checkAvailability</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M300.48,-362.25C297.74,-391.56 297.53,-447.49 299.84,-480.89"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="297.05,-481.12 300.49,-488.87 302.63,-480.67 297.05,-481.12"/>
+<text text-anchor="middle" x="255.75" y="-429.27" font-family="Arial" font-size="10.50" fill="#ef4444">BackToAvailability</text>
+</g>
+
+<g id="edge&#45;21&#45;guestDetails&#45;payment" class="edge">
+<title>guestDetails&#45;&gt;payment</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M305,-323.7C305,-297.48 305,-250.47 305,-220.55"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="307.8,-220.23 305,-212.23 302.2,-220.23 307.8,-220.23"/>
+<text text-anchor="middle" x="256.5" y="-271.39" font-family="Arial" font-size="10.50" fill="#ef4444">ContinueToPayment</text>
+</g>
+
+<g id="edge&#45;23&#45;guestDetails&#45;previous" class="edge">
+<title>guestDetails&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M366.17,-323.88C549.03,-266.74 1090.48,-97.54 1279.22,-38.56"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1280.33,-41.14 1287.13,-36.08 1278.66,-35.8 1280.33,-41.14"/>
+<text text-anchor="middle" x="796.85" y="-183.68" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;24&#45;payment&#45;home" class="edge">
+<title>payment&#45;&gt;home</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M315.63,-212.1C345.81,-265.48 436.21,-419.59 533.8,-530.2 589.74,-593.6 616.41,-596.51 676.7,-655.8 802.85,-779.86 941.23,-940.7 993.46,-1002.38"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="991.52,-1004.42 998.82,-1008.72 995.79,-1000.8 991.52,-1004.42"/>
+<text text-anchor="middle" x="615.67" y="-629.75" font-family="Arial" font-size="10.50" fill="#ef4444">BotonHome</text>
+</g>
+
+<g id="edge&#45;25&#45;payment&#45;paymentConfirmation" class="edge">
+<title>payment&#45;&gt;paymentConfirmation</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M305,-173.7C305,-147.48 305,-100.47 305,-70.55"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="307.8,-70.23 305,-62.23 302.2,-70.23 307.8,-70.23"/>
+<text text-anchor="middle" x="265" y="-121.39" font-family="Arial" font-size="10.50" fill="#ef4444">ConfirmPayment</text>
+</g>
+
+<g id="edge&#45;26&#45;payment&#45;previous" class="edge">
+<title>payment&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M349.69,-185.48C501.65,-159.91 1001.66,-75.77 1229.74,-37.39"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1230.32,-40.14 1237.74,-36.05 1229.39,-34.61 1230.32,-40.14"/>
+<text text-anchor="middle" x="764.62" y="-114.3" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;27&#45;paymentConfirmation&#45;home" class="edge">
+<title>paymentConfirmation&#45;&gt;home</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M322.47,-62.21C394.1,-141.08 663.98,-438.95 696.2,-485.8 714.91,-513 946.38,-990.82 971.3,-1012.48 971.97,-1013.06 972.84,-1013.65 973.88,-1014.25"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="972.95,-1016.91 981.39,-1017.75 975.32,-1011.83 972.95,-1016.91"/>
+<text text-anchor="middle" x="737.75" y="-512.97" font-family="Arial" font-size="10.50" fill="#ef4444">BotonHome</text>
+</g>
+
+<g id="edge&#45;28&#45;paymentConfirmation&#45;home" class="edge">
+<title>paymentConfirmation&#45;&gt;home</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M323.3,-62.06C397.68,-139.62 675.84,-430.52 708.49,-477.2 745.03,-529.44 921.13,-929.62 976.27,-1002.62"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="974.26,-1004.58 981.52,-1008.96 978.57,-1001.01 974.26,-1004.58"/>
+<text text-anchor="middle" x="748.34" y="-501.55" font-family="Arial" font-size="10.50" fill="#ef4444">GoToHome</text>
+</g>
+
+<g id="edge&#45;29&#45;experiences&#45;navbar" class="edge">
+<title>experiences&#45;&gt;navbar</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M647.81,-697.15C716.79,-731.93 877.32,-804.43 961.44,-839.06"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="960.62,-841.75 969.08,-842.19 962.74,-836.57 960.62,-841.75"/>
+<text text-anchor="middle" x="790.14" y="-775.69" font-family="Arial" font-size="10.50" fill="#ef4444">Navbar</text>
+</g>
+
+<g id="edge&#45;30&#45;experiences&#45;experienceDetail" class="edge">
+<title>experiences&#45;&gt;experienceDetail</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M619.46,-658.83C622.28,-628.65 622.49,-569.94 620.12,-535.35"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="622.89,-534.85 619.46,-527.1 617.3,-535.3 622.89,-534.85"/>
+<text text-anchor="middle" x="594.25" y="-584.47" font-family="Arial" font-size="10.50" fill="#ef4444">ViewDetails</text>
+</g>
+
+<g id="edge&#45;31&#45;experiences&#45;seasonalEvents" class="edge">
+<title>experiences&#45;&gt;seasonalEvents</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M650.14,-658.98C698.79,-627.81 785.44,-566.34 828.82,-532.15"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="830.64,-534.28 835.15,-527.11 827.15,-529.9 830.64,-534.28"/>
+<text text-anchor="middle" x="705.29" y="-598.64" font-family="Arial" font-size="10.50" fill="#ef4444">SeasonalEvents</text>
+</g>
+
+<g id="edge&#45;32&#45;experiences&#45;romanticExperiences" class="edge">
+<title>experiences&#45;&gt;romanticExperiences</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M673.8,-662.75C772.72,-632.36 970.69,-564.99 1064.05,-529.9"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1065.18,-532.46 1071.68,-527.01 1063.2,-527.22 1065.18,-532.46"/>
+<text text-anchor="middle" x="821.59" y="-600.81" font-family="Arial" font-size="10.50" fill="#ef4444">RomanticExperiences</text>
+</g>
+
+<g id="edge&#45;33&#45;experiences&#45;previous" class="edge">
+<title>experiences&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M628.78,-658.77C655.1,-622.71 715.29,-543.39 775.8,-485.8 848.2,-416.9 882.82,-419.13 955.2,-350.2 973.82,-332.47 974.01,-323.88 992.3,-305.8 1101.85,-197.52 1249.02,-87.3 1313.04,-40.85"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1314.86,-42.99 1319.7,-36.03 1311.57,-38.46 1314.86,-42.99"/>
+<text text-anchor="middle" x="965.16" y="-331.28" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;34&#45;experienceDetail&#45;home" class="edge">
+<title>experienceDetail&#45;&gt;home</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M629.71,-527.12C690.97,-606.76 925.86,-912.12 995.46,-1002.6"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="993.27,-1004.34 1000.37,-1008.98 997.71,-1000.93 993.27,-1004.34"/>
+<text text-anchor="middle" x="843.68" y="-771.83" font-family="Arial" font-size="10.50" fill="#ef4444">BotonHome</text>
+</g>
+
+<g id="edge&#45;35&#45;experienceDetail&#45;experiences" class="edge">
+<title>experienceDetail&#45;&gt;experiences</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M610.54,-527.17C607.72,-557.35 607.51,-616.06 609.88,-650.65"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="607.11,-651.15 610.54,-658.9 612.7,-650.7 607.11,-651.15"/>
+<text text-anchor="middle" x="561.25" y="-596.73" font-family="Arial" font-size="10.50" fill="#ef4444">BackToExperiences</text>
+</g>
+
+<g id="edge&#45;36&#45;experienceDetail&#45;previous" class="edge">
+<title>experienceDetail&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M675.92,-488.92C747.61,-464.5 867.91,-417.18 955.2,-350.2 975.6,-334.54 974.01,-323.88 992.3,-305.8 1101.85,-197.52 1249.02,-87.3 1313.04,-40.85"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1314.86,-42.99 1319.7,-36.03 1311.57,-38.46 1314.86,-42.99"/>
+<text text-anchor="middle" x="987.09" y="-285.92" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;37&#45;seasonalEvents&#45;navbar" class="edge">
+<title>seasonalEvents&#45;&gt;navbar</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M855.78,-527.17C857.86,-562.79 865.38,-640.93 892.3,-700.2 912.4,-744.45 947.22,-787.51 974.65,-817.44"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="972.89,-819.66 980.38,-823.62 977,-815.85 972.89,-819.66"/>
+<text text-anchor="middle" x="874.81" y="-703.82" font-family="Arial" font-size="10.50" fill="#ef4444">Navbar</text>
+</g>
+
+<g id="edge&#45;39&#45;seasonalEvents&#45;experiences" class="edge">
+<title>seasonalEvents&#45;&gt;experiences</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M819.86,-527.02C771.21,-558.19 684.56,-619.66 641.18,-653.85"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="639.36,-651.72 634.85,-658.89 642.85,-656.1 639.36,-651.72"/>
+<text text-anchor="middle" x="696.71" y="-582.56" font-family="Arial" font-size="10.50" fill="#ef4444">Experiences</text>
+</g>
+
+<g id="edge&#45;38&#45;seasonalEvents&#45;seasonalEventDetail" class="edge">
+<title>seasonalEvents&#45;&gt;seasonalEventDetail</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M859.37,-488.74C862.31,-456.66 862.53,-392.21 860.01,-355.41"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="862.78,-354.88 859.36,-347.12 857.2,-355.32 862.78,-354.88"/>
+<text text-anchor="middle" x="834.25" y="-421.64" font-family="Arial" font-size="10.50" fill="#ef4444">ViewDetails</text>
+</g>
+
+<g id="edge&#45;40&#45;seasonalEvents&#45;romanticExperiences" class="edge">
+<title>seasonalEvents&#45;&gt;romanticExperiences</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M931.25,-514.21C955.83,-514.73 983.52,-514.88 1009.8,-514.64"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1009.94,-517.44 1017.91,-514.55 1009.88,-511.84 1009.94,-517.44"/>
+<text text-anchor="middle" x="974.25" y="-506.33" font-family="Arial" font-size="10.50" fill="#ef4444">RomanticExperiences</text>
+</g>
+
+<g id="edge&#45;41&#45;seasonalEvents&#45;previous" class="edge">
+<title>seasonalEvents&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M865.48,-488.85C886.52,-451.33 936.71,-366.51 992.3,-305.8 1095.55,-193.05 1244.16,-86.36 1310.61,-40.95"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1312.51,-43.05 1317.55,-36.24 1309.36,-38.42 1312.51,-43.05"/>
+<text text-anchor="middle" x="1035.39" y="-237.17" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;42&#45;seasonalEventDetail&#45;home" class="edge">
+<title>seasonalEventDetail&#45;&gt;home</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M868.43,-347.27C887.49,-375.91 921.48,-432.11 934.2,-485.8 956.58,-580.28 875.01,-604.66 892.3,-700.2 913.49,-817.27 974.04,-947.01 1001.35,-1001.56"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="998.87,-1002.87 1004.97,-1008.75 1003.87,-1000.34 998.87,-1002.87"/>
+<text text-anchor="middle" x="863.8" y="-691.81" font-family="Arial" font-size="10.50" fill="#ef4444">BotonHome</text>
+</g>
+
+<g id="edge&#45;43&#45;seasonalEventDetail&#45;seasonalEvents" class="edge">
+<title>seasonalEventDetail&#45;&gt;seasonalEvents</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M850.63,-347.26C847.69,-379.34 847.47,-443.79 849.99,-480.59"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="847.22,-481.12 850.64,-488.88 852.8,-480.68 847.22,-481.12"/>
+<text text-anchor="middle" x="792.25" y="-409.56" font-family="Arial" font-size="10.50" fill="#ef4444">BackToSeasonalEvents</text>
+</g>
+
+<g id="edge&#45;44&#45;seasonalEventDetail&#45;previous" class="edge">
+<title>seasonalEventDetail&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M885.28,-308.84C971.4,-254.36 1217.43,-98.71 1309.58,-40.41"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1311.2,-42.7 1316.46,-36.05 1308.21,-37.97 1311.2,-42.7"/>
+<text text-anchor="middle" x="1071.07" y="-176.24" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;45&#45;romanticExperiences&#45;navbar" class="edge">
+<title>romanticExperiences&#45;&gt;navbar</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1109.55,-527.07C1094.78,-578.78 1053.52,-723.19 1030.69,-803.09"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1027.91,-802.63 1028.4,-811.09 1033.29,-804.16 1027.91,-802.63"/>
+<text text-anchor="middle" x="1051.57" y="-672.35" font-family="Arial" font-size="10.50" fill="#ef4444">Navbar</text>
+</g>
+
+<g id="edge&#45;47&#45;romanticExperiences&#45;experiences" class="edge">
+<title>romanticExperiences&#45;&gt;experiences</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1043.92,-527.05C941.75,-558.94 755.87,-622.31 666.15,-656.03"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="665.04,-653.45 658.55,-658.9 667.02,-658.69 665.04,-653.45"/>
+<text text-anchor="middle" x="820.45" y="-582.59" font-family="Arial" font-size="10.50" fill="#ef4444">Experiences</text>
+</g>
+
+<g id="edge&#45;48&#45;romanticExperiences&#45;seasonalEvents" class="edge">
+<title>romanticExperiences&#45;&gt;seasonalEvents</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1017.82,-501.44C992.05,-501.13 964.44,-501.2 939.41,-501.63"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="939.32,-498.83 931.38,-501.79 939.43,-504.43 939.32,-498.83"/>
+<text text-anchor="middle" x="974.61" y="-492.87" font-family="Arial" font-size="10.50" fill="#ef4444">SeasonalEvents</text>
+</g>
+
+<g id="edge&#45;46&#45;romanticExperiences&#45;romanticExperienceDetail" class="edge">
+<title>romanticExperiences&#45;&gt;romanticExperienceDetail</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1119.37,-488.74C1122.31,-456.66 1122.53,-392.21 1120.01,-355.41"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1122.78,-354.88 1119.36,-347.12 1117.2,-355.32 1122.78,-354.88"/>
+<text text-anchor="middle" x="1094.25" y="-421.64" font-family="Arial" font-size="10.50" fill="#ef4444">ViewDetails</text>
+</g>
+
+<g id="edge&#45;49&#45;romanticExperiences&#45;previous" class="edge">
+<title>romanticExperiences&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1133.74,-488.66C1160.23,-460.38 1208.65,-405.11 1237.7,-350.2 1294.16,-243.49 1327.72,-101.7 1339.84,-44.04"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1342.59,-44.56 1341.47,-36.16 1337.1,-43.43 1342.59,-44.56"/>
+<text text-anchor="middle" x="1242.25" y="-279.3" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;50&#45;romanticExperienceDetail&#45;home" class="edge">
+<title>romanticExperienceDetail&#45;&gt;home</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1097.66,-347.1C1073.54,-375.09 1031.01,-430.02 1014.8,-485.8 968.21,-646.09 1076.3,-691.45 1065.1,-858 1061.58,-910.29 1040.56,-968.26 1026.89,-1001.2"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1024.29,-1000.17 1023.76,-1008.63 1029.45,-1002.35 1024.29,-1000.17"/>
+<text text-anchor="middle" x="1062.39" y="-691.89" font-family="Arial" font-size="10.50" fill="#ef4444">BotonHome</text>
+</g>
+
+<g id="edge&#45;51&#45;romanticExperienceDetail&#45;romanticExperiences" class="edge">
+<title>romanticExperienceDetail&#45;&gt;romanticExperiences</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1110.63,-347.26C1107.69,-379.34 1107.47,-443.79 1109.99,-480.59"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1107.22,-481.12 1110.64,-488.88 1112.8,-480.68 1107.22,-481.12"/>
+<text text-anchor="middle" x="1038.75" y="-409.56" font-family="Arial" font-size="10.50" fill="#ef4444">BackToRomanticExperiences</text>
+</g>
+
+<g id="edge&#45;52&#45;romanticExperienceDetail&#45;previous" class="edge">
+<title>romanticExperienceDetail&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1129.39,-308.61C1169.44,-254.62 1282.22,-102.62 1326.66,-42.71"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1328.97,-44.3 1331.49,-36.21 1324.48,-40.96 1328.97,-44.3"/>
+<text text-anchor="middle" x="1200.97" y="-175.97" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;53&#45;gettingHere&#45;navbar" class="edge">
+<title>gettingHere&#45;&gt;navbar</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M956.95,-697.26C963,-723.1 977.91,-769.92 991.23,-806.39"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="988.64,-807.48 994.04,-814.01 993.9,-805.53 988.64,-807.48"/>
+<text text-anchor="middle" x="956.51" y="-759.73" font-family="Arial" font-size="10.50" fill="#ef4444">Navbar</text>
+</g>
+
+<g id="edge&#45;54&#45;gettingHere&#45;previous" class="edge">
+<title>gettingHere&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M956.51,-658.76C960.31,-621.63 973.18,-539.1 1014.8,-485.8 1086.17,-394.4 1165.84,-441.21 1237.7,-350.2 1313.05,-254.76 1336.2,-104.87 1342.69,-44.5"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1345.5,-44.51 1343.53,-36.26 1339.93,-43.94 1345.5,-44.51"/>
+<text text-anchor="middle" x="1145.19" y="-404.44" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;55&#45;explore&#45;navbar" class="edge">
+<title>explore&#45;&gt;navbar</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1169.28,-697.15C1138.16,-724.89 1085.76,-776.79 1050.74,-814.18"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1048.68,-812.28 1045.28,-820.05 1052.78,-816.1 1048.68,-812.28"/>
+<text text-anchor="middle" x="1088.46" y="-749.11" font-family="Arial" font-size="10.50" fill="#ef4444">Navbar</text>
+</g>
+
+<g id="edge&#45;56&#45;explore&#45;previous" class="edge">
+<title>explore&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1199.33,-658.96C1220.65,-565.13 1314.51,-152.14 1339.09,-44"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1341.83,-44.6 1340.87,-36.18 1336.37,-43.36 1341.83,-44.6"/>
+<text text-anchor="middle" x="1240.63" y="-351.03" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;57&#45;restaurant&#45;navbar" class="edge">
+<title>restaurant&#45;&gt;navbar</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1371.62,-696.35C1291.84,-728.33 1142.66,-793.82 1064.94,-830.98"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1063.64,-828.49 1057.65,-834.48 1066.07,-833.54 1063.64,-828.49"/>
+<text text-anchor="middle" x="1196.33" y="-754.94" font-family="Arial" font-size="10.50" fill="#ef4444">Navbar</text>
+</g>
+
+<g id="edge&#45;58&#45;restaurant&#45;restaurantMenu" class="edge">
+<title>restaurant&#45;&gt;restaurantMenu</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1429.46,-658.83C1432.28,-628.65 1432.49,-569.94 1430.12,-535.35"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1432.89,-534.85 1429.46,-527.1 1427.3,-535.3 1432.89,-534.85"/>
+<text text-anchor="middle" x="1406.75" y="-584.47" font-family="Arial" font-size="10.50" fill="#ef4444">ViewMenu</text>
+</g>
+
+<g id="edge&#45;59&#45;restaurant&#45;previous" class="edge">
+<title>restaurant&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1410.62,-658.74C1391.43,-631.69 1358.39,-580.17 1345.8,-530.2 1300.21,-349.19 1328.85,-120.65 1340.64,-44.23"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1343.44,-44.42 1341.92,-36.08 1337.91,-43.55 1343.44,-44.42"/>
+<text text-anchor="middle" x="1351.41" y="-353.47" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;60&#45;restaurantMenu&#45;home" class="edge">
+<title>restaurantMenu&#45;&gt;home</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1410.17,-527.14C1383.34,-561.75 1324.89,-637.02 1275.2,-700.2 1186.28,-813.25 1079.3,-947.47 1035.35,-1002.52"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1033.11,-1000.84 1030.31,-1008.83 1037.49,-1004.33 1033.11,-1000.84"/>
+<text text-anchor="middle" x="1249.59" y="-760.4" font-family="Arial" font-size="10.50" fill="#ef4444">BotonHome</text>
+</g>
+
+<g id="edge&#45;61&#45;restaurantMenu&#45;restaurant" class="edge">
+<title>restaurantMenu&#45;&gt;restaurant</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1420.54,-527.17C1417.72,-557.35 1417.51,-616.06 1419.88,-650.65"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1417.11,-651.15 1420.54,-658.9 1422.7,-650.7 1417.11,-651.15"/>
+<text text-anchor="middle" x="1374.25" y="-596.73" font-family="Arial" font-size="10.50" fill="#ef4444">BackToRestaurant</text>
+</g>
+
+<g id="edge&#45;62&#45;restaurantMenu&#45;previous" class="edge">
+<title>restaurantMenu&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1421.86,-488.79C1409.42,-412.59 1363.53,-131.49 1349.26,-44.1"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1352,-43.48 1347.94,-36.03 1346.47,-44.38 1352,-43.48"/>
+<text text-anchor="middle" x="1355.45" y="-266.27" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;63&#45;awards&#45;navbar" class="edge">
+<title>awards&#45;&gt;navbar</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1592.79,-691.16C1467.39,-722.8 1186.18,-801.95 1068.44,-838.84"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1067.37,-836.24 1060.59,-841.31 1069.06,-841.58 1067.37,-836.24"/>
+<text text-anchor="middle" x="1308.47" y="-767.13" font-family="Arial" font-size="10.50" fill="#ef4444">Navbar</text>
+</g>
+
+<g id="edge&#45;64&#45;awards&#45;previous" class="edge">
+<title>awards&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1646.06,-658.96C1601.94,-565.04 1407.62,-151.32 1357.06,-43.67"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1359.47,-42.23 1353.54,-36.18 1354.4,-44.61 1359.47,-42.23"/>
+<text text-anchor="middle" x="1470.4" y="-351.39" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;69&#45;servicesCards&#45;navbar" class="edge">
+<title>servicesCards&#45;&gt;navbar</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1825.91,-688.23C1656.5,-718.79 1223.13,-807.55 1069.78,-843.22"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1068.97,-840.54 1061.82,-845.09 1070.25,-845.99 1068.97,-840.54"/>
+<text text-anchor="middle" x="1424.21" y="-767.43" font-family="Arial" font-size="10.50" fill="#ef4444">Navbar</text>
+</g>
+
+<g id="edge&#45;71&#45;servicesCards&#45;servicesList" class="edge">
+<title>servicesCards&#45;&gt;servicesList</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1880.91,-658.99C1852.46,-627.87 1787.94,-566.47 1748.21,-532.27"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1749.97,-530.08 1742.06,-527.02 1746.33,-534.34 1749.97,-530.08"/>
+<text text-anchor="middle" x="1792.99" y="-582.87" font-family="Arial" font-size="10.50" fill="#ef4444">ListView</text>
+</g>
+
+<g id="edge&#45;70&#45;servicesCards&#45;serviceDetail" class="edge">
+<title>servicesCards&#45;&gt;serviceDetail</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1895,-658.75C1895,-601.47 1895,-432.04 1895,-365.38"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1897.8,-365.04 1895,-357.04 1892.2,-365.04 1897.8,-365.04"/>
+<text text-anchor="middle" x="1866" y="-511.72" font-family="Arial" font-size="10.50" fill="#ef4444">ViewService</text>
+</g>
+
+<g id="edge&#45;72&#45;servicesCards&#45;previous" class="edge">
+<title>servicesCards&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1885.19,-658.9C1866.61,-623.39 1824.06,-545.4 1779.2,-485.8 1640.78,-301.89 1441.1,-108.43 1370.73,-42.01"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1372.46,-39.79 1364.71,-36.34 1368.62,-43.87 1372.46,-39.79"/>
+<text text-anchor="middle" x="1618.68" y="-330.56" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;65&#45;servicesList&#45;navbar" class="edge">
+<title>servicesList&#45;&gt;navbar</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1665.46,-527.05C1597.52,-553.65 1472.09,-604.45 1368.8,-655.8 1256.79,-711.48 1130.74,-786.7 1063.47,-827.91"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1061.71,-825.7 1056.35,-832.28 1064.63,-830.48 1061.71,-825.7"/>
+<text text-anchor="middle" x="1335.13" y="-667.52" font-family="Arial" font-size="10.50" fill="#ef4444">Navbar</text>
+</g>
+
+<g id="edge&#45;67&#45;servicesList&#45;servicesCards" class="edge">
+<title>servicesList&#45;&gt;servicesCards</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1729.09,-527.01C1757.54,-558.13 1822.06,-619.53 1861.79,-653.73"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1860.03,-655.92 1867.94,-658.98 1863.67,-651.66 1860.03,-655.92"/>
+<text text-anchor="middle" x="1771.01" y="-598.33" font-family="Arial" font-size="10.50" fill="#ef4444">CardsView</text>
+</g>
+
+<g id="edge&#45;66&#45;servicesList&#45;serviceDetail" class="edge">
+<title>servicesList&#45;&gt;serviceDetail</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1742.17,-488.89C1778.76,-458.01 1842.8,-397.5 1875.18,-363.17"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1877.45,-364.84 1880.85,-357.08 1873.35,-361.03 1877.45,-364.84"/>
+<text text-anchor="middle" x="1784.14" y="-428.19" font-family="Arial" font-size="10.50" fill="#ef4444">ViewService</text>
+</g>
+
+<g id="edge&#45;68&#45;servicesList&#45;previous" class="edge">
+<title>servicesList&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1700.5,-488.79C1642.61,-412.13 1428.12,-128.08 1363.53,-42.54"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1365.67,-40.73 1358.62,-36.03 1361.2,-44.1 1365.67,-40.73"/>
+<text text-anchor="middle" x="1499.98" y="-265.91" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="edge&#45;73&#45;serviceDetail&#45;home" class="edge">
+<title>serviceDetail&#45;&gt;home</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1855.72,-357.09C1765.03,-402.14 1536,-521.41 1368.8,-655.8 1227,-769.78 1086.46,-938.55 1035.27,-1002.33"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1032.84,-1000.88 1030.03,-1008.88 1037.22,-1004.38 1032.84,-1000.88"/>
+<text text-anchor="middle" x="1340.3" y="-647.4" font-family="Arial" font-size="10.50" fill="#ef4444">BotonHome</text>
+</g>
+
+<g id="edge&#45;74&#45;serviceDetail&#45;servicesList" class="edge">
+<title>serviceDetail&#45;&gt;servicesList</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1867.83,-357.11C1831.24,-387.99 1767.2,-448.5 1734.82,-482.83"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1732.55,-481.16 1729.15,-488.92 1736.65,-484.97 1732.55,-481.16"/>
+<text text-anchor="middle" x="1758.86" y="-413.01" font-family="Arial" font-size="10.50" fill="#ef4444">BackToServices</text>
+</g>
+
+<g id="edge&#45;75&#45;serviceDetail&#45;previous" class="edge">
+<title>serviceDetail&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1862.24,-318.94C1766.26,-263.1 1486,-100.04 1383.3,-40.28"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1384.54,-37.76 1376.21,-36.16 1381.72,-42.6 1384.54,-37.76"/>
+<text text-anchor="middle" x="1589.67" y="-181.12" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
+</g>
+
+<g id="node&#45;home" class="node">
+<title>home</title>
+<path fill="#ff7556" stroke="#a81e00" stroke-width="2" d="M1036.5,-1047C1036.5,-1047 993.5,-1047 993.5,-1047 987.5,-1047 981.5,-1041 981.5,-1035 981.5,-1035 981.5,-1021 981.5,-1021 981.5,-1015 987.5,-1009 993.5,-1009 993.5,-1009 1036.5,-1009 1036.5,-1009 1042.5,-1009 1048.5,-1015 1048.5,-1021 1048.5,-1021 1048.5,-1035 1048.5,-1035 1048.5,-1041 1042.5,-1047 1036.5,-1047"/>
+<text text-anchor="start" x="992.5" y="-1029.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Home</text>
+<text text-anchor="start" x="1001" y="-1018" font-family="Arial" font-size="10.00" fill="white">/home</text>
+</g>
+
+<g id="node&#45;navbar" class="node">
+<title>navbar</title>
+<ellipse fill="#c62828" stroke="#7f1d1d" stroke-width="2" cx="1015" cy="-858" rx="48.5" ry="48.5"/>
+<text text-anchor="start" x="984.5" y="-854.6" font-family="Arial" font-weight="bold" font-size="18.00" fill="white">Navbar</text>
+</g>
+
+<g id="node&#45;suites" class="node">
+<title>suites</title>
+<path fill="#ff7556" stroke="#a81e00" stroke-width="2" d="M78.5,-697C78.5,-697 31.5,-697 31.5,-697 25.5,-697 19.5,-691 19.5,-685 19.5,-685 19.5,-671 19.5,-671 19.5,-665 25.5,-659 31.5,-659 31.5,-659 78.5,-659 78.5,-659 84.5,-659 90.5,-665 90.5,-671 90.5,-671 90.5,-685 90.5,-685 90.5,-691 84.5,-697 78.5,-697"/>
+<text text-anchor="start" x="30.5" y="-679.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Suites</text>
+<text text-anchor="start" x="40" y="-668" font-family="Arial" font-size="10.00" fill="white">/suites</text>
+</g>
+
+<g id="node&#45;suiteDetail" class="node">
+<title>suiteDetail</title>
+<path fill="#39a852" stroke="#176b30" stroke-width="2" d="M98,-527C98,-527 12,-527 12,-527 6,-527 0,-521 0,-515 0,-515 0,-501 0,-501 0,-495 6,-489 12,-489 12,-489 98,-489 98,-489 104,-489 110,-495 110,-501 110,-501 110,-515 110,-515 110,-521 104,-527 98,-527"/>
+<text text-anchor="start" x="11" y="-509.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Suite Detail</text>
+<text text-anchor="start" x="21" y="-498" font-family="Arial" font-size="10.00" fill="white">/suites/{suiteId}</text>
+</g>
+
+<g id="node&#45;bookNow" class="node">
+<title>bookNow</title>
+<path fill="#ff7556" stroke="#a81e00" stroke-width="2" d="M343.5,-697C343.5,-697 266.5,-697 266.5,-697 260.5,-697 254.5,-691 254.5,-685 254.5,-685 254.5,-671 254.5,-671 254.5,-665 260.5,-659 266.5,-659 266.5,-659 343.5,-659 343.5,-659 349.5,-659 355.5,-665 355.5,-671 355.5,-671 355.5,-685 355.5,-685 355.5,-691 349.5,-697 343.5,-697"/>
+<text text-anchor="start" x="265.5" y="-679.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Book Now</text>
+<text text-anchor="start" x="282" y="-668" font-family="Arial" font-size="10.00" fill="white">/book&#45;now</text>
+</g>
+
+<g id="node&#45;checkAvailability" class="node">
+<title>checkAvailability</title>
+<path fill="#ff7556" stroke="#a81e00" stroke-width="2" d="M372.5,-527C372.5,-527 237.5,-527 237.5,-527 231.5,-527 225.5,-521 225.5,-515 225.5,-515 225.5,-501 225.5,-501 225.5,-495 231.5,-489 237.5,-489 237.5,-489 372.5,-489 372.5,-489 378.5,-489 384.5,-495 384.5,-501 384.5,-501 384.5,-515 384.5,-515 384.5,-521 378.5,-527 372.5,-527"/>
+<text text-anchor="start" x="236.5" y="-509.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Check Availability</text>
+<text text-anchor="start" x="265.5" y="-498" font-family="Arial" font-size="10.00" fill="white">/check&#45;availability</text>
+</g>
+
+<g id="node&#45;guestDetails" class="node">
+<title>guestDetails</title>
+<path fill="#39a852" stroke="#176b30" stroke-width="2" d="M355.5,-362C355.5,-362 254.5,-362 254.5,-362 248.5,-362 242.5,-356 242.5,-350 242.5,-350 242.5,-336 242.5,-336 242.5,-330 248.5,-324 254.5,-324 254.5,-324 355.5,-324 355.5,-324 361.5,-324 367.5,-330 367.5,-336 367.5,-336 367.5,-350 367.5,-350 367.5,-356 361.5,-362 355.5,-362"/>
+<text text-anchor="start" x="253.5" y="-344.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Guest Details</text>
+<text text-anchor="start" x="275.5" y="-333" font-family="Arial" font-size="10.00" fill="white">/guest&#45;details</text>
+</g>
+
+<g id="node&#45;payment" class="node">
+<title>payment</title>
+<path fill="#39a852" stroke="#176b30" stroke-width="2" d="M337.5,-212C337.5,-212 272.5,-212 272.5,-212 266.5,-212 260.5,-206 260.5,-200 260.5,-200 260.5,-186 260.5,-186 260.5,-180 266.5,-174 272.5,-174 272.5,-174 337.5,-174 337.5,-174 343.5,-174 349.5,-180 349.5,-186 349.5,-186 349.5,-200 349.5,-200 349.5,-206 343.5,-212 337.5,-212"/>
+<text text-anchor="start" x="271.5" y="-194.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Payment</text>
+<text text-anchor="start" x="284.5" y="-183" font-family="Arial" font-size="10.00" fill="white">/payment</text>
+</g>
+
+<g id="node&#45;paymentConfirmation" class="node">
+<title>paymentConfirmation</title>
+<path fill="#39a852" stroke="#176b30" stroke-width="2" d="M389.5,-62C389.5,-62 220.5,-62 220.5,-62 214.5,-62 208.5,-56 208.5,-50 208.5,-50 208.5,-36 208.5,-36 208.5,-30 214.5,-24 220.5,-24 220.5,-24 389.5,-24 389.5,-24 395.5,-24 401.5,-30 401.5,-36 401.5,-36 401.5,-50 401.5,-50 401.5,-56 395.5,-62 389.5,-62"/>
+<text text-anchor="start" x="219.5" y="-44.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Payment Confirmation</text>
+<text text-anchor="start" x="256.5" y="-33" font-family="Arial" font-size="10.00" fill="white">/payment/confirmation</text>
+</g>
+
+<g id="node&#45;experiences" class="node">
+<title>experiences</title>
+<path fill="#ff7556" stroke="#a81e00" stroke-width="2" d="M661.5,-697C661.5,-697 568.5,-697 568.5,-697 562.5,-697 556.5,-691 556.5,-685 556.5,-685 556.5,-671 556.5,-671 556.5,-665 562.5,-659 568.5,-659 568.5,-659 661.5,-659 661.5,-659 667.5,-659 673.5,-665 673.5,-671 673.5,-671 673.5,-685 673.5,-685 673.5,-691 667.5,-697 661.5,-697"/>
+<text text-anchor="start" x="567.5" y="-679.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Experiences</text>
+<text text-anchor="start" x="587" y="-668" font-family="Arial" font-size="10.00" fill="white">/experiences</text>
+</g>
+
+<g id="node&#45;experienceDetail" class="node">
+<title>experienceDetail</title>
+<path fill="#39a852" stroke="#176b30" stroke-width="2" d="M681,-527C681,-527 549,-527 549,-527 543,-527 537,-521 537,-515 537,-515 537,-501 537,-501 537,-495 543,-489 549,-489 549,-489 681,-489 681,-489 687,-489 693,-495 693,-501 693,-501 693,-515 693,-515 693,-521 687,-527 681,-527"/>
+<text text-anchor="start" x="548" y="-509.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Experience Detail</text>
+<text text-anchor="start" x="554.5" y="-498" font-family="Arial" font-size="10.00" fill="white">/experiences/{experienceId}</text>
+</g>
+
+<g id="node&#45;seasonalEvents" class="node">
+<title>seasonalEvents</title>
+<path fill="#ff7556" stroke="#a81e00" stroke-width="2" d="M919,-527C919,-527 791,-527 791,-527 785,-527 779,-521 779,-515 779,-515 779,-501 779,-501 779,-495 785,-489 791,-489 791,-489 919,-489 919,-489 925,-489 931,-495 931,-501 931,-501 931,-515 931,-515 931,-521 925,-527 919,-527"/>
+<text text-anchor="start" x="791" y="-509.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Seasonal Events</text>
+<text text-anchor="start" x="790" y="-498" font-family="Arial" font-size="10.00" fill="white">/experiences/seasonal&#45;events</text>
+</g>
+
+<g id="node&#45;seasonalEventDetail" class="node">
+<title>seasonalEventDetail</title>
+<path fill="#39a852" stroke="#176b30" stroke-width="2" d="M940,-347C940,-347 770,-347 770,-347 764,-347 758,-341 758,-335 758,-335 758,-321 758,-321 758,-315 764,-309 770,-309 770,-309 940,-309 940,-309 946,-309 952,-315 952,-321 952,-321 952,-335 952,-335 952,-341 946,-347 940,-347"/>
+<text text-anchor="start" x="771.5" y="-329.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Seasonal Event Detail</text>
+<text text-anchor="start" x="769" y="-318" font-family="Arial" font-size="10.00" fill="white">/experiences/seasonal&#45;events/{eventId}</text>
+</g>
+
+<g id="node&#45;romanticExperiences" class="node">
+<title>romanticExperiences</title>
+<path fill="#39a852" stroke="#176b30" stroke-width="2" d="M1200,-527C1200,-527 1030,-527 1030,-527 1024,-527 1018,-521 1018,-515 1018,-515 1018,-501 1018,-501 1018,-495 1024,-489 1030,-489 1030,-489 1200,-489 1200,-489 1206,-489 1212,-495 1212,-501 1212,-501 1212,-515 1212,-515 1212,-521 1206,-527 1200,-527"/>
+<text text-anchor="start" x="1029" y="-509.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Romantic Experiences</text>
+<text text-anchor="start" x="1039" y="-498" font-family="Arial" font-size="10.00" fill="white">/experiences/romantic&#45;experiences</text>
+</g>
+
+<g id="node&#45;romanticExperienceDetail" class="node">
+<title>romanticExperienceDetail</title>
+<path fill="#39a852" stroke="#176b30" stroke-width="2" d="M1222.5,-347C1222.5,-347 1007.5,-347 1007.5,-347 1001.5,-347 995.5,-341 995.5,-335 995.5,-335 995.5,-321 995.5,-321 995.5,-315 1001.5,-309 1007.5,-309 1007.5,-309 1222.5,-309 1222.5,-309 1228.5,-309 1234.5,-315 1234.5,-321 1234.5,-321 1234.5,-335 1234.5,-335 1234.5,-341 1228.5,-347 1222.5,-347"/>
+<text text-anchor="start" x="1009.5" y="-329.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Romantic Experience Detail</text>
+<text text-anchor="start" x="1006.5" y="-318" font-family="Arial" font-size="10.00" fill="white">/experiences/romantic&#45;experiences/{experienceId}</text>
+</g>
+
+<g id="node&#45;gettingHere" class="node">
+<title>gettingHere</title>
+<path fill="#ff7556" stroke="#a81e00" stroke-width="2" d="M1002.5,-697C1002.5,-697 907.5,-697 907.5,-697 901.5,-697 895.5,-691 895.5,-685 895.5,-685 895.5,-671 895.5,-671 895.5,-665 901.5,-659 907.5,-659 907.5,-659 1002.5,-659 1002.5,-659 1008.5,-659 1014.5,-665 1014.5,-671 1014.5,-671 1014.5,-685 1014.5,-685 1014.5,-691 1008.5,-697 1002.5,-697"/>
+<text text-anchor="start" x="906.5" y="-679.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Getting Here</text>
+<text text-anchor="start" x="927.5" y="-668" font-family="Arial" font-size="10.00" fill="white">/getting&#45;here</text>
+</g>
+
+<g id="node&#45;explore" class="node">
+<title>explore</title>
+<path fill="#ff7556" stroke="#a81e00" stroke-width="2" d="M1260,-697C1260,-697 1130,-697 1130,-697 1124,-697 1118,-691 1118,-685 1118,-685 1118,-671 1118,-671 1118,-665 1124,-659 1130,-659 1130,-659 1260,-659 1260,-659 1266,-659 1272,-665 1272,-671 1272,-671 1272,-685 1272,-685 1272,-691 1266,-697 1260,-697"/>
+<text text-anchor="start" x="1129" y="-679.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Explore the Hotel</text>
+<text text-anchor="start" x="1177.5" y="-668" font-family="Arial" font-size="10.00" fill="white">/explore</text>
+</g>
+
+<g id="node&#45;restaurant" class="node">
+<title>restaurant</title>
+<path fill="#ff7556" stroke="#a81e00" stroke-width="2" d="M1466,-697C1466,-697 1384,-697 1384,-697 1378,-697 1372,-691 1372,-685 1372,-685 1372,-671 1372,-671 1372,-665 1378,-659 1384,-659 1384,-659 1466,-659 1466,-659 1472,-659 1478,-665 1478,-671 1478,-671 1478,-685 1478,-685 1478,-691 1472,-697 1466,-697"/>
+<text text-anchor="start" x="1383" y="-679.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Restaurant</text>
+<text text-anchor="start" x="1401.5" y="-668" font-family="Arial" font-size="10.00" fill="white">/restaurant</text>
+</g>
+
+<g id="node&#45;restaurantMenu" class="node">
+<title>restaurantMenu</title>
+<path fill="#39a852" stroke="#176b30" stroke-width="2" d="M1489,-527C1489,-527 1361,-527 1361,-527 1355,-527 1349,-521 1349,-515 1349,-515 1349,-501 1349,-501 1349,-495 1355,-489 1361,-489 1361,-489 1489,-489 1489,-489 1495,-489 1501,-495 1501,-501 1501,-501 1501,-515 1501,-515 1501,-521 1495,-527 1489,-527"/>
+<text text-anchor="start" x="1360" y="-509.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Restaurant Menu</text>
+<text text-anchor="start" x="1388" y="-498" font-family="Arial" font-size="10.00" fill="white">/restaurant/menu</text>
+</g>
+
+<g id="node&#45;awards" class="node">
+<title>awards</title>
+<path fill="#ff7556" stroke="#a81e00" stroke-width="2" d="M1705,-697C1705,-697 1605,-697 1605,-697 1599,-697 1593,-691 1593,-685 1593,-685 1593,-671 1593,-671 1593,-665 1599,-659 1605,-659 1605,-659 1705,-659 1705,-659 1711,-659 1717,-665 1717,-671 1717,-671 1717,-685 1717,-685 1717,-691 1711,-697 1705,-697"/>
+<text text-anchor="start" x="1604" y="-679.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Hotel Awards</text>
+<text text-anchor="start" x="1637.5" y="-668" font-family="Arial" font-size="10.00" fill="white">/awards</text>
+</g>
+
+<g id="node&#45;servicesCards" class="node">
+<title>servicesCards</title>
+<path fill="#ff7556" stroke="#a81e00" stroke-width="2" d="M1952,-697C1952,-697 1838,-697 1838,-697 1832,-697 1826,-691 1826,-685 1826,-685 1826,-671 1826,-671 1826,-665 1832,-659 1838,-659 1838,-659 1952,-659 1952,-659 1958,-659 1964,-665 1964,-671 1964,-671 1964,-685 1964,-685 1964,-691 1958,-697 1952,-697"/>
+<text text-anchor="start" x="1837" y="-679.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Services Cards</text>
+<text text-anchor="start" x="1861.5" y="-668" font-family="Arial" font-size="10.00" fill="white">/services/cards</text>
+</g>
+
+<g id="node&#45;servicesList" class="node">
+<title>servicesList</title>
+<path fill="#ff7556" stroke="#a81e00" stroke-width="2" d="M1764,-527C1764,-527 1666,-527 1666,-527 1660,-527 1654,-521 1654,-515 1654,-515 1654,-501 1654,-501 1654,-495 1660,-489 1666,-489 1666,-489 1764,-489 1764,-489 1770,-489 1776,-495 1776,-501 1776,-501 1776,-515 1776,-515 1776,-521 1770,-527 1764,-527"/>
+<text text-anchor="start" x="1665" y="-509.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Services List</text>
+<text text-anchor="start" x="1687" y="-498" font-family="Arial" font-size="10.00" fill="white">/services/list</text>
+</g>
+
+<g id="node&#45;serviceDetail" class="node">
+<title>serviceDetail</title>
+<path fill="#39a852" stroke="#176b30" stroke-width="2" d="M1947.5,-357C1947.5,-357 1842.5,-357 1842.5,-357 1836.5,-357 1830.5,-351 1830.5,-345 1830.5,-345 1830.5,-331 1830.5,-331 1830.5,-325 1836.5,-319 1842.5,-319 1842.5,-319 1947.5,-319 1947.5,-319 1953.5,-319 1959.5,-325 1959.5,-331 1959.5,-331 1959.5,-345 1959.5,-345 1959.5,-351 1953.5,-357 1947.5,-357"/>
+<text text-anchor="start" x="1842" y="-339.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Service Detail</text>
+<text text-anchor="start" x="1841.5" y="-328" font-family="Arial" font-size="10.00" fill="white">/services/{serviceName}</text>
+</g>
+
+<g id="node&#45;exitWeb" class="node">
+<title>exitWeb</title>
+<path fill="#6b7280" stroke="#374151" stroke-width="2" d="M793,-36C793,-36 737,-36 737,-36 731,-36 725,-30 725,-24 725,-24 725,-12 725,-12 725,-6 731,0 737,0 737,0 793,0 793,0 799,0 805,-6 805,-12 805,-12 805,-24 805,-24 805,-30 799,-36 793,-36"/>
+<text text-anchor="start" x="736" y="-15.3" font-family="Arial" font-weight="bold" font-size="14.00" fill="white">Exit Web</text>
+</g>
+
+<g id="node&#45;previous" class="node">
+<title>previous</title>
+<path fill="#6b7280" stroke="#374151" stroke-width="2" d="M1459,-36C1459,-36 1231,-36 1231,-36 1225,-36 1219,-30 1219,-24 1219,-24 1219,-12 1219,-12 1219,-6 1225,0 1231,0 1231,0 1459,0 1459,0 1465,0 1471,-6 1471,-12 1471,-12 1471,-24 1471,-24 1471,-30 1465,-36 1459,-36"/>
+<text text-anchor="start" x="1230" y="-15.3" font-family="Arial" font-weight="bold" font-size="14.00" fill="white">Previous screen in navigation stack</text>
+</g>
+</g>
+</svg>
+</main><script>
+const svg=document.querySelector('#diagram svg');const nodes=[...svg.querySelectorAll('g.node')];const edges=[...svg.querySelectorAll('g.edge')];const titleText=g=>(g.querySelector(':scope > title')?.textContent||'').trim();function parseEdge(e){const p=titleText(e).split('->');return{source:p[0]?.trim(),target:p[1]?.trim()}}function clearFocus(){svg.classList.remove('is-focused');nodes.forEach(n=>n.classList.remove('is-related'));edges.forEach(e=>e.classList.remove('is-related'))}function focusNode(n){const id=titleText(n);const out=edges.filter(e=>parseEdge(e).source===id);const rel=new Set([id]);out.forEach(e=>rel.add(parseEdge(e).target));svg.classList.add('is-focused');nodes.forEach(x=>x.classList.toggle('is-related',rel.has(titleText(x))));edges.forEach(e=>e.classList.toggle('is-related',out.includes(e)))}nodes.forEach(n=>{n.setAttribute('tabindex','0');n.addEventListener('mouseenter',()=>focusNode(n));n.addEventListener('focus',()=>focusNode(n));n.addEventListener('click',e=>{e.stopPropagation();focusNode(n)})});svg.addEventListener('mouseleave',clearFocus);svg.addEventListener('click',e=>{if(!e.target.closest('.node'))clearFocus()});
+const vb0=(svg.getAttribute('viewBox')||'0 0 100 100').split(/\s+/).map(Number);let viewBox={x:vb0[0],y:vb0[1],w:vb0[2],h:vb0[3]};const initialViewBox={...viewBox};function applyViewBox(){svg.setAttribute('viewBox',`${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`)}function zoomAt(f,cx,cy){const r=svg.getBoundingClientRect(),px=(cx-r.left)/r.width,py=(cy-r.top)/r.height,nw=Math.max(initialViewBox.w*.28,Math.min(initialViewBox.w*3,viewBox.w*f)),nh=Math.max(initialViewBox.h*.28,Math.min(initialViewBox.h*3,viewBox.h*f));viewBox.x+=(viewBox.w-nw)*px;viewBox.y+=(viewBox.h-nh)*py;viewBox.w=nw;viewBox.h=nh;applyViewBox()}svg.addEventListener('wheel',e=>{e.preventDefault();zoomAt(e.deltaY<0?.88:1.14,e.clientX,e.clientY)},{passive:false});let dragging=false,start=null,origin=null;svg.addEventListener('mousedown',e=>{if(e.target.closest('.node'))return;dragging=true;svg.classList.add('dragging');start={x:e.clientX,y:e.clientY};origin={...viewBox}});window.addEventListener('mousemove',e=>{if(!dragging)return;const r=svg.getBoundingClientRect(),dx=(e.clientX-start.x)*(origin.w/r.width),dy=(e.clientY-start.y)*(origin.h/r.height);viewBox.x=origin.x-dx;viewBox.y=origin.y-dy;applyViewBox()});window.addEventListener('mouseup',()=>{dragging=false;svg.classList.remove('dragging')});window.addEventListener('keydown',e=>{const r=svg.getBoundingClientRect();if(e.key==='+'||e.key==='='){e.preventDefault();zoomAt(.85,r.left+r.width/2,r.top+r.height/2)}else if(e.key==='-'||e.key==='_'){e.preventDefault();zoomAt(1.18,r.left+r.width/2,r.top+r.height/2)}else if(e.key==='0'){e.preventDefault();viewBox={...initialViewBox};applyViewBox()}});svg.addEventListener('dblclick',e=>{if(e.target.closest('.node'))return;viewBox={...initialViewBox};applyViewBox()});applyViewBox();
+</script></body></html>
