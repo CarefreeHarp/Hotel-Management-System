@@ -11,8 +11,13 @@ import com.example.demo.entitys.Servicio;
 import com.example.demo.service.ServicioService;
 
 
+
+/**
+ * CAPA DE CONTROLADOR: recibe las peticiones de la pantalla de servicios,
+ * le pide los datos a la capa de servicio y los envía a la vista con el modelo.
+ */
 @Controller
-@RequestMapping("/servicio")
+@RequestMapping("/servicios")
 public class ServiceController {
 
     @Autowired
@@ -27,6 +32,14 @@ public class ServiceController {
         model.addAttribute("servicio", servicio);
         
         return "servicio_especifico";
+    }
+
+  
+     // Full URL: http://localhost:8080/servicios
+    @GetMapping()
+    public String listarServicios(Model model) {
+        model.addAttribute("servicios", service.listarServicios());
+        return "servicios";
     }
     
 }

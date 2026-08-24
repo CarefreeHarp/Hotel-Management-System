@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 
+/**
+ * CAPA DE REPOSITORIO: datos de prueba de los servicios en memoria.
+ * Se reemplazará por la base de datos real más adelante.
+ */
 @Repository
 public class ServicioRepositoryMemoria {
 
@@ -211,6 +215,10 @@ public class ServicioRepositoryMemoria {
             ),
             List.of("Atención personalizada", "Ambiente exclusivo Atlan Suites", "Reserva flexible", "Servicio para huéspedes")));
 }
+
+    public List<Servicio> listarTodos() {
+        return new ArrayList<>(servicios);
+    }
 
     public Servicio obtenerPorNombreUrl(String nombreUrl) {
         return servicios.stream()
