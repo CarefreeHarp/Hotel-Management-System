@@ -22,7 +22,7 @@ El diseño de la interfaz está disponible en Figma:
 
 ## Navigation Diagram
 
-[Open the interactive navigation diagram](<ReadMe assets/NavigationDiagramSprint2AtlanSuites.html>)
+[Open the interactive navigation diagram (download and open it in your browser)](<ReadMe assets/NavigationDiagramSprint2AtlanSuites.html>)
 
 1. **Home:** `/home` — Landing page
 2. **Suites:** `/suites` — Catálogo de habitaciones (con botones para ver detalles)
