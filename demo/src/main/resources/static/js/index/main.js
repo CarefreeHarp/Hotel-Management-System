@@ -18,19 +18,16 @@ fadeTargets.forEach((target) => fadeObserver.observe(target));
 const header = document.querySelector('.site-header');
 const hero = document.getElementById('hero');
 
-// VIDEO DE THE HOTEL: reproducción normal al entrar en la sección.
+// VIDEO DE THE HOTEL: se reproduce una vez al entrar en la sección, sin bloquear la navegación.
 const scrollVideo = document.querySelector('.scroll-video');
 const videoSection = document.getElementById('video-section');
 scrollVideo.playbackRate = 2;
-let isHotelVideoLocked = false;
-let hasHotelVideoFinished = false;
+let hasHotelVideoStarted = false;
 
 function startHotelVideo() {
-  if (isHotelVideoLocked || hasHotelVideoFinished) return;
-  isHotelVideoLocked = true;
+  if (hasHotelVideoStarted) return;
+  hasHotelVideoStarted = true;
   scrollVideo.currentTime = 0;
-  window.scrollTo({ top: videoSection.offsetTop });
-  header.classList.add('is-video-section');
   scrollVideo.play().catch(() => {});
 }
 
@@ -38,30 +35,6 @@ const hotelVideoObserver = new IntersectionObserver(([entry]) => {
   if (entry.isIntersecting) startHotelVideo();
 }, { threshold: 0.2 });
 hotelVideoObserver.observe(videoSection);
-scrollVideo.addEventListener('ended', () => {
-  isHotelVideoLocked = false;
-  hasHotelVideoFinished = true;
-});
-
-const isAtHotelVideo = () => scrollY >= videoSection.offsetTop - 1;
-addEventListener('scroll', () => {
-  if (!hasHotelVideoFinished && scrollY >= videoSection.offsetTop) startHotelVideo();
-  if (isHotelVideoLocked && scrollY > videoSection.offsetTop) {
-    window.scrollTo({ top: videoSection.offsetTop });
-  }
-}, { passive: true });
-addEventListener('wheel', (event) => {
-  if (isHotelVideoLocked && isAtHotelVideo() && event.deltaY > 0) event.preventDefault();
-}, { passive: false });
-addEventListener('keydown', (event) => {
-  if (isHotelVideoLocked && isAtHotelVideo() && [' ', 'ArrowDown', 'PageDown', 'End'].includes(event.key)) event.preventDefault();
-});
-let touchY = 0;
-addEventListener('touchstart', (event) => { touchY = event.touches[0].clientY; }, { passive: true });
-addEventListener('touchmove', (event) => {
-  if (isHotelVideoLocked && isAtHotelVideo() && event.touches[0].clientY < touchY) event.preventDefault();
-  touchY = event.touches[0].clientY;
-}, { passive: false });
 
 // CAMBIA EL ESTADO DEL HEADER APENAS SALE DEL HERO
 const headerObserver = new IntersectionObserver(
