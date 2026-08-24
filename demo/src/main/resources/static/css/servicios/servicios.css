@@ -1,0 +1,46 @@
+/* SERVICIOS: TABLA CON TODOS LOS SERVICIOS DEL HOTEL */
+
+/* EN ESTA PANTALLA EL HEADER ES FIJO Y OSCURO SIEMPRE, PORQUE EL FONDO ES CLARO */
+.page-services .site-header { position: sticky; background: rgba(17, 20, 23, .92); backdrop-filter: blur(10px); }
+.page-services .brand-mark { width: 150px; }
+.page-services .nav-link.is-active { background: rgba(244, 246, 248, .14); color: var(--color-text-light); }
+
+/* ENCABEZADO OSCURO DE LA PANTALLA */
+.services-hero { position: relative; padding: clamp(3.5rem, 8vw, 6rem) var(--pad-inline); background: radial-gradient(circle at 45% 75%, #3f4751 0%, #242a31 37%, #171b20 100%); color: var(--color-text-light); text-align: center; }
+.services-hero > * { position: relative; z-index: 1; }
+
+/* IMAGEN DE FONDO DEL TITULO: el degradado oscuro va encima de la foto para que el texto blanco se siga leyendo */
+.services-hero { background-image: linear-gradient(rgba(17, 20, 23, .72), rgba(17, 20, 23, .88)), url("../../images/servicios/restaurant.jpg"); background-size: cover; background-position: center; }
+
+.services-hero .eyebrow { opacity: .9; }
+.services-hero-title { margin: .6rem 0 1rem; font-family: var(--font-display); font-size: clamp(2.8rem, 7vw, 5rem); font-weight: 400; line-height: 1; text-transform: uppercase; }
+.services-hero-text { max-width: 52ch; margin-inline: auto; font-size: .92rem; color: var(--color-text-muted); }
+
+/* SECCIÓN CLARA QUE CONTIENE LA TABLA */
+.services-section { padding: clamp(2.5rem, 6vw, 4.5rem) var(--pad-inline) var(--gap-section); background: var(--color-mist); }
+.services-intro { max-width: 1100px; margin: 0 auto clamp(1.5rem, 4vw, 2.5rem); }
+.services-intro .section-title { text-transform: uppercase; }
+.services-summary { font-size: .8rem; letter-spacing: .04em; opacity: .7; }
+
+/* TABLA */
+.services-table { width: 100%; min-width: 720px; margin: 0 auto; max-width: 1100px; border-collapse: collapse; background: rgba(255, 255, 255, .55); }
+.services-table thead th { position: sticky; top: 0; padding: .9rem 1rem; background: var(--color-charcoal); color: var(--color-text-light); font-size: .68rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; text-align: left; }
+.services-table tbody th, .services-table tbody td { padding: .95rem 1rem; border-bottom: 1px solid rgba(46, 52, 59, .12); font-size: .88rem; font-weight: 400; text-align: left; vertical-align: middle; }
+.services-table tbody th { font-family: var(--font-display); font-size: 1.15rem; white-space: nowrap; }
+.services-table tbody td:nth-child(2) { max-width: 42ch; opacity: .78; }
+.services-table tbody tr { transition: background .25s var(--ease); }
+.services-table tbody tr:nth-child(even) { background: rgba(255, 255, 255, .45); }
+.services-table tbody tr:hover { background: rgba(175, 207, 227, .28); }
+
+/* CATEGORÍA, ESTADO Y PRECIO */
+.service-tag { display: inline-block; padding: .28rem .7rem; border: 1px solid rgba(46, 52, 59, .22); border-radius: 999px; font-size: .68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+.service-status { display: inline-flex; align-items: center; gap: .45rem; font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.service-status::before { content: ''; width: .45rem; height: .45rem; border-radius: 50%; background: currentColor; }
+.service-status.is-available { color: var(--color-slate); }
+.service-status.is-unavailable { color: var(--color-umber); opacity: .7; }
+.services-cell-price { text-align: right !important; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.services-table tbody .services-cell-price { font-weight: 600; color: var(--color-umber); }
+.service-included { color: var(--color-slate); font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+
+/* MENSAJE CUANDO NO HAY SERVICIOS */
+.services-empty { text-align: center !important; padding: 2.5rem 1rem !important; opacity: .7; }
