@@ -221,10 +221,10 @@
 
     <footer class="site-footer">
       <div class="container-fluid">
-        <section class="footer-cta row gy-4 align-items-center" aria-labelledby="footer-booking-title">
+        <section class="footer-cta row gy-4 align-items-center" aria-labelledby="booking-title">
           <div class="col-12 col-lg-6">
-            <p class="eyebrow">Reservations</p>
-            <h2 id="footer-booking-title">Make your stay<br />unforgettable</h2>
+            <p class="eyebrow">Reserve</p>
+            <h2 id="booking-title">Book your<br />stay</h2>
             <a href="#reservation" class="footer-book-button"
               >Book now <span aria-hidden="true">↗</span></a
             >
@@ -249,13 +249,78 @@
           <figcaption>Singapore</figcaption>
         </figure>
 
-        <nav class="footer-links" aria-label="Footer navigation">
-          <a th:href="@{/}">Home</a>
-          <a th:href="@{/servicios}">Services</a>
-          <a href="#reservation">Reservations</a>
-        </nav>
+        <div class="row gy-5 footer-content">
+          <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="discover-title">
+            <h2 class="footer-heading" id="discover-title">Discover Atlan</h2>
+            <ul class="footer-links">
+              <li><span>About us</span></li>
+              <li><span>Our suites</span></li>
+              <li><span>Experiences</span></li>
+              <li><span>Contact us</span></li>
+            </ul>
+          </section>
 
-        <div class="footer-bottom">
+          <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="information-title">
+            <h2 class="footer-heading" id="information-title">Useful information</h2>
+            <ul class="footer-links">
+              <li><span>Reservations</span></li>
+              <li><span>Travel guide</span></li>
+              <li><span>Amenities</span></li>
+              <li><span>Frequently asked questions</span></li>
+            </ul>
+          </section>
+
+          <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="social-title">
+            <h2 class="footer-heading" id="social-title">Connect with us</h2>
+            <nav class="social-links" aria-label="Social media">
+              <a
+                href="https://www.instagram.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                ><img th:src="@{/images/images-utils/social-media/logotipo-de-instagram.png}" alt=""
+              /></a>
+              <a
+                href="https://www.facebook.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                ><img th:src="@{/images/images-utils/social-media/facebook.png}" alt=""
+              /></a>
+              <a
+                href="https://www.youtube.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
+                ><img th:src="@{/images/images-utils/social-media/youtube.png}" alt=""
+              /></a>
+              <a
+                href="https://x.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="X"
+                ><img th:src="@{/images/images-utils/social-media/gorjeo.png}" alt=""
+              /></a>
+            </nav>
+          </section>
+
+          <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="newsletter-title">
+            <h2 class="footer-heading" id="newsletter-title">Get inspired</h2>
+            <p class="footer-newsletter-text">
+              Subscribe to our newsletter for the latest stories and offers.
+            </p>
+            <button class="footer-subscribe" type="button">Subscribe</button>
+          </section>
+        </div>
+
+        <div
+          class="footer-bottom d-flex flex-column flex-md-row justify-content-center align-items-center gap-2"
+        >
+          <div class="footer-legal">
+            <span>Privacy notice</span>
+            <span>Terms of use</span>
+            <span>Accessibility</span>
+          </div>
           <span>© 2026 Atlan Suites. All rights reserved.</span>
         </div>
       </div>
