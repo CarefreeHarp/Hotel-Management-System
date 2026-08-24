@@ -3,7 +3,13 @@ package com.example.demo.repository;
 import com.example.demo.entitys.Servicio;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
+/**
+ * CAPA DE REPOSITORIO: datos de prueba de los servicios en memoria.
+ * Se reemplazará por la base de datos real más adelante.
+ */
+@Repository
 public class ServicioRepositoryMemoria {
 
     private final List<Servicio> servicios = new ArrayList<>();
