@@ -32,6 +32,13 @@
 .services-table tbody tr:nth-child(even) { background: rgba(255, 255, 255, .45); }
 .services-table tbody tr:hover { background: rgba(175, 207, 227, .28); }
 
+/* ENLACE AL DETALLE DEL SERVICIO: toda la fila es clicable */
+.services-row { cursor: pointer; }
+.service-link { display: inline-block; color: inherit; transition: color .25s var(--ease); }
+.services-row:hover .service-link, .service-link:focus-visible { color: var(--color-umber); }
+.service-link::after { content: '→'; display: inline-block; margin-left: .45rem; opacity: 0; transition: opacity .25s var(--ease), transform .25s var(--ease); }
+.services-row:hover .service-link::after, .service-link:focus-visible::after { opacity: .8; transform: translateX(3px); }
+
 /* CATEGORÍA, ESTADO Y PRECIO */
 .service-tag { display: inline-block; padding: .28rem .7rem; border: 1px solid rgba(46, 52, 59, .22); border-radius: 999px; font-size: .68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
 .service-status { display: inline-flex; align-items: center; gap: .45rem; font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
