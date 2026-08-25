@@ -1,53 +1,504 @@
-/* SERVICIOS: TABLA CON TODOS LOS SERVICIOS DEL HOTEL */
+/* SERVICIOS: TARJETAS DE LUJO ESTILO CARD GRID (GRAND ROYAL / ATLAN SUITES) */
 
-/* EN ESTA PANTALLA EL HEADER ES FIJO Y OSCURO SIEMPRE, PORQUE EL FONDO ES CLARO */
-.page-services .site-header { position: sticky; background: rgba(17, 20, 23, .92); backdrop-filter: blur(10px); }
-.page-services .brand-mark { width: 150px; }
-.page-services .nav-link.is-active { background: rgba(244, 246, 248, .14); color: var(--color-text-light); }
+body.page-services {
+  background-color: #0b0f14;
+  color: var(--color-mist);
+}
 
-/* ENCABEZADO OSCURO DE LA PANTALLA */
-.services-hero { position: relative; padding: clamp(3.5rem, 8vw, 6rem) var(--pad-inline); background: radial-gradient(circle at 45% 75%, #3f4751 0%, #242a31 37%, #171b20 100%); color: var(--color-text-light); text-align: center; }
-.services-hero > * { position: relative; z-index: 1; }
+/* EN ESTA PANTALLA EL HEADER ES FIJO Y OSCURO SIEMPRE */
+.page-services .site-header {
+  position: sticky;
+  top: 0;
+  background: rgba(11, 15, 20, 0.95);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(184, 140, 90, 0.15);
+  z-index: 100;
+}
+.page-services .brand-mark {
+  width: 150px;
+}
+.page-services .nav-link.is-active {
+  background: rgba(184, 140, 90, 0.2);
+  color: #ffffff;
+  border: 1px solid rgba(184, 140, 90, 0.4);
+}
 
-/* IMAGEN DE FONDO DEL TITULO: el degradado oscuro va encima de la foto para que el texto blanco se siga leyendo */
-.services-hero { background-image: linear-gradient(rgba(17, 20, 23, .72), rgba(17, 20, 23, .88)), url("../../images/servicios/restaurant.jpg"); background-size: cover; background-position: center; }
+/* ENCABEZADO MONUMENTAL "NUESTROS SERVICIOS" */
+.services-hero {
+  position: relative;
+  padding: clamp(3.5rem, 7vw, 5.5rem) var(--pad-inline) clamp(1.5rem, 3vw, 2.5rem);
+  background: radial-gradient(circle at 50% 30%, #1e2836 0%, #0d1218 70%, #070a0e 100%);
+  color: #ffffff;
+  text-align: center;
+}
 
-.services-hero .eyebrow { opacity: .9; }
-.services-hero-title { margin: .6rem 0 1rem; font-family: var(--font-display); font-size: clamp(2.8rem, 7vw, 5rem); font-weight: 400; line-height: 1; text-transform: uppercase; }
-.services-hero-text { max-width: 52ch; margin-inline: auto; font-size: .92rem; color: var(--color-text-muted); }
+.services-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(to bottom, rgba(11, 15, 20, 0.5), rgba(11, 15, 20, 0.9)), url("../../images/servicios/restaurant.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.35;
+  pointer-events: none;
+}
 
-/* SECCIÓN CLARA QUE CONTIENE LA TABLA */
-.services-section { padding: clamp(2.5rem, 6vw, 4.5rem) var(--pad-inline) var(--gap-section); background: var(--color-mist); }
-.services-intro { max-width: 1100px; margin: 0 auto clamp(1.5rem, 4vw, 2.5rem); }
-.services-intro .section-title { text-transform: uppercase; }
-.services-summary { font-size: .8rem; letter-spacing: .04em; opacity: .7; }
+.services-hero > * {
+  position: relative;
+  z-index: 1;
+}
 
-/* TABLA */
-.services-table { width: 100%; min-width: 720px; margin: 0 auto; max-width: 1100px; border-collapse: collapse; background: rgba(255, 255, 255, .55); }
-.services-table thead th { position: sticky; top: 0; padding: .9rem 1rem; background: var(--color-charcoal); color: var(--color-text-light); font-size: .68rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; text-align: left; }
-.services-table tbody th, .services-table tbody td { padding: .95rem 1rem; border-bottom: 1px solid rgba(46, 52, 59, .12); font-size: .88rem; font-weight: 400; text-align: left; vertical-align: middle; }
-.services-table tbody th { font-family: var(--font-display); font-size: 1.15rem; white-space: nowrap; }
-.services-table tbody td:nth-child(2) { max-width: 42ch; opacity: .78; }
-.services-table tbody tr { transition: background .25s var(--ease); }
-.services-table tbody tr:nth-child(even) { background: rgba(255, 255, 255, .45); }
-.services-table tbody tr:hover { background: rgba(175, 207, 227, .28); }
+.hero-header-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gold);
+  margin-bottom: 0.8rem;
+  filter: drop-shadow(0 2px 8px rgba(184, 140, 90, 0.4));
+}
 
-/* ENLACE AL DETALLE DEL SERVICIO: toda la fila es clicable */
-.services-row { cursor: pointer; }
-.service-link { display: inline-block; color: inherit; transition: color .25s var(--ease); }
-.services-row:hover .service-link, .service-link:focus-visible { color: var(--color-umber); }
-.service-link::after { content: '→'; display: inline-block; margin-left: .45rem; opacity: 0; transition: opacity .25s var(--ease), transform .25s var(--ease); }
-.services-row:hover .service-link::after, .service-link:focus-visible::after { opacity: .8; transform: translateX(3px); }
+.services-hero-title {
+  margin: 0 0 0.8rem;
+  font-family: var(--font-display), 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
 
-/* CATEGORÍA, ESTADO Y PRECIO */
-.service-tag { display: inline-block; padding: .28rem .7rem; border: 1px solid rgba(46, 52, 59, .22); border-radius: 999px; font-size: .68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
-.service-status { display: inline-flex; align-items: center; gap: .45rem; font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
-.service-status::before { content: ''; width: .45rem; height: .45rem; border-radius: 50%; background: currentColor; }
+.services-hero-text {
+  max-width: 58ch;
+  margin-inline: auto;
+  font-size: 0.92rem;
+  font-weight: 300;
+  color: rgba(229, 233, 238, 0.75);
+  letter-spacing: 0.02em;
+}
+
+/* SECCIÓN PRINCIPAL CON EL GRID DE TARJETAS */
+.services-section {
+  padding: 1.5rem var(--pad-inline) var(--gap-section);
+  background: radial-gradient(ellipse at top, #141b24 0%, #0b0f14 100%);
+}
+
+.services-container {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* FILTROS POR CATEGORÍA */
+.category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2.2rem;
+}
+
+.filter-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(184, 140, 90, 0.25);
+  color: rgba(244, 246, 248, 0.8);
+  border-radius: 999px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+}
+
+.filter-btn:hover {
+  background: rgba(184, 140, 90, 0.15);
+  border-color: var(--color-gold);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.filter-btn.is-active {
+  background: var(--color-gold);
+  color: #111417;
+  border-color: var(--color-gold);
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(184, 140, 90, 0.3);
+}
+
+/* GRID DE 5 COLUMNAS DE TARJETAS DE LUJO */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.1rem;
+}
+
+/* TARJETA INDIVIDUAL (CARD) */
+.service-card {
+  background: rgba(18, 25, 34, 0.82);
+  border: 1px solid rgba(184, 140, 90, 0.32);
+  border-radius: 6px;
+  padding: 1.6rem 1.1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  color: var(--color-mist);
+  backdrop-filter: blur(8px);
+  transition: transform 0.3s var(--ease), border-color 0.3s var(--ease), box-shadow 0.3s var(--ease), background 0.3s var(--ease);
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--color-gold);
+  background: rgba(24, 34, 48, 0.95);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(184, 140, 90, 0.22);
+}
+
+.service-card:hover::before {
+  opacity: 1;
+}
+
+/* IMAGEN PRINCIPAL DEL SERVICIO */
+.card-image-wrapper {
+  width: 100%;
+  height: 170px;
+  margin-bottom: 1.1rem;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(184, 140, 90, 0.3);
+}
+
+.card-service-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s var(--ease);
+}
+
+.service-card:hover .card-service-image {
+  transform: scale(1.06);
+}
+
+/* CUERPO DE LA TARJETA */
+.card-body-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.card-service-title {
+  font-family: var(--font-display), 'Cormorant Garamond', serif;
+  font-size: 1.22rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.45rem;
+  line-height: 1.2;
+}
+
+.card-service-desc {
+  font-size: 0.76rem;
+  font-weight: 300;
+  color: rgba(229, 233, 238, 0.68);
+  line-height: 1.4;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* BARRA INFERIOR CON PRECIO Y CATEGORÍA */
+.card-footer-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.7rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.72rem;
+}
+
+.card-price {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+.card-category {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: rgba(229, 233, 238, 0.6);
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+}
+
+.category-icon-small {
+  color: var(--color-gold);
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ESTADO CUANDO SE OCULTA UNA TARJETA AL FILTRAR */
+.service-card.is-hidden {
+  display: none !important;
+}
+
+.services-empty-grid {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: rgba(244, 246, 248, 0.6);
+  font-size: 0.9rem;
+}
+
+/* VISTA TABLA & SWITCHER DE VISTAS */
+.view-mode-switcher {
+  border: 1px solid rgba(184, 140, 90, 0.3);
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.view-btn {
+  color: rgba(244, 246, 248, 0.7);
+  border: none;
+  background: transparent;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  transition: all 0.25s var(--ease);
+  display: inline-flex;
+  align-items: center;
+}
+
+.view-btn:hover {
+  color: #ffffff;
+  background: rgba(184, 140, 90, 0.15);
+}
+
+.view-btn.is-active {
+  background: var(--color-gold);
+  color: #111417;
+  font-weight: 600;
+}
+
+.services-table-container {
+  background: rgba(18, 25, 34, 0.85);
+  border: 1px solid rgba(184, 140, 90, 0.25);
+  border-radius: 8px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.services-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--color-mist);
+}
+
+.services-table thead th {
+  background: rgba(11, 15, 20, 0.95);
+  color: var(--color-gold);
+  padding: 1rem 1.2rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(184, 140, 90, 0.2);
+}
+
+.services-table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background 0.2s var(--ease);
+}
+
+.services-table tbody tr:hover {
+  background: rgba(184, 140, 90, 0.08);
+}
+
+.services-table tbody td,
+.services-table tbody th {
+  padding: 1rem 1.2rem;
+  vertical-align: middle;
+  font-size: 0.85rem;
+}
+
+.table-service-link {
+  color: #ffffff;
+  font-family: var(--font-display), 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s var(--ease);
+}
+
+.table-service-link:hover {
+  color: var(--color-gold);
+}
+
+.service-tag {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid rgba(184, 140, 90, 0.3);
+  border-radius: 999px;
+  font-size: 0.68rem;
+  color: var(--color-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.btn-gold-outline {
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
+  font-size: 0.72rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  transition: all 0.2s var(--ease);
+  text-decoration: none;
+}
+
+.btn-gold-outline:hover {
+  background: var(--color-gold);
+  color: #111417;
+}
+
+/* RESPONSIVE DESIGN FOR CARDS GRID */
+@media (max-width: 1399px) {
+  .services-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 1099px) {
+  .services-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+  }
+  .service-card {
+    padding: 1.2rem 0.85rem 0.85rem;
+  }
+  .card-service-title {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+}
+
+/*
+ * ESTILOS CONSERVADOS DE LA VISTA ANTERIOR DE TABLA
+ * Los selectores nuevos se incluyen como alias para que el filtrado y el
+ * conmutador de vistas entrantes sigan funcionando con su nuevo marcado.
+ */
+.services-row,
+.service-table-row {
+  cursor: pointer;
+}
+
+.service-link,
+.table-service-link {
+  display: inline-block;
+  transition: color .25s var(--ease);
+}
+
+.services-row:hover .service-link,
+.service-table-row:hover .table-service-link,
+.service-link:focus-visible,
+.table-service-link:focus-visible {
+  color: var(--color-umber);
+}
+
+.service-link::after {
+  content: '→';
+  display: inline-block;
+  margin-left: .45rem;
+  opacity: 0;
+  transition: opacity .25s var(--ease), transform .25s var(--ease);
+}
+
+.services-row:hover .service-link::after,
+.service-link:focus-visible::after {
+  opacity: .8;
+  transform: translateX(3px);
+}
+
+/* CATEGORÍA, ESTADO Y PRECIO DE LA TABLA */
+.service-tag {
+  padding: .28rem .7rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  white-space: nowrap;
+}
+
+.service-status {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.service-status::before {
+  content: '';
+  width: .45rem;
+  height: .45rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
 .service-status.is-available { color: var(--color-slate); }
 .service-status.is-unavailable { color: var(--color-umber); opacity: .7; }
-.services-cell-price { text-align: right !important; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.services-table tbody .services-cell-price { font-weight: 600; color: var(--color-umber); }
-.service-included { color: var(--color-slate); font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
 
-/* MENSAJE CUANDO NO HAY SERVICIOS */
-.services-empty { text-align: center !important; padding: 2.5rem 1rem !important; opacity: .7; }
+.services-cell-price {
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.services-table tbody .services-cell-price {
+  font-weight: 600;
+  color: var(--color-umber);
+}
+
+.service-included {
+  color: var(--color-slate);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}

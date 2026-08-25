@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.demo.entitys.Servicio;
 import com.example.demo.service.ServicioService;
 
-
-
 /**
  * CAPA DE CONTROLADOR: recibe las peticiones de la pantalla de servicios,
  * le pide los datos a la capa de servicio y los envía a la vista con el modelo.
@@ -23,23 +21,31 @@ public class ServiceController {
     @Autowired
     ServicioService service;
 
-    // Full URL: http://localhost:8080/servicio/{nombreUrl}
-    @GetMapping("/{nombreUrl}")
-    public String especifico(@PathVariable("nombreUrl") String nombreUrl, Model model) {
-
-        Servicio servicio = service.getServiceByNombreUrl(nombreUrl);
-
-        model.addAttribute("servicio", servicio);
-        
-        return "servicio_especifico";
+    // Full URL: http://localhost:8080/servicios/tarjetas
+    @GetMapping("/tarjetas")
+    public String listarServiciosCards(Model model) {
+        model.addAttribute("servicios", service.listarServicios());
+        model.addAttribute("viewMode", "cards");
+        return "servicios-tarjetas";
     }
 
-  
-     // Full URL: http://localhost:8080/servicios
-    @GetMapping()
-    public String listarServicios(Model model) {
+    // Full URL: http://localhost:8080/servicios/lista
+    @GetMapping("/lista")
+    public String listarServiciosList(Model model) {
         model.addAttribute("servicios", service.listarServicios());
+        model.addAttribute("viewMode", "list");
         return "servicios";
     }
-    
+
+    // Full URL: http://localhost:8080/servicios/{nombreUrl}
+    @GetMapping("/{nombreUrl}")
+    public String especifico(@PathVariable("nombreUrl") String nombreUrl, Model model) {
+        Servicio servicio = service.getServiceByNombreUrl(nombreUrl);
+        if (servicio == null) {
+            return "redirect:/servicios/tarjetas";
+        }
+
+        model.addAttribute("servicio", servicio);
+        return "servicio_especifico";
+    }
 }

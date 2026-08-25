@@ -43,7 +43,7 @@ public class ServicioRepositoryMemoria {
                     "https://images.unsplash.com/photo-1493770348161-369560ae357d?auto=format&fit=crop&w=1200&q=85",
                     "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=1200&q=85"
             ),
-            List.of("Atención personalizada", "Ambiente exclusivo Atlan Suites", "Reserva flexible", "Servicio para huéspedes")));
+            List.of("Atención personalizada", "Ambiente  Atlan Suites", "Reserva flexible", "Servicio para huéspedes")));
 
     servicios.add(new Servicio(6, "Lavandería", "lavanderia", "Lavado y planchado de prendas personales.", 30000, "Lavandería", true, "El cuidado que tus prendas merecen", "Entrega en 24 horas", "Todos los días · Sujeto a reserva", "Recepción y habitación",
             "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?auto=format&fit=crop&w=1600&q=85",
@@ -176,9 +176,9 @@ public class ServicioRepositoryMemoria {
             List.of("Atención personalizada", "Ambiente exclusivo Atlan Suites", "Reserva flexible", "Servicio para huéspedes")));
 
     servicios.add(new Servicio(17, "Guardaequipaje", "guardaequipaje", "Custodia temporal de equipaje.", 0, "Atención al huésped", true, "Disfruta la ciudad sin cargas", "24 horas", "Todos los días · Sujeto a reserva", "Recepción",
-            "https://images.unsplash.com/photo-1553531889-56e0c9ed82e9?auto=format&fit=crop&w=1600&q=85",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAEK_yuZnkl4EALT_rVsnvWPCtC-CxFQVhGPiEN9J5Qg&s",
             List.of(
-                    "https://images.unsplash.com/photo-1553531889-56e0c9ed82e9?auto=format&fit=crop&w=1200&q=85",
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAEK_yuZnkl4EALT_rVsnvWPCtC-CxFQVhGPiEN9J5Qg&s",
                     "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=1200&q=85",
                     "https://images.unsplash.com/photo-1542296332-2e4473faf563?auto=format&fit=crop&w=1200&q=85",
                     "https://images.unsplash.com/photo-1499678329028-101435549a4e?auto=format&fit=crop&w=1200&q=85"
