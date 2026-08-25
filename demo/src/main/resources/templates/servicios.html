@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Services — Atlan Suites</title>
+    <title>Nuestros Servicios — Atlan Suites</title>
 
-    <!-- GOOGLE FONTS PARA LOS FONTS :) -->
+    <!-- GOOGLE FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
     <link
@@ -18,13 +18,13 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" th:href="@{/css/css-utils/base/common.css}" />
+    <link rel="stylesheet" th:href="@{/css/css-utils/common.css}" />
     <link rel="stylesheet" th:href="@{/css/servicios/servicios.css}" />
   </head>
-  <body class="page-services">
-    <!-- HEADER CON EL NAV: los enlaces de secciones apuntan al landing -->
+  <body class="page-services dark-theme">
+    <!-- HEADER CON EL NAV -->
     <header class="site-header navbar navbar-expand-md">
-      <a href="index" class="brand-mark">
+      <a th:href="@{/}" class="brand-mark">
         <img
           th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}"
           alt="Atlan Suites"
@@ -34,16 +34,16 @@
 
       <div class="collapse navbar-collapse" id="main-nav">
         <nav class="main-nav navbar-nav flex-column flex-md-row">
-          <a href="index#hero" class="nav-link flex-fill">Home</a>
-          <a href="index#video-section" class="nav-link flex-fill">The hotel</a>
-          <a href="index#rooms-section" class="nav-link flex-fill">Suites</a>
-          <a href="servicios" class="nav-link flex-fill is-active">Services</a>
+          <a th:href="@{/}" class="nav-link flex-fill">Home</a>
+          <a th:href="@{/#video-section}" class="nav-link flex-fill">The hotel</a>
+          <a th:href="@{/#rooms-section}" class="nav-link flex-fill">Suites</a>
+          <a th:href="@{/servicios}" class="nav-link flex-fill is-active">Services</a>
         </nav>
       </div>
 
       <div class="header-actions">
         <a href="#book-section" class="btn btn-primary"
-          >Book now<span aria-hidden="true">↗</span></a
+          >Reservar ahora <span aria-hidden="true">↗</span></a
         >
         <button
           class="nav-toggle navbar-toggler d-flex d-md-none"
@@ -60,78 +60,232 @@
     </header>
 
     <main>
-      <!-- ENCABEZADO DE LA PANTALLA -->
+      <!-- ENCABEZADO PRINCIPAL ESTILO "NUESTROS SERVICIOS" CON ADORNO DE CORONA -->
       <section class="services-hero" aria-labelledby="services-title">
-        <p class="eyebrow">Atlan Suites</p>
-        <h1 class="services-hero-title" id="services-title">Services</h1>
+        <div class="hero-header-badge">
+          <!-- CORONA DORADA EMBLEMA -->
+          <svg class="crown-icon" viewBox="0 0 24 24" width="36" height="36" fill="currentColor">
+            <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
+          </svg>
+        </div>
+        <h1 class="services-hero-title" id="services-title">NUESTROS SERVICIOS</h1>
         <p class="services-hero-text">
-          Everything we offer inside and outside the hotel, from daily comforts
-          to the experiences that make each stay memorable.
+          Descubre todos los servicios exclusivos que harán de tu estancia una experiencia inolvidable.
         </p>
       </section>
 
-      <!-- TABLA CON TODOS LOS SERVICIOS DEL HOTEL -->
-      <section class="services-section" aria-labelledby="services-table-title">
-        <header class="services-intro">
-          <p class="eyebrow">Full list</p>
-          <h2 class="section-title" id="services-table-title">All our services</h2>
-          <p
-            class="services-summary"
-            th:text="|${#lists.size(servicios)} services available · Prices in Colombian pesos (COP)|"
-          >
-            20 services available · Prices in Colombian pesos (COP)
-          </p>
-        </header>
+      <!-- CONTENEDOR DE TARJETAS DE SERVICIOS -->
+      <section class="services-section" aria-labelledby="services-grid-title">
+        <div class="services-container">
+                 <!-- BARRA DE CONTROLES: FILTROS Y VISTA (TARJETAS / TABLA) -->
+          <div class="controls-toolbar d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+            <!-- TABS DE FILTRADO POR CATEGORÍA -->
+            <nav class="category-filters mb-0" aria-label="Filtros de servicios">
+              <button class="filter-btn is-active" data-filter="all">Todos</button>
+              <button class="filter-btn" data-filter="Alimentación">Alimentación</button>
+              <button class="filter-btn" data-filter="Bienestar">Bienestar</button>
+              <button class="filter-btn" data-filter="Transporte">Transporte</button>
+              <button class="filter-btn" data-filter="Conectividad">Conectividad</button>
+              <button class="filter-btn" data-filter="Habitación">Habitación</button>
+              <button class="filter-btn" data-filter="Atención al huésped">Atención al huésped</button>
+              <button class="filter-btn" data-filter="Recreación">Recreación</button>
+              <button class="filter-btn" data-filter="Lavandería">Lavandería</button>
+            </nav>
 
-        <div class="table-responsive">
-          <table class="services-table">
-            <thead>
-              <tr>
-                <th scope="col">Service</th>
-                <th scope="col">Description</th>
-                <th scope="col">Category</th>
-                <th scope="col">Status</th>
-                <th scope="col" class="services-cell-price">Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- UNA FILA POR CADA SERVICIO QUE ENVÍA EL CONTROLADOR -->
-              <tr th:each="servicio : ${servicios}">
-                <th scope="row" th:text="${servicio.nombre}"></th>
-                <td th:text="${servicio.descripcion}">
-                  Circuito de relajación y tratamientos de spa.
-                </td>
-                <td>
-                  <span class="service-tag" th:text="${servicio.categoria}">Bienestar</span>
-                </td>
-                <td>
-                  <!-- EL ESTADO DEPENDE DE SI EL SERVICIO ESTÁ ACTIVO -->
-                  <span
-                    class="service-status"
-                    th:classappend="${servicio.activo} ? 'is-available' : 'is-unavailable'"
-                    th:text="${servicio.activo} ? 'Available' : 'Unavailable'"
-                    >Available</span
-                  >
-                </td>
-                <td class="services-cell-price">
-                  <!-- LOS SERVICIOS SIN COSTO SE MUESTRAN COMO INCLUIDOS EN LA ESTADÍA -->
-                  <span
-                    th:if="${servicio.precio > 0}"
-                    th:text="'$' + ${#numbers.formatInteger(servicio.precio, 1, 'POINT')}"
-                    >$120.000</span
-                  >
-                  <span th:unless="${servicio.precio > 0}" class="service-included">Included</span>
-                </td>
-              </tr>
+            <!-- SWITCHER DE VISTAS (CARDS VS LIST) -->
+            <div class="view-mode-switcher btn-group" role="group" aria-label="Modo de vista">
+              <a th:href="@{/servicios/cards}" id="view-cards-btn" class="view-btn btn btn-sm" th:classappend="${viewMode != 'list'} ? 'is-active' : ''">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="me-1"><path d="M4 11h6a1 1 0 001-1V4a1 1 0 00-1-1H4a1 1 0 00-1 1v6a1 1 0 001 1zm10 0h6a1 1 0 001-1V4a1 1 0 00-1-1h-6a1 1 0 00-1 1v6a1 1 0 001 1zM4 21h6a1 1 0 001-1v-6a1 1 0 00-1-1H4a1 1 0 00-1 1v6a1 1 0 001 1zm10 0h6a1 1 0 001-1v-6a1 1 0 00-1-1h-6a1 1 0 00-1 1v6a1 1 0 001 1z"/></svg>
+                Tarjetas
+              </a>
+              <a th:href="@{/servicios/list}" id="view-list-btn" class="view-btn btn btn-sm" th:classappend="${viewMode == 'list'} ? 'is-active' : ''">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="me-1"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+                Lista
+              </a>
+            </div>
+          </div>
 
-              <!-- MENSAJE POR SI TODAVÍA NO HAY SERVICIOS CARGADOS -->
-              <tr th:if="${#lists.isEmpty(servicios)}">
-                <td colspan="5" class="services-empty">
-                  There are no services available at the moment.
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <h2 id="services-grid-title" class="visually-hidden">Lista de Servicios</h2>
+
+          <!-- CONTENEDOR VISTA TARJETAS (CARD GRID) -->
+          <div id="services-grid-wrapper" th:classappend="${viewMode == 'list'} ? 'd-none' : ''">
+            <div class="services-grid">
+              
+              <a th:each="servicio : ${servicios}"
+                 th:href="@{'/servicios/' + ${servicio.nombreUrl}}"
+                 class="service-card"
+                 th:data-category="${servicio.categoria}"
+                 th:data-url="${servicio.nombreUrl}">
+                
+                <!-- ÍCONO PRINCIPAL DE LA TARJETA -->
+                <div class="card-icon-container">
+                  <!-- WI-FI -->
+                  <svg th:if="${servicio.nombreUrl == 'wi-fi'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M12 3C7.03 3 2.59 4.97 0 8.19l2.12 2.12C4.19 7.64 7.87 6 12 6s7.81 1.64 9.88 4.31L24 8.19C21.41 4.97 16.97 3 12 3zm0 6c-3.31 0-6.31 1.34-8.48 3.52L5.64 14.64C7.27 13.01 9.51 12 12 12s4.73 1.01 6.36 2.64l2.12-2.12C18.31 10.34 15.31 9 12 9zm0 6c-1.66 0-3.17.67-4.24 1.76l2.12 2.12c.54-.54 1.28-.88 2.12-.88s1.58.34 2.12.88l2.12-2.12C15.17 15.67 13.66 15 12 15zm0 6a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+                  </svg>
+                  <!-- DESAYUNO -->
+                  <svg th:if="${servicio.nombreUrl == 'desayuno'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M2 19h20v2H2v-2zm2-4h14v-2H4v2zm16-4V7h2V5h-2V3h-2v8h2zm-4-4V3H4v4h12zM4 9h12v2H4V9z"/>
+                  </svg>
+                  <!-- MINIBAR -->
+                  <svg th:if="${servicio.nombreUrl == 'minibar'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M17 2H7c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 8H7V4h10v6zm0 10H7v-8h10v8zM9 5h2v3H9V5zm0 10h2v3H9v-3z"/>
+                  </svg>
+                  <!-- CENA / ALMUERZO -->
+                  <svg th:if="${servicio.nombreUrl == 'cena' || servicio.nombreUrl == 'almuerzo'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M12 3C7.03 3 3 7.03 3 12h18c0-4.97-4.03-9-9-9zm-9 11v1c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-1H3zm-1 4h20v2H2v-2z"/>
+                  </svg>
+                  <!-- SERVICIO A LA HABITACIÓN -->
+                  <svg th:if="${servicio.nombreUrl == 'servicio-a-la-habitacion'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
+                  </svg>
+                  <!-- LAVANDERÍA -->
+                  <svg th:if="${servicio.nombreUrl == 'lavanderia'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 4c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14c-3.31 0-6-2.69-6-6h2c0 2.21 1.79 4 4 4s4-1.79 4-4h2c0 3.31-2.69 6-6 6z"/>
+                  </svg>
+                  <!-- ESTACIONAMIENTO -->
+                  <svg th:if="${servicio.nombreUrl == 'estacionamiento'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.85 7h10.29l1.04 3H5.81l1.04-3zM19 17H5v-4h14v4z"/>
+                    <circle fill="currentColor" cx="7.5" cy="15" r="1.5"/>
+                    <circle fill="currentColor" cx="16.5" cy="15" r="1.5"/>
+                  </svg>
+                  <!-- PISCINA -->
+                  <svg th:if="${servicio.nombreUrl == 'piscina'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M21 17.5c-1.1 0-2.1-.4-2.8-1.2-.7.8-1.7 1.2-2.8 1.2-1.1 0-2.1-.4-2.8-1.2-.7.8-1.7 1.2-2.8 1.2-1.1 0-2.1-.4-2.8-1.2-.7.8-1.7 1.2-2.8 1.2V15c.6 0 1.2-.2 1.6-.6.8-.8 2.4-.8 3.2 0 .4.4 1 .6 1.6.6s1.2-.2 1.6-.6c.8-.8 2.4-.8 3.2 0 .4.4 1 .6 1.6.6s1.2-.2 1.6-.6c.8-.8 2.4-.8 3.2 0 .4.4 1 .6 1.6.6V17.5zM12 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm6.5 0c.83 0 1.5-.67 1.5-1.5S19.33 8 18.5 8 17 8.67 17 9.5s.67 1.5 1.5 1.5z"/>
+                  </svg>
+                  <!-- GIMNASIO -->
+                  <svg th:if="${servicio.nombreUrl == 'gimnasio'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 6.29 3.43 2 7.71 3.43 9.14 2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22 14.86 20.57 16.29 22 17.71 20.57 19.14 22 20.57 20.57 22 19.14 20.57 17.71 22 16.29 20.57 14.86z"/>
+                  </svg>
+                  <!-- SPA -->
+                  <svg th:if="${servicio.nombreUrl == 'spa'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10zm-1-17.93c-3.95.49-7 3.85-7 7.93 0 3.25 1.98 6.03 4.8 7.22-.64-1.63-.98-3.46-.98-5.36 0-3.7 1.25-7.1 3.18-9.79zM13 4.07c1.93 2.69 3.18 6.09 3.18 9.79 0 1.9-.34 3.73-.98 5.36 2.82-1.19 4.8-3.97 4.8-7.22 0-4.08-3.05-7.44-7-7.93z"/>
+                  </svg>
+                  <!-- SAUNA -->
+                  <svg th:if="${servicio.nombreUrl == 'sauna'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M8 3c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2s2-.9 2-2V5c0-1.1-.9-2-2-2zm8 0c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2s2-.9 2-2V5c0-1.1-.9-2-2-2zm-4 4c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2s2-.9 2-2V9c0-1.1-.9-2-2-2zm-8 8h16v6H4v-6z"/>
+                  </svg>
+                  <!-- JACUZZI -->
+                  <svg th:if="${servicio.nombreUrl == 'jacuzzi'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M21 11V3H3v8H2v2h2v7h16v-7h2v-2h-1zM5 5h14v6H5V5zm13 14H6v-5h12v5z"/>
+                  </svg>
+                  <!-- MASAJES -->
+                  <svg th:if="${servicio.nombreUrl == 'masajes'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M18 10c0 3.31-2.69 6-6 6s-6-2.69-6-6 2.69-6 6-6 6 2.69 6 6zm-6-4c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm-7 13c0-2.21 3.58-4 8-4s8 1.79 8 4v1H5v-1z"/>
+                  </svg>
+                  <!-- TRANSPORTE AL AEROPUERTO -->
+                  <svg th:if="${servicio.nombreUrl == 'transporte-al-aeropuerto'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 20v-6.5l8 2.5z"/>
+                  </svg>
+                  <!-- LIMPIEZA DE HABITACIÓN -->
+                  <svg th:if="${servicio.nombreUrl == 'limpieza-de-habitacion'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M19.36 2.72l-1.42-1.42-8.58 8.58-3.08-3.08-1.42 1.42 4.5 4.5zM3 21h18v-2H3v2zm3-4h12v-2H6v2z"/>
+                  </svg>
+                  <!-- GUARDAEQUIPAJE -->
+                  <svg th:if="${servicio.nombreUrl == 'guardaequipaje'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M17 6h-2V3c0-.55-.45-1-1-1h-4c-.55 0-1 .45-1 1v3H7c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-2h2v2h-2V4zm6 15H7V8h10v11z"/>
+                  </svg>
+                  <!-- SERVICIO DESPERTADOR -->
+                  <svg th:if="${servicio.nombreUrl == 'servicio-despertador'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M22 5.72l-4.6-3.86-1.29 1.53 4.6 3.86zM7.88 3.39L6.6 1.86 2 5.71l1.29 1.53 4.59-3.85zM12 4c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zm1-13h-2v6l5.2 3.1.8-1.3-4.5-2.7V7z"/>
+                  </svg>
+                  <!-- ALQUILER DE BICICLETAS -->
+                  <svg th:if="${servicio.nombreUrl == 'alquiler-de-bicicletas'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M15.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM5 12c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5zm0 8.5c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5zm8.8-6.2l-2.4-2.8c-.4-.4-1-.7-1.6-.7h-3V9h3.6l1.8 2.1 2.3-1.6V7h2v4.1l-2.7 1.9zM19 12c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5zm0 8.5c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5z"/>
+                  </svg>
+                  <!-- TOURS TURÍSTICOS -->
+                  <svg th:if="${servicio.nombreUrl == 'tours-turisticos'}" viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+                    <circle fill="currentColor" cx="12" cy="12" r="3"/>
+                  </svg>
+
+                  <!-- ICONO POR DEFECTO PARA CUALQUIER OTRO SERVICIO -->
+                  <svg th:unless="${servicio.nombreUrl == 'wi-fi' || servicio.nombreUrl == 'desayuno' || servicio.nombreUrl == 'minibar' || servicio.nombreUrl == 'cena' || servicio.nombreUrl == 'almuerzo' || servicio.nombreUrl == 'servicio-a-la-habitacion' || servicio.nombreUrl == 'lavanderia' || servicio.nombreUrl == 'estacionamiento' || servicio.nombreUrl == 'piscina' || servicio.nombreUrl == 'gimnasio' || servicio.nombreUrl == 'spa' || servicio.nombreUrl == 'sauna' || servicio.nombreUrl == 'jacuzzi' || servicio.nombreUrl == 'masajes' || servicio.nombreUrl == 'transporte-al-aeropuerto' || servicio.nombreUrl == 'limpieza-de-habitacion' || servicio.nombreUrl == 'guardaequipaje' || servicio.nombreUrl == 'servicio-despertador' || servicio.nombreUrl == 'alquiler-de-bicicletas' || servicio.nombreUrl == 'tours-turisticos'}"
+                       viewBox="0 0 24 24" class="card-icon">
+                    <path fill="currentColor" d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z"/>
+                  </svg>
+                </div>
+
+                <!-- NOMBRE Y DESCRIPCIÓN -->
+                <div class="card-body-content">
+                  <h3 class="card-service-title" th:text="${servicio.nombre}">Wi-Fi</h3>
+                  <p class="card-service-desc" th:text="${servicio.descripcion}">Acceso a internet inalámbrico de alta velocidad.</p>
+                </div>
+
+                <!-- PIE DE TARJETA CON PRECIO Y CATEGORÍA -->
+                <div class="card-footer-bar">
+                  <div class="card-price">
+                    <span th:if="${servicio.precio > 0}" th:text="'$' + ${#numbers.formatInteger(servicio.precio, 1, 'POINT')}">$0</span>
+                    <span th:unless="${servicio.precio > 0}">$0</span>
+                  </div>
+
+                  <div class="card-category">
+                    <span class="category-icon-small">
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                        <path th:if="${servicio.categoria == 'Bienestar'}" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        <path th:if="${servicio.categoria == 'Alimentación'}" d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.55 3.89 3.56 4.23L6.5 22h3l-.06-8.77C11.45 12.89 13 11.12 13 9V2h-2v7zm8-7v8h-2V2h-2v8c0 2.21 1.79 4 4 4v8h2V2h-2z"/>
+                        <path th:if="${servicio.categoria == 'Transporte'}" d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99z"/>
+                        <path th:if="${servicio.categoria == 'Conectividad'}" d="M12 3C7.03 3 2.59 4.97 0 8.19l2.12 2.12C4.19 7.64 7.87 6 12 6s7.81 1.64 9.88 4.31L24 8.19C21.41 4.97 16.97 3 12 3zm0 6c-3.31 0-6.31 1.34-8.48 3.52L5.64 14.64C7.27 13.01 9.51 12 12 12s4.73 1.01 6.36 2.64l2.12-2.12C18.31 10.34 15.31 9 12 9zm0 6a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+                        <path th:if="${servicio.categoria == 'Habitación' || servicio.categoria == 'Atención al huésped'}" d="M19 7h-8v8H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4zm-9 6H3V9h7v4z"/>
+                        <path th:if="${servicio.categoria == 'Recreación'}" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                        <path th:if="${servicio.categoria == 'Lavandería'}" d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 4c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"/>
+                        <path th:unless="${servicio.categoria == 'Bienestar' || servicio.categoria == 'Alimentación' || servicio.categoria == 'Transporte' || servicio.categoria == 'Conectividad' || servicio.categoria == 'Habitación' || servicio.categoria == 'Atención al huésped' || servicio.categoria == 'Recreación' || servicio.categoria == 'Lavandería'}" d="M12 2L1 21h22L12 2z"/>
+                      </svg>
+                    </span>
+                    <span th:text="${servicio.categoria}">Categoría</span>
+                  </div>
+                </div>
+              </a>
+
+            </div>
+          </div>
+
+          <!-- CONTENEDOR VISTA LISTA / TABLA (SERVICES LIST VIEW) -->
+          <div id="services-table-wrapper" th:classappend="${viewMode == 'list'} ? '' : 'd-none'">
+            <div class="table-responsive services-table-container">
+              <table class="services-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Servicio</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Categoría</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col" class="services-cell-price">Precio</th>
+                    <th scope="col" class="text-end">Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="servicio : ${servicios}" class="service-table-row" th:data-category="${servicio.categoria}">
+                    <th scope="row">
+                      <a th:href="@{'/servicios/' + ${servicio.nombreUrl}}" class="table-service-link" th:text="${servicio.nombre}">Servicio</a>
+                    </th>
+                    <td th:text="${servicio.descripcion}">Descripción del servicio.</td>
+                    <td>
+                      <span class="service-tag" th:text="${servicio.categoria}">Bienestar</span>
+                    </td>
+                    <td>
+                      <span class="service-status"
+                            th:classappend="${servicio.activo} ? 'is-available' : 'is-unavailable'"
+                            th:text="${servicio.activo} ? 'Disponible' : 'No disponible'">Disponible</span>
+                    </td>
+                    <td class="services-cell-price">
+                      <span th:if="${servicio.precio > 0}" th:text="'$' + ${#numbers.formatInteger(servicio.precio, 1, 'POINT')}">$120.000</span>
+                      <span th:unless="${servicio.precio > 0}" class="service-included">$0</span>
+                    </td>
+                    <td class="text-end">
+                      <a th:href="@{'/servicios/' + ${servicio.nombreUrl}}" class="btn btn-sm btn-gold-outline">Ver detalle →</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>      </div>
+
+          <!-- MENSAJE SI NO HAY RESULTADOS TRAS FILTRAR -->
+          <div id="no-services-msg" class="services-empty-grid d-none">
+            <p>No hay servicios disponibles en esta categoría.</p>
+          </div>
+
         </div>
       </section>
     </main>
@@ -141,19 +295,19 @@
       <div class="container-fluid">
         <section class="footer-cta row gy-4 align-items-center" aria-labelledby="booking-title">
           <div class="col-12 col-lg-6">
-            <p class="eyebrow">Reserve</p>
-            <h2 id="booking-title">Book your<br />stay</h2>
+            <p class="eyebrow">RESERVAR</p>
+            <h2 id="booking-title">RESERVA TU<br />ESTANCIA</h2>
             <span class="footer-book-button"
-              >Book now <span aria-hidden="true">↗</span></span
+              >RESERVAR AHORA <span aria-hidden="true">↗</span></span
             >
           </div>
           <div class="col-12 col-lg-4 offset-lg-2">
             <address class="footer-contact-card">
-              <p class="eyebrow">Contact</p>
-              <p>reservations@atlansuites.com<br />+65 6555 0142</p>
+              <p class="eyebrow">CONTACTO</p>
+              <p>reservas@atlansuites.com<br />+65 6555 0142</p>
               <hr />
-              <p class="eyebrow">Hotel location</p>
-              <p>Singapore</p>
+              <p class="eyebrow">UBICACIÓN DEL HOTEL</p>
+              <p>Singapur</p>
             </address>
           </div>
         </section>
@@ -164,32 +318,32 @@
             alt="Atlan Suites"
             class="footer-logo"
           />
-          <figcaption>Singapore</figcaption>
+          <figcaption>SINGAPUR</figcaption>
         </figure>
 
         <div class="row gy-5 footer-content">
           <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="discover-title">
-            <h2 class="footer-heading" id="discover-title">Discover Atlan</h2>
+            <h2 class="footer-heading" id="discover-title">Descubre Atlan</h2>
             <ul class="footer-links">
-              <li><span>About us</span></li>
-              <li><span>Our suites</span></li>
-              <li><span>Experiences</span></li>
-              <li><span>Contact us</span></li>
+              <li><span>Sobre nosotros</span></li>
+              <li><span>Nuestras suites</span></li>
+              <li><span>Experiencias</span></li>
+              <li><span>Contacto</span></li>
             </ul>
           </section>
 
           <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="information-title">
-            <h2 class="footer-heading" id="information-title">Useful information</h2>
+            <h2 class="footer-heading" id="information-title">Información útil</h2>
             <ul class="footer-links">
-              <li><span>Reservations</span></li>
-              <li><span>Travel guide</span></li>
-              <li><span>Amenities</span></li>
-              <li><span>Frequently asked questions</span></li>
+              <li><span>Reservas</span></li>
+              <li><span>Guía de viaje</span></li>
+              <li><span>Comodidades</span></li>
+              <li><span>Preguntas frecuentes</span></li>
             </ul>
           </section>
 
           <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="social-title">
-            <h2 class="footer-heading" id="social-title">Connect with us</h2>
+            <h2 class="footer-heading" id="social-title">Conéctate con nosotros</h2>
             <nav class="social-links" aria-label="Social media">
               <a
                 href="https://www.instagram.com/"
@@ -223,11 +377,11 @@
           </section>
 
           <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="newsletter-title">
-            <h2 class="footer-heading" id="newsletter-title">Get inspired</h2>
+            <h2 class="footer-heading" id="newsletter-title">Inspírate</h2>
             <p class="footer-newsletter-text">
-              Subscribe to our newsletter for the latest stories and offers.
+              Suscríbete a nuestro boletín para conocer las últimas novedades y ofertas.
             </p>
-            <button class="footer-subscribe" type="button">Subscribe</button>
+            <button class="footer-subscribe" type="button">SUSCRIBIRSE</button>
           </section>
         </div>
 
@@ -235,11 +389,11 @@
           class="footer-bottom d-flex flex-column flex-md-row justify-content-center align-items-center gap-2"
         >
           <div class="footer-legal">
-            <span>Privacy notice</span>
-            <span>Terms of use</span>
-            <span>Accessibility</span>
+            <span>Aviso de privacidad</span>
+            <span>Términos de uso</span>
+            <span>Accesibilidad</span>
           </div>
-          <span>© 2026 Atlan Suites. All rights reserved.</span>
+          <span>© 2026 Atlan Suites. Todos los derechos reservados.</span>
         </div>
       </div>
     </footer>
@@ -249,5 +403,7 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
+    <script th:src="@{/js/servicios/servicios.js}"></script>
   </body>
 </html>
+

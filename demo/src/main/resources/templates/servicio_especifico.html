@@ -19,7 +19,7 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" th:href="@{/css/css-utils/base/common.css}" />
+    <link rel="stylesheet" th:href="@{/css/css-utils/common.css}" />
     <link
       rel="stylesheet"
       th:href="@{/css/servicio_especifico/servicio_especifico.css}"
@@ -40,13 +40,10 @@
           aria-label="Main navigation"
         >
           <a th:href="@{/}" class="nav-link flex-fill">Home</a>
-          <a th:href="@{/#video-section}" class="nav-link flex-fill"
-            >The hotel</a
-          >
+          <a th:href="@{/#video-section}" class="nav-link flex-fill">The hotel</a>
           <a th:href="@{/#rooms-section}" class="nav-link flex-fill">Suites</a>
-          <a th:href="@{/#experiences-section}" class="nav-link flex-fill"
-            >Experiences</a
-          >
+          <a th:href="@{/#experiences-section}" class="nav-link flex-fill">Experiences</a>
+          <a th:href="@{/servicios}" class="nav-link flex-fill is-active">Services</a>
         </nav>
       </div>
       <div class="header-actions">
@@ -78,9 +75,14 @@
           <p class="hero-summary" th:text="${servicio.resumen}">
             A memorable experience during your stay.
           </p>
-          <a href="#reservation" class="btn btn-gold"
-            >Reserve this service <span aria-hidden="true">↗</span></a
-          >
+          <div class="hero-actions d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
+            <a href="#reservation" class="btn btn-gold"
+              >Reserve this service <span aria-hidden="true">↗</span></a
+            >
+            <a th:href="@{/servicios}" class="btn btn-outline-light"
+              >← Volver a Servicios</a
+            >
+          </div>
         </div>
       </section>
 

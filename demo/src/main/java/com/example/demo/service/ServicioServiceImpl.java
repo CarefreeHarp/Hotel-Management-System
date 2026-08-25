@@ -27,8 +27,7 @@ public class ServicioServiceImpl implements ServicioService {
     public List<Servicio> listarServicios() {
         return servicioRepository.listarTodos()
                 .stream()
-                .sorted(Comparator.comparing(Servicio::getCategoria)
-                        .thenComparing(Servicio::getNombre))
+                .sorted(Comparator.comparingInt(Servicio::getId))
                 .toList();
     }
 
