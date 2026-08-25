@@ -8,6 +8,8 @@ El diseño de la interfaz está disponible en Figma:
 
 **Figma:** https://www.figma.com/design/AzKmb3UaMsc4t8JZCZXiL4/AtlanSuites?node-id=0-1&t=IUIAEeybnugZna8y-1
 
+**Figma Interactivo:** https://pants-toggle-56795002.figma.site
+
 ### Identidad visual
 
 #### Logo
