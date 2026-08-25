@@ -96,8 +96,16 @@
             </thead>
             <tbody>
               <!-- UNA FILA POR CADA SERVICIO QUE ENVÍA EL CONTROLADOR -->
-              <tr th:each="servicio : ${servicios}">
-                <th scope="row" th:text="${servicio.nombre}"></th>
+              <tr class="services-row" th:each="servicio : ${servicios}">
+                <th scope="row">
+                  <!-- EL NOMBRE LLEVA A LA PANTALLA DE DETALLE: /servicios/{nombreUrl} -->
+                  <a
+                    class="service-link"
+                    th:href="@{/servicios/{nombreUrl}(nombreUrl=${servicio.nombreUrl})}"
+                    th:text="${servicio.nombre}"
+                    >Spa</a
+                  >
+                </th>
                 <td th:text="${servicio.descripcion}">
                   Circuito de relajación y tratamientos de spa.
                 </td>
@@ -249,5 +257,6 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
+    <script th:src="@{/js/servicios/servicios.js}"></script>
   </body>
 </html>
