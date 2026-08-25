@@ -1,0 +1,5 @@
+/* Estilos de la plantilla servicios-tarjetas.html. */
+@import url("../servicios/servicios.css");
+
+/* Las reglas específicas de tarjetas viven aquí; la base compartida se importa
+   para mantener consistentes tipografías, filtros y componentes de servicios. */
