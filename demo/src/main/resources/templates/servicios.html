@@ -72,19 +72,20 @@
 
       <!-- TABLA CON TODOS LOS SERVICIOS DEL HOTEL -->
       <section class="services-section" aria-labelledby="services-table-title">
-        <header class="services-intro">
-          <p class="eyebrow">Full list</p>
-          <h2 class="section-title" id="services-table-title">All our services</h2>
-          <p
-            class="services-summary"
-            th:text="|${#lists.size(servicios)} services available · Prices in Colombian pesos (COP)|"
-          >
-            20 services available · Prices in Colombian pesos (COP)
-          </p>
-        </header>
+        <div class="services-list-container">
+          <header class="services-intro">
+            <p class="eyebrow">Full list</p>
+            <h2 class="section-title" id="services-table-title">All our services</h2>
+            <p
+              class="services-summary"
+              th:text="|${#lists.size(servicios)} services available · Prices in Colombian pesos (COP)|"
+            >
+              20 services available · Prices in Colombian pesos (COP)
+            </p>
+          </header>
 
-        <div class="table-responsive">
-          <table class="services-table">
+          <div class="table-responsive">
+            <table class="services-table">
             <thead>
               <tr>
                 <th scope="col">Service</th>
@@ -139,7 +140,8 @@
                 </td>
               </tr>
             </tbody>
-          </table>
+            </table>
+          </div>
         </div>
       </section>
     </main>
