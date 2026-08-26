@@ -83,6 +83,18 @@ body.page-services {
   background: radial-gradient(ellipse at top, #141b24 0%, #0b0f14 100%);
 }
 
+/* La tabla se centra para conservar distancias legibles en monitores muy anchos. */
+.services-list-container {
+  max-width: 1440px;
+  margin-inline: auto;
+}
+
+@media (min-width: 1600px) {
+  .services-list-container {
+    max-width: 1600px;
+  }
+}
+
 .services-container {
   max-width: 1440px;
   margin: 0 auto;
