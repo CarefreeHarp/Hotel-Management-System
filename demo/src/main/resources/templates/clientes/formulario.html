@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title th:text="${titulo}">Formulario de cliente</title>
+  </head>
+  <body>
+    <!--
+      PANTALLA DE PRUEBA: sin diseño, solo para verificar el CRUD por capas.
+      El mismo formulario sirve para registrar y para editar; lo único que cambia
+      es el título y la URL a la que se envía, que los manda el controlador.
+    -->
+    <h1 th:text="${titulo}">Formulario de cliente</h1>
+
+    <!-- ERROR DEVUELTO POR LA CAPA DE SERVICIO (correo o cédula repetidos) -->
+    <p th:if="${error}" th:text="${error}" style="color: red"></p>
+
+    <form th:action="${accion}" th:object="${cliente}" method="post">
+      <p>
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" th:field="*{nombre}" required maxlength="50" />
+      </p>
+      <p>
+        <label for="apellido">Apellido</label>
+        <input type="text" id="apellido" th:field="*{apellido}" required maxlength="50" />
+      </p>
+      <p>
+        <label for="cedula">Cédula</label>
+        <input
+          type="text"
+          id="cedula"
+          th:field="*{cedula}"
+          required
+          pattern="[0-9]{6,15}"
+          title="Solo números, entre 6 y 15 dígitos"
+        />
+      </p>
+      <p>
+        <label for="telefono">Teléfono</label>
+        <input
+          type="tel"
+          id="telefono"
+          th:field="*{telefono}"
+          required
+          pattern="[0-9]{7,15}"
+          title="Solo números, entre 7 y 15 dígitos"
+        />
+      </p>
+      <p>
+        <label for="correo">Correo</label>
+        <input type="email" id="correo" th:field="*{correo}" required maxlength="80" />
+      </p>
+      <p>
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" th:field="*{password}" required minlength="8" />
+      </p>
+
+      <button type="submit">Guardar</button>
+    </form>
+
+    <p><a th:href="@{/clientes}">Volver al listado</a></p>
+  </body>
+</html>
