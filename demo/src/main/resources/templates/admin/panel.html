@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head><meta charset="UTF-8" /><title>Panel administrativo</title></head>
+  <body>
+    <main>
+      <h1>Panel administrativo</h1>
+      <nav aria-label="Gestión administrativa">
+        <a th:href="@{/clientes/read}" role="button">Gestionar clientes</a>
+        <a th:href="@{/admin/tipos-habitacion/read}" role="button">Gestionar tipos de habitación</a>
+        <a th:href="@{/admin/habitaciones/read}" role="button">Gestionar habitaciones</a>
+      </nav>
+    </main>
+  </body>
+</html>

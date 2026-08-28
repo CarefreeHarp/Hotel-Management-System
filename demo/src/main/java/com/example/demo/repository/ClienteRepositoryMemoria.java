@@ -34,9 +34,9 @@ public class ClienteRepositoryMemoria {
 
     /** Clientes de prueba para poder probar la página sin registrarse primero. */
     private void cargarDatosDePrueba() {
-        guardar(new Cliente(0, "Ana", "Gómez", "1012345678", "3001234567", "ana.gomez@correo.com", "ana12345"));
-        guardar(new Cliente(0, "Carlos", "Pérez", "1023456789", "3109876543", "carlos.perez@correo.com", "carlos12345"));
-        guardar(new Cliente(0, "Laura", "Martínez", "1034567890", "3204567890", "laura.martinez@correo.com", "laura12345"));
+        guardar(new Cliente(0, "Ana", "Gómez", "1012345678", "3001234567", "ana.gomez@correo.com", "ana12345", ""));
+        guardar(new Cliente(0, "Carlos", "Pérez", "1023456789", "3109876543", "carlos.perez@correo.com", "carlos12345", ""));
+        guardar(new Cliente(0, "Laura", "Martínez", "1034567890", "3204567890", "laura.martinez@correo.com", "laura12345", ""));
     }
 
     public List<Cliente> listarTodos() {

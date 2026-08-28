@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Detalle de habitación</title>
+  </head>
+  <body>
+    <main>
+      <h1>Habitación <span th:text="${habitacion.numero}"></span></h1>
+      <figure th:if="${habitacion.fotoPrincipal != null and !habitacion.fotoPrincipal.isBlank()}">
+        <img th:src="${habitacion.fotoPrincipal}" alt="Foto principal de la habitación" width="300" />
+      </figure>
+      <dl>
+        <dt>Número</dt>
+        <dd th:text="${habitacion.numero}"></dd>
+        <dt>Piso</dt>
+        <dd th:text="${habitacion.piso}"></dd>
+        <dt>Estado</dt>
+        <dd th:text="${habitacion.estado}"></dd>
+        <dt>Disponible para reservar</dt>
+        <dd th:text="${habitacion.disponible ? 'Sí' : 'No'}"></dd>
+        <dt>Tipo de habitación</dt>
+        <dd th:text="${tipo != null ? tipo.nombre : 'Tipo no encontrado'}"></dd>
+      </dl>
+      <section th:if="${!#lists.isEmpty(habitacion.fotos)}" aria-labelledby="fotos-adicionales-titulo">
+        <h2 id="fotos-adicionales-titulo">Fotos adicionales</h2>
+        <ul>
+          <li th:each="foto : ${habitacion.fotos}">
+            <img th:src="${foto}" alt="Foto adicional de la habitación" width="200" />
+          </li>
+        </ul>
+      </section>
+      <p>
+        <a th:href="@{/admin/habitaciones/update/{numero}(numero=${habitacion.numero})}">Editar</a>
+        <a th:href="@{/admin/habitaciones/read}">Volver al listado</a>
+      </p>
+    </main>
+  </body>
+</html>

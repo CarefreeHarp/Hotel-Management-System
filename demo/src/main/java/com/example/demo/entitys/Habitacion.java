@@ -3,6 +3,8 @@ package com.example.demo.entitys;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Habitación física del hotel. La crea el administrador y le asigna un tipo.
@@ -24,5 +26,9 @@ public class Habitacion {
     private EstadoHabitacion estado;
     private boolean disponible;
     private int idTipo;
+    /** HTTP(S) URL for the image shown as the room cover. */
+    private String fotoPrincipal;
+    /** Optional HTTP(S) URLs for the remaining room gallery images. */
+    private List<String> fotos = new ArrayList<>();
 
 }

@@ -51,13 +51,19 @@
         <input type="email" id="correo" th:field="*{correo}" required maxlength="80" />
       </p>
       <p>
-        <label for="password">Contraseña</label>
-        <input type="password" id="password" th:field="*{password}" required minlength="8" />
+        <label for="fotoPerfil">URL de foto de perfil</label>
+        <input type="url" id="fotoPerfil" th:field="*{fotoPerfil}" placeholder="https://ejemplo.com/foto.jpg" />
+      </p>
+      <p>
+        <label for="password" th:if="${!esEdicion}">Contraseña</label>
+        <input type="password" id="password" th:if="${!esEdicion}" th:field="*{password}" required minlength="8" />
+        <label for="passwordActual" th:if="${esEdicion}">Contraseña actual para guardar los cambios</label>
+        <input type="password" id="passwordActual" name="passwordActual" th:if="${esEdicion}" required />
       </p>
 
       <button type="submit">Guardar</button>
     </form>
 
-    <p><a th:href="@{/clientes}">Volver al listado</a></p>
+    <p><a th:href="@{/clientes/read}">Volver al listado</a></p>
   </body>
 </html>
