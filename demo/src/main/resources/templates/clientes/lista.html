@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Clientes</title>
+  </head>
+  <body>
+    <!-- PANTALLA DE PRUEBA: sin diseño, solo para verificar el CRUD por capas -->
+    <h1>Clientes registrados</h1>
+
+    <p><a th:href="@{/clientes/registro}">Registrar un cliente nuevo</a></p>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Cédula</th>
+          <th>Teléfono</th>
+          <th>Correo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- UNA FILA POR CADA CLIENTE QUE ENVÍA EL CONTROLADOR -->
+        <tr th:each="cliente : ${clientes}">
+          <td th:text="${cliente.nombre}"></td>
+          <td th:text="${cliente.apellido}"></td>
+          <td th:text="${cliente.cedula}"></td>
+          <td th:text="${cliente.telefono}"></td>
+          <td th:text="${cliente.correo}"></td>
+          <td>
+            <a th:href="@{/clientes/{correo}(correo=${cliente.correo})}">Ver</a>
+            <a th:href="@{/clientes/{correo}/editar(correo=${cliente.correo})}">Editar</a>
+
+            <!-- ELIMINAR VA EN UN FORMULARIO PORQUE MODIFICA DATOS (POST, NO GET) -->
+            <form
+              th:action="@{/clientes/{correo}/eliminar(correo=${cliente.correo})}"
+              method="post"
+              style="display: inline"
+            >
+              <button type="submit">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+
+        <!-- MENSAJE POR SI NO HAY CLIENTES REGISTRADOS -->
+        <tr th:if="${#lists.isEmpty(clientes)}">
+          <td colspan="6">No hay clientes registrados.</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

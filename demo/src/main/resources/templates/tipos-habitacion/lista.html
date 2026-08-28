@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tipos de habitación</title>
+  </head>
+  <body>
+    <!-- PANTALLA DE PRUEBA: sin diseño, solo para verificar el CRUD por capas -->
+    <h1>Tipos de habitación</h1>
+
+    <p><a th:href="@{/admin/tipos-habitacion/nuevo}">Crear un tipo nuevo</a></p>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Precio por noche</th>
+          <th>Capacidad máxima</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- UNA FILA POR CADA TIPO QUE ENVÍA EL CONTROLADOR -->
+        <tr th:each="tipo : ${tipos}">
+          <td th:text="${tipo.nombre}"></td>
+          <td th:text="${tipo.descripcion}"></td>
+          <td th:text="${tipo.precioNoche}"></td>
+          <td th:text="${tipo.capacidadMaxima}"></td>
+          <td>
+            <a th:href="@{/admin/tipos-habitacion/{nombre}/editar(nombre=${tipo.nombre})}">Editar</a>
+
+            <!-- ELIMINAR VA EN UN FORMULARIO PORQUE MODIFICA DATOS (POST, NO GET) -->
+            <form
+              th:action="@{/admin/tipos-habitacion/{nombre}/eliminar(nombre=${tipo.nombre})}"
+              method="post"
+              style="display: inline"
+            >
+              <button type="submit">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+
+        <!-- MENSAJE POR SI NO HAY TIPOS REGISTRADOS -->
+        <tr th:if="${#lists.isEmpty(tipos)}">
+          <td colspan="5">No hay tipos de habitación registrados.</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

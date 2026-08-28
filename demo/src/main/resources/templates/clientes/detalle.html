@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title th:text="'Cliente: ' + ${cliente.nombre}">Cliente</title>
+  </head>
+  <body>
+    <!-- PANTALLA DE PRUEBA: sin diseño, solo para verificar el CRUD por capas -->
+    <h1>Mis datos</h1>
+
+    <ul>
+      <li>Nombre: <span th:text="${cliente.nombre}"></span></li>
+      <li>Apellido: <span th:text="${cliente.apellido}"></span></li>
+      <li>Cédula: <span th:text="${cliente.cedula}"></span></li>
+      <li>Teléfono: <span th:text="${cliente.telefono}"></span></li>
+      <li>Correo: <span th:text="${cliente.correo}"></span></li>
+    </ul>
+
+    <p>
+      <a th:href="@{/clientes/{correo}/editar(correo=${cliente.correo})}">Editar mis datos</a>
+      <a th:href="@{/clientes}">Volver al listado</a>
+    </p>
+  </body>
+</html>
