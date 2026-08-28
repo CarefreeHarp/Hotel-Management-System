@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Habitaciones</title>
+  </head>
+  <body>
+    <main>
+      <h1>Habitaciones</h1>
+      <nav aria-label="Gestión administrativa">
+        <a th:href="@{/clientes/read}">Clientes</a>
+        <a th:href="@{/admin/tipos-habitacion/read}">Tipos de habitación</a>
+        <a th:href="@{/admin/habitaciones/read}">Habitaciones</a>
+      </nav>
+      <p><a th:href="@{/admin/habitaciones/create}">Crear una habitación nueva</a></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Número</th>
+            <th>Piso</th>
+            <th>Estado</th>
+            <th>Disponible</th>
+            <th>Tipo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="habitacion : ${habitaciones}">
+            <td th:text="${habitacion.numero}"></td>
+            <td th:text="${habitacion.piso}"></td>
+            <td th:text="${habitacion.estado}"></td>
+            <td th:text="${habitacion.disponible ? 'Sí' : 'No'}"></td>
+            <td th:text="${habitacion.idTipo}"></td>
+            <td>
+              <a th:href="@{/admin/habitaciones/read/{numero}(numero=${habitacion.numero})}">Ver</a>
+              <a th:href="@{/admin/habitaciones/update/{numero}(numero=${habitacion.numero})}">Editar</a>
+              <form th:action="@{/admin/habitaciones/delete/{numero}(numero=${habitacion.numero})}" method="post">
+                <button type="submit">Eliminar</button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+  </body>
+</html>

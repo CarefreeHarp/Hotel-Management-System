@@ -19,10 +19,10 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" th:href="@{/css/css-utils/base/common.css}" />
-    <link rel="stylesheet" th:href="@{/css/index/home.css}" />
-    <link rel="stylesheet" th:href="@{/css/index/the-view.css}" />
-    <link rel="stylesheet" th:href="@{/css/index/suites.css}" />
-    <link rel="stylesheet" th:href="@{/css/index/experiences.css}" />
+    <link rel="stylesheet" th:href="@{/css/landing-page/home.css}" />
+    <link rel="stylesheet" th:href="@{/css/landing-page/the-view.css}" />
+    <link rel="stylesheet" th:href="@{/css/landing-page/suites.css}" />
+    <link rel="stylesheet" th:href="@{/css/landing-page/experiences.css}" />
   </head>
   <body>
     <div class="scroll-progress" id="scroll-progress" role="progressbar" aria-label="Page scroll progress" aria-valuemin="0" aria-valuemax="100"></div>
@@ -48,6 +48,9 @@
       </div>
 
       <div class="header-actions">
+        <a th:href="@{/login}" class="btn btn-primary"
+          >Login<span aria-hidden="true">↗</span></a
+        >
         <a th:href="@{/#book-section}" class="btn btn-primary"
           >Book now<span aria-hidden="true">↗</span></a
         >
@@ -69,7 +72,7 @@
       <!-- HERO -->
       <section class="hero" id="hero" aria-labelledby="hero-title">
         <img
-          src="/images/index/home_photo.png"
+          src="/images/landing-page/home_photo.png"
           alt="Atlan Suites in Singapore"
           class="hero-image"
         />
@@ -104,7 +107,7 @@
           preload="auto"
           aria-label="Aerial view of Atlan Suites in Singapore"
         >
-          <source src="/images/index/Hotel_video.mp4" type="video/mp4" />
+          <source src="/images/landing-page/Hotel_video.mp4" type="video/mp4" />
         </video>
         <aside class="video-view-card">
           <span class="eyebrow">The hotel</span>
@@ -1155,6 +1158,6 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-    <script src="/js/index/main.js"></script>
+    <script src="/js/landing-page/main.js"></script>
   </body>
 </html>

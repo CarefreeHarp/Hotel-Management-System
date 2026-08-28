@@ -28,9 +28,10 @@ public class TipoHabitacionController {
 
     /**
      * Listado del catálogo de tipos de habitación.
-     * URL: http://localhost:8080/admin/tipos-habitacion
+     * URL: http://localhost:8080/admin/tipos-habitacion/read
      */
-    @GetMapping()
+    // Full URL: http://localhost:8080/admin/tipos-habitacion/read
+    @GetMapping("/read")
     public String listarTipos(Model model) {
         model.addAttribute("tipos", tipoHabitacionService.listarTipos());
         return "tipos-habitacion/lista";
@@ -38,46 +39,49 @@ public class TipoHabitacionController {
 
     /**
      * Muestra el formulario de creación vacío.
-     * URL: http://localhost:8080/admin/tipos-habitacion/nuevo
+     * URL: http://localhost:8080/admin/tipos-habitacion/create
      */
-    @GetMapping("/nuevo")
+    // Full URL: http://localhost:8080/admin/tipos-habitacion/create
+    @GetMapping("/create")
     public String mostrarFormularioCreacion(Model model) {
         model.addAttribute("tipo", new TipoHabitacion());
         model.addAttribute("titulo", "Nuevo tipo de habitación");
-        model.addAttribute("accion", "/admin/tipos-habitacion/nuevo");
+        model.addAttribute("accion", "/admin/tipos-habitacion/create");
         return "tipos-habitacion/formulario";
     }
 
     /** Crea el tipo de habitación que llenó el administrador. */
-    @PostMapping("/nuevo")
+    // Full URL: http://localhost:8080/admin/tipos-habitacion/create
+    @PostMapping("/create")
     public String crear(@ModelAttribute TipoHabitacion tipo, Model model) {
         String error = tipoHabitacionService.crear(tipo);
 
         if (error != null) {
             model.addAttribute("tipo", tipo);
             model.addAttribute("titulo", "Nuevo tipo de habitación");
-            model.addAttribute("accion", "/admin/tipos-habitacion/nuevo");
+            model.addAttribute("accion", "/admin/tipos-habitacion/create");
             model.addAttribute("error", error);
             return "tipos-habitacion/formulario";
         }
 
-        return "redirect:/admin/tipos-habitacion";
+        return "redirect:/admin/tipos-habitacion/read";
     }
 
     /**
      * Muestra el formulario con los datos actuales del tipo para modificarlos.
-     * URL: http://localhost:8080/admin/tipos-habitacion/{nombre}/editar
+     * URL: http://localhost:8080/admin/tipos-habitacion/update/{nombre}
      */
-    @GetMapping("/{nombre}/editar")
+    // Full URL: http://localhost:8080/admin/tipos-habitacion/update/{nombre}
+    @GetMapping("/update/{nombre}")
     public String mostrarFormularioEdicion(@PathVariable("nombre") String nombre, Model model) {
         TipoHabitacion tipo = tipoHabitacionService.buscarPorNombre(nombre);
         if (tipo == null) {
-            return "redirect:/admin/tipos-habitacion";
+            return "redirect:/admin/tipos-habitacion/read";
         }
 
         model.addAttribute("tipo", tipo);
         model.addAttribute("titulo", "Editar tipo de habitación");
-        model.addAttribute("accion", "/admin/tipos-habitacion/" + nombre + "/editar");
+        model.addAttribute("accion", "/admin/tipos-habitacion/update/" + nombre);
         return "tipos-habitacion/formulario";
     }
 
@@ -85,7 +89,8 @@ public class TipoHabitacionController {
      * Guarda los cambios. El nombre de la URL es el que tenía el tipo antes de
      * editarlo, porque el administrador puede estar cambiando justamente el nombre.
      */
-    @PostMapping("/{nombre}/editar")
+    // Full URL: http://localhost:8080/admin/tipos-habitacion/update/{nombre}
+    @PostMapping("/update/{nombre}")
     public String actualizar(@PathVariable("nombre") String nombreActual,
                              @ModelAttribute TipoHabitacion tipo,
                              Model model) {
@@ -94,21 +99,22 @@ public class TipoHabitacionController {
         if (error != null) {
             model.addAttribute("tipo", tipo);
             model.addAttribute("titulo", "Editar tipo de habitación");
-            model.addAttribute("accion", "/admin/tipos-habitacion/" + nombreActual + "/editar");
+            model.addAttribute("accion", "/admin/tipos-habitacion/update/" + nombreActual);
             model.addAttribute("error", error);
             return "tipos-habitacion/formulario";
         }
 
-        return "redirect:/admin/tipos-habitacion";
+        return "redirect:/admin/tipos-habitacion/read";
     }
 
     /**
      * Elimina un tipo de habitación del catálogo.
      * Se usa POST y no GET porque es una acción que modifica datos.
      */
-    @PostMapping("/{nombre}/eliminar")
+    // Full URL: http://localhost:8080/admin/tipos-habitacion/delete/{nombre}
+    @PostMapping("/delete/{nombre}")
     public String eliminar(@PathVariable("nombre") String nombre) {
         tipoHabitacionService.eliminar(nombre);
-        return "redirect:/admin/tipos-habitacion";
+        return "redirect:/admin/tipos-habitacion/read";
     }
 }

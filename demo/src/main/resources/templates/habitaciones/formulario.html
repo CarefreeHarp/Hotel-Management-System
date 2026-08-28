@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title th:text="${titulo}">Habitación</title>
+  </head>
+  <body>
+    <main>
+      <h1 th:text="${titulo}">Habitación</h1>
+      <p th:if="${error}" th:text="${error}"></p>
+
+      <form th:action="${accion}" th:object="${habitacion}" method="post">
+        <p>
+          <label for="numero">Número</label>
+          <input id="numero" type="number" min="1" th:field="*{numero}" required />
+        </p>
+        <p>
+          <label for="piso">Piso</label>
+          <input id="piso" type="number" min="0" th:field="*{piso}" required />
+        </p>
+        <p>
+          <label for="idTipo">Tipo de habitación</label>
+          <select id="idTipo" th:field="*{idTipo}" required>
+            <option value="0">Seleccione un tipo</option>
+            <option th:each="tipo : ${tipos}" th:value="${tipo.idTipo}" th:text="${tipo.nombre}"></option>
+          </select>
+        </p>
+        <p>
+          <label for="estado">Estado</label>
+          <select id="estado" th:field="*{estado}" required>
+            <option value="">Seleccione un estado</option>
+            <option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}"></option>
+          </select>
+        </p>
+        <p>
+          <label for="disponible">Disponible para reservar</label>
+          <input id="disponible" type="checkbox" th:field="*{disponible}" />
+        </p>
+        <p>
+          <label for="fotoPrincipal">URL de foto principal</label>
+          <input id="fotoPrincipal" type="url" th:field="*{fotoPrincipal}" placeholder="https://ejemplo.com/habitacion.jpg" />
+        </p>
+        <section aria-labelledby="fotos-adicionales-titulo">
+          <h2 id="fotos-adicionales-titulo">Fotos adicionales</h2>
+          <div id="fotos-adicionales">
+            <p th:each="foto, estadoFoto : *{fotos}">
+              <label th:for="'foto-' + ${estadoFoto.index}">URL de foto adicional</label>
+              <input
+                type="url"
+                th:id="'foto-' + ${estadoFoto.index}"
+                th:field="*{fotos[__${estadoFoto.index}__]}"
+                placeholder="https://ejemplo.com/habitacion-adicional.jpg"
+              />
+            </p>
+          </div>
+          <button id="agregar-foto" type="button">Añadir otra foto</button>
+        </section>
+        <button type="submit">Guardar</button>
+      </form>
+
+      <p><a th:href="@{/admin/habitaciones/read}">Volver al listado</a></p>
+    </main>
+    <script>
+      const contenedorFotos = document.getElementById("fotos-adicionales");
+      const botonAgregarFoto = document.getElementById("agregar-foto");
+      let indiceFoto = contenedorFotos.querySelectorAll("input").length;
+
+      botonAgregarFoto.addEventListener("click", () => {
+        const contenedor = document.createElement("p");
+        const etiqueta = document.createElement("label");
+        const campo = document.createElement("input");
+
+        etiqueta.htmlFor = `foto-${indiceFoto}`;
+        etiqueta.textContent = "URL de foto adicional";
+        campo.type = "url";
+        campo.id = `foto-${indiceFoto}`;
+        campo.name = `fotos[${indiceFoto}]`;
+        campo.placeholder = "https://ejemplo.com/habitacion-adicional.jpg";
+
+        contenedor.append(etiqueta, campo);
+        contenedorFotos.appendChild(contenedor);
+        indiceFoto += 1;
+      });
+    </script>
+  </body>
+</html>

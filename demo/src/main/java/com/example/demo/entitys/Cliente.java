@@ -23,5 +23,7 @@ public class Cliente {
     private String telefono;
     private String correo;
     private String password;
+    /** Optional HTTP(S) URL for the client's profile photo. */
+    private String fotoPerfil;
 
 }

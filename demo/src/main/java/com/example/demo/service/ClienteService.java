@@ -29,11 +29,11 @@ public interface ClienteService {
     String registrar(Cliente cliente);
 
     /**
-     * Actualiza los datos personales de un cliente ya registrado.
+     * Updates a registered client's personal data after validating its current password.
      * correoActual identifica la cuenta que se está editando, porque el cliente
      * puede estar cambiando justamente su correo.
      */
-    String actualizarPerfil(String correoActual, Cliente cliente);
+    String actualizarPerfil(String correoActual, Cliente cliente, String passwordActual);
 
     /** Elimina la cuenta del cliente con ese correo. */
     String eliminarCuenta(String correo);

@@ -8,6 +8,10 @@
     <!-- PANTALLA DE PRUEBA: sin diseño, solo para verificar el CRUD por capas -->
     <h1>Mis datos</h1>
 
+    <figure th:if="${cliente.fotoPerfil != null and !cliente.fotoPerfil.isBlank()}">
+      <img th:src="${cliente.fotoPerfil}" alt="Foto de perfil del cliente" width="200" />
+    </figure>
+
     <ul>
       <li>Nombre: <span th:text="${cliente.nombre}"></span></li>
       <li>Apellido: <span th:text="${cliente.apellido}"></span></li>
@@ -17,8 +21,8 @@
     </ul>
 
     <p>
-      <a th:href="@{/clientes/{correo}/editar(correo=${cliente.correo})}">Editar mis datos</a>
-      <a th:href="@{/clientes}">Volver al listado</a>
+      <a th:href="@{/clientes/update/{correo}(correo=${cliente.correo})}">Editar mis datos</a>
+      <a th:href="@{/clientes/read}">Volver al listado</a>
     </p>
   </body>
 </html>

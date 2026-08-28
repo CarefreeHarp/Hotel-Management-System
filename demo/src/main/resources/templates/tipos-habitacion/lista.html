@@ -7,8 +7,13 @@
   <body>
     <!-- PANTALLA DE PRUEBA: sin diseño, solo para verificar el CRUD por capas -->
     <h1>Tipos de habitación</h1>
+    <nav aria-label="Gestión administrativa">
+      <a th:href="@{/clientes/read}">Clientes</a>
+      <a th:href="@{/admin/tipos-habitacion/read}">Tipos de habitación</a>
+      <a th:href="@{/admin/habitaciones/read}">Habitaciones</a>
+    </nav>
 
-    <p><a th:href="@{/admin/tipos-habitacion/nuevo}">Crear un tipo nuevo</a></p>
+    <p><a th:href="@{/admin/tipos-habitacion/create}">Crear un tipo nuevo</a></p>
 
     <table border="1">
       <thead>
@@ -28,11 +33,11 @@
           <td th:text="${tipo.precioNoche}"></td>
           <td th:text="${tipo.capacidadMaxima}"></td>
           <td>
-            <a th:href="@{/admin/tipos-habitacion/{nombre}/editar(nombre=${tipo.nombre})}">Editar</a>
+            <a th:href="@{/admin/tipos-habitacion/update/{nombre}(nombre=${tipo.nombre})}">Editar</a>
 
             <!-- ELIMINAR VA EN UN FORMULARIO PORQUE MODIFICA DATOS (POST, NO GET) -->
             <form
-              th:action="@{/admin/tipos-habitacion/{nombre}/eliminar(nombre=${tipo.nombre})}"
+              th:action="@{/admin/tipos-habitacion/delete/{nombre}(nombre=${tipo.nombre})}"
               method="post"
               style="display: inline"
             >

@@ -26,7 +26,7 @@ public class ServiceController {
     public String listarServiciosCards(Model model) {
         model.addAttribute("servicios", service.listarServicios());
         model.addAttribute("viewMode", "cards");
-        return "servicios-tarjetas";
+        return "servicios/servicios-tarjetas";
     }
 
     // Full URL: http://localhost:8080/servicios/lista
@@ -34,7 +34,7 @@ public class ServiceController {
     public String listarServiciosList(Model model) {
         model.addAttribute("servicios", service.listarServicios());
         model.addAttribute("viewMode", "list");
-        return "servicios";
+        return "servicios/servicios";
     }
 
     // Full URL: http://localhost:8080/servicios/{nombreUrl}
@@ -46,6 +46,6 @@ public class ServiceController {
         }
 
         model.addAttribute("servicio", servicio);
-        return "servicio_especifico";
+        return "servicios/servicio_especifico";
     }
 }

@@ -24,7 +24,7 @@
   <body class="page-services">
     <!-- HEADER CON EL NAV: los enlaces de secciones apuntan al landing -->
     <header class="site-header navbar navbar-expand-md">
-      <a href="index" class="brand-mark">
+      <a th:href="@{/}" class="brand-mark">
         <img
           th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}"
           alt="Atlan Suites"
@@ -34,9 +34,9 @@
 
       <div class="collapse navbar-collapse" id="main-nav">
         <nav class="main-nav navbar-nav flex-column flex-md-row">
-          <a href="index#hero" class="nav-link flex-fill">Home</a>
-          <a href="index#video-section" class="nav-link flex-fill">The hotel</a>
-          <a href="index#rooms-section" class="nav-link flex-fill">Suites</a>
+          <a th:href="@{/#hero}" class="nav-link flex-fill">Home</a>
+          <a th:href="@{/#video-section}" class="nav-link flex-fill">The hotel</a>
+          <a th:href="@{/#rooms-section}" class="nav-link flex-fill">Suites</a>
           <a th:href="@{/servicios/lista}" class="nav-link flex-fill is-active">Services</a>
         </nav>
       </div>

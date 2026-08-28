@@ -27,7 +27,7 @@
 }
 
 .service-hero::after {
-  background: var(--service-hero-image, url("/images/index/home_photo.png")) center / cover no-repeat;
+  background: var(--service-hero-image, url("/images/landing-page/home_photo.png")) center / cover no-repeat;
   filter: brightness(.76);
 }
 

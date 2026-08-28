@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -29,9 +30,10 @@ public class ClienteController {
     /**
      * Listado de clientes. En la aplicación final esta pantalla no existiría para
      * el cliente; se deja para poder probar el CRUD durante este sprint.
-     * URL: http://localhost:8080/clientes
+     * URL: http://localhost:8080/clientes/read
      */
-    @GetMapping()
+    // Full URL: http://localhost:8080/clientes/read
+    @GetMapping("/read")
     public String listarClientes(Model model) {
         model.addAttribute("clientes", clienteService.listarClientes());
         return "clientes/lista";
@@ -39,13 +41,15 @@ public class ClienteController {
 
     /**
      * Muestra el formulario de registro vacío.
-     * URL: http://localhost:8080/clientes/registro
+     * URL: http://localhost:8080/clientes/create
      */
-    @GetMapping("/registro")
+    // Full URL: http://localhost:8080/clientes/create
+    @GetMapping("/create")
     public String mostrarFormularioRegistro(Model model) {
         model.addAttribute("cliente", new Cliente());
         model.addAttribute("titulo", "Registro de cliente");
-        model.addAttribute("accion", "/clientes/registro");
+        model.addAttribute("accion", "/clientes/create");
+        model.addAttribute("esEdicion", false);
         return "clientes/formulario";
     }
 
@@ -53,30 +57,33 @@ public class ClienteController {
      * Registra al cliente que llenó el formulario.
      * Si el correo o la cédula ya existen, vuelve al formulario con el error.
      */
-    @PostMapping("/registro")
+    // Full URL: http://localhost:8080/clientes/create
+    @PostMapping("/create")
     public String registrar(@ModelAttribute Cliente cliente, Model model) {
         String error = clienteService.registrar(cliente);
 
         if (error != null) {
             model.addAttribute("cliente", cliente);
             model.addAttribute("titulo", "Registro de cliente");
-            model.addAttribute("accion", "/clientes/registro");
+            model.addAttribute("accion", "/clientes/create");
+            model.addAttribute("esEdicion", false);
             model.addAttribute("error", error);
             return "clientes/formulario";
         }
 
-        return "redirect:/clientes";
+        return "redirect:/login";
     }
 
     /**
      * Perfil del cliente: sus datos personales.
-     * URL: http://localhost:8080/clientes/{correo}
+     * URL: http://localhost:8080/clientes/read/{correo}
      */
-    @GetMapping("/{correo}")
+    // Full URL: http://localhost:8080/clientes/read/{correo}
+    @GetMapping("/read/{correo}")
     public String verPerfil(@PathVariable("correo") String correo, Model model) {
         Cliente cliente = clienteService.buscarPorCorreo(correo);
         if (cliente == null) {
-            return "redirect:/clientes";
+            return "redirect:/clientes/read";
         }
 
         model.addAttribute("cliente", cliente);
@@ -85,18 +92,20 @@ public class ClienteController {
 
     /**
      * Muestra el formulario con los datos actuales del cliente para modificarlos.
-     * URL: http://localhost:8080/clientes/{correo}/editar
+     * URL: http://localhost:8080/clientes/update/{correo}
      */
-    @GetMapping("/{correo}/editar")
+    // Full URL: http://localhost:8080/clientes/update/{correo}
+    @GetMapping("/update/{correo}")
     public String mostrarFormularioEdicion(@PathVariable("correo") String correo, Model model) {
         Cliente cliente = clienteService.buscarPorCorreo(correo);
         if (cliente == null) {
-            return "redirect:/clientes";
+            return "redirect:/clientes/read";
         }
 
         model.addAttribute("cliente", cliente);
         model.addAttribute("titulo", "Editar mis datos");
-        model.addAttribute("accion", "/clientes/" + correo + "/editar");
+        model.addAttribute("accion", "/clientes/update/" + correo);
+        model.addAttribute("esEdicion", true);
         return "clientes/formulario";
     }
 
@@ -104,30 +113,34 @@ public class ClienteController {
      * Guarda los cambios del perfil. El correo de la URL es el que tenía la cuenta
      * antes de editarla, porque el cliente puede estar cambiando su correo.
      */
-    @PostMapping("/{correo}/editar")
+    // Full URL: http://localhost:8080/clientes/update/{correo}
+    @PostMapping("/update/{correo}")
     public String actualizarPerfil(@PathVariable("correo") String correoActual,
                                    @ModelAttribute Cliente cliente,
+                                   @RequestParam String passwordActual,
                                    Model model) {
-        String error = clienteService.actualizarPerfil(correoActual, cliente);
+        String error = clienteService.actualizarPerfil(correoActual, cliente, passwordActual);
 
         if (error != null) {
             model.addAttribute("cliente", cliente);
             model.addAttribute("titulo", "Editar mis datos");
-            model.addAttribute("accion", "/clientes/" + correoActual + "/editar");
+            model.addAttribute("accion", "/clientes/update/" + correoActual);
+            model.addAttribute("esEdicion", true);
             model.addAttribute("error", error);
             return "clientes/formulario";
         }
 
-        return "redirect:/clientes";
+        return "redirect:/clientes/read";
     }
 
     /**
      * Elimina la cuenta del cliente.
      * Se usa POST y no GET porque es una acción que modifica datos.
      */
-    @PostMapping("/{correo}/eliminar")
+    // Full URL: http://localhost:8080/clientes/delete/{correo}
+    @PostMapping("/delete/{correo}")
     public String eliminarCuenta(@PathVariable("correo") String correo) {
         clienteService.eliminarCuenta(correo);
-        return "redirect:/clientes";
+        return "redirect:/clientes/read";
     }
 }
