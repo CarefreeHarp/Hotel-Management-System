@@ -1,0 +1,29 @@
+@import url("../admin/admin-shell.css");
+
+.room-number {
+  display: inline-grid;
+  width: 2.7rem;
+  height: 2.7rem;
+  place-items: center;
+  border: 2px solid rgba(184, 140, 90, 0.5);
+  border-radius: 50%;
+  color: #172936;
+  background: #fff8ed;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.portal-table .room-data-cell {
+  color: #172936;
+  font-size: 1rem;
+  font-weight: 800;
+}
+.room-thumbnail {
+  width: 6.75rem;
+  height: 4.35rem;
+  border: 1px solid rgba(184, 140, 90, 0.24);
+  border-radius: 0.75rem;
+  object-fit: cover;
+  box-shadow: 0 8px 20px rgba(12, 18, 24, 0.16);
+}

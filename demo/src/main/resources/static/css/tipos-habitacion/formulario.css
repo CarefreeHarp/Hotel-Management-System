@@ -1,0 +1,6 @@
+@import url("../admin/admin-shell.css");
+
+.type-form-card { border-top-color: var(--atlan-line-strong); }
+.currency-field { position: relative; }
+.currency-field::before { content: "$"; position: absolute; z-index: 2; top: 50%; left: 1rem; color: var(--atlan-gold-light); transform: translateY(-50%); }
+.currency-field input { padding-left: 2rem; }
