@@ -14,10 +14,20 @@
     <main class="portal-main"><div class="container-xxl">
       <header class="page-heading"><div><p class="page-eyebrow">Catálogo de alojamiento</p><h1 class="page-title">Tipos de habitación</h1><p class="page-description">Configura las categorías comerciales, sus tarifas y la capacidad máxima de huéspedes.</p></div><a class="atlan-btn atlan-btn--primary" th:href="@{/admin/tipos-habitacion/create}">Nuevo tipo <span aria-hidden="true">＋</span></a></header>
       <section class="surface-card" aria-labelledby="types-list-title"><h2 class="visually-hidden" id="types-list-title">Listado de tipos de habitación</h2><div class="table-shell"><table class="table portal-table">
-        <thead><tr><th>Nombre</th><th>Descripción</th><th>Precio por noche</th><th>Capacidad</th><th>Acciones</th></tr></thead>
+        <thead><tr><th>Vista</th><th>Nombre</th><th>Descripción</th><th>Precio por noche</th><th>Capacidad</th><th>Acciones</th></tr></thead>
         <tbody>
-          <tr th:each="tipo : ${tipos}"><td><span class="type-name" th:text="${tipo.nombre}">Suite</span></td><td class="description-cell" th:text="${tipo.descripcion}">Descripción</td><td class="price-cell" th:text="|$ ${#numbers.formatDecimal(tipo.precioNoche, 0, 'POINT', 0, 'COMMA')}|">$ 0</td><td><span class="status-badge" th:text="|${tipo.capacidadMaxima} huéspedes|">2 huéspedes</span></td><td><div class="table-actions tw-flex tw-gap-2"><a class="atlan-btn atlan-btn--edit atlan-btn--small" th:href="@{/admin/tipos-habitacion/update/{nombre}(nombre=${tipo.nombre})}">Editar</a><form th:action="@{/admin/tipos-habitacion/delete/{nombre}(nombre=${tipo.nombre})}" method="post" onsubmit="return confirm('¿Deseas eliminar este tipo de habitación?');"><button class="atlan-btn atlan-btn--danger atlan-btn--small" type="submit">Eliminar</button></form></div></td></tr>
-          <tr th:if="${#lists.isEmpty(tipos)}"><td class="empty-state" colspan="5">No hay tipos de habitación registrados. Crea el primero para organizar el inventario.</td></tr>
+          <tr
+            th:each="tipo : ${tipos}"
+            th:with="fotoTipo=${tipo.idTipo == 1 ? 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0020-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*' : (tipo.idTipo == 2 ? 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*' : (tipo.idTipo == 3 ? 'https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-dpssw-junior-suite-12993:Wide-Hor?wid=540&amp;fit=constrain' : 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*'))}"
+          >
+            <td><img class="room-type-thumbnail" th:src="${fotoTipo}" th:alt="|Habitación tipo ${tipo.nombre}|" loading="lazy" /></td>
+            <td><span class="type-name" th:text="${tipo.nombre}">Suite</span></td>
+            <td class="description-cell" th:text="${tipo.descripcion}">Descripción</td>
+            <td class="price-cell" th:text="|$ ${#numbers.formatDecimal(tipo.precioNoche, 0, 'POINT', 0, 'COMMA')}|">$ 0</td>
+            <td><span class="status-badge" th:text="|${tipo.capacidadMaxima} huéspedes|">2 huéspedes</span></td>
+            <td><div class="table-actions tw-flex tw-gap-2"><a class="atlan-btn atlan-btn--edit atlan-btn--small" th:href="@{/admin/tipos-habitacion/update/{nombre}(nombre=${tipo.nombre})}">Editar</a><form th:action="@{/admin/tipos-habitacion/delete/{nombre}(nombre=${tipo.nombre})}" method="post" onsubmit="return confirm('¿Deseas eliminar este tipo de habitación?');"><button class="atlan-btn atlan-btn--danger atlan-btn--small" type="submit">Eliminar</button></form></div></td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(tipos)}"><td class="empty-state" colspan="6">No hay tipos de habitación registrados. Crea el primero para organizar el inventario.</td></tr>
         </tbody>
       </table></div></section>
     </div></main>
