@@ -16,10 +16,21 @@
       <section class="surface-card" aria-labelledby="room-list-title">
         <h2 class="visually-hidden" id="room-list-title">Listado de habitaciones</h2>
         <div class="table-shell"><table class="table portal-table">
-          <thead><tr><th>Número</th><th>Piso</th><th>Estado</th><th>Disponibilidad</th><th>Tipo</th><th>Acciones</th></tr></thead>
+          <thead><tr><th>Vista</th><th>Número</th><th>Piso</th><th>Estado</th><th>Disponibilidad</th><th>Tipo</th><th>Acciones</th></tr></thead>
           <tbody>
-            <tr th:each="habitacion : ${habitaciones}"><td><span class="room-number" th:text="${habitacion.numero}">101</span></td><td class="muted-cell" th:text="${habitacion.piso}">1</td><td><span class="status-badge" th:classappend="${habitacion.estado.name() == 'DISPONIBLE' ? ' status-badge--success' : ' status-badge--occupied'}" th:text="${habitacion.estado.name() == 'DISPONIBLE' ? 'Disponible' : 'Ocupada'}">Disponible</span></td><td><span class="status-badge" th:classappend="${habitacion.disponible} ? ' status-badge--success' : ' status-badge--unavailable'" th:text="${habitacion.disponible ? 'Disponible' : 'Ocupada'}">Disponible</span></td><td class="muted-cell" th:text="${habitacion.idTipo}">1</td><td><div class="table-actions tw-flex tw-gap-2"><a class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="@{/admin/habitaciones/read/{numero}(numero=${habitacion.numero})}">Ver</a><a class="atlan-btn atlan-btn--edit atlan-btn--small" th:href="@{/admin/habitaciones/update/{numero}(numero=${habitacion.numero})}">Editar</a><form th:action="@{/admin/habitaciones/delete/{numero}(numero=${habitacion.numero})}" method="post" onsubmit="return confirm('¿Deseas eliminar esta habitación?');"><button class="atlan-btn atlan-btn--danger atlan-btn--small" type="submit">Eliminar</button></form></div></td></tr>
-            <tr th:if="${#lists.isEmpty(habitaciones)}"><td class="empty-state" colspan="6">No hay habitaciones registradas. Agrega la primera para comenzar.</td></tr>
+            <tr
+              th:each="habitacion : ${habitaciones}"
+              th:with="fotoTipo=${habitacion.idTipo == 1 ? 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0020-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*' : (habitacion.idTipo == 2 ? 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*' : (habitacion.idTipo == 3 ? 'https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-dpssw-junior-suite-12993:Wide-Hor?wid=540&amp;fit=constrain' : 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*'))}"
+            >
+              <td><img class="room-thumbnail" th:src="${fotoTipo}" th:alt="|Habitación ${habitacion.numero}|" loading="lazy" /></td>
+              <td><span class="room-number" th:text="${habitacion.numero}">101</span></td>
+              <td class="room-data-cell" th:text="${habitacion.piso}">1</td>
+              <td><span class="status-badge" th:classappend="${habitacion.estado.name() == 'DISPONIBLE' ? ' status-badge--success' : ' status-badge--occupied'}" th:text="${habitacion.estado.name() == 'DISPONIBLE' ? 'Disponible' : 'Ocupada'}">Disponible</span></td>
+              <td><span class="status-badge" th:classappend="${habitacion.disponible} ? ' status-badge--success' : ' status-badge--unavailable'" th:text="${habitacion.disponible ? 'Disponible' : 'Ocupada'}">Disponible</span></td>
+              <td class="room-data-cell" th:text="${habitacion.idTipo}">1</td>
+              <td><div class="table-actions tw-flex tw-gap-2"><a class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="@{/admin/habitaciones/read/{numero}(numero=${habitacion.numero})}">Ver</a><a class="atlan-btn atlan-btn--edit atlan-btn--small" th:href="@{/admin/habitaciones/update/{numero}(numero=${habitacion.numero})}">Editar</a><form th:action="@{/admin/habitaciones/delete/{numero}(numero=${habitacion.numero})}" method="post" onsubmit="return confirm('¿Deseas eliminar esta habitación?');"><button class="atlan-btn atlan-btn--danger atlan-btn--small" type="submit">Eliminar</button></form></div></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(habitaciones)}"><td class="empty-state" colspan="7">No hay habitaciones registradas. Agrega la primera para comenzar.</td></tr>
           </tbody>
         </table></div>
       </section>
