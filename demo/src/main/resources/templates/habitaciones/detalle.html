@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Detalle de habitación | Atlan Suites</title>
+    <title>Room details | Atlan Suites</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -12,12 +12,12 @@
   <body class="portal-body">
     <div th:replace="~{fragments/admin-shell :: header('habitaciones')}"></div>
     <main class="portal-main"><div class="container-xxl">
-      <header class="page-heading"><div><p class="page-eyebrow">Ficha de inventario</p><h1 class="page-title">Habitación <span th:text="${habitacion.numero}">101</span></h1><p class="page-description">Estado actual, categoría y material visual de la habitación.</p></div><a class="atlan-btn atlan-btn--primary" th:href="@{/admin/habitaciones/update/{numero}(numero=${habitacion.numero})}">Editar habitación</a></header>
+      <header class="page-heading"><div><p class="page-eyebrow">Inventory record</p><h1 class="page-title">Room <span th:text="${habitacion.numero}">101</span></h1><p class="page-description">Current status, category, and visual assets for the room.</p></div><a class="atlan-btn atlan-btn--primary" th:href="@{/admin/habitaciones/update/{numero}(numero=${habitacion.numero})}">Edit room</a></header>
       <section class="detail-grid">
-        <figure class="detail-visual mb-0" th:if="${habitacion.fotoPrincipal != null and !habitacion.fotoPrincipal.isBlank()}"><img th:src="${habitacion.fotoPrincipal}" alt="Foto principal de la habitación" /></figure><div class="detail-visual detail-placeholder" th:unless="${habitacion.fotoPrincipal != null and !habitacion.fotoPrincipal.isBlank()}" aria-label="Habitación sin fotografía"><span th:text="${habitacion.numero}">101</span></div>
-        <article class="surface-card detail-content"><p class="page-eyebrow">Información general</p><dl class="detail-list"><div><dt>Número</dt><dd th:text="${habitacion.numero}">101</dd></div><div><dt>Piso</dt><dd th:text="${habitacion.piso}">1</dd></div><div><dt>Estado</dt><dd th:text="${habitacion.estado}">DISPONIBLE</dd></div><div><dt>Disponibilidad</dt><dd th:text="${habitacion.disponible ? 'Disponible' : 'No disponible'}">Disponible</dd></div><div><dt>Tipo de habitación</dt><dd th:text="${tipo != null ? tipo.nombre : 'Tipo no encontrado'}">Suite</dd></div></dl><div class="form-actions"><a class="atlan-btn atlan-btn--secondary" th:href="@{/admin/habitaciones/read}">← Volver al listado</a></div></article>
+        <figure class="detail-visual mb-0" th:if="${habitacion.fotoPrincipal != null and !habitacion.fotoPrincipal.isBlank()}"><img th:src="${habitacion.fotoPrincipal}" alt="Main room photo" /></figure><div class="detail-visual detail-placeholder" th:unless="${habitacion.fotoPrincipal != null and !habitacion.fotoPrincipal.isBlank()}" aria-label="Room without a photo"><span th:text="${habitacion.numero}">101</span></div>
+        <article class="surface-card detail-content"><p class="page-eyebrow">General information</p><dl class="detail-list"><div><dt>Number</dt><dd th:text="${habitacion.numero}">101</dd></div><div><dt>Floor</dt><dd th:text="${habitacion.piso}">1</dd></div><div><dt>Status</dt><dd th:text="${habitacion.estado}">AVAILABLE</dd></div><div><dt>Availability</dt><dd th:text="${habitacion.disponible ? 'Available' : 'Unavailable'}">Available</dd></div><div><dt>Room type</dt><dd th:text="${tipo != null ? tipo.nombre : 'Room type not found'}">Suite</dd></div></dl><div class="form-actions"><a class="atlan-btn atlan-btn--secondary" th:href="@{/admin/habitaciones/read}">← Back to list</a></div></article>
       </section>
-      <section class="surface-card gallery-section" th:if="${!#lists.isEmpty(habitacion.fotos)}" aria-labelledby="fotos-adicionales-titulo"><p class="page-eyebrow">Galería</p><h2 class="form-section__title" id="fotos-adicionales-titulo">Fotos adicionales</h2><ul class="gallery-grid"><li th:each="foto : ${habitacion.fotos}"><img th:src="${foto}" alt="Foto adicional de la habitación" loading="lazy" /></li></ul></section>
+      <section class="surface-card gallery-section" th:if="${!#lists.isEmpty(habitacion.fotos)}" aria-labelledby="additional-photos-title"><p class="page-eyebrow">Gallery</p><h2 class="form-section__title" id="additional-photos-title">Additional photos</h2><ul class="gallery-grid"><li th:each="foto : ${habitacion.fotos}"><img th:src="${foto}" alt="Additional room photo" loading="lazy" /></li></ul></section>
     </div></main>
     <div th:replace="~{fragments/admin-shell :: footer}"></div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>

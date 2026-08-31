@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Services — Atlan Suites</title>
 
-    <!-- GOOGLE FONTS PARA LOS FONTS :) -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -22,7 +22,7 @@
     <link rel="stylesheet" th:href="@{/css/servicios/servicios.css}" />
   </head>
   <body class="page-services">
-    <!-- HEADER CON EL NAV: los enlaces de secciones apuntan al landing -->
+    <!-- Header navigation: section links point to the landing page -->
     <header class="site-header navbar navbar-expand-md">
       <a th:href="@{/}" class="brand-mark">
         <img
@@ -60,7 +60,7 @@
     </header>
 
     <main>
-      <!-- ENCABEZADO DE LA PANTALLA -->
+      <!-- Screen heading -->
       <section class="services-hero" aria-labelledby="services-title">
         <p class="eyebrow">Atlan Suites</p>
         <h1 class="services-hero-title" id="services-title">Services</h1>
@@ -70,7 +70,7 @@
         </p>
       </section>
 
-      <!-- TABLA CON TODOS LOS SERVICIOS DEL HOTEL -->
+      <!-- Table with all hotel services -->
       <section class="services-section" aria-labelledby="services-table-title">
         <div class="services-list-container">
           <header class="services-intro">
@@ -96,10 +96,10 @@
               </tr>
             </thead>
             <tbody>
-              <!-- UNA FILA POR CADA SERVICIO QUE ENVÍA EL CONTROLADOR -->
+              <!-- One row for each service provided by the controller -->
               <tr class="services-row" th:each="servicio : ${servicios}">
                 <th scope="row">
-                  <!-- EL NOMBRE LLEVA A LA PANTALLA DE DETALLE: /servicios/{nombreUrl} -->
+                  <!-- The name links to the detail screen: /servicios/{nombreUrl} -->
                   <a
                     class="service-link"
                     th:href="@{/servicios/{nombreUrl}(nombreUrl=${servicio.nombreUrl})}"
@@ -108,13 +108,13 @@
                   >
                 </th>
                 <td th:text="${servicio.descripcion}">
-                  Circuito de relajación y tratamientos de spa.
+                    Relaxation circuit and spa treatments.
                 </td>
                 <td>
-                  <span class="service-tag" th:text="${servicio.categoria}">Bienestar</span>
+                  <span class="service-tag" th:text="${servicio.categoria}">Wellness</span>
                 </td>
                 <td>
-                  <!-- EL ESTADO DEPENDE DE SI EL SERVICIO ESTÁ ACTIVO -->
+                  <!-- Status depends on whether the service is active -->
                   <span
                     class="service-status"
                     th:classappend="${servicio.activo} ? 'is-available' : 'is-unavailable'"
@@ -123,7 +123,7 @@
                   >
                 </td>
                 <td class="services-cell-price">
-                  <!-- LOS SERVICIOS SIN COSTO SE MUESTRAN COMO INCLUIDOS EN LA ESTADÍA -->
+                  <!-- Complimentary services are shown as included in the stay -->
                   <span
                     th:if="${servicio.precio > 0}"
                     th:text="'$' + ${#numbers.formatInteger(servicio.precio, 1, 'POINT')}"
@@ -133,7 +133,7 @@
                 </td>
               </tr>
 
-              <!-- MENSAJE POR SI TODAVÍA NO HAY SERVICIOS CARGADOS -->
+              <!-- Message shown when no services have been loaded -->
               <tr th:if="${#lists.isEmpty(servicios)}">
                 <td colspan="5" class="services-empty">
                   There are no services available at the moment.
@@ -146,7 +146,7 @@
       </section>
     </main>
 
-    <!-- FOOTER -->
+    <!-- Footer -->
     <footer class="site-footer" id="book-section">
       <div class="container-fluid">
         <section class="footer-cta row gy-4 align-items-center" aria-labelledby="booking-title">
