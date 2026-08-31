@@ -28,18 +28,6 @@ public class ClienteController {
     ClienteService clienteService;
 
     /**
-     * Listado de clientes. En la aplicación final esta pantalla no existiría para
-     * el cliente; se deja para poder probar el CRUD durante este sprint.
-     * URL: http://localhost:8080/clientes/read
-     */
-    // Full URL: http://localhost:8080/clientes/read
-    @GetMapping("/read")
-    public String listarClientes(Model model) {
-        model.addAttribute("clientes", clienteService.listarClientes());
-        return "clientes/lista";
-    }
-
-    /**
      * Muestra el formulario de registro vacío.
      * URL: http://localhost:8080/clientes/create
      */
@@ -47,7 +35,7 @@ public class ClienteController {
     @GetMapping("/create")
     public String mostrarFormularioRegistro(Model model) {
         model.addAttribute("cliente", new Cliente());
-        model.addAttribute("titulo", "Registro de cliente");
+        model.addAttribute("titulo", "Client registration");
         model.addAttribute("accion", "/clientes/create");
         model.addAttribute("esEdicion", false);
         return "clientes/formulario";
@@ -64,7 +52,7 @@ public class ClienteController {
 
         if (error != null) {
             model.addAttribute("cliente", cliente);
-            model.addAttribute("titulo", "Registro de cliente");
+            model.addAttribute("titulo", "Client registration");
             model.addAttribute("accion", "/clientes/create");
             model.addAttribute("esEdicion", false);
             model.addAttribute("error", error);
@@ -83,7 +71,7 @@ public class ClienteController {
     public String verPerfil(@PathVariable("correo") String correo, Model model) {
         Cliente cliente = clienteService.buscarPorCorreo(correo);
         if (cliente == null) {
-            return "redirect:/clientes/read";
+            return "redirect:/admin/clientes/read";
         }
 
         model.addAttribute("cliente", cliente);
@@ -99,11 +87,11 @@ public class ClienteController {
     public String mostrarFormularioEdicion(@PathVariable("correo") String correo, Model model) {
         Cliente cliente = clienteService.buscarPorCorreo(correo);
         if (cliente == null) {
-            return "redirect:/clientes/read";
+            return "redirect:/admin/clientes/read";
         }
 
         model.addAttribute("cliente", cliente);
-        model.addAttribute("titulo", "Editar mis datos");
+        model.addAttribute("titulo", "Edit my details");
         model.addAttribute("accion", "/clientes/update/" + correo);
         model.addAttribute("esEdicion", true);
         return "clientes/formulario";
@@ -123,14 +111,14 @@ public class ClienteController {
 
         if (error != null) {
             model.addAttribute("cliente", cliente);
-            model.addAttribute("titulo", "Editar mis datos");
+            model.addAttribute("titulo", "Edit my details");
             model.addAttribute("accion", "/clientes/update/" + correoActual);
             model.addAttribute("esEdicion", true);
             model.addAttribute("error", error);
             return "clientes/formulario";
         }
 
-        return "redirect:/clientes/read";
+        return "redirect:/clientes/read/" + cliente.getCorreo();
     }
 
     /**
@@ -141,6 +129,6 @@ public class ClienteController {
     @PostMapping("/delete/{correo}")
     public String eliminarCuenta(@PathVariable("correo") String correo) {
         clienteService.eliminarCuenta(correo);
-        return "redirect:/clientes/read";
+        return "redirect:/admin/clientes/read";
     }
 }

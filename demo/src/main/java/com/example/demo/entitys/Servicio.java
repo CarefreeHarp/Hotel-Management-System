@@ -27,5 +27,3 @@ public class Servicio {
     private List<String> beneficios;
 
 }
-
-

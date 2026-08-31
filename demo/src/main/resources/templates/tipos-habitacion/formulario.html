@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title th:text="${titulo + ' | Atlan Suites'}">Formulario de tipo de habitación | Atlan Suites</title>
+    <title th:text="${titulo + ' | Atlan Suites'}">Room type form | Atlan Suites</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -12,13 +12,13 @@
   <body class="portal-body">
     <div th:replace="~{fragments/admin-shell :: header('tipos')}"></div>
     <main class="portal-main"><div class="container-xxl">
-      <header class="page-heading"><div><p class="page-eyebrow">Catálogo de alojamiento</p><h1 class="page-title" th:text="${titulo}">Nuevo tipo de habitación</h1><p class="page-description">Define cómo se presentará esta categoría dentro del inventario del hotel.</p></div></header>
+      <header class="page-heading"><div><p class="page-eyebrow">Accommodation catalog</p><h1 class="page-title" th:text="${titulo}">New room type</h1><p class="page-description">Define how this category will appear in the hotel inventory.</p></div></header>
       <form class="surface-card form-card type-form-card" th:action="${accion}" th:object="${tipo}" method="post">
         <div class="portal-alert" th:if="${error}" role="alert" th:text="${error}"></div>
-        <section class="form-section" aria-labelledby="type-data-title"><h2 class="form-section__title" id="type-data-title">Información comercial</h2><p class="form-section__description">Nombre visible, descripción, tarifa base y ocupación permitida.</p>
-          <div class="row g-3"><div class="col-md-6"><label class="portal-label form-label" for="nombre">Nombre</label><input class="portal-control form-control" type="text" id="nombre" th:field="*{nombre}" placeholder="Ej. Suite Ocean View" required maxlength="40" /></div><div class="col-md-6"><label class="portal-label form-label" for="capacidadMaxima">Capacidad máxima</label><input class="portal-control form-control" type="number" id="capacidadMaxima" th:field="*{capacidadMaxima}" placeholder="2" required min="1" max="10" /></div><div class="col-12"><label class="portal-label form-label" for="descripcion">Descripción</label><textarea class="portal-control form-control" id="descripcion" th:field="*{descripcion}" placeholder="Describe los espacios, comodidades y atributos principales..." required maxlength="300" rows="4"></textarea><p class="field-hint">Máximo 300 caracteres.</p></div><div class="col-md-6"><label class="portal-label form-label" for="precioNoche">Precio por noche</label><div class="currency-field"><input class="portal-control form-control" type="number" id="precioNoche" th:field="*{precioNoche}" placeholder="350000" required min="0" step="1000" /></div></div></div>
+        <section class="form-section" aria-labelledby="type-data-title"><h2 class="form-section__title" id="type-data-title">Commercial information</h2><p class="form-section__description">Display name, description, base rate, and permitted occupancy.</p>
+          <div class="row g-3"><div class="col-md-6"><label class="portal-label form-label" for="nombre">Name</label><input class="portal-control form-control" type="text" id="nombre" th:field="*{nombre}" placeholder="e.g. Ocean View Suite" required maxlength="40" /></div><div class="col-md-6"><label class="portal-label form-label" for="capacidadMaxima">Maximum capacity</label><input class="portal-control form-control" type="number" id="capacidadMaxima" th:field="*{capacidadMaxima}" placeholder="2" required min="1" max="10" /></div><div class="col-12"><label class="portal-label form-label" for="descripcion">Description</label><textarea class="portal-control form-control" id="descripcion" th:field="*{descripcion}" placeholder="Describe the spaces, amenities, and key features..." required maxlength="300" rows="4"></textarea><p class="field-hint">Maximum 300 characters.</p></div><div class="col-md-6"><label class="portal-label form-label" for="precioNoche">Price per night</label><div class="currency-field"><input class="portal-control form-control" type="number" id="precioNoche" th:field="*{precioNoche}" placeholder="350000" required min="0" step="1000" /></div></div></div>
         </section>
-        <div class="form-actions tw-flex tw-gap-3"><button class="atlan-btn atlan-btn--primary" type="submit">Guardar tipo <span aria-hidden="true">→</span></button><a class="atlan-btn atlan-btn--secondary" th:href="@{/admin/tipos-habitacion/read}">Cancelar</a></div>
+        <div class="form-actions tw-flex tw-gap-3"><button class="atlan-btn atlan-btn--primary" type="submit">Save room type <span aria-hidden="true">→</span></button><a class="atlan-btn atlan-btn--secondary" th:href="@{/admin/tipos-habitacion/read}">Cancel</a></div>
       </form>
     </div></main>
     <div th:replace="~{fragments/admin-shell :: footer}"></div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

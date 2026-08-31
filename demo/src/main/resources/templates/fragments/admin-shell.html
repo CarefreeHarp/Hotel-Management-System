@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <body>
     <header class="portal-header" th:fragment="header(activePage)">
-      <nav class="navbar navbar-expand-lg" aria-label="Navegación administrativa">
+      <nav class="navbar navbar-expand-lg" aria-label="Administrative navigation">
         <div class="container-xxl portal-header__inner">
-          <a class="portal-brand" th:href="@{/}" aria-label="Volver al inicio de Atlan Suites">
+          <a class="portal-brand" th:href="@{/}" aria-label="Back to the Atlan Suites home page">
             <img
               th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}"
               src="/images/images-utils/hotel-identity/logo-transparent.png"
@@ -19,7 +19,7 @@
             data-bs-target="#portalNavigation"
             aria-controls="portalNavigation"
             aria-expanded="false"
-            aria-label="Abrir menú"
+            aria-label="Open menu"
           >
             <span></span><span></span><span></span>
           </button>
@@ -30,26 +30,26 @@
                 class="portal-nav__link"
                 th:classappend="${activePage == 'panel'} ? ' is-active' : ''"
                 th:href="@{/admin/panel}"
-              >Panel</a>
+              >Admin panel</a>
               <a
                 class="portal-nav__link"
                 th:classappend="${activePage == 'clientes'} ? ' is-active' : ''"
-                th:href="@{/clientes/read}"
-              >Clientes</a>
+                th:href="@{/admin/clientes/read}"
+              >Clients</a>
               <a
                 class="portal-nav__link"
                 th:classappend="${activePage == 'tipos'} ? ' is-active' : ''"
                 th:href="@{/admin/tipos-habitacion/read}"
-              >Tipos de habitación</a>
+              >Room types</a>
               <a
                 class="portal-nav__link"
                 th:classappend="${activePage == 'habitaciones'} ? ' is-active' : ''"
                 th:href="@{/admin/habitaciones/read}"
-              >Habitaciones</a>
+              >Rooms</a>
             </div>
 
             <a class="portal-exit" th:href="@{/}">
-              Ir al hotel <span aria-hidden="true">↗</span>
+              Go to hotel <span aria-hidden="true">↗</span>
             </a>
           </div>
         </div>
@@ -58,8 +58,8 @@
 
     <footer class="portal-footer" th:fragment="footer">
       <div class="container-xxl portal-footer__inner">
-        <p>Atlan Suites <span aria-hidden="true">·</span> Portal administrativo</p>
-        <a th:href="@{/}">Volver al sitio del hotel</a>
+        <p>Atlan Suites <span aria-hidden="true">·</span> Admin portal</p>
+        <a th:href="@{/}">Back to the hotel website</a>
       </div>
     </footer>
   </body>
