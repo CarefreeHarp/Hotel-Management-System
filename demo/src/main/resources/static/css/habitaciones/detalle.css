@@ -1,0 +1,5 @@
+@import url("../admin/admin-shell.css");
+
+.gallery-section { margin-top: 1.5rem; padding: 1.5rem; }
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0.8rem; margin: 1.2rem 0 0; padding: 0; list-style: none; }
+.gallery-grid img { width: 100%; aspect-ratio: 4 / 3; border-radius: 0.9rem; object-fit: cover; }

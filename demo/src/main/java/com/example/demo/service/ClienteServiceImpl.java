@@ -1,0 +1,129 @@
+package com.example.demo.service;
+
+import com.example.demo.entitys.Cliente;
+import com.example.demo.repository.ClienteRepositoryMemoria;
+import java.net.URI;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * Implementación de la lógica de negocio de los clientes.
+ * Spring la registra como bean gracias a @Service y le inyecta el repositorio
+ * con @Autowired (inyección de dependencias).
+ */
+@Service
+public class ClienteServiceImpl implements ClienteService {
+
+    @Autowired
+    public ClienteRepositoryMemoria clienteRepository;
+
+    @Override
+    public List<Cliente> listarClientes() {
+        return clienteRepository.listarTodos();
+    }
+
+    @Override
+    public Cliente buscarPorCorreo(String correo) {
+        return clienteRepository.listarTodos()
+                .stream()
+                .filter(cliente -> cliente.getCorreo().equalsIgnoreCase(correo))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public String registrar(Cliente cliente) {
+        // El id lo genera el repositorio: el formulario del registro nunca lo envía.
+        cliente.setIdCliente(0);
+
+        String error = validarDatosUnicos(cliente);
+        if (error != null) {
+            return error;
+        }
+
+        clienteRepository.guardar(cliente);
+        return null;
+    }
+
+    @Override
+    public String actualizarPerfil(String correoActual, Cliente cliente, String passwordActual) {
+        Cliente cuentaRegistrada = buscarPorCorreo(correoActual);
+        if (cuentaRegistrada == null) {
+            return "No account is registered with the email " + correoActual + ".";
+        }
+
+        if (!cuentaRegistrada.getPassword().equals(passwordActual)) {
+            return "The current password does not match.";
+        }
+
+        // Keep the account identity and password unchanged during profile updates.
+        cliente.setIdCliente(cuentaRegistrada.getIdCliente());
+        cliente.setPassword(cuentaRegistrada.getPassword());
+
+        String error = validarDatosUnicos(cliente);
+        if (error != null) {
+            return error;
+        }
+
+        clienteRepository.guardar(cliente);
+        return null;
+    }
+
+    @Override
+    public String eliminarCuenta(String correo) {
+        Cliente cuentaRegistrada = buscarPorCorreo(correo);
+        if (cuentaRegistrada == null) {
+            return "No account is registered with the email " + correo + ".";
+        }
+
+        clienteRepository.eliminar(cuentaRegistrada.getIdCliente());
+        return null;
+    }
+
+    /** Busca por cédula para poder validar que no se repita. */
+    private Cliente buscarPorCedula(String cedula) {
+        return clienteRepository.listarTodos()
+                .stream()
+                .filter(cliente -> cliente.getCedula().equals(cedula))
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
+     * El correo y la cédula son campos únicos: ningún otro cliente puede tenerlos.
+     * Se compara contra el id porque, al editar el perfil, el propio cliente sí
+     * conserva su correo y su cédula y eso no debe contar como duplicado.
+     */
+    private String validarDatosUnicos(Cliente cliente) {
+        Cliente clienteConEseCorreo = buscarPorCorreo(cliente.getCorreo());
+        if (clienteConEseCorreo != null && clienteConEseCorreo.getIdCliente() != cliente.getIdCliente()) {
+            return "An account is already registered with the email " + cliente.getCorreo() + ".";
+        }
+
+        Cliente clienteConEsaCedula = buscarPorCedula(cliente.getCedula());
+        if (clienteConEsaCedula != null && clienteConEsaCedula.getIdCliente() != cliente.getIdCliente()) {
+            return "An account is already registered with the national ID " + cliente.getCedula() + ".";
+        }
+
+        if (!esUrlHttpValida(cliente.getFotoPerfil())) {
+            return "The profile photo must be a valid HTTP or HTTPS URL.";
+        }
+
+        return null;
+    }
+
+    private boolean esUrlHttpValida(String url) {
+        if (url == null || url.isBlank()) {
+            return true;
+        }
+
+        try {
+            URI uri = URI.create(url.trim());
+            return uri.isAbsolute() && ("http".equalsIgnoreCase(uri.getScheme())
+                    || "https".equalsIgnoreCase(uri.getScheme()));
+        } catch (IllegalArgumentException error) {
+            return false;
+        }
+    }
+}
