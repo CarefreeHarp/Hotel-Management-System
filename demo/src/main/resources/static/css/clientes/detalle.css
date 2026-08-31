@@ -1,0 +1,5 @@
+@import url("../admin/admin-shell.css");
+
+.profile-visual { position: relative; }
+.profile-visual::after { content: "Perfil"; position: absolute; right: 1rem; bottom: 0.5rem; color: rgba(255, 255, 255, 0.08); font-family: var(--font-display); font-size: 4rem; }
+.profile-visual .detail-placeholder { font-size: clamp(4rem, 10vw, 7rem); }

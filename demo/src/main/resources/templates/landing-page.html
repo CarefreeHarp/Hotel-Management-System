@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Atlan Suites — A Quiet Luxury on the Water</title>
 
-    <!-- GOOGLE FONTS PARA LOS FONTS :) -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -19,15 +19,15 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" th:href="@{/css/css-utils/base/common.css}" />
-    <link rel="stylesheet" th:href="@{/css/index/home.css}" />
-    <link rel="stylesheet" th:href="@{/css/index/the-view.css}" />
-    <link rel="stylesheet" th:href="@{/css/index/suites.css}" />
-    <link rel="stylesheet" th:href="@{/css/index/experiences.css}" />
+    <link rel="stylesheet" th:href="@{/css/landing-page/home.css}" />
+    <link rel="stylesheet" th:href="@{/css/landing-page/the-view.css}" />
+    <link rel="stylesheet" th:href="@{/css/landing-page/suites.css}" />
+    <link rel="stylesheet" th:href="@{/css/landing-page/experiences.css}" />
   </head>
   <body>
     <div class="scroll-progress" id="scroll-progress" role="progressbar" aria-label="Page scroll progress" aria-valuemin="0" aria-valuemax="100"></div>
 
-    <!-- HEADER CON EL NAV -->
+    <!-- Header navigation -->
     <header class="site-header navbar navbar-expand-md">
       <a th:href="@{/}" class="brand-mark">
         <img
@@ -48,6 +48,9 @@
       </div>
 
       <div class="header-actions">
+        <a th:href="@{/login}" class="btn btn-primary"
+          >Login<span aria-hidden="true">↗</span></a
+        >
         <a th:href="@{/#book-section}" class="btn btn-primary"
           >Book now<span aria-hidden="true">↗</span></a
         >
@@ -69,7 +72,7 @@
       <!-- HERO -->
       <section class="hero" id="hero" aria-labelledby="hero-title">
         <img
-          src="/images/index/home_photo.png"
+          src="/images/landing-page/home_photo.png"
           alt="Atlan Suites in Singapore"
           class="hero-image"
         />
@@ -94,7 +97,7 @@
         </p>
       </section>
 
-      <!-- THE HOTEL: VIDEO CONTROLADO POR SCROLL -->
+      <!-- The hotel: scroll-controlled video -->
       <section class="video-section" id="video-section" aria-labelledby="hotel-title">
         <h2 class="visually-hidden" id="hotel-title">The hotel</h2>
         <video
@@ -104,7 +107,7 @@
           preload="auto"
           aria-label="Aerial view of Atlan Suites in Singapore"
         >
-          <source src="/images/index/Hotel_video.mp4" type="video/mp4" />
+          <source src="/images/landing-page/Hotel_video.mp4" type="video/mp4" />
         </video>
         <aside class="video-view-card">
           <span class="eyebrow">The hotel</span>
@@ -112,7 +115,7 @@
         </aside>
       </section>
 
-      <!-- HABITACIONES-->
+      <!-- Rooms -->
       <section class="rooms-section" id="rooms-section" aria-labelledby="rooms-title">
         <span class="rooms-watermark" aria-hidden="true"
           >Rooms<br />And<br />Suites</span
@@ -879,7 +882,7 @@
         </div>
       </section>
 
-      <!-- EXPERIENCIAS-->
+      <!-- Experiences -->
       <section class="experiences-section" id="experiences-section" aria-labelledby="experiences-title">
         <span class="experiences-watermark" aria-hidden="true"
           >Experiences</span
@@ -1042,7 +1045,7 @@
       </section>
     </main>
 
-    <!-- FOOTER -->
+    <!-- Footer -->
     <footer class="site-footer" id="book-section">
       <div class="container-fluid">
         <section class="footer-cta row gy-4 align-items-center" aria-labelledby="booking-title">
@@ -1155,6 +1158,6 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-    <script src="/js/index/main.js"></script>
+    <script src="/js/landing-page/main.js"></script>
   </body>
 </html>

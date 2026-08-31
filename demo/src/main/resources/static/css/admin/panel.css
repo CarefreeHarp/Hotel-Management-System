@@ -1,0 +1,17 @@
+@import url("./admin-shell.css");
+
+.panel-welcome { position: relative; overflow: hidden; margin-bottom: 1.5rem; padding: clamp(1.6rem, 4vw, 3rem); }
+.panel-welcome::after { content: "ATLAN"; position: absolute; right: -0.04em; bottom: -0.38em; color: rgba(255, 255, 255, 0.025); font-family: var(--font-display); font-size: clamp(8rem, 24vw, 18rem); line-height: 1; pointer-events: none; }
+.panel-welcome__content { position: relative; z-index: 1; max-width: 46rem; }
+.panel-welcome__meta { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 2rem; }
+.panel-chip { padding: 0.5rem 0.75rem; border: 1px solid var(--atlan-line); border-radius: 999px; color: var(--atlan-muted); font-size: 0.68rem; }
+
+.management-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.management-card { position: relative; display: flex; min-height: 19rem; flex-direction: column; justify-content: space-between; padding: 1.5rem; border: 1px solid var(--atlan-line); border-radius: var(--radius-lg); color: var(--atlan-text); background: var(--atlan-panel); text-decoration: none; transition: transform 220ms ease, border-color 220ms ease, background 220ms ease; }
+.management-card:hover { color: var(--atlan-text); transform: translateY(-5px); border-color: var(--atlan-line-strong); background: var(--atlan-panel-light); }
+.management-card__number { color: var(--atlan-gold-light); font-family: var(--font-display); font-size: 2.2rem; }
+.management-card h2 { margin: 0 0 0.65rem; font-family: var(--font-display); font-size: 2rem; font-weight: 500; line-height: 1; }
+.management-card p { margin: 0; color: var(--atlan-muted); font-size: 0.78rem; }
+.management-card__arrow { display: grid; width: 2.6rem; height: 2.6rem; margin-top: 1.5rem; place-items: center; border-radius: 50%; color: var(--atlan-ink); background: var(--atlan-sky); }
+
+@media (max-width: 991.98px) { .management-grid { grid-template-columns: 1fr; } .management-card { min-height: 13rem; } }

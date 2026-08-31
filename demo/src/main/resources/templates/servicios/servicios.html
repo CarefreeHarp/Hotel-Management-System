@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Services — Atlan Suites</title>
 
-    <!-- GOOGLE FONTS PARA LA TIPOGRAFÍA DEL HOTEL -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,7 +13,7 @@
       rel="stylesheet"
     />
 
-    <!-- BOOTSTRAP 5.3.3 CSS CDN: Aporta el sistema de rejilla (Grid), contenedores responsivos y flexbox -->
+    <!-- Bootstrap 5.3.3 CSS CDN: responsive grid, containers, and flexbox utilities -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -21,17 +21,14 @@
       crossorigin="anonymous"
     />
 
-    <!-- ESTILOS ORIGINALES DEL PROYECTO (Preservan la estética de lujo y paleta de colores de Atlan Suites) -->
+    <!-- Project styles preserving Atlan Suites' luxury aesthetic and color palette -->
     <link rel="stylesheet" th:href="@{/css/css-utils/base/common.css}" />
     <link rel="stylesheet" th:href="@{/css/servicios/servicios.css}" />
   </head>
   <body class="page-services">
-    <!-- 
-      HEADER CON NAVEGACIÓN BOOTSTRAP
-      Integración Bootstrap: Clases 'navbar', 'navbar-expand-md', 'collapse navbar-collapse', 'navbar-nav' para menú responsive colapsable y navegación limpia.
-    -->
+    <!-- Header navigation: section links point to the landing page -->
     <header class="site-header navbar navbar-expand-md">
-      <a href="index" class="brand-mark">
+      <a th:href="@{/}" class="brand-mark">
         <img
           th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}"
           alt="Atlan Suites"
@@ -39,12 +36,12 @@
         />
       </a>
 
-      <!-- Menú colapsable controlado por data-bs-toggle de Bootstrap JS -->
+      <!-- Collapsible menu controlled by Bootstrap's data-bs-toggle -->
       <div class="collapse navbar-collapse" id="main-nav">
         <nav class="main-nav navbar-nav flex-column flex-md-row">
-          <a href="index#hero" class="nav-link flex-fill">Home</a>
-          <a href="index#video-section" class="nav-link flex-fill">The hotel</a>
-          <a href="index#rooms-section" class="nav-link flex-fill">Suites</a>
+          <a th:href="@{/#hero}" class="nav-link flex-fill">Home</a>
+          <a th:href="@{/#video-section}" class="nav-link flex-fill">The hotel</a>
+          <a th:href="@{/#rooms-section}" class="nav-link flex-fill">Suites</a>
           <a th:href="@{/servicios/lista}" class="nav-link flex-fill is-active">Services</a>
         </nav>
       </div>
@@ -53,7 +50,7 @@
         <a href="#book-section" class="btn btn-primary"
           >Book now<span aria-hidden="true">↗</span></a
         >
-        <!-- Toggler para navegación móvil en Bootstrap -->
+        <!-- Bootstrap mobile navigation toggler -->
         <button
           class="nav-toggle navbar-toggler d-flex d-md-none"
           type="button"
@@ -69,10 +66,7 @@
     </header>
 
     <main>
-      <!-- 
-        ENCABEZADO DE LA PANTALLA (HERO)
-        Integración Bootstrap: Sistema de rejilla con 'container', 'row', 'justify-content-center' y 'col-12 col-md-10 col-lg-8' para centrar responsivamente.
-      -->
+      <!-- Screen heading -->
       <section class="services-hero" aria-labelledby="services-title">
         <div class="container text-center">
           <div class="row justify-content-center">
@@ -88,17 +82,10 @@
         </div>
       </section>
 
-      <!-- 
-        TABLA DE SERVICIOS
-        Integración Bootstrap: 
-        1. 'container-fluid px-3 px-md-4' para márgenes de contenido fluido.
-        2. Toolbar alineada con Flexbox ('d-flex', 'flex-column', 'flex-md-row', 'justify-content-between', 'align-items-md-end', 'gap-3').
-        3. Selector de vista integrado con la clase de Bootstrap 'btn-group'.
-        4. Contenedor responsivo nativo 'table-responsive' de Bootstrap para adaptación en móviles.
-      -->
+      <!-- Table with all hotel services -->
       <section class="services-section" aria-labelledby="services-table-title">
         <div class="services-list-container container-fluid px-3 px-md-4">
-          <!-- Encabezado de sección con alineación flexible de Bootstrap -->
+          <!-- Section heading aligned with Bootstrap flex utilities -->
           <header class="services-intro d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3">
             <div>
               <p class="eyebrow">Full list</p>
@@ -111,14 +98,14 @@
               </p>
             </div>
 
-            <!-- Botones switcher de vista (Tarjetas / Lista) con btn-group de Bootstrap -->
+            <!-- Card/list view switcher using Bootstrap's btn-group -->
             <div class="view-mode-switcher btn-group" role="group" aria-label="Modo de vista">
-              <a th:href="@{/servicios/tarjetas}" class="view-btn btn">Tarjetas</a>
-              <a th:href="@{/servicios/lista}" class="view-btn btn is-active">Lista</a>
+              <a th:href="@{/servicios/tarjetas}" class="view-btn btn">Cards</a>
+              <a th:href="@{/servicios/lista}" class="view-btn btn is-active">List</a>
             </div>
           </header>
 
-          <!-- Tabla con wrapper de desplazamiento horizontal de Bootstrap -->
+          <!-- Table with Bootstrap horizontal scrolling wrapper -->
           <div class="table-responsive">
             <table class="services-table">
             <thead>
@@ -131,10 +118,10 @@
               </tr>
             </thead>
             <tbody>
-              <!-- UNA FILA POR CADA SERVICIO QUE ENVÍA EL CONTROLADOR THYMELEAF -->
+              <!-- One row for each service provided by the controller -->
               <tr class="services-row" th:each="servicio : ${servicios}">
                 <th scope="row">
-                  <!-- EL NOMBRE LLEVA A LA PANTALLA DE DETALLE: /servicios/{nombreUrl} -->
+                  <!-- The name links to the detail screen: /servicios/{nombreUrl} -->
                   <a
                     class="service-link"
                     th:href="@{/servicios/{nombreUrl}(nombreUrl=${servicio.nombreUrl})}"
@@ -143,13 +130,13 @@
                   >
                 </th>
                 <td th:text="${servicio.descripcion}">
-                  Circuito de relajación y tratamientos de spa.
+                    Relaxation circuit and spa treatments.
                 </td>
                 <td>
-                  <span class="service-tag" th:text="${servicio.categoria}">Bienestar</span>
+                  <span class="service-tag" th:text="${servicio.categoria}">Wellness</span>
                 </td>
                 <td>
-                  <!-- EL ESTADO DEPENDE DE SI EL SERVICIO ESTÁ ACTIVO -->
+                  <!-- Status depends on whether the service is active -->
                   <span
                     class="service-status"
                     th:classappend="${servicio.activo} ? 'is-available' : 'is-unavailable'"
@@ -158,7 +145,7 @@
                   >
                 </td>
                 <td class="services-cell-price">
-                  <!-- LOS SERVICIOS SIN COSTO SE MUESTRAN COMO INCLUIDOS EN LA ESTADÍA -->
+                  <!-- Complimentary services are shown as included in the stay -->
                   <span
                     th:if="${servicio.precio > 0}"
                     th:text="'$' + ${#numbers.formatInteger(servicio.precio, 1, 'POINT')}"
@@ -168,7 +155,7 @@
                 </td>
               </tr>
 
-              <!-- MENSAJE POR SI TODAVÍA NO HAY SERVICIOS CARGADOS (Utilidades Bootstrap 'text-center' y 'py-4') -->
+              <!-- Message shown when no services have been loaded -->
               <tr th:if="${#lists.isEmpty(servicios)}">
                 <td colspan="5" class="services-empty text-center py-4">
                   There are no services available at the moment.
@@ -181,13 +168,10 @@
       </section>
     </main>
 
-    <!-- 
-      FOOTER PRINCIPAL
-      Integración Bootstrap: Sistema de rejilla responsiva con 'container-fluid', 'row', 'gy-4', 'gy-5', 'col-12', 'col-sm-6', 'col-lg-3', 'col-lg-6', 'offset-lg-2' y utilidades de alineación 'd-flex'.
-    -->
+    <!-- Footer -->
     <footer class="site-footer" id="book-section">
       <div class="container-fluid">
-        <!-- Call to Action alineado con Grid Bootstrap -->
+        <!-- Booking call to action aligned with Bootstrap's grid -->
         <section class="footer-cta row gy-4 align-items-center" aria-labelledby="booking-title">
           <div class="col-12 col-lg-6">
             <p class="eyebrow">Reserve</p>
@@ -207,7 +191,7 @@
           </div>
         </section>
 
-        <!-- Marca de identidad del Hotel centrada -->
+        <!-- Centered hotel identity mark -->
         <figure class="footer-brand d-block mx-auto text-center">
           <img
             th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}"
@@ -217,7 +201,7 @@
           <figcaption>Singapore</figcaption>
         </figure>
 
-        <!-- Secciones del footer organizadas en 4 columnas en pantallas grandes mediante Grid de Bootstrap -->
+        <!-- Footer sections arranged in four columns on large screens with Bootstrap's grid -->
         <div class="row gy-5 footer-content">
           <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="discover-title">
             <h2 class="footer-heading" id="discover-title">Discover Atlan</h2>
@@ -282,7 +266,7 @@
           </section>
         </div>
 
-        <!-- Barra inferior del footer con utilidades Flexbox de Bootstrap ('d-flex', 'flex-column', 'flex-md-row', 'gap-2') -->
+        <!-- Footer bottom bar using Bootstrap flex utilities -->
         <div
           class="footer-bottom d-flex flex-column flex-md-row justify-content-center align-items-center gap-2"
         >
@@ -296,7 +280,7 @@
       </div>
     </footer>
 
-    <!-- BOOTSTRAP 5.3.3 JS BUNDLE -->
+    <!-- Bootstrap 5.3.3 JS bundle -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -305,4 +289,3 @@
     <script th:src="@{/js/servicios/servicios.js}"></script>
   </body>
 </html>
-

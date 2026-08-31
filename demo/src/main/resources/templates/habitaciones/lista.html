@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rooms | Atlan Suites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script><script>tailwind.config = { prefix: "tw-", corePlugins: { preflight: false } };</script>
+    <link rel="stylesheet" th:href="@{/css/habitaciones/lista.css}" href="/css/habitaciones/lista.css" />
+  </head>
+  <body class="portal-body">
+    <div th:replace="~{fragments/admin-shell :: header('habitaciones')}"></div>
+    <main class="portal-main"><div class="container-xxl">
+      <header class="page-heading"><div><p class="page-eyebrow">Hotel inventory</p><h1 class="page-title">Rooms</h1><p class="page-description">Manage the type, location, and operating status of each room.</p></div><a class="atlan-btn atlan-btn--primary" th:href="@{/admin/habitaciones/create}">New room <span aria-hidden="true">＋</span></a></header>
+      <section class="surface-card" aria-labelledby="room-list-title">
+        <h2 class="visually-hidden" id="room-list-title">Room list</h2>
+        <div class="table-shell"><table class="table portal-table">
+          <thead><tr><th>View</th><th>Number</th><th>Floor</th><th>Status</th><th>Availability</th><th>Type</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr
+              th:each="habitacion : ${habitaciones}"
+              th:with="fotoTipo=${habitacion.idTipo == 1 ? 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0020-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*' : (habitacion.idTipo == 2 ? 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*' : (habitacion.idTipo == 3 ? 'https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-dpssw-junior-suite-12993:Wide-Hor?wid=540&amp;fit=constrain' : 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*'))}"
+            >
+              <td><img class="room-thumbnail" th:src="${fotoTipo}" th:alt="|Room ${habitacion.numero}|" loading="lazy" /></td>
+              <td><span class="room-number" th:text="${habitacion.numero}">101</span></td>
+              <td class="room-data-cell" th:text="${habitacion.piso}">1</td>
+              <td><span class="status-badge" th:classappend="${habitacion.estado.name() == 'DISPONIBLE' ? ' status-badge--success' : ' status-badge--occupied'}" th:text="${habitacion.estado.name() == 'DISPONIBLE' ? 'Available' : 'Occupied'}">Available</span></td>
+              <td><span class="status-badge" th:classappend="${habitacion.disponible} ? ' status-badge--success' : ' status-badge--unavailable'" th:text="${habitacion.disponible ? 'Available' : 'Unavailable'}">Available</span></td>
+              <td class="room-data-cell" th:text="${habitacion.idTipo}">1</td>
+              <td><div class="table-actions tw-flex tw-gap-2"><a class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="@{/admin/habitaciones/read/{numero}(numero=${habitacion.numero})}">View</a><a class="atlan-btn atlan-btn--edit atlan-btn--small" th:href="@{/admin/habitaciones/update/{numero}(numero=${habitacion.numero})}">Edit</a><form th:action="@{/admin/habitaciones/delete/{numero}(numero=${habitacion.numero})}" method="post" onsubmit="return confirm('Do you want to delete this room?');"><button class="atlan-btn atlan-btn--danger atlan-btn--small" type="submit">Delete</button></form></div></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(habitaciones)}"><td class="empty-state" colspan="7">No rooms are registered. Add the first one to get started.</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+    </div></main>
+    <div th:replace="~{fragments/admin-shell :: footer}"></div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
