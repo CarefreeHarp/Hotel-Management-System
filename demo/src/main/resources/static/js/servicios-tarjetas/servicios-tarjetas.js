@@ -1,4 +1,4 @@
-// Comportamiento exclusivo de servicios-tarjetas.html.
+// Behavior exclusive to servicios-tarjetas.html.
 const cardsHeader = document.querySelector('.site-header');
 
 if (cardsHeader) {

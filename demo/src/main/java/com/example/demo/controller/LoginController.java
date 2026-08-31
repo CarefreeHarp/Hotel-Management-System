@@ -34,7 +34,7 @@ public class LoginController {
             return "redirect:/clientes/read/" + cliente.getCorreo();
         }
 
-        model.addAttribute("error", "Usuario o contraseña incorrectos.");
+        model.addAttribute("error", "Incorrect username or password.");
         return "login/login";
     }
 

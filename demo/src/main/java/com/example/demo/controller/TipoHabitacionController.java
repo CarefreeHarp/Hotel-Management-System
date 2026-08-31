@@ -45,7 +45,7 @@ public class TipoHabitacionController {
     @GetMapping("/create")
     public String mostrarFormularioCreacion(Model model) {
         model.addAttribute("tipo", new TipoHabitacion());
-        model.addAttribute("titulo", "Nuevo tipo de habitación");
+        model.addAttribute("titulo", "New room type");
         model.addAttribute("accion", "/admin/tipos-habitacion/create");
         return "tipos-habitacion/formulario";
     }
@@ -58,7 +58,7 @@ public class TipoHabitacionController {
 
         if (error != null) {
             model.addAttribute("tipo", tipo);
-            model.addAttribute("titulo", "Nuevo tipo de habitación");
+            model.addAttribute("titulo", "New room type");
             model.addAttribute("accion", "/admin/tipos-habitacion/create");
             model.addAttribute("error", error);
             return "tipos-habitacion/formulario";
@@ -80,7 +80,7 @@ public class TipoHabitacionController {
         }
 
         model.addAttribute("tipo", tipo);
-        model.addAttribute("titulo", "Editar tipo de habitación");
+        model.addAttribute("titulo", "Edit room type");
         model.addAttribute("accion", "/admin/tipos-habitacion/update/" + nombre);
         return "tipos-habitacion/formulario";
     }
@@ -98,7 +98,7 @@ public class TipoHabitacionController {
 
         if (error != null) {
             model.addAttribute("tipo", tipo);
-            model.addAttribute("titulo", "Editar tipo de habitación");
+            model.addAttribute("titulo", "Edit room type");
             model.addAttribute("accion", "/admin/tipos-habitacion/update/" + nombreActual);
             model.addAttribute("error", error);
             return "tipos-habitacion/formulario";
