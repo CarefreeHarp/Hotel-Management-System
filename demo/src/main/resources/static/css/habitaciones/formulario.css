@@ -1,0 +1,9 @@
+@import url("../admin/admin-shell.css");
+
+.photo-fields { display: grid; gap: 0.8rem; }
+.photo-field { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr); align-items: center; gap: 0.65rem; margin: 0; }
+.photo-field__number { display: grid; width: 2.25rem; height: 2.25rem; place-items: center; border-radius: 50%; color: var(--atlan-muted); background: rgba(255, 255, 255, 0.04); font-size: 0.68rem; }
+.availability-box { display: flex; align-items: center; justify-content: space-between; min-height: 3.5rem; padding: 0.65rem 0.85rem; border: 1px solid var(--atlan-line); border-radius: 0.8rem; background: rgba(7, 12, 16, 0.26); }
+.availability-box label { margin: 0; }
+.availability-box .form-check-input { width: 2.5rem; height: 1.3rem; margin: 0; border-color: var(--atlan-line); background-color: #31414e; }
+.availability-box .form-check-input:checked { border-color: var(--atlan-success); background-color: var(--atlan-success); }
