@@ -49,7 +49,7 @@ public class TipoHabitacionServiceImpl implements TipoHabitacionService {
     public String actualizar(String nombreActual, TipoHabitacion tipoHabitacion) {
         TipoHabitacion tipoRegistrado = buscarPorNombre(nombreActual);
         if (tipoRegistrado == null) {
-            return "No existe un tipo de habitación llamado " + nombreActual + ".";
+            return "No room type named " + nombreActual + " exists.";
         }
 
         // Se conserva el id que ya tenía el tipo para no crear un registro nuevo.
@@ -68,7 +68,7 @@ public class TipoHabitacionServiceImpl implements TipoHabitacionService {
     public String eliminar(String nombre) {
         TipoHabitacion tipoRegistrado = buscarPorNombre(nombre);
         if (tipoRegistrado == null) {
-            return "No existe un tipo de habitación llamado " + nombre + ".";
+            return "No room type named " + nombre + " exists.";
         }
 
         tipoHabitacionRepository.eliminar(tipoRegistrado.getIdTipo());
@@ -84,15 +84,15 @@ public class TipoHabitacionServiceImpl implements TipoHabitacionService {
     private String validarDatos(TipoHabitacion tipoHabitacion) {
         TipoHabitacion tipoConEseNombre = buscarPorNombre(tipoHabitacion.getNombre());
         if (tipoConEseNombre != null && tipoConEseNombre.getIdTipo() != tipoHabitacion.getIdTipo()) {
-            return "Ya existe un tipo de habitación llamado " + tipoHabitacion.getNombre() + ".";
+            return "A room type named " + tipoHabitacion.getNombre() + " already exists.";
         }
 
         if (tipoHabitacion.getPrecioNoche() < 0) {
-            return "El precio por noche no puede ser negativo.";
+            return "The nightly price cannot be negative.";
         }
 
         if (tipoHabitacion.getCapacidadMaxima() < 1) {
-            return "La capacidad máxima debe ser de al menos una persona.";
+            return "Maximum capacity must be at least one guest.";
         }
 
         return null;

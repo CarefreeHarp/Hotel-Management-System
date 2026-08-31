@@ -1,20 +1,24 @@
 <!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Servicios en tarjetas — Atlan Suites</title>
+    <title>Services in cards — Atlan Suites</title>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <!-- Bootstrap 5.3.3 CSS CDN: responsive grid and flexbox utilities -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Custom styles preserving the original luxury design -->
     <link rel="stylesheet" th:href="@{/css/css-utils/base/common.css}" />
     <link rel="stylesheet" th:href="@{/css/servicios-tarjetas/servicios-tarjetas.css}" />
   </head>
   <body class="page-services dark-theme">
+    <!-- Bootstrap responsive header navigation -->
     <header class="site-header navbar navbar-expand-md">
       <a th:href="@{/}" class="brand-mark">
-        <img th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}" alt="Atlan Suites" class="brand-logo" />
+        <img th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}" alt="Atlan Suites" class="brand-logo img-fluid" />
       </a>
       <div class="collapse navbar-collapse" id="main-nav">
         <nav class="main-nav navbar-nav flex-column flex-md-row">
@@ -25,7 +29,8 @@
         </nav>
       </div>
       <div class="header-actions">
-        <a href="#book-section" class="btn btn-primary">Reservar ahora <span aria-hidden="true">↗</span></a>
+        <a href="#book-section" class="btn btn-primary">Book now <span aria-hidden="true">↗</span></a>
+        <!-- Bootstrap mobile navigation toggler -->
         <button class="nav-toggle navbar-toggler d-flex d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav" aria-label="Toggle menu">
           <span></span><span></span><span></span>
         </button>
@@ -33,119 +38,141 @@
     </header>
 
     <main>
+      <!-- Services hero using Bootstrap's responsive grid -->
       <section class="services-hero" aria-labelledby="services-title">
-        <div class="hero-header-badge" aria-hidden="true">✦</div>
-        <h1 class="services-hero-title" id="services-title">Nuestros servicios</h1>
-        <p class="services-hero-text">Descubre todos los servicios exclusivos que harán de tu estancia una experiencia inolvidable.</p>
+        <div class="container text-center">
+          <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+              <div class="hero-header-badge" aria-hidden="true">✦</div>
+              <h1 class="services-hero-title" id="services-title">Our services</h1>
+              <p class="services-hero-text">Discover the exclusive services that will make your stay unforgettable.</p>
+            </div>
+          </div>
+        </div>
       </section>
 
+      <!-- Main cards section using Bootstrap's responsive utilities -->
       <section class="services-section" aria-labelledby="services-grid-title">
-        <div class="services-container">
+        <div class="services-container container-fluid px-3 px-md-4">
+          <!-- Control toolbar using Bootstrap flex utilities -->
           <div class="controls-toolbar d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-            <nav class="category-filters mb-0" aria-label="Filtros de servicios">
-              <button class="filter-btn is-active" data-filter="all" type="button">Todos</button>
-              <button class="filter-btn" data-filter="Alimentación" type="button">Alimentación</button>
-              <button class="filter-btn" data-filter="Bienestar" type="button">Bienestar</button>
-              <button class="filter-btn" data-filter="Transporte" type="button">Transporte</button>
-              <button class="filter-btn" data-filter="Conectividad" type="button">Conectividad</button>
-              <button class="filter-btn" data-filter="Habitación" type="button">Habitación</button>
-              <button class="filter-btn" data-filter="Atención al huésped" type="button">Atención al huésped</button>
-              <button class="filter-btn" data-filter="Recreación" type="button">Recreación</button>
-              <button class="filter-btn" data-filter="Lavandería" type="button">Lavandería</button>
+            <nav class="category-filters mb-0" aria-label="Service filters">
+              <button class="filter-btn is-active" data-filter="all" type="button">All</button>
+              <button class="filter-btn" data-filter="Food and beverage" type="button">Food and beverage</button>
+              <button class="filter-btn" data-filter="Wellness" type="button">Wellness</button>
+              <button class="filter-btn" data-filter="Transportation" type="button">Transportation</button>
+              <button class="filter-btn" data-filter="Connectivity" type="button">Connectivity</button>
+              <button class="filter-btn" data-filter="Room" type="button">Room</button>
+              <button class="filter-btn" data-filter="Guest services" type="button">Guest services</button>
+              <button class="filter-btn" data-filter="Recreation" type="button">Recreation</button>
+              <button class="filter-btn" data-filter="Laundry" type="button">Laundry</button>
             </nav>
-            <div class="view-mode-switcher btn-group" role="group" aria-label="Modo de vista">
-              <a th:href="@{/servicios/tarjetas}" class="view-btn btn btn-sm is-active">Tarjetas</a>
-              <a th:href="@{/servicios/lista}" class="view-btn btn btn-sm">Lista</a>
+            <!-- Card/list view switcher using Bootstrap's btn-group -->
+            <div class="view-mode-switcher btn-group" role="group" aria-label="View mode">
+              <a th:href="@{/servicios/tarjetas}" class="view-btn btn btn-sm is-active">Cards</a>
+              <a th:href="@{/servicios/lista}" class="view-btn btn btn-sm">List</a>
             </div>
           </div>
 
-          <h2 id="services-grid-title" class="visually-hidden">Servicios en tarjetas</h2>
+          <h2 id="services-grid-title" class="visually-hidden">Services in cards</h2>
+
+          <!-- Luxury service card grid -->
           <div class="services-grid">
             <a th:each="servicio : ${servicios}" th:href="@{'/servicios/' + ${servicio.nombreUrl}}" class="service-card" th:data-category="${servicio.categoria}">
               <div class="card-image-wrapper">
-                <img class="card-service-image" th:src="${servicio.imagenPrincipalUrl}" th:alt="${servicio.nombre}" loading="lazy" />
+                <img class="card-service-image img-fluid" th:src="${servicio.imagenPrincipalUrl}" th:alt="${servicio.nombre}" loading="lazy" />
               </div>
               <div class="card-body-content">
-                <h3 class="card-service-title" th:text="${servicio.nombre}">Servicio</h3>
-                <p class="card-service-desc" th:text="${servicio.descripcion}">Descripción del servicio.</p>
+                <h3 class="card-service-title" th:text="${servicio.nombre}">Service</h3>
+                <p class="card-service-desc" th:text="${servicio.descripcion}">Service description.</p>
               </div>
               <div class="card-footer-bar">
                 <span class="card-price" th:if="${servicio.precio > 0}" th:text="'$' + ${#numbers.formatInteger(servicio.precio, 1, 'POINT')}">$0</span>
-                <span class="card-price" th:unless="${servicio.precio > 0}">Incluido</span>
-                <span class="card-category" th:text="${servicio.categoria}">Categoría</span>
+                <span class="card-price" th:unless="${servicio.precio > 0}">Included</span>
+                <span class="card-category" th:text="${servicio.categoria}">Category</span>
               </div>
             </a>
           </div>
-          <div id="no-services-msg" class="services-empty-grid d-none"><p>No hay servicios disponibles en esta categoría.</p></div>
+          <!-- Empty category message using Bootstrap utilities -->
+          <div id="no-services-msg" class="services-empty-grid text-center py-4 d-none"><p>No services are available in this category.</p></div>
         </div>
       </section>
     </main>
 
+    <!--
+      Main footer.
+      Bootstrap integration: responsive grid with 'container-fluid', 'row', 'gy-4', 'gy-5', 'col-12', 'col-sm-6', 'col-lg-3', 'col-lg-6', 'offset-lg-2', and the 'd-flex' Flexbox utilities.
+    -->
     <footer class="site-footer" id="book-section">
       <div class="container-fluid">
+        <!-- Booking call to action -->
         <section class="footer-cta row gy-4 align-items-center" aria-labelledby="booking-title">
           <div class="col-12 col-lg-6">
-            <p class="eyebrow">RESERVAR</p>
-            <h2 id="booking-title">RESERVA TU<br />ESTANCIA</h2>
-            <span class="footer-book-button">RESERVAR AHORA <span aria-hidden="true">↗</span></span>
+            <p class="eyebrow">RESERVE</p>
+            <h2 id="booking-title">BOOK YOUR<br />STAY</h2>
+            <span class="footer-book-button">BOOK NOW <span aria-hidden="true">↗</span></span>
           </div>
           <div class="col-12 col-lg-4 offset-lg-2">
             <address class="footer-contact-card">
-              <p class="eyebrow">CONTACTO</p>
-              <p>reservas@atlansuites.com<br />+65 6555 0142</p>
+              <p class="eyebrow">CONTACT</p>
+              <p>reservations@atlansuites.com<br />+65 6555 0142</p>
               <hr />
-              <p class="eyebrow">UBICACIÓN DEL HOTEL</p>
-              <p>Singapur</p>
+              <p class="eyebrow">HOTEL LOCATION</p>
+              <p>Singapore</p>
             </address>
           </div>
         </section>
 
-        <figure class="footer-brand d-block mx-auto">
-          <img th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}" alt="Atlan Suites" class="footer-logo" />
-          <figcaption>SINGAPUR</figcaption>
+        <!-- Centered hotel identity mark -->
+        <figure class="footer-brand d-block mx-auto text-center">
+          <img th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}" alt="Atlan Suites" class="footer-logo img-fluid" />
+          <figcaption>SINGAPORE</figcaption>
         </figure>
 
+        <!-- Footer columns arranged into four desktop columns with Bootstrap's grid -->
         <div class="row gy-5 footer-content">
           <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="discover-title">
-            <h2 class="footer-heading" id="discover-title">Descubre Atlan</h2>
+            <h2 class="footer-heading" id="discover-title">Discover Atlan</h2>
             <ul class="footer-links">
-              <li><span>Sobre nosotros</span></li>
-              <li><span>Nuestras suites</span></li>
-              <li><span>Experiencias</span></li>
-              <li><span>Contacto</span></li>
+              <li><span>About us</span></li>
+              <li><span>Our suites</span></li>
+              <li><span>Experiences</span></li>
+              <li><span>Contact us</span></li>
             </ul>
           </section>
           <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="information-title">
-            <h2 class="footer-heading" id="information-title">Información útil</h2>
+            <h2 class="footer-heading" id="information-title">Useful information</h2>
             <ul class="footer-links">
-              <li><span>Reservas</span></li>
-              <li><span>Guía de viaje</span></li>
-              <li><span>Comodidades</span></li>
-              <li><span>Preguntas frecuentes</span></li>
+              <li><span>Reservations</span></li>
+              <li><span>Travel guide</span></li>
+              <li><span>Amenities</span></li>
+              <li><span>Frequently asked questions</span></li>
             </ul>
           </section>
           <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="social-title">
-            <h2 class="footer-heading" id="social-title">Conéctate con nosotros</h2>
-            <nav class="social-links" aria-label="Redes sociales">
-              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img th:src="@{/images/images-utils/social-media/logotipo-de-instagram.png}" alt="" /></a>
-              <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img th:src="@{/images/images-utils/social-media/facebook.png}" alt="" /></a>
-              <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><img th:src="@{/images/images-utils/social-media/youtube.png}" alt="" /></a>
-              <a href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X"><img th:src="@{/images/images-utils/social-media/gorjeo.png}" alt="" /></a>
+            <h2 class="footer-heading" id="social-title">Connect with us</h2>
+            <nav class="social-links d-flex gap-3 align-items-center" aria-label="Social media">
+              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img th:src="@{/images/images-utils/social-media/logotipo-de-instagram.png}" alt="Instagram" /></a>
+              <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img th:src="@{/images/images-utils/social-media/facebook.png}" alt="Facebook" /></a>
+              <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><img th:src="@{/images/images-utils/social-media/youtube.png}" alt="YouTube" /></a>
+              <a href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X"><img th:src="@{/images/images-utils/social-media/gorjeo.png}" alt="X" /></a>
             </nav>
           </section>
           <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="newsletter-title">
-            <h2 class="footer-heading" id="newsletter-title">Inspírate</h2>
-            <p class="footer-newsletter-text">Suscríbete a nuestro boletín para conocer las últimas novedades y ofertas.</p>
-            <button class="footer-subscribe" type="button">SUSCRIBIRSE</button>
+            <h2 class="footer-heading" id="newsletter-title">Get inspired</h2>
+            <p class="footer-newsletter-text">Subscribe to our newsletter for the latest stories and offers.</p>
+            <button class="footer-subscribe" type="button">SUBSCRIBE</button>
           </section>
         </div>
 
+        <!-- Footer bottom bar using Bootstrap flex utilities -->
         <div class="footer-bottom d-flex flex-column flex-md-row justify-content-center align-items-center gap-2">
-          <div class="footer-legal"><span>Aviso de privacidad</span><span>Términos de uso</span><span>Accesibilidad</span></div>
-          <span>© 2026 Atlan Suites. Todos los derechos reservados.</span>
+          <div class="footer-legal d-flex gap-2 flex-wrap justify-content-center"><span>Privacy notice</span><span>Terms of use</span><span>Accessibility</span></div>
+          <span>© 2026 Atlan Suites. All rights reserved.</span>
         </div>
       </div>
     </footer>
+    <!-- BOOTSTRAP 5.3.3 JS BUNDLE -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script th:src="@{/js/servicios-tarjetas/servicios-tarjetas.js}"></script>
   </body>

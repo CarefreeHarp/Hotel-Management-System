@@ -50,11 +50,11 @@ public class ClienteServiceImpl implements ClienteService {
     public String actualizarPerfil(String correoActual, Cliente cliente, String passwordActual) {
         Cliente cuentaRegistrada = buscarPorCorreo(correoActual);
         if (cuentaRegistrada == null) {
-            return "No existe una cuenta registrada con el correo " + correoActual + ".";
+            return "No account is registered with the email " + correoActual + ".";
         }
 
         if (!cuentaRegistrada.getPassword().equals(passwordActual)) {
-            return "La contraseña actual no coincide.";
+            return "The current password does not match.";
         }
 
         // Keep the account identity and password unchanged during profile updates.
@@ -74,7 +74,7 @@ public class ClienteServiceImpl implements ClienteService {
     public String eliminarCuenta(String correo) {
         Cliente cuentaRegistrada = buscarPorCorreo(correo);
         if (cuentaRegistrada == null) {
-            return "No existe una cuenta registrada con el correo " + correo + ".";
+            return "No account is registered with the email " + correo + ".";
         }
 
         clienteRepository.eliminar(cuentaRegistrada.getIdCliente());
@@ -98,16 +98,16 @@ public class ClienteServiceImpl implements ClienteService {
     private String validarDatosUnicos(Cliente cliente) {
         Cliente clienteConEseCorreo = buscarPorCorreo(cliente.getCorreo());
         if (clienteConEseCorreo != null && clienteConEseCorreo.getIdCliente() != cliente.getIdCliente()) {
-            return "Ya existe una cuenta registrada con el correo " + cliente.getCorreo() + ".";
+            return "An account is already registered with the email " + cliente.getCorreo() + ".";
         }
 
         Cliente clienteConEsaCedula = buscarPorCedula(cliente.getCedula());
         if (clienteConEsaCedula != null && clienteConEsaCedula.getIdCliente() != cliente.getIdCliente()) {
-            return "Ya existe una cuenta registrada con la cédula " + cliente.getCedula() + ".";
+            return "An account is already registered with the national ID " + cliente.getCedula() + ".";
         }
 
         if (!esUrlHttpValida(cliente.getFotoPerfil())) {
-            return "La foto de perfil debe ser una URL HTTP o HTTPS válida.";
+            return "The profile photo must be a valid HTTP or HTTPS URL.";
         }
 
         return null;

@@ -5,33 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Services — Atlan Suites</title>
 
-    <!-- GOOGLE FONTS PARA LOS FONTS :) -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Bootstrap 5.3.3 CSS CDN: responsive grid, containers, and flexbox utilities -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+
+    <!-- Project styles preserving Atlan Suites' luxury aesthetic and color palette -->
     <link rel="stylesheet" th:href="@{/css/css-utils/base/common.css}" />
     <link rel="stylesheet" th:href="@{/css/servicios/servicios.css}" />
   </head>
   <body class="page-services">
-    <!-- HEADER CON EL NAV: los enlaces de secciones apuntan al landing -->
+    <!-- Header navigation: section links point to the landing page -->
     <header class="site-header navbar navbar-expand-md">
       <a th:href="@{/}" class="brand-mark">
         <img
           th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}"
           alt="Atlan Suites"
-          class="brand-logo"
+          class="brand-logo img-fluid"
         />
       </a>
 
+      <!-- Collapsible menu controlled by Bootstrap's data-bs-toggle -->
       <div class="collapse navbar-collapse" id="main-nav">
         <nav class="main-nav navbar-nav flex-column flex-md-row">
           <a th:href="@{/#hero}" class="nav-link flex-fill">Home</a>
@@ -45,6 +50,7 @@
         <a href="#book-section" class="btn btn-primary"
           >Book now<span aria-hidden="true">↗</span></a
         >
+        <!-- Bootstrap mobile navigation toggler -->
         <button
           class="nav-toggle navbar-toggler d-flex d-md-none"
           type="button"
@@ -60,30 +66,46 @@
     </header>
 
     <main>
-      <!-- ENCABEZADO DE LA PANTALLA -->
+      <!-- Screen heading -->
       <section class="services-hero" aria-labelledby="services-title">
-        <p class="eyebrow">Atlan Suites</p>
-        <h1 class="services-hero-title" id="services-title">Services</h1>
-        <p class="services-hero-text">
-          Everything we offer inside and outside the hotel, from daily comforts
-          to the experiences that make each stay memorable.
-        </p>
+        <div class="container text-center">
+          <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+              <p class="eyebrow">Atlan Suites</p>
+              <h1 class="services-hero-title" id="services-title">Services</h1>
+              <p class="services-hero-text">
+                Everything we offer inside and outside the hotel, from daily comforts
+                to the experiences that make each stay memorable.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <!-- TABLA CON TODOS LOS SERVICIOS DEL HOTEL -->
+      <!-- Table with all hotel services -->
       <section class="services-section" aria-labelledby="services-table-title">
-        <div class="services-list-container">
-          <header class="services-intro">
-            <p class="eyebrow">Full list</p>
-            <h2 class="section-title" id="services-table-title">All our services</h2>
-            <p
-              class="services-summary"
-              th:text="|${#lists.size(servicios)} services available · Prices in Colombian pesos (COP)|"
-            >
-              20 services available · Prices in Colombian pesos (COP)
-            </p>
+        <div class="services-list-container container-fluid px-3 px-md-4">
+          <!-- Section heading aligned with Bootstrap flex utilities -->
+          <header class="services-intro d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3">
+            <div>
+              <p class="eyebrow">Full list</p>
+              <h2 class="section-title" id="services-table-title">All our services</h2>
+              <p
+                class="services-summary"
+                th:text="|${#lists.size(servicios)} services available · Prices in Colombian pesos (COP)|"
+              >
+                20 services available · Prices in Colombian pesos (COP)
+              </p>
+            </div>
+
+            <!-- Card/list view switcher using Bootstrap's btn-group -->
+            <div class="view-mode-switcher btn-group" role="group" aria-label="Modo de vista">
+              <a th:href="@{/servicios/tarjetas}" class="view-btn btn">Cards</a>
+              <a th:href="@{/servicios/lista}" class="view-btn btn is-active">List</a>
+            </div>
           </header>
 
+          <!-- Table with Bootstrap horizontal scrolling wrapper -->
           <div class="table-responsive">
             <table class="services-table">
             <thead>
@@ -96,10 +118,10 @@
               </tr>
             </thead>
             <tbody>
-              <!-- UNA FILA POR CADA SERVICIO QUE ENVÍA EL CONTROLADOR -->
+              <!-- One row for each service provided by the controller -->
               <tr class="services-row" th:each="servicio : ${servicios}">
                 <th scope="row">
-                  <!-- EL NOMBRE LLEVA A LA PANTALLA DE DETALLE: /servicios/{nombreUrl} -->
+                  <!-- The name links to the detail screen: /servicios/{nombreUrl} -->
                   <a
                     class="service-link"
                     th:href="@{/servicios/{nombreUrl}(nombreUrl=${servicio.nombreUrl})}"
@@ -108,13 +130,13 @@
                   >
                 </th>
                 <td th:text="${servicio.descripcion}">
-                  Circuito de relajación y tratamientos de spa.
+                    Relaxation circuit and spa treatments.
                 </td>
                 <td>
-                  <span class="service-tag" th:text="${servicio.categoria}">Bienestar</span>
+                  <span class="service-tag" th:text="${servicio.categoria}">Wellness</span>
                 </td>
                 <td>
-                  <!-- EL ESTADO DEPENDE DE SI EL SERVICIO ESTÁ ACTIVO -->
+                  <!-- Status depends on whether the service is active -->
                   <span
                     class="service-status"
                     th:classappend="${servicio.activo} ? 'is-available' : 'is-unavailable'"
@@ -123,7 +145,7 @@
                   >
                 </td>
                 <td class="services-cell-price">
-                  <!-- LOS SERVICIOS SIN COSTO SE MUESTRAN COMO INCLUIDOS EN LA ESTADÍA -->
+                  <!-- Complimentary services are shown as included in the stay -->
                   <span
                     th:if="${servicio.precio > 0}"
                     th:text="'$' + ${#numbers.formatInteger(servicio.precio, 1, 'POINT')}"
@@ -133,9 +155,9 @@
                 </td>
               </tr>
 
-              <!-- MENSAJE POR SI TODAVÍA NO HAY SERVICIOS CARGADOS -->
+              <!-- Message shown when no services have been loaded -->
               <tr th:if="${#lists.isEmpty(servicios)}">
-                <td colspan="5" class="services-empty">
+                <td colspan="5" class="services-empty text-center py-4">
                   There are no services available at the moment.
                 </td>
               </tr>
@@ -146,15 +168,16 @@
       </section>
     </main>
 
-    <!-- FOOTER -->
+    <!-- Footer -->
     <footer class="site-footer" id="book-section">
       <div class="container-fluid">
+        <!-- Booking call to action aligned with Bootstrap's grid -->
         <section class="footer-cta row gy-4 align-items-center" aria-labelledby="booking-title">
           <div class="col-12 col-lg-6">
             <p class="eyebrow">Reserve</p>
             <h2 id="booking-title">Book your<br />stay</h2>
-            <span class="footer-book-button"
-              >Book now <span aria-hidden="true">↗</span></span
+            <a href="#book-section" class="footer-book-button text-decoration-none"
+              >Book now <span aria-hidden="true">↗</span></a
             >
           </div>
           <div class="col-12 col-lg-4 offset-lg-2">
@@ -168,15 +191,17 @@
           </div>
         </section>
 
-        <figure class="footer-brand d-block mx-auto">
+        <!-- Centered hotel identity mark -->
+        <figure class="footer-brand d-block mx-auto text-center">
           <img
             th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}"
             alt="Atlan Suites"
-            class="footer-logo"
+            class="footer-logo img-fluid"
           />
           <figcaption>Singapore</figcaption>
         </figure>
 
+        <!-- Footer sections arranged in four columns on large screens with Bootstrap's grid -->
         <div class="row gy-5 footer-content">
           <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="discover-title">
             <h2 class="footer-heading" id="discover-title">Discover Atlan</h2>
@@ -200,34 +225,34 @@
 
           <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="social-title">
             <h2 class="footer-heading" id="social-title">Connect with us</h2>
-            <nav class="social-links" aria-label="Social media">
+            <nav class="social-links d-flex gap-3 align-items-center" aria-label="Social media">
               <a
                 href="https://www.instagram.com/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                ><img th:src="@{/images/images-utils/social-media/logotipo-de-instagram.png}" alt=""
+                ><img th:src="@{/images/images-utils/social-media/logotipo-de-instagram.png}" alt="Instagram"
               /></a>
               <a
                 href="https://www.facebook.com/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                ><img th:src="@{/images/images-utils/social-media/facebook.png}" alt=""
+                ><img th:src="@{/images/images-utils/social-media/facebook.png}" alt="Facebook"
               /></a>
               <a
                 href="https://www.youtube.com/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="YouTube"
-                ><img th:src="@{/images/images-utils/social-media/youtube.png}" alt=""
+                ><img th:src="@{/images/images-utils/social-media/youtube.png}" alt="YouTube"
               /></a>
               <a
                 href="https://x.com/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="X"
-                ><img th:src="@{/images/images-utils/social-media/gorjeo.png}" alt=""
+                ><img th:src="@{/images/images-utils/social-media/gorjeo.png}" alt="X"
               /></a>
             </nav>
           </section>
@@ -241,10 +266,11 @@
           </section>
         </div>
 
+        <!-- Footer bottom bar using Bootstrap flex utilities -->
         <div
           class="footer-bottom d-flex flex-column flex-md-row justify-content-center align-items-center gap-2"
         >
-          <div class="footer-legal">
+          <div class="footer-legal d-flex gap-2 flex-wrap justify-content-center">
             <span>Privacy notice</span>
             <span>Terms of use</span>
             <span>Accessibility</span>
@@ -254,6 +280,7 @@
       </div>
     </footer>
 
+    <!-- Bootstrap 5.3.3 JS bundle -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

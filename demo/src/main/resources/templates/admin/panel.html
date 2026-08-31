@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Panel administrativo | Atlan Suites</title>
+    <title>Admin panel | Atlan Suites</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -19,21 +19,16 @@
       <div class="container-xxl">
         <section class="surface-card panel-welcome" aria-labelledby="panel-title">
           <div class="panel-welcome__content">
-            <p class="page-eyebrow">Administración del hotel</p>
-            <h1 class="page-title" id="panel-title">Todo Atlan,<br />en un solo lugar.</h1>
-            <p class="page-description">Gestiona huéspedes, categorías y disponibilidad de habitaciones sin salir del portal.</p>
-            <div class="panel-welcome__meta tw-flex tw-flex-wrap tw-gap-2" aria-label="Resumen del sistema">
-              <span class="panel-chip">3 módulos de gestión</span>
-              <span class="panel-chip">Operación centralizada</span>
-              <span class="panel-chip">Datos en tiempo real</span>
-            </div>
+            <p class="page-eyebrow">Hotel administration</p>
+            <h1 class="page-title" id="panel-title">All of Atlan,<br />in one place.</h1>
+            <p class="page-description">Manage guests, categories, and room availability without leaving the portal.</p>
           </div>
         </section>
 
-        <section class="management-grid" aria-label="Módulos administrativos">
-          <a class="management-card" th:href="@{/clientes/read}"><span class="management-card__number">01</span><div><h2>Clientes</h2><p>Consulta perfiles, registra huéspedes y actualiza sus datos de contacto.</p><span class="management-card__arrow" aria-hidden="true">↗</span></div></a>
-          <a class="management-card" th:href="@{/admin/tipos-habitacion/read}"><span class="management-card__number">02</span><div><h2>Tipos de habitación</h2><p>Administra categorías, capacidades y tarifas por noche.</p><span class="management-card__arrow" aria-hidden="true">↗</span></div></a>
-          <a class="management-card" th:href="@{/admin/habitaciones/read}"><span class="management-card__number">03</span><div><h2>Habitaciones</h2><p>Controla el inventario, el estado y la disponibilidad para reservas.</p><span class="management-card__arrow" aria-hidden="true">↗</span></div></a>
+        <section class="management-grid" aria-label="Administrative modules">
+          <a class="management-card" th:href="@{/admin/clientes/read}"><span class="management-card__number">01</span><div><h2>Clients</h2><p>Browse profiles, register guests, and update their contact details.</p><span class="management-card__arrow" aria-hidden="true">↗</span></div></a>
+          <a class="management-card" th:href="@{/admin/tipos-habitacion/read}"><span class="management-card__number">02</span><div><h2>Room types</h2><p>Manage categories, capacities, and nightly rates.</p><span class="management-card__arrow" aria-hidden="true">↗</span></div></a>
+          <a class="management-card" th:href="@{/admin/habitaciones/read}"><span class="management-card__number">03</span><div><h2>Rooms</h2><p>Control inventory, status, and availability for reservations.</p><span class="management-card__arrow" aria-hidden="true">↗</span></div></a>
         </section>
       </div>
     </main>
