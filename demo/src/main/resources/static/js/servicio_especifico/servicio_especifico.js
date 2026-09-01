@@ -1,6 +1,16 @@
 // Match the header scroll behavior used by index.html.
 const serviceHeader = document.querySelector('.site-header');
 
+const publicMenuToggle = document.querySelector('[data-public-menu-toggle]');
+const publicMenu = document.querySelector('[data-public-menu]');
+if (publicMenuToggle && publicMenu) {
+  publicMenuToggle.addEventListener('click', () => {
+    const isOpen = !publicMenu.classList.contains('tw-hidden');
+    publicMenu.classList.toggle('tw-hidden', isOpen);
+    publicMenuToggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+}
+
 const updateServiceHeaderScroll = () => {
   serviceHeader.classList.toggle('is-scrolled', window.scrollY > 10);
 };
