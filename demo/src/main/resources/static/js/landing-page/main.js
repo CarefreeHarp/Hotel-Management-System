@@ -18,6 +18,16 @@ fadeTargets.forEach((target) => fadeObserver.observe(target));
 const header = document.querySelector('.site-header');
 const hero = document.getElementById('hero');
 
+const publicMenuToggle = document.querySelector('[data-public-menu-toggle]');
+const publicMenu = document.querySelector('[data-public-menu]');
+if (publicMenuToggle && publicMenu) {
+  publicMenuToggle.addEventListener('click', () => {
+    const isOpen = !publicMenu.classList.contains('tw-hidden');
+    publicMenu.classList.toggle('tw-hidden', isOpen);
+    publicMenuToggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+}
+
 // VIDEO DE THE HOTEL: se reproduce una vez al entrar en la sección, sin bloquear la navegación.
 const scrollVideo = document.querySelector('.scroll-video');
 const videoSection = document.getElementById('video-section');

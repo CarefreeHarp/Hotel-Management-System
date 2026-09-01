@@ -13,20 +13,16 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { prefix: "tw-", corePlugins: { preflight: false } };</script>
     <link rel="stylesheet" th:href="@{/css/css-utils/base/common.css}" />
     <link
       rel="stylesheet"
       th:href="@{/css/servicio_especifico/servicio_especifico.css}"
     />
   </head>
-  <body class="service-page">
-    <header class="site-header navbar navbar-expand-md">
+  <body class="service-page tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
+    <header class="site-header tw-flex tw-flex-wrap tw-items-center tw-justify-between">
       <a th:href="@{/}" class="brand-mark">
         <img
           th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}"
@@ -34,16 +30,16 @@
           class="brand-logo"
         />
       </a>
-      <div class="collapse navbar-collapse" id="main-nav">
+      <div class="tw-hidden tw-w-full md:tw-block md:tw-w-auto" id="main-nav" data-public-menu>
         <nav
-          class="main-nav navbar-nav flex-column flex-md-row"
+          class="main-nav tw-flex-col md:tw-flex-row"
           aria-label="Main navigation"
         >
-          <a th:href="@{/}" class="nav-link flex-fill">Home</a>
-          <a th:href="@{/#video-section}" class="nav-link flex-fill">The hotel</a>
-          <a th:href="@{/#rooms-section}" class="nav-link flex-fill">Suites</a>
-          <a th:href="@{/#experiences-section}" class="nav-link flex-fill">Experiences</a>
-          <a th:href="@{/servicios/tarjetas}" class="nav-link flex-fill is-active">Services</a>
+          <a th:href="@{/}" class="nav-link tw-flex-1">Home</a>
+          <a th:href="@{/#video-section}" class="nav-link tw-flex-1">The hotel</a>
+          <a th:href="@{/#rooms-section}" class="nav-link tw-flex-1">Suites</a>
+          <a th:href="@{/#experiences-section}" class="nav-link tw-flex-1">Experiences</a>
+          <a th:href="@{/servicios/tarjetas}" class="nav-link tw-flex-1 is-active">Services</a>
         </nav>
       </div>
       <div class="header-actions">
@@ -51,13 +47,12 @@
           >Book now <span aria-hidden="true">↗</span></a
         >
         <button
-          class="nav-toggle navbar-toggler d-flex d-md-none"
+          class="nav-toggle tw-flex md:tw-hidden"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#main-nav"
           aria-label="Toggle menu"
           aria-expanded="false"
           aria-controls="main-nav"
+          data-public-menu-toggle
         >
           <span></span><span></span><span></span>
         </button>
@@ -75,7 +70,7 @@
           <p class="hero-summary" th:text="${servicio.resumen}">
             A memorable experience during your stay.
           </p>
-          <div class="hero-actions d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
+          <div class="hero-actions tw-flex tw-flex-wrap tw-gap-2 tw-justify-center md:tw-justify-start">
             <a href="#reservation" class="btn btn-gold"
               >Reserve this service <span aria-hidden="true">↗</span></a
             >
@@ -222,16 +217,16 @@
     </main>
 
     <footer class="site-footer">
-      <div class="container-fluid">
-        <section class="footer-cta row gy-4 align-items-center" aria-labelledby="booking-title">
-          <div class="col-12 col-lg-6">
+      <div class="tw-mx-auto tw-w-full tw-max-w-[1440px] tw-px-4 sm:tw-px-6 lg:tw-px-8 2xl:tw-px-12">
+        <section class="footer-cta tw-grid tw-grid-cols-1 tw-gap-6 lg:tw-grid-cols-12 lg:tw-items-center" aria-labelledby="booking-title">
+          <div class="lg:tw-col-span-6">
             <p class="eyebrow">Reserve</p>
             <h2 id="booking-title">Book your<br />stay</h2>
             <a href="#reservation" class="footer-book-button"
               >Book now <span aria-hidden="true">↗</span></a
             >
           </div>
-          <div class="col-12 col-lg-4 offset-lg-2">
+          <div class="lg:tw-col-span-4 lg:tw-col-start-9">
             <address class="footer-contact-card">
               <p class="eyebrow">Contact</p>
               <p>reservations@atlansuites.com<br />+65 6555 0142</p>
@@ -242,7 +237,7 @@
           </div>
         </section>
 
-        <figure class="footer-brand d-block mx-auto">
+        <figure class="footer-brand tw-mx-auto tw-block">
           <img
             th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}"
             alt="Atlan Suites"
@@ -251,8 +246,8 @@
           <figcaption>Singapore</figcaption>
         </figure>
 
-        <div class="row gy-5 footer-content">
-          <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="discover-title">
+        <div class="footer-content tw-grid tw-grid-cols-1 tw-gap-8 sm:tw-grid-cols-2 lg:tw-grid-cols-4">
+          <section aria-labelledby="discover-title">
             <h2 class="footer-heading" id="discover-title">Discover Atlan</h2>
             <ul class="footer-links">
               <li><span>About us</span></li>
@@ -262,7 +257,7 @@
             </ul>
           </section>
 
-          <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="information-title">
+          <section aria-labelledby="information-title">
             <h2 class="footer-heading" id="information-title">Useful information</h2>
             <ul class="footer-links">
               <li><span>Reservations</span></li>
@@ -272,7 +267,7 @@
             </ul>
           </section>
 
-          <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="social-title">
+          <section aria-labelledby="social-title">
             <h2 class="footer-heading" id="social-title">Connect with us</h2>
             <nav class="social-links" aria-label="Social media">
               <a
@@ -306,7 +301,7 @@
             </nav>
           </section>
 
-          <section class="col-12 col-sm-6 col-lg-3" aria-labelledby="newsletter-title">
+          <section aria-labelledby="newsletter-title">
             <h2 class="footer-heading" id="newsletter-title">Get inspired</h2>
             <p class="footer-newsletter-text">
               Subscribe to our newsletter for the latest stories and offers.
@@ -316,7 +311,7 @@
         </div>
 
         <div
-          class="footer-bottom d-flex flex-column flex-md-row justify-content-center align-items-center gap-2"
+          class="footer-bottom tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-2 md:tw-flex-row"
         >
           <div class="footer-legal">
             <span>Privacy notice</span>
@@ -328,11 +323,6 @@
       </div>
     </footer>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
     <script th:src="@{/js/servicio_especifico/servicio_especifico.js}"></script>
   </body>
 </html>

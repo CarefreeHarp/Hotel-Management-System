@@ -2,8 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <body>
     <header class="portal-header" th:fragment="header(activePage)">
-      <nav class="navbar navbar-expand-lg" aria-label="Administrative navigation">
-        <div class="container-xxl portal-header__inner">
+      <nav aria-label="Administrative navigation">
+        <div class="portal-header__inner tw-mx-auto tw-flex tw-w-full tw-max-w-7xl tw-flex-wrap tw-items-center tw-px-4 sm:tw-px-6 lg:tw-flex-nowrap lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
           <a class="portal-brand" th:href="@{/}" aria-label="Back to the Atlan Suites home page">
             <img
               th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}"
@@ -13,19 +13,18 @@
           </a>
 
           <button
-            class="navbar-toggler portal-menu-button"
+            class="portal-menu-button tw-ml-auto lg:tw-hidden"
             type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#portalNavigation"
             aria-controls="portalNavigation"
             aria-expanded="false"
             aria-label="Open menu"
+            data-admin-menu-toggle
           >
             <span></span><span></span><span></span>
           </button>
 
-          <div class="collapse navbar-collapse" id="portalNavigation">
-            <div class="portal-nav navbar-nav mx-lg-auto">
+          <div class="tw-hidden tw-w-full tw-flex-col tw-gap-3 tw-pb-4 lg:tw-flex lg:tw-w-auto lg:tw-flex-1 lg:tw-flex-row lg:tw-items-center lg:tw-justify-between lg:tw-pb-0" id="portalNavigation" data-admin-menu>
+            <div class="portal-nav tw-flex-col sm:tw-flex-row lg:tw-mx-auto">
               <a
                 class="portal-nav__link"
                 th:classappend="${activePage == 'panel'} ? ' is-active' : ''"
@@ -57,10 +56,22 @@
     </header>
 
     <footer class="portal-footer" th:fragment="footer">
-      <div class="container-xxl portal-footer__inner">
+      <div class="portal-footer__inner tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
         <p>Atlan Suites <span aria-hidden="true">·</span> Admin portal</p>
         <a th:href="@{/}">Back to the hotel website</a>
       </div>
+      <script>
+        (() => {
+          const toggle = document.querySelector('[data-admin-menu-toggle]');
+          const menu = document.querySelector('[data-admin-menu]');
+          if (!toggle || !menu) return;
+          toggle.addEventListener('click', () => {
+            const isOpen = !menu.classList.contains('tw-hidden');
+            menu.classList.toggle('tw-hidden', isOpen);
+            toggle.setAttribute('aria-expanded', String(!isOpen));
+          });
+        })();
+      </script>
     </footer>
   </body>
 </html>
