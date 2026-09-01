@@ -124,11 +124,12 @@ public class ClienteController {
     /**
      * Elimina la cuenta del cliente.
      * Se usa POST y no GET porque es una acción que modifica datos.
+     * Al borrarse la cuenta ya no hay perfil que mostrar, así que se vuelve al login.
      */
     // Full URL: http://localhost:8080/clientes/delete/{correo}
     @PostMapping("/delete/{correo}")
     public String eliminarCuenta(@PathVariable("correo") String correo) {
         clienteService.eliminarCuenta(correo);
-        return "redirect:/admin/clientes/read";
+        return "redirect:/login";
     }
 }
