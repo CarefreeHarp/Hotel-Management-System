@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entitys.Cliente;
-import com.example.demo.service.ClienteService;
+import com.example.demo.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,12 +9,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/** Handles the intentionally simple login flow used by this prototype. */
+/**
+ * CAPA DE CONTROLADOR: pantalla de acceso al portal.
+ *
+ * El controlador no comprueba credenciales: se las pasa al LoginService y con
+ * lo que este responde solo decide a qué pantalla se redirige.
+ */
 @Controller
 public class LoginController {
 
     @Autowired
-    ClienteService clienteService;
+    LoginService loginService;
 
     // Full URL: http://localhost:8080/login
     @GetMapping("/login")
@@ -25,12 +30,12 @@ public class LoginController {
     // Full URL: http://localhost:8080/login
     @PostMapping("/login")
     public String autenticar(@RequestParam String usuario, @RequestParam String password, Model model) {
-        if ("admin".equals(usuario) && "admin".equals(password)) {
+        if (loginService.esAdministrador(usuario, password)) {
             return "redirect:/admin/panel";
         }
 
-        Cliente cliente = clienteService.buscarPorCorreo(usuario);
-        if (cliente != null && cliente.getPassword().equals(password)) {
+        Cliente cliente = loginService.autenticarCliente(usuario, password);
+        if (cliente != null) {
             return "redirect:/clientes/read/" + cliente.getCorreo();
         }
 
