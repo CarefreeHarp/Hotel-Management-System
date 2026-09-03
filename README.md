@@ -14,17 +14,17 @@ El diseño de la interfaz está disponible en Figma:
 
 #### Logo
 
-![Logo de Atlan Suites](<ReadMe assets/atlan-suites-logo.jpeg>)
+![Logo de Atlan Suites](readmeassets/atlan-suites-logo.jpeg)
 
 #### Paleta de colores
 
-![Paleta de colores de Atlan Suites](<ReadMe assets/atlan-suites-color-palette.jpeg>)
+![Paleta de colores de Atlan Suites](readmeassets/atlan-suites-color-palette.jpeg)
 
 ---
 
 ## Navigation Diagram
 
-[Open the interactive Sprint 3 navigation diagram (download and open it in your browser)](<ReadMe assets/NavigationDiagramSprint3AtlanSuites.html>)
+[Open the interactive Sprint 3 navigation diagram (download and open it in your browser)](readmeassets/NavigationDiagramSprint3AtlanSuites.html)
 
 1. **Home:** `/home` — Landing page
 2. **Suites:** `/suites` — Catálogo de habitaciones (con botones para ver detalles)
