@@ -6,8 +6,8 @@ import com.example.demo.entitys.Cliente;
  * CAPA DE SERVICIO: autenticación del portal.
  *
  * Validar unas credenciales es lógica de negocio, no una tarea del controlador:
- * el controlador solo debe recibir el usuario y la contraseña del formulario y
- * decidir a qué pantalla lleva el resultado.
+ * el controlador solo debe recibir el usuario y la contraseña del formulario,
+ * atrapar el error si lo hay y decidir a qué pantalla lleva el resultado.
  */
 public interface LoginService {
 
@@ -15,8 +15,9 @@ public interface LoginService {
     boolean esAdministrador(String usuario, String password);
 
     /**
-     * Devuelve el cliente registrado con ese correo y esa contraseña,
-     * o null cuando las credenciales no corresponden a ninguna cuenta.
+     * Devuelve el cliente registrado con ese correo y esa contraseña.
+     *
+     * @throws SecurityException si las credenciales no corresponden a ninguna cuenta.
      */
     Cliente autenticarCliente(String usuario, String password);
 }
