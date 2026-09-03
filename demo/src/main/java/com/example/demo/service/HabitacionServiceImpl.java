@@ -6,10 +6,15 @@ import com.example.demo.repository.TipoHabitacionRepositoryMemoria;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/** Validates room data before persisting it in the in-memory repository. */
+/**
+ * Valida los datos de la habitación antes de guardarla en el repositorio en memoria.
+ * Cuando un dato no cumple una regla del negocio se lanza una excepción con el
+ * mensaje que verá el administrador.
+ */
 @Service
 public class HabitacionServiceImpl implements HabitacionService {
 
@@ -26,82 +31,80 @@ public class HabitacionServiceImpl implements HabitacionService {
 
     @Override
     public Habitacion buscarPorNumero(int numero) {
-        return habitacionRepository.buscarPorNumero(numero);
+        Habitacion habitacion = habitacionRepository.buscarPorNumero(numero);
+        if (habitacion == null) {
+            throw new NoSuchElementException("The room " + numero + " does not exist.");
+        }
+
+        return habitacion;
     }
 
     @Override
-    public String crear(Habitacion habitacion) {
-        String error = validarDatos(habitacion, 0);
-        if (error != null) {
-            return error;
-        }
-
+    public void crear(Habitacion habitacion) {
+        validarDatos(habitacion, 0);
         habitacionRepository.guardar(habitacion);
-        return null;
     }
 
     @Override
-    public String actualizar(int numeroActual, Habitacion habitacion) {
-        Habitacion habitacionActual = buscarPorNumero(numeroActual);
-        if (habitacionActual == null) {
-            return "The room " + numeroActual + " does not exist.";
-        }
+    public void actualizar(int numeroActual, Habitacion habitacion) {
+        // Solo se comprueba que exista: si no, buscarPorNumero lanza la excepción.
+        buscarPorNumero(numeroActual);
 
-        String error = validarDatos(habitacion, numeroActual);
-        if (error != null) {
-            return error;
-        }
+        validarDatos(habitacion, numeroActual);
 
         if (numeroActual != habitacion.getNumero()) {
             habitacionRepository.eliminar(numeroActual);
         }
         habitacionRepository.guardar(habitacion);
-        return null;
     }
 
     @Override
-    public String eliminar(int numero) {
+    public void eliminar(int numero) {
         if (!habitacionRepository.eliminar(numero)) {
-            return "The room " + numero + " does not exist.";
+            throw new NoSuchElementException("The room " + numero + " does not exist.");
         }
-        return null;
     }
 
-    private String validarDatos(Habitacion habitacion, int numeroActual) {
+    /**
+     * Reglas del negocio de la habitación.
+     * Se consulta el repositorio directamente y no buscarPorNumero porque aquí
+     * preguntar si el número ya está usado no es un error, es parte de la validación.
+     *
+     * @throws IllegalArgumentException con el mensaje del primer dato inválido.
+     */
+    private void validarDatos(Habitacion habitacion, int numeroActual) {
         normalizarFotos(habitacion);
 
         if (habitacion.getNumero() < 1) {
-            return "The room number must be greater than zero.";
+            throw new IllegalArgumentException("The room number must be greater than zero.");
         }
 
-        Habitacion conEseNumero = buscarPorNumero(habitacion.getNumero());
+        Habitacion conEseNumero = habitacionRepository.buscarPorNumero(habitacion.getNumero());
         if (conEseNumero != null && habitacion.getNumero() != numeroActual) {
-            return "A room with that number already exists.";
+            throw new IllegalArgumentException("A room with that number already exists.");
         }
 
         if (habitacion.getPiso() < 0) {
-            return "The floor cannot be negative.";
+            throw new IllegalArgumentException("The floor cannot be negative.");
         }
 
         if (habitacion.getEstado() == null) {
-            return "Select a room status.";
+            throw new IllegalArgumentException("Select a room status.");
         }
 
         if (tipoHabitacionRepository.buscarPorId(habitacion.getIdTipo()) == null) {
-            return "Select an existing room type.";
+            throw new IllegalArgumentException("Select an existing room type.");
         }
 
         if (!esUrlHttpValida(habitacion.getFotoPrincipal())) {
-            return "The main room photo must be a valid HTTP or HTTPS URL.";
+            throw new IllegalArgumentException("The main room photo must be a valid HTTP or HTTPS URL.");
         }
 
         for (String foto : habitacion.getFotos()) {
             if (!esUrlHttpValida(foto)) {
-                return "Each additional room photo must be a valid HTTP or HTTPS URL.";
+                throw new IllegalArgumentException("Each additional room photo must be a valid HTTP or HTTPS URL.");
             }
         }
-
-        return null;
     }
 
     private void normalizarFotos(Habitacion habitacion) {
