@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
  * CAPA DE CONTROLADOR: pantalla de acceso al portal.
  *
  * El controlador no comprueba credenciales: se las pasa al LoginService y con
- * lo que este responde solo decide a qué pantalla se redirige.
+ * lo que este responde solo decide a qué pantalla se redirige. Si las
+ * credenciales no sirven el servicio lanza SecurityException y aquí solo se
+ * atrapa para volver al login con el mensaje que el servicio escribió.
  */
 @Controller
 public class LoginController {
@@ -34,13 +36,13 @@ public class LoginController {
             return "redirect:/admin/panel";
         }
 
-        Cliente cliente = loginService.autenticarCliente(usuario, password);
-        if (cliente != null) {
+        try {
+            Cliente cliente = loginService.autenticarCliente(usuario, password);
             return "redirect:/clientes/read/" + cliente.getCorreo();
+        } catch (SecurityException credencialesInvalidas) {
+            model.addAttribute("error", credencialesInvalidas.getMessage());
+            return "login/login";
         }
-
-        model.addAttribute("error", "Incorrect username or password.");
-        return "login/login";
     }
 
     // Full URL: http://localhost:8080/admin/panel

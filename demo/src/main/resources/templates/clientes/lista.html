@@ -17,6 +17,8 @@
           <a class="atlan-btn atlan-btn--primary" th:href="@{/clientes/create}">Register client <span aria-hidden="true">＋</span></a>
         </header>
 
+        <div class="portal-alert" th:if="${error}" role="alert" th:text="${error}"></div>
+
         <section class="surface-card" aria-labelledby="client-list-title">
           <h2 class="tw-sr-only" id="client-list-title">Client list</h2>
           <div class="table-shell">
