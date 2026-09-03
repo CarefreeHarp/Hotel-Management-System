@@ -38,6 +38,11 @@
     </header>
 
     <main>
+      <!-- Message sent by the controller when the requested service does not exist -->
+      <div class="container" th:if="${error}">
+        <div class="alert alert-danger" role="alert" th:text="${error}"></div>
+      </div>
+
       <!-- Services hero using Bootstrap's responsive grid -->
       <section class="services-hero" aria-labelledby="services-title">
         <div class="container text-center">

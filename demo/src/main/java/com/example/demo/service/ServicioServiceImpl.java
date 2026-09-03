@@ -4,6 +4,7 @@ import com.example.demo.entitys.Servicio;
 import com.example.demo.repository.ServicioRepositoryMemoria;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,11 @@ public class ServicioServiceImpl implements ServicioService {
 
     @Override
     public Servicio getServiceByNombreUrl(String nombreUrl) {
-        return servicioRepository.obtenerPorNombreUrl(nombreUrl);
+        Servicio servicio = servicioRepository.obtenerPorNombreUrl(nombreUrl);
+        if (servicio == null) {
+            throw new NoSuchElementException("The service " + nombreUrl + " does not exist.");
+        }
+
+        return servicio;
     }
 }
