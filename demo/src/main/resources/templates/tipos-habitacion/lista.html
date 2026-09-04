@@ -18,14 +18,14 @@
         <tbody>
           <tr
             th:each="tipo : ${tipos}"
-            th:with="fotoTipo=${tipo.idTipo == 1 ? 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0020-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*' : (tipo.idTipo == 2 ? 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*' : (tipo.idTipo == 3 ? 'https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-dpssw-junior-suite-12993:Wide-Hor?wid=540&amp;fit=constrain' : 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*'))}"
+            th:with="fotoTipo=${tipo.roomTypeId == 1 ? 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0020-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*' : (tipo.roomTypeId == 2 ? 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*' : (tipo.roomTypeId == 3 ? 'https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-dpssw-junior-suite-12993:Wide-Hor?wid=540&amp;fit=constrain' : 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*'))}"
           >
-            <td><img class="room-type-thumbnail" th:src="${fotoTipo}" th:alt="|Room type ${tipo.nombre}|" loading="lazy" /></td>
-            <td><span class="type-name" th:text="${tipo.nombre}">Suite</span></td>
-            <td class="description-cell" th:text="${tipo.descripcion}">Description</td>
-            <td class="price-cell" th:text="|$ ${#numbers.formatDecimal(tipo.precioNoche, 0, 'POINT', 0, 'COMMA')}|">$ 0</td>
-            <td><span class="status-badge" th:text="|${tipo.capacidadMaxima} guests|">2 guests</span></td>
-            <td><div class="table-actions tw-flex tw-gap-2"><a class="atlan-btn atlan-btn--edit atlan-btn--small" th:href="@{/admin/tipos-habitacion/update/{nombre}(nombre=${tipo.nombre})}">Edit</a><form th:action="@{/admin/tipos-habitacion/delete/{nombre}(nombre=${tipo.nombre})}" method="post" onsubmit="return confirm('Do you want to delete this room type?');"><button class="atlan-btn atlan-btn--danger atlan-btn--small" type="submit">Delete</button></form></div></td>
+            <td><img class="room-type-thumbnail" th:src="${fotoTipo}" th:alt="|Room type ${tipo.name}|" loading="lazy" /></td>
+            <td><span class="type-name" th:text="${tipo.name}">Suite</span></td>
+            <td class="description-cell" th:text="${tipo.description}">Description</td>
+            <td class="price-cell" th:text="|$ ${#numbers.formatDecimal(tipo.nightlyPrice, 0, 'POINT', 0, 'COMMA')}|">$ 0</td>
+            <td><span class="status-badge" th:text="|${tipo.maxCapacity} guests|">2 guests</span></td>
+            <td><div class="table-actions tw-flex tw-gap-2"><a class="atlan-btn atlan-btn--edit atlan-btn--small" th:href="@{/admin/tipos-habitacion/update/{name}(name=${tipo.name})}">Edit</a><form th:action="@{/admin/tipos-habitacion/delete/{name}(name=${tipo.name})}" method="post" onsubmit="return confirm('Do you want to delete this room type?');"><button class="atlan-btn atlan-btn--danger atlan-btn--small" type="submit">Delete</button></form></div></td>
           </tr>
           <tr th:if="${#lists.isEmpty(tipos)}"><td class="empty-state" colspan="6">No room types are registered. Create the first one to organize the inventory.</td></tr>
         </tbody>

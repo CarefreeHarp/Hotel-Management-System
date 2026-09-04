@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.service.ServicioService;
+import com.example.demo.service.ServiceService;
 
 /**
  * CAPA DE CONTROLADOR: recibe las peticiones de la pantalla de servicios,
@@ -23,34 +23,34 @@ import com.example.demo.service.ServicioService;
 public class ServiceController {
 
     @Autowired
-    ServicioService service;
+    ServiceService service;
 
     // Full URL: http://localhost:8080/servicios/tarjetas
     @GetMapping("/tarjetas")
-    public String listarServiciosCards(Model model) {
-        model.addAttribute("servicios", service.listarServicios());
+    public String listServicesCards(Model model) {
+        model.addAttribute("servicios", service.listServices());
         model.addAttribute("viewMode", "cards");
         return "servicios/servicios-tarjetas";
     }
 
     // Full URL: http://localhost:8080/servicios/lista
     @GetMapping("/lista")
-    public String listarServiciosList(Model model) {
-        model.addAttribute("servicios", service.listarServicios());
+    public String listServicesList(Model model) {
+        model.addAttribute("servicios", service.listServices());
         model.addAttribute("viewMode", "list");
         return "servicios/servicios";
     }
 
-    // Full URL: http://localhost:8080/servicios/{nombreUrl}
-    @GetMapping("/{nombreUrl}")
-    public String especifico(@PathVariable("nombreUrl") String nombreUrl,
+    // Full URL: http://localhost:8080/servicios/{urlName}
+    @GetMapping("/{urlName}")
+    public String especifico(@PathVariable("urlName") String urlName,
                              Model model,
-                             RedirectAttributes redireccion) {
+                             RedirectAttributes redirectAttributes) {
         try {
-            model.addAttribute("servicio", service.getServiceByNombreUrl(nombreUrl));
+            model.addAttribute("servicio", service.getServiceByUrlName(urlName));
             return "servicios/servicio_especifico";
-        } catch (NoSuchElementException servicioInexistente) {
-            redireccion.addFlashAttribute("error", servicioInexistente.getMessage());
+        } catch (NoSuchElementException serviceNotFound) {
+            redirectAttributes.addFlashAttribute("error", serviceNotFound.getMessage());
             return "redirect:/servicios/tarjetas";
         }
     }
