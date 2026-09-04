@@ -3,6 +3,8 @@ package com.example.demo.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import com.example.demo.entities.enums.RoomStatus;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -23,6 +25,11 @@ public class Room {
     @ManyToOne(optional = false)
     @JoinColumn(name = "room_type_id", nullable = false)
     private RoomType roomType; // Tipo de habitación asignado.
-    @Column(name = "main_photo", length = 500)
-    private String mainPhoto; // URL opcional de la imagen principal de la habitación.
+    @Column(name = "main_photo", nullable = false, length = 500)
+    private String mainPhoto; // URL obligatoria de la imagen principal de la habitación.
+    @ElementCollection
+    @CollectionTable(name = "room_secondary_photo", joinColumns = @JoinColumn(name = "room_number"))
+    @Column(name = "photo_url", nullable = false, length = 500)
+    @Builder.Default
+    private List<String> secondaryPhotos = new ArrayList<>(); // URLs de las imágenes secundarias de la habitación.
 }
