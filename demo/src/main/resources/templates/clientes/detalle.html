@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title th:text="${'Client: ' + cliente.nombre + ' | Atlan Suites'}">Client details | Atlan Suites</title>
+    <title th:text="${'Client: ' + cliente.name + ' | Atlan Suites'}">Client details | Atlan Suites</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script><script>tailwind.config = { prefix: "tw-", corePlugins: { preflight: false } };</script>
@@ -10,13 +10,13 @@
   </head>
   <body class="portal-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
     <main class="portal-main"><div class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
-      <header class="page-heading"><div><p class="page-eyebrow">Guest profile</p><h1 class="page-title" th:text="|${cliente.nombre} ${cliente.apellido}|">Client name</h1><p class="page-description">Personal information and contact details registered in the portal.</p></div><div class="tw-flex tw-shrink-0 tw-items-center tw-gap-2 tw-self-start"><a class="atlan-btn atlan-btn--primary" th:href="@{/clientes/update/{correo}(correo=${cliente.correo})}">Edit profile</a><form th:action="@{/clientes/delete/{correo}(correo=${cliente.correo})}" method="post" onsubmit="return confirm('Do you want to delete this client?');"><button class="atlan-btn atlan-btn--danger" type="submit">Delete profile</button></form></div></header>
+      <header class="page-heading"><div><p class="page-eyebrow">Guest profile</p><h1 class="page-title" th:text="|${cliente.name} ${cliente.lastName}|">Client name</h1><p class="page-description">Personal information and contact details registered in the portal.</p></div><div class="tw-flex tw-shrink-0 tw-items-center tw-gap-2 tw-self-start"><a class="atlan-btn atlan-btn--primary" th:href="@{/clientes/update/{email}(email=${cliente.email})}">Edit profile</a><form th:action="@{/clientes/delete/{email}(email=${cliente.email})}" method="post" onsubmit="return confirm('Do you want to delete this client?');"><button class="atlan-btn atlan-btn--danger" type="submit">Delete profile</button></form></div></header>
       <section class="detail-grid">
-        <figure class="detail-visual profile-visual mb-0" th:if="${cliente.fotoPerfil != null and !cliente.fotoPerfil.isBlank()}"><img th:src="${cliente.fotoPerfil}" alt="Client profile photo" /></figure>
-        <div class="detail-visual profile-visual detail-placeholder" th:unless="${cliente.fotoPerfil != null and !cliente.fotoPerfil.isBlank()}" aria-label="Profile without a photo"><span th:text="${#strings.substring(cliente.nombre, 0, 1)}">A</span></div>
+        <figure class="detail-visual profile-visual mb-0" th:if="${cliente.profilePhoto != null and !cliente.profilePhoto.isBlank()}"><img th:src="${cliente.profilePhoto}" alt="Client profile photo" /></figure>
+        <div class="detail-visual profile-visual detail-placeholder" th:unless="${cliente.profilePhoto != null and !cliente.profilePhoto.isBlank()}" aria-label="Profile without a photo"><span th:text="${#strings.substring(cliente.name, 0, 1)}">A</span></div>
         <article class="surface-card detail-content">
           <p class="page-eyebrow">Registered details</p>
-          <dl class="detail-list"><div><dt>First name</dt><dd th:text="${cliente.nombre}">First name</dd></div><div><dt>Last name</dt><dd th:text="${cliente.apellido}">Last name</dd></div><div><dt>National ID</dt><dd th:text="${cliente.cedula}">000000</dd></div><div><dt>Phone</dt><dd th:text="${cliente.telefono}">3000000000</dd></div><div><dt>Email</dt><dd th:text="${cliente.correo}">email@example.com</dd></div></dl>
+          <dl class="detail-list"><div><dt>First name</dt><dd th:text="${cliente.name}">First name</dd></div><div><dt>Last name</dt><dd th:text="${cliente.lastName}">Last name</dd></div><div><dt>National ID</dt><dd th:text="${cliente.nationalId}">000000</dd></div><div><dt>Phone</dt><dd th:text="${cliente.phone}">3000000000</dd></div><div><dt>Email</dt><dd th:text="${cliente.email}">email@example.com</dd></div></dl>
         </article>
       </section>
     </div></main>

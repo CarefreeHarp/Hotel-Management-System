@@ -20,7 +20,7 @@
             />
           </a>
           <a class="portal-exit" th:href="@{/login}">
-            I already have an account <span aria-hidden="true">→</span>
+            I already have a guest profile <span aria-hidden="true">→</span>
           </a>
         </div>
       </nav>
@@ -31,7 +31,7 @@
         <header class="page-heading">
           <div>
             <p class="page-eyebrow" th:text="${esEdicion ? 'Guest profile' : 'Join Atlan Suites'}">Join Atlan Suites</p>
-            <h1 class="page-title" th:text="${esEdicion ? titulo : 'Create an account'}">Create an account</h1>
+            <h1 class="page-title" th:text="${esEdicion ? titulo : 'Create a guest profile'}">Create a guest profile</h1>
             <p class="page-description" th:if="${!esEdicion}">Enter your details to access the guest portal. Your email will be your username.</p>
             <p class="page-description" th:if="${esEdicion}">Update your personal details and confirm the changes with your current password.</p>
           </div>
@@ -45,21 +45,21 @@
             <p class="form-section__description">Details required to identify the guest.</p>
           <div class="tw-grid tw-grid-cols-1 tw-gap-4 sm:tw-grid-cols-2 lg:tw-gap-6">
               <div class="tw-min-w-0">
-                <label class="portal-label" for="nombre">First name</label>
-                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="text" id="nombre" th:field="*{nombre}" placeholder="Your first name" autocomplete="given-name" required maxlength="50" />
+                <label class="portal-label" for="name">First name</label>
+                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="text" id="name" th:field="*{name}" placeholder="Your first name" autocomplete="given-name" required maxlength="50" />
               </div>
               <div class="tw-min-w-0">
-                <label class="portal-label" for="apellido">Last name</label>
-                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="text" id="apellido" th:field="*{apellido}" placeholder="Your last name" autocomplete="family-name" required maxlength="50" />
+                <label class="portal-label" for="lastName">Last name</label>
+                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="text" id="lastName" th:field="*{lastName}" placeholder="Your last name" autocomplete="family-name" required maxlength="50" />
               </div>
               <div class="tw-min-w-0">
-                <label class="portal-label" for="cedula">National ID</label>
-                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="text" id="cedula" th:field="*{cedula}" placeholder="Numbers only" inputmode="numeric" required pattern="[0-9]{6,15}" title="Numbers only, 6 to 15 digits" />
+                <label class="portal-label" for="nationalId">National ID</label>
+                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="text" id="nationalId" th:field="*{nationalId}" placeholder="Numbers only" inputmode="numeric" required pattern="[0-9]{6,15}" title="Numbers only, 6 to 15 digits" />
                 <p class="field-hint">6 to 15 digits.</p>
               </div>
               <div class="tw-min-w-0">
-                <label class="portal-label" for="telefono">Phone</label>
-                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="tel" id="telefono" th:field="*{telefono}" placeholder="3000000000" inputmode="tel" autocomplete="tel" required pattern="[0-9]{7,15}" title="Numbers only, 7 to 15 digits" />
+                <label class="portal-label" for="phone">Phone</label>
+                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="tel" id="phone" th:field="*{phone}" placeholder="3000000000" inputmode="tel" autocomplete="tel" required pattern="[0-9]{7,15}" title="Numbers only, 7 to 15 digits" />
                 <p class="field-hint">7 to 15 digits, without spaces.</p>
               </div>
             </div>
@@ -70,12 +70,12 @@
             <p class="form-section__description">Your email address will be your sign-in username.</p>
             <div class="tw-grid tw-grid-cols-1 tw-gap-4 sm:tw-grid-cols-2 lg:tw-gap-6">
               <div class="tw-min-w-0">
-                <label class="portal-label" for="correo">Email address</label>
-                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="email" id="correo" th:field="*{correo}" placeholder="name@example.com" autocomplete="email" required maxlength="80" />
+                <label class="portal-label" for="email">Email address</label>
+                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="email" id="email" th:field="*{email}" placeholder="name@example.com" autocomplete="email" required maxlength="80" />
               </div>
               <div class="tw-min-w-0">
-                <label class="portal-label" for="fotoPerfil">Profile photo URL <span class="tw-font-normal tw-opacity-50">(optional)</span></label>
-                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="url" id="fotoPerfil" th:field="*{fotoPerfil}" placeholder="https://example.com/photo.jpg" inputmode="url" />
+                <label class="portal-label" for="profilePhoto">Profile photo URL <span class="tw-font-normal tw-opacity-50">(optional)</span></label>
+                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="url" id="profilePhoto" th:field="*{profilePhoto}" placeholder="https://example.com/photo.jpg" inputmode="url" />
                 <p class="field-hint">Must begin with http:// or https://.</p>
               </div>
               <div class="tw-col-span-full" th:if="${!esEdicion}">
@@ -93,11 +93,11 @@
 
           <div class="form-actions tw-flex tw-gap-3">
             <button class="atlan-btn atlan-btn--primary" type="submit">
-              <span th:text="${esEdicion ? 'Save changes' : 'Create my account'}">Create my account</span>
+              <span th:text="${esEdicion ? 'Save changes' : 'Create my profile'}">Create my profile</span>
               <span aria-hidden="true">→</span>
             </button>
             <a class="atlan-btn atlan-btn--secondary" th:if="${!esEdicion}" th:href="@{/login}">Back to sign in</a>
-            <a class="atlan-btn atlan-btn--secondary" th:if="${esEdicion}" th:href="@{/clientes/read/{correo}(correo=${cliente.correo})}">Cancel</a>
+            <a class="atlan-btn atlan-btn--secondary" th:if="${esEdicion}" th:href="@{/clientes/read/{email}(email=${cliente.email})}">Cancel</a>
           </div>
         </form>
       </div>
@@ -109,6 +109,6 @@
         <a th:href="@{/}">Back to the hotel website</a>
       </div>
     </footer>
-    <footer class="portal-footer tw-border-t tw-border-white/10" th:if="${esEdicion}"><div class="tw-mx-auto tw-flex tw-max-w-7xl tw-flex-col tw-gap-2 tw-px-4 tw-py-6 tw-text-center tw-text-xs tw-text-slate-400 sm:tw-flex-row sm:tw-items-center sm:tw-justify-between sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]"><p>Atlan Suites</p><a class="tw-text-sky-200 hover:tw-text-white" th:href="@{/clientes/read/{correo}(correo=${cliente.correo})}">Back to my profile</a></div></footer>
+    <footer class="portal-footer tw-border-t tw-border-white/10" th:if="${esEdicion}"><div class="tw-mx-auto tw-flex tw-max-w-7xl tw-flex-col tw-gap-2 tw-px-4 tw-py-6 tw-text-center tw-text-xs tw-text-slate-400 sm:tw-flex-row sm:tw-items-center sm:tw-justify-between sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]"><p>Atlan Suites</p><a class="tw-text-sky-200 hover:tw-text-white" th:href="@{/clientes/read/{email}(email=${cliente.email})}">Back to my profile</a></div></footer>
   </body>
 </html>

@@ -83,18 +83,18 @@
 
           <!-- Luxury service card grid -->
           <div class="services-grid">
-            <a th:each="servicio : ${servicios}" th:href="@{'/servicios/' + ${servicio.nombreUrl}}" class="service-card" th:data-category="${servicio.categoria}">
+            <a th:each="servicio : ${servicios}" th:href="@{'/servicios/' + ${servicio.urlName}}" class="service-card" th:data-category="${servicio.category}">
               <div class="card-image-wrapper">
-                <img class="card-service-image img-fluid" th:src="${servicio.imagenPrincipalUrl}" th:alt="${servicio.nombre}" loading="lazy" />
+                <img class="card-service-image img-fluid" th:src="${servicio.mainImageUrl}" th:alt="${servicio.name}" loading="lazy" />
               </div>
               <div class="card-body-content">
-                <h3 class="card-service-title" th:text="${servicio.nombre}">Service</h3>
-                <p class="card-service-desc" th:text="${servicio.descripcion}">Service description.</p>
+                <h3 class="card-service-title" th:text="${servicio.name}">Service</h3>
+                <p class="card-service-desc" th:text="${servicio.description}">Service description.</p>
               </div>
               <div class="card-footer-bar">
-                <span class="card-price" th:if="${servicio.precio > 0}" th:text="'$' + ${#numbers.formatInteger(servicio.precio, 1, 'POINT')}">$0</span>
-                <span class="card-price" th:unless="${servicio.precio > 0}">Included</span>
-                <span class="card-category" th:text="${servicio.categoria}">Category</span>
+                <span class="card-price" th:if="${servicio.price > 0}" th:text="'$' + ${#numbers.formatInteger(servicio.price, 1, 'POINT')}">$0</span>
+                <span class="card-price" th:unless="${servicio.price > 0}">Included</span>
+                <span class="card-category" th:text="${servicio.category}">Category</span>
               </div>
             </a>
           </div>

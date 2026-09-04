@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title th:text="${servicio.nombre + ' | Atlan Suites'}">
+    <title th:text="${servicio.name + ' | Atlan Suites'}">
       Service | Atlan Suites
     </title>
 
@@ -62,12 +62,12 @@
     <main>
       <section
         class="service-hero"
-        th:style="|--service-hero-image: url('${servicio.imagenPrincipalUrl}');|"
+        th:style="|--service-hero-image: url('${servicio.mainImageUrl}');|"
       >
         <div class="hero-content">
-          <p class="eyebrow" th:text="${servicio.categoria}">Category</p>
-          <h1 th:text="${servicio.nombre}">Service</h1>
-          <p class="hero-summary" th:text="${servicio.resumen}">
+          <p class="eyebrow" th:text="${servicio.category}">Category</p>
+          <h1 th:text="${servicio.name}">Service</h1>
+          <p class="hero-summary" th:text="${servicio.summary}">
             A memorable experience during your stay.
           </p>
           <div class="hero-actions tw-flex tw-flex-wrap tw-gap-2 tw-justify-center md:tw-justify-start">
@@ -85,7 +85,7 @@
         <div class="overview-copy">
           <p class="eyebrow">Service details</p>
           <h2 id="about-title">Everything about this experience.</h2>
-          <p class="description" th:text="${servicio.descripcion}">
+          <p class="description" th:text="${servicio.description}">
             Service description.
           </p>
 
@@ -112,23 +112,23 @@
           </div>
           <div class="fact">
             <dt>Name</dt>
-            <dd><strong th:text="${servicio.nombre}">Service</strong></dd>
+            <dd><strong th:text="${servicio.name}">Service</strong></dd>
           </div>
           <div class="fact">
             <dt>URL name</dt>
             <dd>
-              <strong th:text="${servicio.nombreUrl}">service-url-name</strong>
+              <strong th:text="${servicio.urlName}">service-url-name</strong>
             </dd>
           </div>
           <div class="fact">
             <dt>Category</dt>
-            <dd><strong th:text="${servicio.categoria}">Category</strong></dd>
+            <dd><strong th:text="${servicio.category}">Category</strong></dd>
           </div>
           <div class="fact">
             <dt>Price</dt>
             <dd>
               <strong
-                th:text="|COP ${#numbers.formatDecimal(servicio.precio, 0, 'POINT', 0, 'COMMA')}|"
+                th:text="|COP ${#numbers.formatDecimal(servicio.price, 0, 'POINT', 0, 'COMMA')}|"
                 >COP 0</strong
               >
             </dd>
@@ -136,13 +136,13 @@
           <div class="fact">
             <dt>Duration</dt>
             <dd>
-              <strong th:text="${servicio.duracion}">Not specified</strong>
+              <strong th:text="${servicio.duration}">Not specified</strong>
             </dd>
           </div>
           <div class="fact">
             <dt>Availability</dt>
             <dd>
-              <strong th:text="${servicio.disponibilidad}"
+              <strong th:text="${servicio.availability}"
                 >Not specified</strong
               >
             </dd>
@@ -150,7 +150,7 @@
           <div class="fact">
             <dt>Location</dt>
             <dd>
-              <strong th:text="${servicio.ubicacion}">Not specified</strong>
+              <strong th:text="${servicio.location}">Not specified</strong>
             </dd>
           </div>
           <div class="fact">
@@ -158,8 +158,8 @@
             <dd>
               <strong
                 class="status"
-                th:classappend="${!servicio.activo} ? ' inactive' : ''"
-                th:text="${servicio.activo} ? 'Active' : 'Inactive'"
+                th:classappend="${!servicio.active} ? ' inactive' : ''"
+                th:text="${servicio.active} ? 'Active' : 'Inactive'"
                 >Active</strong
               >
             </dd>
@@ -175,7 +175,7 @@
           </div>
           <p>
             Images associated with
-            <span th:text="${servicio.nombre}">this service</span>.
+            <span th:text="${servicio.name}">this service</span>.
           </p>
         </div>
 
@@ -190,7 +190,7 @@
             <figure>
               <img
                 th:src="${imagenUrl}"
-                th:alt="|${servicio.nombre} — image ${state.index + 1}|"
+                th:alt="|${servicio.name} — image ${state.index + 1}|"
                 loading="lazy"
               />
               <figcaption th:text="|Image ${state.index + 1}|">
