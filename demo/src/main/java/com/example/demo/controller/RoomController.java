@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -23,15 +24,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  *
  * - NoSuchElementException   -> la habitación (o su tipo) no existe: se vuelve al listado.
  * - IllegalArgumentException -> el formulario trae datos inválidos: se vuelve al formulario.
+ *
+ * RELACIÓN CON EL TIPO DE HABITACIÓN: en la base de datos Room guarda una llave
+ * foránea hacia RoomType, y en Java eso es un objeto RoomType completo. El
+ * formulario, en cambio, solo puede mandar el id que se eligió en el desplegable,
+ * así que ese id llega como parámetro aparte y aquí se cambia por el tipo real
+ * que está guardado en la base de datos.
  */
 @Controller
 @RequestMapping("/admin/habitaciones")
 public class RoomController {
 
-    @Autowired(required = false)
+    @Autowired
     RoomService roomService;
 
-    @Autowired(required = false)
+    @Autowired
     RoomTypeService roomTypeService;
 
     // Full URL: http://localhost:8080/admin/habitaciones/read
@@ -44,17 +51,22 @@ public class RoomController {
     // Full URL: http://localhost:8080/admin/habitaciones/create
     @GetMapping("/create")
     public String showFormCreacion(Model model) {
-        prepareForm(model, new Room(), "Create room", "/admin/habitaciones/create");
+        // Se arma con el builder y no con new Room() porque así la lista de fotos
+        // secundarias llega vacía en vez de en null, que es lo que espera la vista.
+        prepareForm(model, Room.builder().build(), "Create room", "/admin/habitaciones/create");
         return "habitaciones/formulario";
     }
 
     // Full URL: http://localhost:8080/admin/habitaciones/create
     @PostMapping("/create")
-    public String create(@ModelAttribute Room room, Model model) {
+    public String create(@ModelAttribute Room room,
+                         @RequestParam("roomTypeId") int roomTypeId,
+                         Model model) {
         try {
+            room.setRoomType(roomTypeService.findById(roomTypeId));
             roomService.create(room);
             return "redirect:/admin/habitaciones/read";
-        } catch (IllegalArgumentException dataInvalidos) {
+        } catch (NoSuchElementException | IllegalArgumentException dataInvalidos) {
             prepareForm(model, room, "Create room", "/admin/habitaciones/create");
             model.addAttribute("error", dataInvalidos.getMessage());
             return "habitaciones/formulario";
@@ -65,9 +77,9 @@ public class RoomController {
     @GetMapping("/read/{number}")
     public String verDetalle(@PathVariable int number, Model model, RedirectAttributes redirectAttributes) {
         try {
-            Room room = roomService.findByNumber(number);
-            model.addAttribute("habitacion", room);
-            model.addAttribute("type", room.getRoomType());
+            // La vista llega al tipo navegando la relación (habitacion.roomType),
+            // así que no hace falta mandarlo como un atributo aparte.
+            model.addAttribute("habitacion", roomService.findByNumber(number));
             return "habitaciones/detalle";
         } catch (NoSuchElementException roomNotFound) {
             redirectAttributes.addFlashAttribute("error", roomNotFound.getMessage());
@@ -92,9 +104,11 @@ public class RoomController {
     @PostMapping("/update/{number}")
     public String update(@PathVariable int number,
                              @ModelAttribute Room room,
+                             @RequestParam("roomTypeId") int roomTypeId,
                              Model model,
                              RedirectAttributes redirectAttributes) {
         try {
+            room.setRoomType(roomTypeService.findById(roomTypeId));
             roomService.update(number, room);
             return "redirect:/admin/habitaciones/read";
         } catch (NoSuchElementException roomNotFound) {

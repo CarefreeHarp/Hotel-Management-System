@@ -89,26 +89,12 @@
             Service description.
           </p>
 
-          <ul class="benefits" th:if="${!#lists.isEmpty(servicio.beneficios)}">
-            <li
-              class="benefit"
-              th:each="beneficio, state : ${servicio.beneficios}"
-            >
-              <span class="benefit-number" th:text="|0${state.index + 1}|"
-                >01</span
-              >
-              <p th:text="${beneficio}">Benefit</p>
-            </li>
-          </ul>
-          <p class="empty-state" th:if="${#lists.isEmpty(servicio.beneficios)}">
-            No additional benefits are currently listed.
-          </p>
         </div>
 
         <dl class="service-facts" aria-label="Service information">
           <div class="fact">
             <dt>Service ID</dt>
-            <dd><strong th:text="|#${servicio.id}|">#1</strong></dd>
+            <dd><strong th:text="|#${servicio.serviceId}|">#1</strong></dd>
           </div>
           <div class="fact">
             <dt>Name</dt>
@@ -167,7 +153,11 @@
         </dl>
       </section>
 
-      <section class="gallery-section" aria-labelledby="gallery-title">
+      <section
+        class="gallery-section"
+        aria-labelledby="gallery-title"
+        th:if="${servicio.mainImageUrl != null and !servicio.mainImageUrl.isBlank()}"
+      >
         <div class="gallery-heading">
           <div>
             <p class="eyebrow">Visual tour</p>
@@ -179,32 +169,18 @@
           </p>
         </div>
 
-        <ul
-          class="gallery-grid"
-          th:if="${!#lists.isEmpty(servicio.imagenesGaleriaUrls)}"
-        >
-          <li
-            th:each="imagenUrl, state : ${servicio.imagenesGaleriaUrls}"
-            class="gallery-card"
-          >
+        <ul class="gallery-grid">
+          <li class="gallery-card">
             <figure>
               <img
-                th:src="${imagenUrl}"
-                th:alt="|${servicio.name} — image ${state.index + 1}|"
+                th:src="${servicio.mainImageUrl}"
+                th:alt="|${servicio.name} — main image|"
                 loading="lazy"
               />
-              <figcaption th:text="|Image ${state.index + 1}|">
-                Image 1
-              </figcaption>
+              <figcaption th:text="${servicio.name}">Service</figcaption>
             </figure>
           </li>
         </ul>
-        <p
-          class="empty-state gallery-empty"
-          th:if="${#lists.isEmpty(servicio.imagenesGaleriaUrls)}"
-        >
-          No gallery images are available for this service.
-        </p>
       </section>
 
       <section id="reservation" class="reservation-cta">

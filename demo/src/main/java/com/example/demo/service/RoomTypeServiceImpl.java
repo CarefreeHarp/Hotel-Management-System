@@ -1,9 +1,11 @@
 package com.example.demo.service;
 
 import com.example.demo.entities.RoomType;
-import com.example.demo.repository.RoomTypeInMemoryRepository;
+import com.example.demo.repository.RoomTypeRepository;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,44 +14,40 @@ import org.springframework.stereotype.Service;
  * Spring la registra como bean gracias a @Service y le inyecta el repositorio
  * con @Autowired (inyección de dependencias).
  *
- * Las validaciones y los mensajes de error viven aquí: el controlador solo
- * atrapa la excepción y decide a qué pantalla lleva.
+ * El repositorio es ahora un RoomTypeRepository de Spring Data JPA, así que el
+ * catálogo se guarda en la base de datos H2. Las validaciones y los mensajes de
+ * error siguen viviendo aquí: el controlador solo atrapa la excepción y decide
+ * a qué pantalla lleva.
  */
 @Service
 public class RoomTypeServiceImpl implements RoomTypeService {
 
     @Autowired
-    public RoomTypeInMemoryRepository typeRoomRepository;
+    public RoomTypeRepository typeRoomRepository;
 
     @Override
     public List<RoomType> listTypes() {
-        return typeRoomRepository.listAll();
+        return typeRoomRepository.findAll();
     }
 
     @Override
     public RoomType findByName(String name) {
-        RoomType typeRoom = findType(name);
-        if (typeRoom == null) {
-            throw new NoSuchElementException("No room type named " + name + " exists.");
-        }
-
-        return typeRoom;
+        return typeRoomRepository.findByNameIgnoreCase(name)
+                .orElseThrow(() -> new NoSuchElementException("No room type named " + name + " exists."));
     }
 
     @Override
     public RoomType findById(int roomTypeId) {
-        RoomType typeRoom = typeRoomRepository.findById(roomTypeId);
-        if (typeRoom == null) {
-            throw new NoSuchElementException("No room type with the id " + roomTypeId + " exists.");
-        }
-
-        return typeRoom;
+        return typeRoomRepository.findById(roomTypeId)
+                .orElseThrow(() -> new NoSuchElementException(
+                        "No room type with the id " + roomTypeId + " exists."));
     }
 
     @Override
     public void create(RoomType typeRoom) {
-        // El id lo genera el repositorio: el formulario nunca lo envía.
-        typeRoom.setRoomTypeId(0);
+        // El id lo genera la base de datos (IDENTITY): se manda en null para que
+        // Hibernate haga un INSERT. El formulario nunca lo envía.
+        typeRoom.setRoomTypeId(null);
 
         validateData(typeRoom);
         typeRoomRepository.save(typeRoom);
@@ -59,7 +57,8 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     public void update(String currentName, RoomType typeRoom) {
         RoomType typeRegistered = findByName(currentName);
 
-        // Se conserva el id que ya tenía el tipo para no crear un registro nuevo.
+        // Se conserva el id que ya tenía el tipo para que save() actualice esa
+        // fila en vez de crear un registro nuevo.
         typeRoom.setRoomTypeId(typeRegistered.getRoomTypeId());
 
         validateData(typeRoom);
@@ -69,19 +68,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     @Override
     public void delete(String name) {
         RoomType typeRegistered = findByName(name);
-        typeRoomRepository.delete(typeRegistered.getRoomTypeId());
-    }
-
-    /**
-     * Búsqueda interna que sí puede devolver null, porque las validaciones
-     * necesitan preguntar si un name ya está usado sin que eso sea un error.
-     */
-    private RoomType findType(String name) {
-        return typeRoomRepository.listAll()
-                .stream()
-                .filter(typeRoom -> typeRoom.getName().equalsIgnoreCase(name))
-                .findFirst()
-                .orElse(null);
+        typeRoomRepository.deleteById(typeRegistered.getRoomTypeId());
     }
 
     /**
@@ -90,20 +77,24 @@ public class RoomTypeServiceImpl implements RoomTypeService {
      * El name se compara contra el id porque, al editar, el propio tipo conserva
      * su name y eso no debe contar como duplicado.
      *
+     * Los ids se comparan con Objects.equals y no con != porque son Integer (un
+     * objeto), y en un tipo nuevo el id todavía viene en null.
+     *
      * @throws IllegalArgumentException con el mensaje del primer dato inválido.
      */
     private void validateData(RoomType typeRoom) {
-        RoomType typeWithThatName = findType(typeRoom.getName());
-        if (typeWithThatName != null && typeWithThatName.getRoomTypeId() != typeRoom.getRoomTypeId()) {
+        RoomType typeWithThatName = typeRoomRepository.findByNameIgnoreCase(typeRoom.getName()).orElse(null);
+        if (typeWithThatName != null
+                && !Objects.equals(typeWithThatName.getRoomTypeId(), typeRoom.getRoomTypeId())) {
             throw new IllegalArgumentException(
                     "A room type named " + typeRoom.getName() + " already exists.");
         }
 
-        if (typeRoom.getNightlyPrice().compareTo(java.math.BigDecimal.ZERO) < 0) {
+        if (typeRoom.getNightlyPrice() == null || typeRoom.getNightlyPrice().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("The nightly price cannot be negative.");
         }
 
-        if (typeRoom.getMaxCapacity() < 1) {
+        if (typeRoom.getMaxCapacity() == null || typeRoom.getMaxCapacity() < 1) {
             throw new IllegalArgumentException("Maximum capacity must be at least one guest.");
         }
     }
