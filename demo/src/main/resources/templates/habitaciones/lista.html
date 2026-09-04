@@ -16,21 +16,20 @@
       <section class="surface-card" aria-labelledby="room-list-title">
         <h2 class="tw-sr-only" id="room-list-title">Room list</h2>
         <div class="table-shell"><table class="table portal-table">
-          <thead><tr><th>View</th><th>Number</th><th>Floor</th><th>Status</th><th>Availability</th><th>Type</th><th>Actions</th></tr></thead>
+          <thead><tr><th>View</th><th>Number</th><th>Floor</th><th>Status</th><th>Type</th><th>Actions</th></tr></thead>
           <tbody>
             <tr
               th:each="habitacion : ${habitaciones}"
-              th:with="fotoTipo=${habitacion.roomTypeId == 1 ? 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0020-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*' : (habitacion.roomTypeId == 2 ? 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*' : (habitacion.roomTypeId == 3 ? 'https://cache.marriott.com/is/image/marriotts7prod/rz-dpssw-dpssw-junior-suite-12993:Wide-Hor?wid=540&amp;fit=constrain' : 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*'))}"
+              th:with="fotoTipo=${habitacion.mainPhoto != null and !habitacion.mainPhoto.isBlank() ? habitacion.mainPhoto : 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*'}"
             >
               <td><img class="room-thumbnail" th:src="${fotoTipo}" th:alt="|Room ${habitacion.number}|" loading="lazy" /></td>
               <td><span class="room-number" th:text="${habitacion.number}">101</span></td>
               <td class="room-data-cell" th:text="${habitacion.floor}">1</td>
-              <td><span class="status-badge" th:classappend="${habitacion.status.name() == 'DISPONIBLE' ? ' status-badge--success' : ' status-badge--occupied'}" th:text="${habitacion.status.name() == 'DISPONIBLE' ? 'Available' : 'Occupied'}">Available</span></td>
-              <td><span class="status-badge" th:classappend="${habitacion.disponible} ? ' status-badge--success' : ' status-badge--unavailable'" th:text="${habitacion.disponible ? 'Available' : 'Unavailable'}">Available</span></td>
-              <td class="room-data-cell" th:text="${habitacion.roomTypeId}">1</td>
+              <td><span class="status-badge" th:classappend="${habitacion.status.name() == 'AVAILABLE' ? ' status-badge--success' : ' status-badge--occupied'}" th:text="${habitacion.status.name() == 'AVAILABLE' ? 'Available' : (habitacion.status.name() == 'OCCUPIED' ? 'Occupied' : 'Maintenance')}">Available</span></td>
+              <td class="room-data-cell" th:text="${habitacion.roomType != null ? habitacion.roomType.name : '—'}">Normal</td>
               <td><div class="table-actions tw-flex tw-gap-2"><a class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="@{/admin/habitaciones/read/{number}(number=${habitacion.number})}">View</a><a class="atlan-btn atlan-btn--edit atlan-btn--small" th:href="@{/admin/habitaciones/update/{number}(number=${habitacion.number})}">Edit</a><form th:action="@{/admin/habitaciones/delete/{number}(number=${habitacion.number})}" method="post" onsubmit="return confirm('Do you want to delete this room?');"><button class="atlan-btn atlan-btn--danger atlan-btn--small" type="submit">Delete</button></form></div></td>
             </tr>
-            <tr th:if="${#lists.isEmpty(habitaciones)}"><td class="empty-state" colspan="7">No rooms are registered. Add the first one to get started.</td></tr>
+            <tr th:if="${#lists.isEmpty(habitaciones)}"><td class="empty-state" colspan="6">No rooms are registered. Add the first one to get started.</td></tr>
           </tbody>
         </table></div>
       </section>

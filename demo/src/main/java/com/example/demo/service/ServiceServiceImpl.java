@@ -1,43 +1,40 @@
 package com.example.demo.service;
 
 import com.example.demo.entities.Service;
-import com.example.demo.repository.ServiceInMemoryRepository;
-import java.util.Comparator;
+import com.example.demo.repository.ServiceRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 
 /**
  * Implementación de la lógica de negocio de los servicios.
  * Spring la registra como bean gracias a @Service y le inyecta el repositorio
- * por constructor (inyección de dependencias).
+ * con @Autowired (inyección de dependencias).
+ *
+ * El repositorio es ahora un ServiceRepository de Spring Data JPA, así que los
+ * servicios se leen de la base de datos H2.
  */
 @org.springframework.stereotype.Service
 public class ServiceServiceImpl implements ServiceService {
 
     @Autowired
-    public ServiceInMemoryRepository serviceRepository;
+    public ServiceRepository serviceRepository;
 
     /**
-     * Ordena los servicios por categoría y, dentro de cada categoría, por name,
-     * para que la tabla de la vista quede agrupada y sea fácil de leer.
+     * Antes la lista se ordenaba en Java después de traerla completa; ahora el
+     * orden se lo pide a la base de datos con un Sort, que Spring Data traduce
+     * a un ORDER BY service_id.
      */
     @Override
     public List<Service> listServices() {
-        return serviceRepository.listAll()
-                .stream()
-                .sorted(Comparator.comparingInt(Service::getServiceId))
-                .toList();
+        return serviceRepository.findAll(Sort.by("serviceId"));
     }
 
     @Override
     public Service getServiceByUrlName(String urlName) {
-        Service service = serviceRepository.findByUrlName(urlName);
-        if (service == null) {
-            throw new NoSuchElementException("The service " + urlName + " does not exist.");
-        }
-
-        return service;
+        return serviceRepository.findByUrlNameIgnoreCase(urlName)
+                .orElseThrow(() -> new NoSuchElementException(
+                        "The service " + urlName + " does not exist."));
     }
 }
