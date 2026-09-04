@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entitys.Habitacion;
+import com.example.demo.entities.Room;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -13,23 +13,23 @@ import java.util.NoSuchElementException;
  * - NoSuchElementException   -> la habitación buscada no existe.
  * - IllegalArgumentException -> los datos del formulario no son válidos.
  */
-public interface HabitacionService {
+public interface RoomService {
 
-    List<Habitacion> listarHabitaciones();
+    List<Room> listRooms();
 
     /**
      * Devuelve la habitación con ese número.
      *
      * @throws NoSuchElementException si no existe una habitación con ese número.
      */
-    Habitacion buscarPorNumero(int numero);
+    Room findByNumber(int number);
 
     /**
      * Registra una habitación nueva.
      *
      * @throws IllegalArgumentException si los datos no cumplen las reglas del negocio.
      */
-    void crear(Habitacion habitacion);
+    void create(Room room);
 
     /**
      * Actualiza una habitación existente. numeroActual es el número que tenía
@@ -38,12 +38,12 @@ public interface HabitacionService {
      * @throws NoSuchElementException   si no existe la habitación numeroActual.
      * @throws IllegalArgumentException si los datos nuevos no son válidos.
      */
-    void actualizar(int numeroActual, Habitacion habitacion);
+    void update(int numberCurrent, Room room);
 
     /**
      * Elimina la habitación con ese número.
      *
      * @throws NoSuchElementException si no existe una habitación con ese número.
      */
-    void eliminar(int numero);
+    void delete(int number);
 }

@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.service.ClienteService;
+import com.example.demo.service.ClientService;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,15 +14,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 /** Handles the administrator's client listing screen. */
 @Controller
 @RequestMapping("/admin/clientes")
-public class AdminClienteController {
+public class AdminClientController {
 
     @Autowired
-    ClienteService clienteService;
+    ClientService clientService;
 
     // Full URL: http://localhost:8080/admin/clientes/read
     @GetMapping("/read")
-    public String listarClientes(Model model) {
-        model.addAttribute("clientes", clienteService.listarClientes());
+    public String listClients(Model model) {
+        model.addAttribute("clientes", clientService.listClients());
         return "clientes/lista";
     }
 
@@ -31,13 +31,13 @@ public class AdminClienteController {
      * Es la misma operación de negocio que el borrado del cliente, pero como
      * aquí quien borra es el administrador se vuelve al listado y no al login.
      */
-    // Full URL: http://localhost:8080/admin/clientes/delete/{correo}
-    @PostMapping("/delete/{correo}")
-    public String eliminarCliente(@PathVariable("correo") String correo, RedirectAttributes redireccion) {
+    // Full URL: http://localhost:8080/admin/clientes/delete/{email}
+    @PostMapping("/delete/{email}")
+    public String deleteClient(@PathVariable("email") String email, RedirectAttributes redirectAttributes) {
         try {
-            clienteService.eliminarCuenta(correo);
-        } catch (NoSuchElementException cuentaInexistente) {
-            redireccion.addFlashAttribute("error", cuentaInexistente.getMessage());
+            clientService.deleteProfile(email);
+        } catch (NoSuchElementException profileNotFound) {
+            redirectAttributes.addFlashAttribute("error", profileNotFound.getMessage());
         }
 
         return "redirect:/admin/clientes/read";

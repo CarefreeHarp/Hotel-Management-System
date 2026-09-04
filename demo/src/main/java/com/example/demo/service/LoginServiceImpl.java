@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entitys.Cliente;
+import com.example.demo.entities.Client;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,27 +22,27 @@ public class LoginServiceImpl implements LoginService {
     private static final String CREDENCIALES_INVALIDAS = "Incorrect username or password.";
 
     @Autowired
-    ClienteService clienteService;
+    ClientService clientService;
 
     @Override
-    public boolean esAdministrador(String usuario, String password) {
-        return USUARIO_ADMIN.equals(usuario) && PASSWORD_ADMIN.equals(password);
+    public boolean isAdministrator(String user, String password) {
+        return USUARIO_ADMIN.equals(user) && PASSWORD_ADMIN.equals(password);
     }
 
     @Override
-    public Cliente autenticarCliente(String usuario, String password) {
-        Cliente cliente;
+    public Client authenticateClient(String user, String password) {
+        Client client;
 
         try {
-            cliente = clienteService.buscarPorCorreo(usuario);
-        } catch (NoSuchElementException cuentaInexistente) {
+            client = clientService.findByEmail(user);
+        } catch (NoSuchElementException profileNotFound) {
             throw new SecurityException(CREDENCIALES_INVALIDAS);
         }
 
-        if (!cliente.getPassword().equals(password)) {
+        if (!client.getPassword().equals(password)) {
             throw new SecurityException(CREDENCIALES_INVALIDAS);
         }
 
-        return cliente;
+        return client;
     }
 }

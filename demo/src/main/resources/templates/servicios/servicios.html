@@ -121,37 +121,37 @@
               <!-- One row for each service provided by the controller -->
               <tr class="services-row" th:each="servicio : ${servicios}">
                 <th scope="row">
-                  <!-- The name links to the detail screen: /servicios/{nombreUrl} -->
+                  <!-- The name links to the detail screen: /servicios/{urlName} -->
                   <a
                     class="service-link"
-                    th:href="@{/servicios/{nombreUrl}(nombreUrl=${servicio.nombreUrl})}"
-                    th:text="${servicio.nombre}"
+                    th:href="@{/servicios/{urlName}(urlName=${servicio.urlName})}"
+                    th:text="${servicio.name}"
                     >Spa</a
                   >
                 </th>
-                <td th:text="${servicio.descripcion}">
+                <td th:text="${servicio.description}">
                     Relaxation circuit and spa treatments.
                 </td>
                 <td>
-                  <span class="service-tag" th:text="${servicio.categoria}">Wellness</span>
+                  <span class="service-tag" th:text="${servicio.category}">Wellness</span>
                 </td>
                 <td>
                   <!-- Status depends on whether the service is active -->
                   <span
                     class="service-status"
-                    th:classappend="${servicio.activo} ? 'is-available' : 'is-unavailable'"
-                    th:text="${servicio.activo} ? 'Available' : 'Unavailable'"
+                    th:classappend="${servicio.active} ? 'is-available' : 'is-unavailable'"
+                    th:text="${servicio.active} ? 'Available' : 'Unavailable'"
                     >Available</span
                   >
                 </td>
                 <td class="services-cell-price">
                   <!-- Complimentary services are shown as included in the stay -->
                   <span
-                    th:if="${servicio.precio > 0}"
-                    th:text="'$' + ${#numbers.formatInteger(servicio.precio, 1, 'POINT')}"
+                    th:if="${servicio.price > 0}"
+                    th:text="'$' + ${#numbers.formatInteger(servicio.price, 1, 'POINT')}"
                     >$120.000</span
                   >
-                  <span th:unless="${servicio.precio > 0}" class="service-included">Included</span>
+                  <span th:unless="${servicio.price > 0}" class="service-included">Included</span>
                 </td>
               </tr>
 

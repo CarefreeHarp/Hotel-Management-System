@@ -26,11 +26,11 @@
               <thead><tr><th>Guest</th><th>National ID</th><th>Phone</th><th>Email</th><th>Actions</th></tr></thead>
               <tbody>
                 <tr th:each="cliente : ${clientes}">
-                  <td><span class="client-name" th:text="|${cliente.nombre} ${cliente.apellido}|">First name Last name</span></td>
-                  <td class="muted-cell" th:text="${cliente.cedula}">00000000</td>
-                  <td class="muted-cell" th:text="${cliente.telefono}">3000000000</td>
-                  <td class="client-email" th:text="${cliente.correo}">client@example.com</td>
-                  <td><div class="table-actions tw-flex tw-gap-2"><a class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="@{/clientes/read/{correo}(correo=${cliente.correo})}">View</a><a class="atlan-btn atlan-btn--edit atlan-btn--small" th:href="@{/clientes/update/{correo}(correo=${cliente.correo})}">Edit</a><form th:action="@{/admin/clientes/delete/{correo}(correo=${cliente.correo})}" method="post" onsubmit="return confirm('Do you want to delete this client?');"><button class="atlan-btn atlan-btn--danger atlan-btn--small" type="submit">Delete</button></form></div></td>
+                  <td><span class="client-name" th:text="|${cliente.name} ${cliente.lastName}|">First name Last name</span></td>
+                  <td class="muted-cell" th:text="${cliente.nationalId}">00000000</td>
+                  <td class="muted-cell" th:text="${cliente.phone}">3000000000</td>
+                  <td class="client-email" th:text="${cliente.email}">client@example.com</td>
+                  <td><div class="table-actions tw-flex tw-gap-2"><a class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="@{/clientes/read/{email}(email=${cliente.email})}">View</a><a class="atlan-btn atlan-btn--edit atlan-btn--small" th:href="@{/clientes/update/{email}(email=${cliente.email})}">Edit</a><form th:action="@{/admin/clientes/delete/{email}(email=${cliente.email})}" method="post" onsubmit="return confirm('Do you want to delete this client?');"><button class="atlan-btn atlan-btn--danger atlan-btn--small" type="submit">Delete</button></form></div></td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(clientes)}"><td class="empty-state" colspan="5">No clients are registered yet. Create the first profile to get started.</td></tr>
               </tbody>
