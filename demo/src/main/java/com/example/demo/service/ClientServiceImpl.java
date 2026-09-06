@@ -1,11 +1,14 @@
 package com.example.demo.service;
 
 import com.example.demo.entities.Client;
+import com.example.demo.errors.ClientNotFoundException;
+import com.example.demo.errors.InvalidClientDataException;
+import com.example.demo.errors.InvalidCurrentPasswordException;
 import com.example.demo.repository.ClientRepository;
-import java.net.URI;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClientServiceImpl implements ClientService {
 
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$");
+
     @Autowired
     public ClientRepository clientRepository;
 
@@ -33,8 +38,13 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client findByEmail(String email) {
         return clientRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new NoSuchElementException(
-                        "No guest profile is registered with the email " + email + "."));
+                .orElseThrow(() -> new ClientNotFoundException(email));
+    }
+
+    @Override
+    public Client findByEmailForLogin(String email) {
+        return clientRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(NoSuchElementException::new);
     }
 
     @Override
@@ -43,7 +53,7 @@ public class ClientServiceImpl implements ClientService {
         // Hibernate haga un INSERT: el formulario del registro nunca lo manda.
         client.setClientId(null);
 
-        validateDataUnique(client);
+        validateData(client, true);
         clientRepository.save(client);
     }
 
@@ -52,7 +62,7 @@ public class ClientServiceImpl implements ClientService {
         Client profileRegistrada = findByEmail(emailCurrent);
 
         if (!profileRegistrada.getPassword().equals(passwordCurrent)) {
-            throw new SecurityException("The current password does not match.");
+            throw new InvalidCurrentPasswordException(emailCurrent);
         }
 
         // Se conserva el id para que save() actualice la fila que ya existe en vez
@@ -60,7 +70,7 @@ public class ClientServiceImpl implements ClientService {
         client.setClientId(profileRegistrada.getClientId());
         client.setPassword(profileRegistrada.getPassword());
 
-        validateDataUnique(client);
+        validateData(client, false);
         clientRepository.save(client);
     }
 
@@ -71,46 +81,61 @@ public class ClientServiceImpl implements ClientService {
     }
 
     /**
-     * El email y la cédula son campos únicos: ningún otro cliente puede tenerlos.
-     * Se comparan los ids porque, al editar el perfil, el propio cliente sí
-     * conserva su email y su cédula y eso no debe contar como duplicado.
+     * Las reglas del formulario se comprueban en el servidor para que no dependan
+     * de las restricciones del navegador. El email y la cédula son únicos; al
+     * editar se comparan los ids para no contar el propio perfil como duplicado.
      *
      * Los ids se comparan con Objects.equals y no con != porque son Integer (un
      * objeto), y en un cliente nuevo el id todavía viene en null.
      *
-     * @throws IllegalArgumentException con el mensaje del primer dato inválido.
+     * @throws InvalidClientDataException con el mensaje del primer dato inválido.
      */
-    private void validateDataUnique(Client client) {
+    private void validateData(Client client, boolean isRegistration) {
+        if (client.getName() == null || client.getName().isBlank()) {
+            throw new InvalidClientDataException(InvalidClientDataException.Reason.NAME_REQUIRED, client.getName());
+        }
+
+        if (client.getName().length() > 50) {
+            throw new InvalidClientDataException(InvalidClientDataException.Reason.NAME_TOO_LONG, client.getName());
+        }
+
+        if (client.getLastName() == null || client.getLastName().isBlank()) {
+            throw new InvalidClientDataException(InvalidClientDataException.Reason.LAST_NAME_REQUIRED, client.getLastName());
+        }
+
+        if (client.getLastName().length() > 50) {
+            throw new InvalidClientDataException(InvalidClientDataException.Reason.LAST_NAME_TOO_LONG, client.getLastName());
+        }
+
+        if (client.getNationalId() == null || !client.getNationalId().matches("\\d{6,15}")) {
+            throw new InvalidClientDataException(InvalidClientDataException.Reason.NATIONAL_ID_INVALID, client.getNationalId());
+        }
+
+        if (client.getPhone() == null || !client.getPhone().matches("\\d{7,15}")) {
+            throw new InvalidClientDataException(InvalidClientDataException.Reason.PHONE_INVALID, client.getPhone());
+        }
+
+        if (client.getEmail() == null || client.getEmail().length() > 80
+                || !EMAIL_PATTERN.matcher(client.getEmail()).matches()) {
+            throw new InvalidClientDataException(InvalidClientDataException.Reason.EMAIL_INVALID, client.getEmail());
+        }
+
+        if (isRegistration && (client.getPassword() == null || client.getPassword().length() < 8)) {
+            throw new InvalidClientDataException(InvalidClientDataException.Reason.PASSWORD_TOO_SHORT, client.getPassword());
+        }
+
         Client clientWithThatEmail = clientRepository.findByEmailIgnoreCase(client.getEmail()).orElse(null);
         if (clientWithThatEmail != null
                 && !Objects.equals(clientWithThatEmail.getClientId(), client.getClientId())) {
-            throw new IllegalArgumentException(
-                    "A guest profile is already registered with the email " + client.getEmail() + ".");
+            throw new InvalidClientDataException(
+                    InvalidClientDataException.Reason.EMAIL_ALREADY_REGISTERED, client.getEmail());
         }
 
         Client clientWithThatNationalId = clientRepository.findByNationalId(client.getNationalId()).orElse(null);
         if (clientWithThatNationalId != null
                 && !Objects.equals(clientWithThatNationalId.getClientId(), client.getClientId())) {
-            throw new IllegalArgumentException(
-                    "A guest profile is already registered with the national ID " + client.getNationalId() + ".");
-        }
-
-        if (!isValidHttpUrl(client.getProfilePhoto())) {
-            throw new IllegalArgumentException("The profile photo must be a valid HTTP or HTTPS URL.");
-        }
-    }
-
-    private boolean isValidHttpUrl(String url) {
-        if (url == null || url.isBlank()) {
-            return true;
-        }
-
-        try {
-            URI uri = URI.create(url.trim());
-            return uri.isAbsolute() && ("http".equalsIgnoreCase(uri.getScheme())
-                    || "https".equalsIgnoreCase(uri.getScheme()));
-        } catch (IllegalArgumentException error) {
-            return false;
+            throw new InvalidClientDataException(
+                    InvalidClientDataException.Reason.NATIONAL_ID_ALREADY_REGISTERED, client.getNationalId());
         }
     }
 }

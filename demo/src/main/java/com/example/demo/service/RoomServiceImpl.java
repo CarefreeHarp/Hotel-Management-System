@@ -1,10 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.entities.Room;
+import com.example.demo.errors.InvalidRoomDataException;
+import com.example.demo.errors.RoomNotFoundException;
 import com.example.demo.repository.RoomRepository;
-import java.net.URI;
 import java.util.List;
-import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
  * Implementación de la lógica de negocio de las habitaciones.
  *
  * El repositorio es ahora un RoomRepository de Spring Data JPA. Como el número
- * de la habitación es la llave primaria de la tabla ROOM, buscar por número es
- * directamente el findById que se hereda de JpaRepository.
+ * de la habitación es un dato único de negocio; la llave primaria interna es
+ * room_id, generada por la base de datos.
  *
  * Cuando un dato no cumple una regla del negocio se lanza una excepción con el
  * mensaje que verá el administrador.
@@ -31,77 +31,76 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room findByNumber(int number) {
-        return roomRepository.findById(number)
-                .orElseThrow(() -> new NoSuchElementException("The room " + number + " does not exist."));
+        return roomRepository.findByNumber(number)
+                .orElseThrow(() -> new RoomNotFoundException(number));
     }
 
     @Override
     public void create(Room room) {
-        // Se valida contra el número 0, que ninguna habitación puede tener, para
-        // que cualquier número ya usado cuente como duplicado.
+        // El id lo genera la base de datos. El formulario nunca debe conservarlo.
+        room.setRoomId(null);
+        normalizePhotos(room);
         validateData(room, 0);
         roomRepository.save(room);
     }
 
     @Override
     public void update(int numberCurrent, Room room) {
-        // Solo se comprueba que exista: si no, findByNumber lanza la excepción.
-        findByNumber(numberCurrent);
+        Room registeredRoom = findByNumber(numberCurrent);
 
+        normalizePhotos(room);
         validateData(room, numberCurrent);
 
-        // El número es la llave primaria, así que cambiarlo no es un UPDATE: hay
-        // que borrar la fila vieja y guardar la habitación con su número nuevo.
-        if (numberCurrent != room.getNumber()) {
-            roomRepository.deleteById(numberCurrent);
-        }
+        // Se conserva el id para actualizar la misma fila si cambia el número.
+        room.setRoomId(registeredRoom.getRoomId());
         roomRepository.save(room);
     }
 
     @Override
     public void delete(int number) {
-        if (!roomRepository.existsById(number)) {
-            throw new NoSuchElementException("The room " + number + " does not exist.");
-        }
-
-        roomRepository.deleteById(number);
+        Room registeredRoom = findByNumber(number);
+        roomRepository.deleteById(registeredRoom.getRoomId());
     }
 
     /**
      * Reglas del negocio de la habitación.
-     * Se le pregunta al repositorio si el número ya está usado con existsById,
+     * Se le pregunta al repositorio si el número ya está usado con existsByNumber,
      * porque aquí encontrarlo no es un error sino parte de la validación.
      *
      * Los campos numéricos se comparan después de descartar el null, porque son
      * objetos (Integer) y el formulario puede llegar sin ellos.
      *
-     * @throws IllegalArgumentException con el mensaje del primer dato inválido.
+     * @throws InvalidRoomDataException con el mensaje del primer dato inválido.
      */
     private void validateData(Room room, int numberCurrent) {
-        normalizarPhotos(room);
-
         if (room.getNumber() == null || room.getNumber() < 1) {
-            throw new IllegalArgumentException("The room number must be greater than zero.");
+            throw new InvalidRoomDataException(
+                    InvalidRoomDataException.Reason.ROOM_NUMBER_MUST_BE_POSITIVE, room.getNumber());
         }
 
-        if (room.getNumber() != numberCurrent && roomRepository.existsById(room.getNumber())) {
-            throw new IllegalArgumentException("A room with that number already exists.");
+        if (room.getNumber() != numberCurrent && roomRepository.existsByNumber(room.getNumber())) {
+            throw new InvalidRoomDataException(
+                    InvalidRoomDataException.Reason.ROOM_NUMBER_ALREADY_EXISTS, room.getNumber());
         }
 
         if (room.getFloor() == null || room.getFloor() < 0) {
-            throw new IllegalArgumentException("The floor cannot be negative.");
+            throw new InvalidRoomDataException(
+                    InvalidRoomDataException.Reason.FLOOR_CANNOT_BE_NEGATIVE, room.getFloor());
         }
 
         if (room.getStatus() == null) {
-            throw new IllegalArgumentException("Select a room status.");
+            throw new InvalidRoomDataException(
+                    InvalidRoomDataException.Reason.STATUS_REQUIRED, room.getNumber());
         }
 
         if (room.getRoomType() == null) {
-            throw new IllegalArgumentException("Select an existing room type.");
+            throw new InvalidRoomDataException(
+                    InvalidRoomDataException.Reason.ROOM_TYPE_REQUIRED, room.getNumber());
         }
 
-        if (!isValidHttpUrl(room.getMainPhoto())) {
-            throw new IllegalArgumentException("The main room photo must be a valid HTTP or HTTPS URL.");
+        if (room.getMainPhoto() == null || room.getMainPhoto().isBlank()) {
+            throw new InvalidRoomDataException(
+                    InvalidRoomDataException.Reason.MAIN_PHOTO_REQUIRED, room.getNumber());
         }
     }
 
@@ -110,27 +109,13 @@ public class RoomServiceImpl implements RoomService {
      * secundarias que el administrador dejó vacías en el formulario, para que no
      * se guarden URLs en blanco en la tabla ROOM_SECONDARY_PHOTO.
      */
-    private void normalizarPhotos(Room room) {
+    private void normalizePhotos(Room room) {
         if (room.getMainPhoto() != null) {
             room.setMainPhoto(room.getMainPhoto().trim());
         }
 
         if (room.getSecondaryPhotos() != null) {
             room.getSecondaryPhotos().removeIf(photo -> photo == null || photo.isBlank());
-        }
-    }
-
-    private boolean isValidHttpUrl(String url) {
-        if (url == null || url.isBlank()) {
-            return true;
-        }
-
-        try {
-            URI uri = URI.create(url);
-            return uri.isAbsolute() && ("http".equalsIgnoreCase(uri.getScheme())
-                    || "https".equalsIgnoreCase(uri.getScheme()));
-        } catch (IllegalArgumentException error) {
-            return false;
         }
     }
 }

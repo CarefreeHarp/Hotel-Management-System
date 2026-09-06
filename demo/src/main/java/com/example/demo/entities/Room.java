@@ -15,8 +15,11 @@ import java.util.List;
 @ToString(exclude = "roomType")
 public class Room {
     @Id
-    @Column(name = "room_number")
-    private Integer number; // Número físico de la habitación.
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "room_id")
+    private Integer roomId; // Identificador interno de la habitación.
+    @Column(name = "room_number", nullable = false, unique = true)
+    private Integer number; // Número físico único de la habitación.
     @Column(nullable = false)
     private Integer floor; // Piso donde se ubica la habitación.
     @Enumerated(EnumType.STRING)
@@ -28,7 +31,7 @@ public class Room {
     @Column(name = "main_photo", nullable = false, length = 500)
     private String mainPhoto; // URL obligatoria de la imagen principal de la habitación.
     @ElementCollection
-    @CollectionTable(name = "room_secondary_photo", joinColumns = @JoinColumn(name = "room_number"))
+    @CollectionTable(name = "room_secondary_photo", joinColumns = @JoinColumn(name = "room_id"))
     @Column(name = "photo_url", nullable = false, length = 500)
     @Builder.Default
     private List<String> secondaryPhotos = new ArrayList<>(); // URLs de las imágenes secundarias de la habitación.

@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.entities.Client;
+import com.example.demo.errors.ClientNotFoundException;
+import com.example.demo.errors.InvalidClientDataException;
+import com.example.demo.errors.InvalidCurrentPasswordException;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * CAPA DE SERVICIO: lógica de negocio de los clientes.
@@ -14,12 +16,12 @@ import java.util.NoSuchElementException;
  *
  * MANEJO DE ERRORES: el servicio es el que decide qué es un error y con qué
  * mensaje se le explica al usuario. Cuando una regla del negocio no se cumple
- * lanza una excepción genérica de Java con un mensaje personalizado, y el
+ * lanza una excepción personalizada con un mensaje, y el
  * controlador solo la atrapa para decidir a qué pantalla lleva cada caso:
  *
- * - NoSuchElementException  -> la cuenta buscada no existe.
- * - IllegalArgumentException -> los datos enviados no son válidos.
- * - SecurityException        -> la contraseña de confirmación no coincide.
+ * - ClientNotFoundException -> la cuenta buscada no existe.
+ * - InvalidClientDataException -> los datos enviados no son válidos.
+ * - InvalidCurrentPasswordException -> la contraseña de confirmación no coincide.
  */
 public interface ClientService {
 
@@ -29,15 +31,22 @@ public interface ClientService {
     /**
      * Devuelve el cliente registrado con ese email.
      *
-     * @throws NoSuchElementException si no hay ninguna cuenta con ese email.
+     * @throws ClientNotFoundException si no hay ninguna cuenta con ese email.
      */
     Client findByEmail(String email);
+
+    /**
+     * Devuelve el cliente con ese email para autenticarlo. Si no existe, lanza
+     * NoSuchElementException para que el inicio de sesión responda con el mismo
+     * mensaje genérico que usa para una contraseña incorrecta.
+     */
+    Client findByEmailForLogin(String email);
 
     /**
      * Registra un cliente nuevo, validando que el email y la cédula no estén
      * usados por otro cliente.
      *
-     * @throws IllegalArgumentException si los datos no cumplen las reglas del negocio.
+     * @throws InvalidClientDataException si los datos no cumplen las reglas del negocio.
      */
     void register(Client client);
 
@@ -46,16 +55,16 @@ public interface ClientService {
      * su contraseña actual. correoActual identifica la cuenta que se está editando,
      * porque el cliente puede estar cambiando justamente su email.
      *
-     * @throws NoSuchElementException   si no existe una cuenta con correoActual.
-     * @throws SecurityException        si la contraseña actual no coincide.
-     * @throws IllegalArgumentException si los datos nuevos no son válidos.
+     * @throws ClientNotFoundException si no existe una cuenta con correoActual.
+     * @throws InvalidCurrentPasswordException si la contraseña actual no coincide.
+     * @throws InvalidClientDataException si los datos nuevos no son válidos.
      */
     void updateProfile(String emailCurrent, Client client, String passwordCurrent);
 
     /**
      * Elimina la cuenta del cliente con ese email.
      *
-     * @throws NoSuchElementException si no hay ninguna cuenta con ese email.
+     * @throws ClientNotFoundException si no hay ninguna cuenta con ese email.
      */
     void deleteProfile(String email);
 }

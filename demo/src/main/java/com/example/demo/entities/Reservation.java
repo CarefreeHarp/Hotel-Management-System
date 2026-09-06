@@ -40,6 +40,6 @@ public class Reservation {
     @JoinColumn(name = "client_id", nullable = false)
     private Client client; // Client que realizó la reserva.
     @ManyToOne(optional = false)
-    @JoinColumn(name = "room_number", nullable = false)
+    @JoinColumn(name = "room_id", nullable = false)
     private Room room; // Habitación asignada a la reserva.
 }

@@ -34,7 +34,7 @@ public class LoginServiceImpl implements LoginService {
         Client client;
 
         try {
-            client = clientService.findByEmail(user);
+            client = clientService.findByEmailForLogin(user);
         } catch (NoSuchElementException profileNotFound) {
             throw new SecurityException(CREDENCIALES_INVALIDAS);
         }
