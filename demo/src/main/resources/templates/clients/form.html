@@ -97,7 +97,7 @@
               <span aria-hidden="true">→</span>
             </button>
             <a class="atlan-btn atlan-btn--secondary" th:if="${!esEdicion}" th:href="@{/login}">Back to sign in</a>
-            <a class="atlan-btn atlan-btn--secondary" th:if="${esEdicion}" th:href="@{/clientes/read/{email}(email=${cliente.email})}">Cancel</a>
+            <a class="atlan-btn atlan-btn--secondary" th:if="${esEdicion}" th:href="@{/clients/read/{email}(email=${cliente.email})}">Cancel</a>
           </div>
         </form>
       </div>
@@ -109,6 +109,6 @@
         <a th:href="@{/}">Back to the hotel website</a>
       </div>
     </footer>
-    <footer class="portal-footer tw-border-t tw-border-white/10" th:if="${esEdicion}"><div class="tw-mx-auto tw-flex tw-max-w-7xl tw-flex-col tw-gap-2 tw-px-4 tw-py-6 tw-text-center tw-text-xs tw-text-slate-400 sm:tw-flex-row sm:tw-items-center sm:tw-justify-between sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]"><p>Atlan Suites</p><a class="tw-text-sky-200 hover:tw-text-white" th:href="@{/clientes/read/{email}(email=${cliente.email})}">Back to my profile</a></div></footer>
+    <footer class="portal-footer tw-border-t tw-border-white/10" th:if="${esEdicion}"><div class="tw-mx-auto tw-flex tw-max-w-7xl tw-flex-col tw-gap-2 tw-px-4 tw-py-6 tw-text-center tw-text-xs tw-text-slate-400 sm:tw-flex-row sm:tw-items-center sm:tw-justify-between sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]"><p>Atlan Suites</p><a class="tw-text-sky-200 hover:tw-text-white" th:href="@{/clients/read/{email}(email=${cliente.email})}">Back to my profile</a></div></footer>
   </body>
 </html>
