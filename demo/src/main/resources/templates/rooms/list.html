@@ -11,7 +11,7 @@
   <body class="portal-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
     <div th:replace="~{fragments/admin-shell :: header('habitaciones')}"></div>
     <main class="portal-main"><div class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
-      <header class="page-heading"><div><p class="page-eyebrow">Hotel inventory</p><h1 class="page-title">Rooms</h1><p class="page-description">Manage the type, location, and operating status of each room.</p></div><a class="atlan-btn atlan-btn--primary" th:href="@{/admin/habitaciones/create}">New room <span aria-hidden="true">＋</span></a></header>
+      <header class="page-heading"><div><p class="page-eyebrow">Hotel inventory</p><h1 class="page-title">Rooms</h1><p class="page-description">Manage the type, location, and operating status of each room.</p></div><a class="atlan-btn atlan-btn--primary" th:href="@{/admin/rooms/create}">New room <span aria-hidden="true">＋</span></a></header>
       <div class="portal-alert" th:if="${error}" role="alert" th:text="${error}"></div>
       <section class="surface-card" aria-labelledby="room-list-title">
         <h2 class="tw-sr-only" id="room-list-title">Room list</h2>
@@ -27,7 +27,7 @@
               <td class="room-data-cell" th:text="${habitacion.floor}">1</td>
               <td><span class="status-badge" th:classappend="${habitacion.status.name() == 'AVAILABLE' ? ' status-badge--success' : ' status-badge--occupied'}" th:text="${habitacion.status.name() == 'AVAILABLE' ? 'Available' : (habitacion.status.name() == 'OCCUPIED' ? 'Occupied' : 'Maintenance')}">Available</span></td>
               <td class="room-data-cell" th:text="${habitacion.roomType != null ? habitacion.roomType.name : '—'}">Normal</td>
-              <td><div class="table-actions tw-flex tw-gap-2"><a class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="@{/admin/habitaciones/read/{number}(number=${habitacion.number})}">View</a><a class="atlan-btn atlan-btn--edit atlan-btn--small" th:href="@{/admin/habitaciones/update/{number}(number=${habitacion.number})}">Edit</a><form th:action="@{/admin/habitaciones/delete/{number}(number=${habitacion.number})}" method="post" onsubmit="return confirm('Do you want to delete this room?');"><button class="atlan-btn atlan-btn--danger atlan-btn--small" type="submit">Delete</button></form></div></td>
+              <td><div class="table-actions tw-flex tw-gap-2"><a class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="@{/admin/rooms/read/{number}(number=${habitacion.number})}">View</a><a class="atlan-btn atlan-btn--edit atlan-btn--small" th:href="@{/admin/rooms/update/{number}(number=${habitacion.number})}">Edit</a><form th:action="@{/admin/rooms/delete/{number}(number=${habitacion.number})}" method="post" onsubmit="return confirm('Do you want to delete this room?');"><button class="atlan-btn atlan-btn--danger atlan-btn--small" type="submit">Delete</button></form></div></td>
             </tr>
             <tr th:if="${#lists.isEmpty(habitaciones)}"><td class="empty-state" colspan="6">No rooms are registered. Add the first one to get started.</td></tr>
           </tbody>
