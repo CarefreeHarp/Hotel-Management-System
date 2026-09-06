@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entitys.Cliente;
+import com.example.demo.entities.Client;
 import com.example.demo.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,20 +25,20 @@ public class LoginController {
 
     // Full URL: http://localhost:8080/login
     @GetMapping("/login")
-    public String mostrarLogin() {
+    public String showLogin() {
         return "login/login";
     }
 
     // Full URL: http://localhost:8080/login
     @PostMapping("/login")
-    public String autenticar(@RequestParam String usuario, @RequestParam String password, Model model) {
-        if (loginService.esAdministrador(usuario, password)) {
+    public String authenticate(@RequestParam String user, @RequestParam String password, Model model) {
+        if (loginService.isAdministrator(user, password)) {
             return "redirect:/admin/panel";
         }
 
         try {
-            Cliente cliente = loginService.autenticarCliente(usuario, password);
-            return "redirect:/clientes/read/" + cliente.getCorreo();
+            Client client = loginService.authenticateClient(user, password);
+            return "redirect:/clientes/read/" + client.getEmail();
         } catch (SecurityException credencialesInvalidas) {
             model.addAttribute("error", credencialesInvalidas.getMessage());
             return "login/login";
@@ -47,7 +47,7 @@ public class LoginController {
 
     // Full URL: http://localhost:8080/admin/panel
     @GetMapping("/admin/panel")
-    public String mostrarPanelAdmin() {
+    public String showPanelAdmin() {
         return "admin/panel";
     }
 }
