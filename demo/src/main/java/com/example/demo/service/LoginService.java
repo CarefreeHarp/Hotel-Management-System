@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entitys.Cliente;
+import com.example.demo.entities.Client;
 
 /**
  * CAPA DE SERVICIO: autenticación del portal.
@@ -12,12 +12,12 @@ import com.example.demo.entitys.Cliente;
 public interface LoginService {
 
     /** Indica si esas credenciales son las del administrador del hotel. */
-    boolean esAdministrador(String usuario, String password);
+    boolean isAdministrator(String user, String password);
 
     /**
-     * Devuelve el cliente registrado con ese correo y esa contraseña.
+     * Devuelve el cliente registrado con ese email y esa contraseña.
      *
      * @throws SecurityException si las credenciales no corresponden a ninguna cuenta.
      */
-    Cliente autenticarCliente(String usuario, String password);
+    Client authenticateClient(String user, String password);
 }

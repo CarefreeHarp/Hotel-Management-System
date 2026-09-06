@@ -41,8 +41,8 @@
 
           <form class="login-form" th:action="@{/login}" method="post">
             <div>
-              <label class="portal-label" for="usuario">Email or username</label>
-              <input class="portal-control tw-w-full tw-px-4 tw-py-3" id="usuario" name="usuario" type="text" placeholder="name@example.com" autocomplete="username" required autofocus />
+              <label class="portal-label" for="user">Email or username</label>
+              <input class="portal-control tw-w-full tw-px-4 tw-py-3" id="user" name="user" type="text" placeholder="name@example.com" autocomplete="username" required autofocus />
             </div>
             <div>
               <label class="portal-label" for="password">Password</label>
@@ -51,7 +51,7 @@
             <button class="atlan-btn atlan-btn--primary login-submit" type="submit">Enter portal <span aria-hidden="true">→</span></button>
           </form>
 
-          <p class="login-register">Don't have an account yet? <a th:href="@{/clientes/create}">Create a guest profile</a></p>
+          <p class="login-register">Don't have a guest profile yet? <a th:href="@{/clientes/create}">Create a guest profile</a></p>
         </div>
 
         <p class="login-panel__foot">© 2026 Atlan Suites. Experiences designed for rest.</p>
