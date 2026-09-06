@@ -26,4 +26,17 @@ public class Operator {
     @ManyToOne(optional = false)
     @JoinColumn(name = "admin_id", nullable = false)
     private Administrator admin; // Administrator responsable del operario.
+
+    /** Crea un operario nuevo; la base de datos genera su identificador. */
+    public Operator(String name,
+                    String lastName,
+                    String email,
+                    String password,
+                    Administrator admin) {
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.admin = admin;
+    }
 }
