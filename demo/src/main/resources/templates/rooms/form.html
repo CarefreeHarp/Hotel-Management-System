@@ -22,7 +22,7 @@
           <div class="photo-fields" id="additional-photos"><div class="photo-field" th:each="photo, photoState : *{secondaryPhotos}"><span class="photo-field__number" th:text="${photoState.index + 1}">1</span><div><label class="tw-sr-only" th:for="'photo-' + ${photoState.index}">Additional photo URL</label><input class="portal-control tw-w-full tw-px-4 tw-py-3" type="url" th:id="'photo-' + ${photoState.index}" th:field="*{secondaryPhotos[__${photoState.index}__]}" placeholder="https://example.com/additional-room-photo.jpg" /></div></div></div>
           <button class="atlan-btn atlan-btn--secondary atlan-btn--small tw-mt-3" id="add-photo" type="button">＋ Add another photo</button>
         </section>
-        <div class="form-actions"><button class="atlan-btn atlan-btn--primary" type="submit">Save room <span aria-hidden="true">→</span></button><a class="atlan-btn atlan-btn--secondary" th:href="@{/admin/habitaciones/read}">Cancel</a></div>
+        <div class="form-actions"><button class="atlan-btn atlan-btn--primary" type="submit">Save room <span aria-hidden="true">→</span></button><a class="atlan-btn atlan-btn--secondary" th:href="@{/admin/rooms/read}">Cancel</a></div>
       </form>
     </div></main>
     <div th:replace="~{fragments/admin-shell :: footer}"></div>

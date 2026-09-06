@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * aviso; los demás errores de negocio se atienden centralizadamente.
  */
 @Controller
-@RequestMapping("/clientes")
+@RequestMapping("/clients")
 public class ClientController {
 
     @Autowired
@@ -35,12 +35,12 @@ public class ClientController {
 
     /**
      * Muestra el formulario de registro vacío.
-     * URL: http://localhost:8080/clientes/create
+     * URL: http://localhost:8080/clients/create
      */
-    // Full URL: http://localhost:8080/clientes/create
+    // Full URL: http://localhost:8080/clients/create
     @GetMapping("/create")
     public String showFormRegistro(Model model) {
-        prepareForm(model, new Client(), "Client registration", "/clientes/create", false);
+        prepareForm(model, new Client(), "Client registration", "/clients/create", false);
         return "clients/form";
     }
 
@@ -49,14 +49,14 @@ public class ClientController {
      * Si el email o la cédula ya existen, el servicio lanza InvalidClientDataException
      * y se vuelve al formulario con ese mensaje.
      */
-    // Full URL: http://localhost:8080/clientes/create
+    // Full URL: http://localhost:8080/clients/create
     @PostMapping("/create")
     public String register(@ModelAttribute Client client, Model model) {
         try {
             clientService.register(client);
             return "redirect:/login";
         } catch (InvalidClientDataException exception) {
-            prepareForm(model, client, "Client registration", "/clientes/create", false);
+            prepareForm(model, client, "Client registration", "/clients/create", false);
             model.addAttribute("error", exception.getMessage());
             return "clients/form";
         }
@@ -64,9 +64,9 @@ public class ClientController {
 
     /**
      * Perfil del cliente: sus datos personales.
-     * URL: http://localhost:8080/clientes/read/{email}
+     * URL: http://localhost:8080/clients/read/{email}
      */
-    // Full URL: http://localhost:8080/clientes/read/{email}
+    // Full URL: http://localhost:8080/clients/read/{email}
     @GetMapping("/read/{email}")
     public String verProfile(@PathVariable("email") String email,
                             Model model) {
@@ -76,14 +76,14 @@ public class ClientController {
 
     /**
      * Muestra el formulario con los datos actuales del cliente para modificarlos.
-     * URL: http://localhost:8080/clientes/update/{email}
+     * URL: http://localhost:8080/clients/update/{email}
      */
-    // Full URL: http://localhost:8080/clientes/update/{email}
+    // Full URL: http://localhost:8080/clients/update/{email}
     @GetMapping("/update/{email}")
     public String showFormEditing(@PathVariable("email") String email,
                                            Model model) {
         Client client = clientService.findByEmail(email);
-        prepareForm(model, client, "Edit my details", "/clientes/update/" + email, true);
+        prepareForm(model, client, "Edit my details", "/clients/update/" + email, true);
         return "clients/form";
     }
 
@@ -91,7 +91,7 @@ public class ClientController {
      * Guarda los cambios del perfil. El email de la URL es el que tenía la cuenta
      * antes de editarla, porque el cliente puede estar cambiando su email.
      */
-    // Full URL: http://localhost:8080/clientes/update/{email}
+    // Full URL: http://localhost:8080/clients/update/{email}
     @PostMapping("/update/{email}")
     public String updateProfile(@PathVariable("email") String emailCurrent,
                                    @ModelAttribute Client client,
@@ -99,9 +99,9 @@ public class ClientController {
                                    Model model) {
         try {
             clientService.updateProfile(emailCurrent, client, passwordCurrent);
-            return "redirect:/clientes/read/" + client.getEmail();
+            return "redirect:/clients/read/" + client.getEmail();
         } catch (InvalidCurrentPasswordException | InvalidClientDataException exception) {
-            prepareForm(model, client, "Edit my details", "/clientes/update/" + emailCurrent, true);
+            prepareForm(model, client, "Edit my details", "/clients/update/" + emailCurrent, true);
             model.addAttribute("error", exception.getMessage());
             return "clients/form";
         }
@@ -112,7 +112,7 @@ public class ClientController {
      * Se usa POST y no GET porque es una acción que modifica datos.
      * Al borrarse la cuenta ya no hay perfil que mostrar, así que se vuelve al login.
      */
-    // Full URL: http://localhost:8080/clientes/delete/{email}
+    // Full URL: http://localhost:8080/clients/delete/{email}
     @PostMapping("/delete/{email}")
     public String deleteProfile(@PathVariable("email") String email) {
         clientService.deleteProfile(email);
