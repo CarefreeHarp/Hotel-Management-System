@@ -39,4 +39,29 @@ public class Service {
     private String location; // Ubicación opcional del servicio.
     @Column(nullable = false, name = "main_image_url", length = 500)
     private String mainImageUrl; // URL opcional de la imagen principal del servicio.
+
+    /** Crea un servicio nuevo; la base de datos genera su identificador. */
+    public Service(String name,
+                   String urlName,
+                   String description,
+                   BigDecimal price,
+                   String category,
+                   Boolean active,
+                   String summary,
+                   String duration,
+                   String availability,
+                   String location,
+                   String mainImageUrl) {
+        this.name = name;
+        this.urlName = urlName;
+        this.description = description;
+        this.price = price;
+        this.category = category;
+        this.active = active;
+        this.summary = summary;
+        this.duration = duration;
+        this.availability = availability;
+        this.location = location;
+        this.mainImageUrl = mainImageUrl;
+    }
 }

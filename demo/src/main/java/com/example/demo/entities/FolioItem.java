@@ -36,4 +36,21 @@ public class FolioItem {
     private BigDecimal subtotal; // Monto antes de impuestos.
     @Column(name = "charged_at", nullable = false)
     private LocalDateTime chargedAt; // Fecha y hora en que se registró el cargo.
+
+    /** Crea un ítem de folio nuevo; la base de datos genera su identificador. */
+    public FolioItem(Folio folio,
+                     Service service,
+                     String concept,
+                     BigDecimal unitPrice,
+                     Integer quantity,
+                     BigDecimal subtotal,
+                     LocalDateTime chargedAt) {
+        this.folio = folio;
+        this.service = service;
+        this.concept = concept;
+        this.unitPrice = unitPrice;
+        this.quantity = quantity;
+        this.subtotal = subtotal;
+        this.chargedAt = chargedAt;
+    }
 }
