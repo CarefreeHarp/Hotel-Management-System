@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${titulo + ' | Atlan Suites'}">Client form | Atlan Suites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script><script>tailwind.config = { prefix: "tw-", corePlugins: { preflight: false } };</script>
+    <link rel="stylesheet" th:href="@{/css/clients/form.css}" href="/css/clients/form.css" />
+  </head>
+  <body class="portal-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
+    <header class="portal-header" th:if="${!esEdicion}">
+      <nav aria-label="Registration navigation">
+        <div class="portal-header__inner tw-mx-auto tw-flex tw-w-full tw-max-w-7xl tw-items-center tw-justify-between tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
+          <a class="portal-brand" th:href="@{/}" aria-label="Back to the Atlan Suites home page">
+            <img
+              th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}"
+              src="/images/images-utils/hotel-identity/logo-transparent.png"
+              alt="Atlan Suites"
+            />
+          </a>
+          <a class="portal-exit" th:href="@{/login}">
+            I already have a guest profile <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="portal-main">
+      <div class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
+        <header class="page-heading">
+          <div>
+            <p class="page-eyebrow" th:text="${esEdicion ? 'Guest profile' : 'Join Atlan Suites'}">Join Atlan Suites</p>
+            <h1 class="page-title" th:text="${esEdicion ? titulo : 'Create a guest profile'}">Create a guest profile</h1>
+            <p class="page-description" th:if="${!esEdicion}">Enter your details to access the guest portal. Your email will be your username.</p>
+            <p class="page-description" th:if="${esEdicion}">Update your personal details and confirm the changes with your current password.</p>
+          </div>
+        </header>
+
+        <form class="surface-card form-card client-form-card" th:action="${accion}" th:object="${cliente}" method="post" novalidate>
+          <div class="portal-alert" th:if="${error}" role="alert" th:text="${error}"></div>
+
+          <section class="form-section" aria-labelledby="personal-info-title">
+            <h2 class="form-section__title" id="personal-info-title">Personal information</h2>
+            <p class="form-section__description">Details required to identify the guest.</p>
+          <div class="tw-grid tw-grid-cols-1 tw-gap-4 sm:tw-grid-cols-2 lg:tw-gap-6">
+              <div class="tw-min-w-0">
+                <label class="portal-label" for="name">First name</label>
+                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="text" id="name" th:field="*{name}" placeholder="Your first name" autocomplete="given-name" />
+              </div>
+              <div class="tw-min-w-0">
+                <label class="portal-label" for="lastName">Last name</label>
+                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="text" id="lastName" th:field="*{lastName}" placeholder="Your last name" autocomplete="family-name" />
+              </div>
+              <div class="tw-min-w-0">
+                <label class="portal-label" for="nationalId">National ID</label>
+                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="text" id="nationalId" th:field="*{nationalId}" placeholder="Numbers only" inputmode="numeric" />
+                <p class="field-hint">6 to 15 digits.</p>
+              </div>
+              <div class="tw-min-w-0">
+                <label class="portal-label" for="phone">Phone</label>
+                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="tel" id="phone" th:field="*{phone}" placeholder="3000000000" inputmode="tel" autocomplete="tel" />
+                <p class="field-hint">7 to 15 digits, without spaces.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section" aria-labelledby="access-info-title">
+            <h2 class="form-section__title" id="access-info-title">Contact and access</h2>
+            <p class="form-section__description">Your email address will be your sign-in username.</p>
+            <div class="tw-grid tw-grid-cols-1 tw-gap-4 sm:tw-grid-cols-2 lg:tw-gap-6">
+              <div class="tw-min-w-0">
+                <label class="portal-label" for="email">Email address</label>
+                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="email" id="email" th:field="*{email}" placeholder="name@example.com" autocomplete="email" />
+              </div>
+              <div class="tw-min-w-0">
+                <label class="portal-label" for="profilePhoto">Profile photo URL <span class="tw-font-normal tw-opacity-50">(optional)</span></label>
+                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="url" id="profilePhoto" th:field="*{profilePhoto}" placeholder="https://example.com/photo.jpg" inputmode="url" />
+                <p class="field-hint">Optional image reference.</p>
+              </div>
+              <div class="tw-col-span-full" th:if="${!esEdicion}">
+                <label class="portal-label" for="password">Password</label>
+                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="password" id="password" th:field="*{password}" placeholder="At least 8 characters" autocomplete="new-password" />
+                <p class="field-hint">Use at least 8 characters.</p>
+              </div>
+              <div class="tw-col-span-full" th:if="${esEdicion}">
+                <label class="portal-label" for="passwordCurrent">Current password</label>
+                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="password" id="passwordCurrent" name="passwordCurrent" placeholder="Confirm your password to save" autocomplete="current-password" />
+                <p class="field-hint">The backend uses this value to authorize the update.</p>
+              </div>
+            </div>
+          </section>
+
+          <div class="form-actions tw-flex tw-gap-3">
+            <button class="atlan-btn atlan-btn--primary" type="submit">
+              <span th:text="${esEdicion ? 'Save changes' : 'Create my profile'}">Create my profile</span>
+              <span aria-hidden="true">→</span>
+            </button>
+            <a class="atlan-btn atlan-btn--secondary" th:if="${!esEdicion}" th:href="@{/login}">Back to sign in</a>
+            <a class="atlan-btn atlan-btn--secondary" th:if="${esEdicion}" th:href="@{/clientes/read/{email}(email=${cliente.email})}">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <footer class="portal-footer" th:if="${!esEdicion}">
+      <div class="portal-footer__inner tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
+        <p>Atlan Suites <span aria-hidden="true">·</span> Guest registration</p>
+        <a th:href="@{/}">Back to the hotel website</a>
+      </div>
+    </footer>
+    <footer class="portal-footer tw-border-t tw-border-white/10" th:if="${esEdicion}"><div class="tw-mx-auto tw-flex tw-max-w-7xl tw-flex-col tw-gap-2 tw-px-4 tw-py-6 tw-text-center tw-text-xs tw-text-slate-400 sm:tw-flex-row sm:tw-items-center sm:tw-justify-between sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]"><p>Atlan Suites</p><a class="tw-text-sky-200 hover:tw-text-white" th:href="@{/clientes/read/{email}(email=${cliente.email})}">Back to my profile</a></div></footer>
+  </body>
+</html>

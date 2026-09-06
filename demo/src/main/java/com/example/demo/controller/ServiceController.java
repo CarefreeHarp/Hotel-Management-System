@@ -30,7 +30,7 @@ public class ServiceController {
     public String listServicesCards(Model model) {
         model.addAttribute("servicios", service.listServices());
         model.addAttribute("viewMode", "cards");
-        return "servicios/servicios-tarjetas";
+        return "services/service-cards";
     }
 
     // Full URL: http://localhost:8080/servicios/lista
@@ -38,7 +38,7 @@ public class ServiceController {
     public String listServicesList(Model model) {
         model.addAttribute("servicios", service.listServices());
         model.addAttribute("viewMode", "list");
-        return "servicios/servicios";
+        return "services/services";
     }
 
     // Full URL: http://localhost:8080/servicios/{urlName}
@@ -48,7 +48,7 @@ public class ServiceController {
                              RedirectAttributes redirectAttributes) {
         try {
             model.addAttribute("servicio", service.getServiceByUrlName(urlName));
-            return "servicios/servicio_especifico";
+            return "services/service-details";
         } catch (NoSuchElementException serviceNotFound) {
             redirectAttributes.addFlashAttribute("error", serviceNotFound.getMessage());
             return "redirect:/servicios/tarjetas";

@@ -42,7 +42,7 @@ public class RoomTypeController {
     @GetMapping("/read")
     public String listTypes(Model model) {
         model.addAttribute("tipos", roomTypeService.listTypes());
-        return "tipos-habitacion/lista";
+        return "room-types/list";
     }
 
     /**
@@ -53,7 +53,7 @@ public class RoomTypeController {
     @GetMapping("/create")
     public String showFormCreacion(Model model) {
         prepareForm(model, new RoomType(), "New room type", "/admin/tipos-habitacion/create");
-        return "tipos-habitacion/formulario";
+        return "room-types/form";
     }
 
     /** Crea el tipo de habitación que llenó el administrador. */
@@ -66,7 +66,7 @@ public class RoomTypeController {
         } catch (IllegalArgumentException dataInvalidos) {
             prepareForm(model, type, "New room type", "/admin/tipos-habitacion/create");
             model.addAttribute("error", dataInvalidos.getMessage());
-            return "tipos-habitacion/formulario";
+            return "room-types/form";
         }
     }
 
@@ -82,7 +82,7 @@ public class RoomTypeController {
         try {
             RoomType type = roomTypeService.findByName(name);
             prepareForm(model, type, "Edit room type", "/admin/tipos-habitacion/update/" + name);
-            return "tipos-habitacion/formulario";
+            return "room-types/form";
         } catch (NoSuchElementException typeNotFound) {
             redirectAttributes.addFlashAttribute("error", typeNotFound.getMessage());
             return "redirect:/admin/tipos-habitacion/read";
@@ -108,7 +108,7 @@ public class RoomTypeController {
         } catch (IllegalArgumentException dataInvalidos) {
             prepareForm(model, type, "Edit room type", "/admin/tipos-habitacion/update/" + currentName);
             model.addAttribute("error", dataInvalidos.getMessage());
-            return "tipos-habitacion/formulario";
+            return "room-types/form";
         }
     }
 

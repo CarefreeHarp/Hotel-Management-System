@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.ClientService;
-import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /** Handles the administrator's client listing screen. */
 @Controller
@@ -23,7 +21,7 @@ public class AdminClientController {
     @GetMapping("/read")
     public String listClients(Model model) {
         model.addAttribute("clientes", clientService.listClients());
-        return "clientes/lista";
+        return "clients/list";
     }
 
     /**
@@ -33,13 +31,8 @@ public class AdminClientController {
      */
     // Full URL: http://localhost:8080/admin/clientes/delete/{email}
     @PostMapping("/delete/{email}")
-    public String deleteClient(@PathVariable("email") String email, RedirectAttributes redirectAttributes) {
-        try {
-            clientService.deleteProfile(email);
-        } catch (NoSuchElementException profileNotFound) {
-            redirectAttributes.addFlashAttribute("error", profileNotFound.getMessage());
-        }
-
+    public String deleteClient(@PathVariable("email") String email) {
+        clientService.deleteProfile(email);
         return "redirect:/admin/clientes/read";
     }
 }

@@ -1,8 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.entities.Client;
+import com.example.demo.errors.InvalidClientDataException;
+import com.example.demo.errors.InvalidCurrentPasswordException;
 import com.example.demo.service.ClientService;
-import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * CAPA DE CONTROLADOR: pantallas del cliente.
@@ -22,12 +22,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * cualquier visitante. Por lo mismo tampoco hay edición de terceros: cada cliente
  * ve y modifica su propia cuenta, identificada por su email.
  *
- * El controlador NO valida nada: llama al servicio y, según la excepción que
- * este lance, decide a qué pantalla se lleva al usuario.
- *
- * - NoSuchElementException  -> la cuenta no existe, se vuelve al listado.
- * - IllegalArgumentException / SecurityException -> los datos del formulario
- *   están mal, se vuelve al formulario mostrando el mensaje del servicio.
+ * El controlador NO valida nada: llama al servicio. Los errores de los datos
+ * del formulario y de contraseña de confirmación vuelven al formulario con un
+ * aviso; los demás errores de negocio se atienden centralizadamente.
  */
 @Controller
 @RequestMapping("/clientes")
@@ -44,12 +41,12 @@ public class ClientController {
     @GetMapping("/create")
     public String showFormRegistro(Model model) {
         prepareForm(model, new Client(), "Client registration", "/clientes/create", false);
-        return "clientes/formulario";
+        return "clients/form";
     }
 
     /**
      * Registra al cliente que llenó el formulario.
-     * Si el email o la cédula ya existen, el servicio lanza IllegalArgumentException
+     * Si el email o la cédula ya existen, el servicio lanza InvalidClientDataException
      * y se vuelve al formulario con ese mensaje.
      */
     // Full URL: http://localhost:8080/clientes/create
@@ -58,10 +55,10 @@ public class ClientController {
         try {
             clientService.register(client);
             return "redirect:/login";
-        } catch (IllegalArgumentException dataInvalidos) {
+        } catch (InvalidClientDataException exception) {
             prepareForm(model, client, "Client registration", "/clientes/create", false);
-            model.addAttribute("error", dataInvalidos.getMessage());
-            return "clientes/formulario";
+            model.addAttribute("error", exception.getMessage());
+            return "clients/form";
         }
     }
 
@@ -72,15 +69,9 @@ public class ClientController {
     // Full URL: http://localhost:8080/clientes/read/{email}
     @GetMapping("/read/{email}")
     public String verProfile(@PathVariable("email") String email,
-                            Model model,
-                            RedirectAttributes redirectAttributes) {
-        try {
-            model.addAttribute("cliente", clientService.findByEmail(email));
-            return "clientes/detalle";
-        } catch (NoSuchElementException profileNotFound) {
-            redirectAttributes.addFlashAttribute("error", profileNotFound.getMessage());
-            return "redirect:/admin/clientes/read";
-        }
+                            Model model) {
+        model.addAttribute("cliente", clientService.findByEmail(email));
+        return "clients/details";
     }
 
     /**
@@ -90,16 +81,10 @@ public class ClientController {
     // Full URL: http://localhost:8080/clientes/update/{email}
     @GetMapping("/update/{email}")
     public String showFormEditing(@PathVariable("email") String email,
-                                           Model model,
-                                           RedirectAttributes redirectAttributes) {
-        try {
-            Client client = clientService.findByEmail(email);
-            prepareForm(model, client, "Edit my details", "/clientes/update/" + email, true);
-            return "clientes/formulario";
-        } catch (NoSuchElementException profileNotFound) {
-            redirectAttributes.addFlashAttribute("error", profileNotFound.getMessage());
-            return "redirect:/admin/clientes/read";
-        }
+                                           Model model) {
+        Client client = clientService.findByEmail(email);
+        prepareForm(model, client, "Edit my details", "/clientes/update/" + email, true);
+        return "clients/form";
     }
 
     /**
@@ -111,18 +96,14 @@ public class ClientController {
     public String updateProfile(@PathVariable("email") String emailCurrent,
                                    @ModelAttribute Client client,
                                    @RequestParam String passwordCurrent,
-                                   Model model,
-                                   RedirectAttributes redirectAttributes) {
+                                   Model model) {
         try {
             clientService.updateProfile(emailCurrent, client, passwordCurrent);
             return "redirect:/clientes/read/" + client.getEmail();
-        } catch (NoSuchElementException profileNotFound) {
-            redirectAttributes.addFlashAttribute("error", profileNotFound.getMessage());
-            return "redirect:/admin/clientes/read";
-        } catch (SecurityException | IllegalArgumentException dataInvalidos) {
+        } catch (InvalidCurrentPasswordException | InvalidClientDataException exception) {
             prepareForm(model, client, "Edit my details", "/clientes/update/" + emailCurrent, true);
-            model.addAttribute("error", dataInvalidos.getMessage());
-            return "clientes/formulario";
+            model.addAttribute("error", exception.getMessage());
+            return "clients/form";
         }
     }
 
@@ -133,13 +114,8 @@ public class ClientController {
      */
     // Full URL: http://localhost:8080/clientes/delete/{email}
     @PostMapping("/delete/{email}")
-    public String deleteProfile(@PathVariable("email") String email, RedirectAttributes redirectAttributes) {
-        try {
-            clientService.deleteProfile(email);
-        } catch (NoSuchElementException profileNotFound) {
-            redirectAttributes.addFlashAttribute("error", profileNotFound.getMessage());
-        }
-
+    public String deleteProfile(@PathVariable("email") String email) {
+        clientService.deleteProfile(email);
         return "redirect:/login";
     }
 
