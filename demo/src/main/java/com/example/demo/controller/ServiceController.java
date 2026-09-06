@@ -19,29 +19,29 @@ import com.example.demo.service.ServiceService;
  * NoSuchElementException y aquí se redirige a la carta de servicios.
  */
 @Controller
-@RequestMapping("/servicios")
+@RequestMapping("/services")
 public class ServiceController {
 
     @Autowired
     ServiceService service;
 
-    // Full URL: http://localhost:8080/servicios/tarjetas
-    @GetMapping("/tarjetas")
+    // Full URL: http://localhost:8080/services/cards
+    @GetMapping("/cards")
     public String listServicesCards(Model model) {
         model.addAttribute("servicios", service.listServices());
         model.addAttribute("viewMode", "cards");
         return "services/service-cards";
     }
 
-    // Full URL: http://localhost:8080/servicios/lista
-    @GetMapping("/lista")
+    // Full URL: http://localhost:8080/services/list
+    @GetMapping("/list")
     public String listServicesList(Model model) {
         model.addAttribute("servicios", service.listServices());
         model.addAttribute("viewMode", "list");
         return "services/services";
     }
 
-    // Full URL: http://localhost:8080/servicios/{urlName}
+    // Full URL: http://localhost:8080/services/{urlName}
     @GetMapping("/{urlName}")
     public String especifico(@PathVariable("urlName") String urlName,
                              Model model,
@@ -51,7 +51,7 @@ public class ServiceController {
             return "services/service-details";
         } catch (NoSuchElementException serviceNotFound) {
             redirectAttributes.addFlashAttribute("error", serviceNotFound.getMessage());
-            return "redirect:/servicios/tarjetas";
+            return "redirect:/services/cards";
         }
     }
 }
