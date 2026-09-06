@@ -28,7 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * - IllegalArgumentException -> los datos no son válidos: se vuelve al formulario.
  */
 @Controller
-@RequestMapping("/admin/tipos-habitacion")
+@RequestMapping("/admin/room-types")
 public class RoomTypeController {
 
     @Autowired
@@ -36,9 +36,9 @@ public class RoomTypeController {
 
     /**
      * Listado del catálogo de tipos de habitación.
-     * URL: http://localhost:8080/admin/tipos-habitacion/read
+     * URL: http://localhost:8080/admin/room-types/read
      */
-    // Full URL: http://localhost:8080/admin/tipos-habitacion/read
+    // Full URL: http://localhost:8080/admin/room-types/read
     @GetMapping("/read")
     public String listTypes(Model model) {
         model.addAttribute("tipos", roomTypeService.listTypes());
@@ -47,24 +47,24 @@ public class RoomTypeController {
 
     /**
      * Muestra el formulario de creación vacío.
-     * URL: http://localhost:8080/admin/tipos-habitacion/create
+     * URL: http://localhost:8080/admin/room-types/create
      */
-    // Full URL: http://localhost:8080/admin/tipos-habitacion/create
+    // Full URL: http://localhost:8080/admin/room-types/create
     @GetMapping("/create")
     public String showFormCreacion(Model model) {
-        prepareForm(model, new RoomType(), "New room type", "/admin/tipos-habitacion/create");
+        prepareForm(model, new RoomType(), "New room type", "/admin/room-types/create");
         return "room-types/form";
     }
 
     /** Crea el tipo de habitación que llenó el administrador. */
-    // Full URL: http://localhost:8080/admin/tipos-habitacion/create
+    // Full URL: http://localhost:8080/admin/room-types/create
     @PostMapping("/create")
     public String create(@ModelAttribute RoomType type, Model model) {
         try {
             roomTypeService.create(type);
-            return "redirect:/admin/tipos-habitacion/read";
+            return "redirect:/admin/room-types/read";
         } catch (IllegalArgumentException dataInvalidos) {
-            prepareForm(model, type, "New room type", "/admin/tipos-habitacion/create");
+            prepareForm(model, type, "New room type", "/admin/room-types/create");
             model.addAttribute("error", dataInvalidos.getMessage());
             return "room-types/form";
         }
@@ -72,20 +72,20 @@ public class RoomTypeController {
 
     /**
      * Muestra el formulario con los datos actuales del tipo para modificarlos.
-     * URL: http://localhost:8080/admin/tipos-habitacion/update/{name}
+     * URL: http://localhost:8080/admin/room-types/update/{name}
      */
-    // Full URL: http://localhost:8080/admin/tipos-habitacion/update/{name}
+    // Full URL: http://localhost:8080/admin/room-types/update/{name}
     @GetMapping("/update/{name}")
     public String showFormEditing(@PathVariable("name") String name,
                                            Model model,
                                            RedirectAttributes redirectAttributes) {
         try {
             RoomType type = roomTypeService.findByName(name);
-            prepareForm(model, type, "Edit room type", "/admin/tipos-habitacion/update/" + name);
+            prepareForm(model, type, "Edit room type", "/admin/room-types/update/" + name);
             return "room-types/form";
         } catch (NoSuchElementException typeNotFound) {
             redirectAttributes.addFlashAttribute("error", typeNotFound.getMessage());
-            return "redirect:/admin/tipos-habitacion/read";
+            return "redirect:/admin/room-types/read";
         }
     }
 
@@ -93,7 +93,7 @@ public class RoomTypeController {
      * Guarda los cambios. El name de la URL es el que tenía el tipo antes de
      * editarlo, porque el administrador puede estar cambiando justamente el name.
      */
-    // Full URL: http://localhost:8080/admin/tipos-habitacion/update/{name}
+    // Full URL: http://localhost:8080/admin/room-types/update/{name}
     @PostMapping("/update/{name}")
     public String update(@PathVariable("name") String currentName,
                              @ModelAttribute RoomType type,
@@ -101,12 +101,12 @@ public class RoomTypeController {
                              RedirectAttributes redirectAttributes) {
         try {
             roomTypeService.update(currentName, type);
-            return "redirect:/admin/tipos-habitacion/read";
+            return "redirect:/admin/room-types/read";
         } catch (NoSuchElementException typeNotFound) {
             redirectAttributes.addFlashAttribute("error", typeNotFound.getMessage());
-            return "redirect:/admin/tipos-habitacion/read";
+            return "redirect:/admin/room-types/read";
         } catch (IllegalArgumentException dataInvalidos) {
-            prepareForm(model, type, "Edit room type", "/admin/tipos-habitacion/update/" + currentName);
+            prepareForm(model, type, "Edit room type", "/admin/room-types/update/" + currentName);
             model.addAttribute("error", dataInvalidos.getMessage());
             return "room-types/form";
         }
@@ -116,7 +116,7 @@ public class RoomTypeController {
      * Elimina un tipo de habitación del catálogo.
      * Se usa POST y no GET porque es una acción que modifica datos.
      */
-    // Full URL: http://localhost:8080/admin/tipos-habitacion/delete/{name}
+    // Full URL: http://localhost:8080/admin/room-types/delete/{name}
     @PostMapping("/delete/{name}")
     public String delete(@PathVariable("name") String name, RedirectAttributes redirectAttributes) {
         try {
@@ -125,7 +125,7 @@ public class RoomTypeController {
             redirectAttributes.addFlashAttribute("error", typeNotFound.getMessage());
         }
 
-        return "redirect:/admin/tipos-habitacion/read";
+        return "redirect:/admin/room-types/read";
     }
 
     /** Atributos que necesita la vista del formulario, tanto al crear como al editar. */
