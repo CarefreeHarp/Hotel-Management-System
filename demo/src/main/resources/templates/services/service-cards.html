@@ -25,7 +25,7 @@
           <a th:href="@{/}" class="nav-link flex-fill">Home</a>
           <a th:href="@{/#video-section}" class="nav-link flex-fill">The hotel</a>
           <a th:href="@{/#rooms-section}" class="nav-link flex-fill">Suites</a>
-          <a th:href="@{/servicios/tarjetas}" class="nav-link flex-fill is-active">Services</a>
+          <a th:href="@{/services/cards}" class="nav-link flex-fill is-active">Services</a>
         </nav>
       </div>
       <div class="header-actions">
@@ -74,8 +74,8 @@
             </nav>
             <!-- Card/list view switcher using Bootstrap's btn-group -->
             <div class="view-mode-switcher btn-group" role="group" aria-label="View mode">
-              <a th:href="@{/servicios/tarjetas}" class="view-btn btn btn-sm is-active">Cards</a>
-              <a th:href="@{/servicios/lista}" class="view-btn btn btn-sm">List</a>
+              <a th:href="@{/services/cards}" class="view-btn btn btn-sm is-active">Cards</a>
+              <a th:href="@{/services/list}" class="view-btn btn btn-sm">List</a>
             </div>
           </div>
 
@@ -83,7 +83,7 @@
 
           <!-- Luxury service card grid -->
           <div class="services-grid">
-            <a th:each="servicio : ${servicios}" th:href="@{'/servicios/' + ${servicio.urlName}}" class="service-card" th:data-category="${servicio.category}">
+            <a th:each="servicio : ${servicios}" th:href="@{'/services/' + ${servicio.urlName}}" class="service-card" th:data-category="${servicio.category}">
               <div class="card-image-wrapper">
                 <img class="card-service-image img-fluid" th:src="${servicio.mainImageUrl}" th:alt="${servicio.name}" loading="lazy" />
               </div>
