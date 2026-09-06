@@ -42,7 +42,7 @@
           <a th:href="@{/#hero}" class="nav-link flex-fill">Home</a>
           <a th:href="@{/#video-section}" class="nav-link flex-fill">The hotel</a>
           <a th:href="@{/#rooms-section}" class="nav-link flex-fill">Suites</a>
-          <a th:href="@{/servicios/lista}" class="nav-link flex-fill is-active">Services</a>
+          <a th:href="@{/services/list}" class="nav-link flex-fill is-active">Services</a>
         </nav>
       </div>
 
@@ -100,8 +100,8 @@
 
             <!-- Card/list view switcher using Bootstrap's btn-group -->
             <div class="view-mode-switcher btn-group" role="group" aria-label="Modo de vista">
-              <a th:href="@{/servicios/tarjetas}" class="view-btn btn">Cards</a>
-              <a th:href="@{/servicios/lista}" class="view-btn btn is-active">List</a>
+              <a th:href="@{/services/cards}" class="view-btn btn">Cards</a>
+              <a th:href="@{/services/list}" class="view-btn btn is-active">List</a>
             </div>
           </header>
 
@@ -121,10 +121,10 @@
               <!-- One row for each service provided by the controller -->
               <tr class="services-row" th:each="servicio : ${servicios}">
                 <th scope="row">
-                  <!-- The name links to the detail screen: /servicios/{urlName} -->
+                  <!-- El nombre enlaza a la pantalla de detalle: /services/{urlName} -->
                   <a
                     class="service-link"
-                    th:href="@{/servicios/{urlName}(urlName=${servicio.urlName})}"
+                    th:href="@{/services/{urlName}(urlName=${servicio.urlName})}"
                     th:text="${servicio.name}"
                     >Spa</a
                   >
