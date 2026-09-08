@@ -1,9 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.entities.Service;
+import com.example.demo.errors.ServiceNotFoundException;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * CAPA DE SERVICIO: define la lógica de negocio de los servicios del hotel.
@@ -17,7 +17,7 @@ public interface ServiceService {
     /**
      * Devuelve un servicio por su urlName.
      *
-     * @throws NoSuchElementException si no existe un servicio con ese urlName.
+     * @throws ServiceNotFoundException si no existe un servicio con ese urlName.
      */
     Service getServiceByUrlName(String urlName);
 }

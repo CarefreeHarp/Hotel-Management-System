@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.entities.RoomType;
+import com.example.demo.errors.InvalidRoomTypeDataException;
 import com.example.demo.service.RoomTypeService;
-import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * CAPA DE CONTROLADOR: CRUD de tipos de habitación del portal de administrador.
@@ -21,11 +20,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * las rutas cuelgan de /admin y sí existe una pantalla de creación además del
  * listado completo del catálogo.
  *
- * Las reglas del negocio las valida el servicio; el controlador solo atrapa la
- * excepción y decide la pantalla:
- *
- * - NoSuchElementException   -> el tipo no existe: se vuelve al listado.
- * - IllegalArgumentException -> los datos no son válidos: se vuelve al formulario.
+ * El controlador NO valida nada: llama al servicio. Los datos inválidos del
+ * formulario vuelven al formulario con un aviso; que el tipo no exista se
+ * atiende de forma centralizada en GlobalExceptionHandler.
  */
 @Controller
 @RequestMapping("/admin/room-types")
@@ -63,9 +60,9 @@ public class RoomTypeController {
         try {
             roomTypeService.create(type);
             return "redirect:/admin/room-types/read";
-        } catch (IllegalArgumentException dataInvalidos) {
+        } catch (InvalidRoomTypeDataException exception) {
             prepareForm(model, type, "New room type", "/admin/room-types/create");
-            model.addAttribute("error", dataInvalidos.getMessage());
+            model.addAttribute("error", exception.getMessage());
             return "room-types/form";
         }
     }
@@ -76,17 +73,10 @@ public class RoomTypeController {
      */
     // Full URL: http://localhost:8080/admin/room-types/update/{name}
     @GetMapping("/update/{name}")
-    public String showFormEditing(@PathVariable("name") String name,
-                                           Model model,
-                                           RedirectAttributes redirectAttributes) {
-        try {
-            RoomType type = roomTypeService.findByName(name);
-            prepareForm(model, type, "Edit room type", "/admin/room-types/update/" + name);
-            return "room-types/form";
-        } catch (NoSuchElementException typeNotFound) {
-            redirectAttributes.addFlashAttribute("error", typeNotFound.getMessage());
-            return "redirect:/admin/room-types/read";
-        }
+    public String showFormEditing(@PathVariable("name") String name, Model model) {
+        RoomType type = roomTypeService.findByName(name);
+        prepareForm(model, type, "Edit room type", "/admin/room-types/update/" + name);
+        return "room-types/form";
     }
 
     /**
@@ -97,17 +87,13 @@ public class RoomTypeController {
     @PostMapping("/update/{name}")
     public String update(@PathVariable("name") String currentName,
                              @ModelAttribute RoomType type,
-                             Model model,
-                             RedirectAttributes redirectAttributes) {
+                             Model model) {
         try {
             roomTypeService.update(currentName, type);
             return "redirect:/admin/room-types/read";
-        } catch (NoSuchElementException typeNotFound) {
-            redirectAttributes.addFlashAttribute("error", typeNotFound.getMessage());
-            return "redirect:/admin/room-types/read";
-        } catch (IllegalArgumentException dataInvalidos) {
+        } catch (InvalidRoomTypeDataException exception) {
             prepareForm(model, type, "Edit room type", "/admin/room-types/update/" + currentName);
-            model.addAttribute("error", dataInvalidos.getMessage());
+            model.addAttribute("error", exception.getMessage());
             return "room-types/form";
         }
     }
@@ -118,13 +104,8 @@ public class RoomTypeController {
      */
     // Full URL: http://localhost:8080/admin/room-types/delete/{name}
     @PostMapping("/delete/{name}")
-    public String delete(@PathVariable("name") String name, RedirectAttributes redirectAttributes) {
-        try {
-            roomTypeService.delete(name);
-        } catch (NoSuchElementException typeNotFound) {
-            redirectAttributes.addFlashAttribute("error", typeNotFound.getMessage());
-        }
-
+    public String delete(@PathVariable("name") String name) {
+        roomTypeService.delete(name);
         return "redirect:/admin/room-types/read";
     }
 
