@@ -29,4 +29,21 @@ public class Client {
     private String password; // Contraseña de la cuenta.
     @Column(name = "profile_photo", length = 500)
     private String profilePhoto; // URL opcional de la foto de perfil.
+
+    /** Crea un cliente nuevo; la base de datos genera su identificador. */
+    public Client(String name,
+                  String lastName,
+                  String nationalId,
+                  String phone,
+                  String email,
+                  String password,
+                  String profilePhoto) {
+        this.name = name;
+        this.lastName = lastName;
+        this.nationalId = nationalId;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+        this.profilePhoto = profilePhoto;
+    }
 }

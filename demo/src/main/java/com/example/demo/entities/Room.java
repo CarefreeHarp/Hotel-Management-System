@@ -35,4 +35,21 @@ public class Room {
     @Column(name = "photo_url", nullable = false, length = 500)
     @Builder.Default
     private List<String> secondaryPhotos = new ArrayList<>(); // URLs de las imágenes secundarias de la habitación.
+
+    /** Crea una habitación nueva; la base de datos genera su identificador. */
+    public Room(Integer number,
+                Integer floor,
+                RoomStatus status,
+                RoomType roomType,
+                String mainPhoto,
+                List<String> secondaryPhotos) {
+        this.number = number;
+        this.floor = floor;
+        this.status = status;
+        this.roomType = roomType;
+        this.mainPhoto = mainPhoto;
+        this.secondaryPhotos = secondaryPhotos == null
+                ? new ArrayList<>()
+                : new ArrayList<>(secondaryPhotos);
+    }
 }

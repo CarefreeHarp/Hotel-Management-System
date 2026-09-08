@@ -1,9 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.entities.Service;
+import com.example.demo.errors.ServiceNotFoundException;
 import com.example.demo.repository.ServiceRepository;
 import java.util.List;
-import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 
@@ -12,8 +12,11 @@ import org.springframework.data.domain.Sort;
  * Spring la registra como bean gracias a @Service y le inyecta el repositorio
  * con @Autowired (inyección de dependencias).
  *
- * El repositorio es ahora un ServiceRepository de Spring Data JPA, así que los
+ * El repositorio es un ServiceRepository de Spring Data JPA, así que los
  * servicios se leen de la base de datos H2.
+ *
+ * Los servicios son de solo lectura, así que el único error posible es pedir uno
+ * que no existe: ServiceNotFoundException.
  */
 @org.springframework.stereotype.Service
 public class ServiceServiceImpl implements ServiceService {
@@ -34,7 +37,6 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     public Service getServiceByUrlName(String urlName) {
         return serviceRepository.findByUrlNameIgnoreCase(urlName)
-                .orElseThrow(() -> new NoSuchElementException(
-                        "The service " + urlName + " does not exist."));
+                .orElseThrow(() -> new ServiceNotFoundException(urlName));
     }
 }

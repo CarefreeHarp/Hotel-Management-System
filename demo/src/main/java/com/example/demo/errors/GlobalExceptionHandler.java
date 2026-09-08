@@ -19,4 +19,16 @@ public class GlobalExceptionHandler {
         return "error";
     }
 
+    @ExceptionHandler(RoomTypeNotFoundException.class)
+    public String handleRoomTypeNotFound(RoomTypeNotFoundException exception, Model model) {
+        model.addAttribute("error", exception.getMessage());
+        return "error";
+    }
+
+    @ExceptionHandler(ServiceNotFoundException.class)
+    public String handleServiceNotFound(ServiceNotFoundException exception, Model model) {
+        model.addAttribute("error", exception.getMessage());
+        return "error";
+    }
+
 }
