@@ -36,4 +36,19 @@ public class Payment {
     private PaymentStatus status; // Estado actual del registro.
     @Column(name = "paid_at", nullable = false)
     private LocalDateTime paidAt; // Fecha y hora de registro del pago.
+
+    /** Crea un pago nuevo; la base de datos genera su identificador. */
+    public Payment(Folio folio,
+                   Operator operator,
+                   BigDecimal amount,
+                   String paymentMethod,
+                   PaymentStatus status,
+                   LocalDateTime paidAt) {
+        this.folio = folio;
+        this.operator = operator;
+        this.amount = amount;
+        this.paymentMethod = paymentMethod;
+        this.status = status;
+        this.paidAt = paidAt;
+    }
 }

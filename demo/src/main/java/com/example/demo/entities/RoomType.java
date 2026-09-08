@@ -24,4 +24,12 @@ public class RoomType {
     private BigDecimal nightlyPrice; // Tarifa acordada por noche.
     @Column(name = "max_capacity", nullable = false)
     private Integer maxCapacity; // Capacidad máxima de huéspedes.
+
+    /** Crea un tipo de habitación nuevo; la base de datos genera su identificador. */
+    public RoomType(String name, String description, BigDecimal nightlyPrice, Integer maxCapacity) {
+        this.name = name;
+        this.description = description;
+        this.nightlyPrice = nightlyPrice;
+        this.maxCapacity = maxCapacity;
+    }
 }
