@@ -844,3 +844,39 @@ DELETE * FROM CLIENT [42001-240]
 2026-09-05 23:16:33.871302-05:00 jdbc[13]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]DELETECLIENT  CLIENT"; expected "DELETE, DROP"; SQL statement:
 DELETECLIENT  CLIENT [42001-240]
+2026-09-07 23:39:46.394852-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE [*]*"; expected "identifier"; SQL statement:
+DELETE * [42001-240]
+2026-09-07 23:39:53.609343-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE [*]* CLIENTES"; expected "identifier"; SQL statement:
+DELETE * CLIENTES [42001-240]
+2026-09-07 23:39:54.337136-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE [*]* CLIENTES"; expected "identifier"; SQL statement:
+DELETE * CLIENTES [42001-240]
+2026-09-07 23:39:57.525481-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE [*]* FROM CLIENTES"; expected "identifier"; SQL statement:
+DELETE * FROM CLIENTES [42001-240]
+2026-09-07 23:39:58.302009-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE [*]* FROM CLIENTES"; expected "identifier"; SQL statement:
+DELETE * FROM CLIENTES [42001-240]
+2026-09-07 23:39:58.538507-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE [*]* FROM CLIENTES"; expected "identifier"; SQL statement:
+DELETE * FROM CLIENTES [42001-240]
+2026-09-07 23:39:58.768677-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE [*]* FROM CLIENTES"; expected "identifier"; SQL statement:
+DELETE * FROM CLIENTES [42001-240]
+2026-09-07 23:39:58.984327-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE [*]* FROM CLIENTES"; expected "identifier"; SQL statement:
+DELETE * FROM CLIENTES [42001-240]
+2026-09-07 23:39:59.195790-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE [*]* FROM CLIENTES"; expected "identifier"; SQL statement:
+DELETE * FROM CLIENTES [42001-240]
+2026-09-07 23:39:59.391717-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE [*]* FROM CLIENTES"; expected "identifier"; SQL statement:
+DELETE * FROM CLIENTES [42001-240]
+2026-09-07 23:40:02.035320-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CLIENTES" not found; SQL statement:
+DELETE FROM CLIENTES [42102-240]
+2026-09-07 23:40:02.655213-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CLIENTES" not found; SQL statement:
+DELETE FROM CLIENTES [42102-240]
