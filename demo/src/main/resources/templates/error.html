@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${status != null} ? ${status + ' — Error | Atlan Suites'} : 'Notice | Atlan Suites'">Error | Atlan Suites</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { prefix: "tw-", corePlugins: { preflight: false } };
+    </script>
+    <link rel="stylesheet" th:href="@{/css/css-utils/base/common.css}" href="/css/css-utils/base/common.css" />
+    <link rel="stylesheet" th:href="@{/css/error/error.css}" href="/css/error/error.css" />
+  </head>
+  <body class="error-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem]">
+    <div class="error-container">
+      <main class="error-card" role="main">
+        <a th:href="@{/}" class="error-logo" aria-label="Atlan Suites Home">
+          <img
+            th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}"
+            src="/images/images-utils/hotel-identity/logo-transparent.png"
+            alt="Atlan Suites"
+          />
+        </a>
+
+        <div>
+          <div class="error-badge" th:if="${status != null and status >= 500}">
+            <span aria-hidden="true">●</span>
+            <span>Server Interruption</span>
+          </div>
+          <div class="error-badge error-badge--warning" th:if="${status == null or status < 500}">
+            <span aria-hidden="true">●</span>
+            <span>Notice</span>
+          </div>
+        </div>
+
+        <h1 class="error-code" th:text="${status != null} ? ${status} : '404'">404</h1>
+
+        <h2 class="error-title" th:if="${status == 404 or (status == null and error == null)}">
+          Page Not Found
+        </h2>
+        <h2 class="error-title" th:if="${status != null and status != 404 and (error == null or error == '')}">
+          An Unexpected Event Occurred
+        </h2>
+        <h2 class="error-title" th:if="${error != null and error != '' and status != 404}">
+          Notice Encountered
+        </h2>
+
+        <p class="error-desc" th:if="${error != null and error != ''}" th:text="${error}">
+          We could not find the resource you requested or an unexpected error occurred.
+        </p>
+        <p class="error-desc" th:if="${error == null or error == ''}">
+          The page or resource you are looking for might have been removed, had its name changed, or is temporarily unavailable.
+        </p>
+
+        <!-- Technical details (if available) -->
+        <div class="error-meta" th:if="${path != null or timestamp != null}">
+          <div class="error-meta-item" th:if="${path != null}">
+            <span class="error-meta-label">Path</span>
+            <span th:text="${path}">/unknown</span>
+          </div>
+          <div class="error-meta-item" th:if="${timestamp != null}">
+            <span class="error-meta-label">Timestamp</span>
+            <span th:text="${#dates.format(timestamp, 'yyyy-MM-dd HH:mm:ss')}">2026-09-07 00:00:00</span>
+          </div>
+        </div>
+
+        <div class="error-actions">
+          <a th:href="@{/}" class="btn-error-primary">
+            <span>Return to Home</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <button type="button" onclick="history.back()" class="btn-error-secondary">
+            <span aria-hidden="true">←</span>
+            <span>Go Back</span>
+          </button>
+          <a th:href="@{/login}" class="btn-error-secondary">
+            <span>Sign In</span>
+          </a>
+        </div>
+      </main>
+    </div>
+
+    <footer class="error-footer">
+      <p>© 2026 Atlan Suites. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
