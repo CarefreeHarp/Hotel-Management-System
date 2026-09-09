@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.entities.Service;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -21,4 +22,6 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
      * (por ejemplo /services/spa) y es único en la tabla.
      */
     Optional<Service> findByUrlNameIgnoreCase(String urlName);
+
+    List<Service> findByServiceIdNotOrderByServiceIdAsc(Integer serviceId);
 }

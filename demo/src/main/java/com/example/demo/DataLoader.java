@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -31,6 +32,9 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     private ServiceRepository serviceRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public void run(String... args) throws Exception {
@@ -65,6 +69,11 @@ public class DataLoader implements CommandLineRunner {
                 "Our signature suite with a private terrace, jacuzzi and personalized guest service.",
                 new BigDecimal("950000"),
                 6));
+
+        // Registro reservado para mantener reservas cuyo cuarto físico fue eliminado.
+        jdbcTemplate.update(
+                "insert into room (room_id, room_number, floor, status, room_type_id, main_photo) values (-1, -1, 0, ?, ?, ?)",
+                RoomStatus.MAINTENANCE.name(), standardRoom.getRoomTypeId(), "about:blank");
 
         // Clientes
         clientRepository.save(new Client("Emma", "Thompson", "1001001001", "3001001001",
@@ -195,6 +204,12 @@ public class DataLoader implements CommandLineRunner {
                 "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea", List.of()));
 
         // Servicios
+        // Registro reservado para conservar cargos cuyo servicio original fue eliminado.
+        jdbcTemplate.update(
+                "insert into service (service_id, name, url_name, description, price, category, active, main_image_url) values (-1, ?, ?, ?, ?, ?, ?, ?)",
+                "Deleted service", "deleted-service", "System record for deleted services.",
+                BigDecimal.ZERO, "System", false, "about:blank");
+
         serviceRepository.save(new Service("High-speed Wi-Fi", "high-speed-wi-fi",
                 "Complimentary high-speed wireless internet throughout the hotel.", new BigDecimal("0"),
                 "Connectivity", true, "Stay connected throughout your visit", "24 hours",

@@ -2,6 +2,8 @@ package com.example.demo.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import com.example.demo.entities.enums.RoomStatus;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,7 @@ public class Room {
     @Column(name = "main_photo", nullable = false, length = 500)
     private String mainPhoto; // URL obligatoria de la imagen principal de la habitación.
     @ElementCollection
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @CollectionTable(name = "room_secondary_photo", joinColumns = @JoinColumn(name = "room_id"))
     @Column(name = "photo_url", nullable = false, length = 500)
     @Builder.Default
