@@ -6,6 +6,9 @@ import com.example.demo.entities.enums.ReservationStatus;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Data
 @Entity
@@ -36,11 +39,14 @@ public class Reservation {
     private ReservationStatus status; // Estado actual del registro.
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt; // Fecha y hora de creación.
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "client_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Client client; // Client que realizó la reserva.
     @ManyToOne(optional = false)
     @JoinColumn(name = "room_id", nullable = false)
+    @ColumnDefault("-1")
+    @OnDelete(action = OnDeleteAction.SET_DEFAULT)
     private Room room; // Habitación asignada a la reserva.
 
     /** Crea una reserva nueva; la base de datos genera su identificador. */

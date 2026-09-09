@@ -26,6 +26,7 @@ public class Payment {
     private Folio folio; // Folio al que pertenece el pago.
     @ManyToOne
     @JoinColumn(name = "operator_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Operator operator; // Operario que procesó el pago, si aplica.
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal amount; // Monto recibido en el pago.

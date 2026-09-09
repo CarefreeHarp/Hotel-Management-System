@@ -2,6 +2,7 @@ package com.example.demo.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import java.math.BigDecimal;
@@ -25,6 +26,8 @@ public class FolioItem {
     private Folio folio; // Folio al que pertenece el cargo.
     @ManyToOne
     @JoinColumn(name = "service_id")
+    @ColumnDefault("-1")
+    @OnDelete(action = OnDeleteAction.SET_DEFAULT)
     private Service service; // Servicio facturado, si aplica.
     @Column(nullable = false, length = 150)
     private String concept; // Descripción del cargo facturado.

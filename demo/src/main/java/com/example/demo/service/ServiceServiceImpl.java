@@ -5,7 +5,6 @@ import com.example.demo.errors.ServiceNotFoundException;
 import com.example.demo.repository.ServiceRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 
 /**
  * Implementación de la lógica de negocio de los servicios.
@@ -31,7 +30,7 @@ public class ServiceServiceImpl implements ServiceService {
      */
     @Override
     public List<Service> listServices() {
-        return serviceRepository.findAll(Sort.by("serviceId"));
+        return serviceRepository.findByServiceIdNotOrderByServiceIdAsc(-1);
     }
 
     @Override
