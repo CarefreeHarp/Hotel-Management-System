@@ -9,10 +9,10 @@
     <link rel="stylesheet" th:href="@{/css/room-types/list.css}" href="/css/room-types/list.css" />
   </head>
   <body class="portal-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
-    <div th:replace="~{fragments/admin-shell :: header('tipos')}"></div>
+    <th:block th:replace="~{fragments/admin-shell :: header('tipos')}"></th:block>
     <main class="portal-main"><div class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
       <header class="page-heading"><div><p class="page-eyebrow">Accommodation catalog</p><h1 class="page-title">Room types</h1><p class="page-description">Configure commercial categories, rates, and maximum guest capacity.</p></div><a class="atlan-btn atlan-btn--primary" th:href="@{/admin/room-types/create}">New room type <span aria-hidden="true">＋</span></a></header>
-      <div class="portal-alert" th:if="${error}" role="alert" th:text="${error}"></div>
+      <aside class="portal-alert" th:if="${error}" role="alert" th:text="${error}"></aside>
       <section class="surface-card" aria-labelledby="types-list-title"><h2 class="tw-sr-only" id="types-list-title">Room type list</h2><div class="table-shell"><table class="portal-table">
         <thead><tr><th>View</th><th>Name</th><th>Description</th><th>Price per night</th><th>Capacity</th><th>Actions</th></tr></thead>
         <tbody>
@@ -28,6 +28,6 @@
         </tbody>
       </table></div></section>
     </div></main>
-    <div th:replace="~{fragments/admin-shell :: footer}"></div>
+    <th:block th:replace="~{fragments/admin-shell :: footer}"></th:block>
   </body>
 </html>

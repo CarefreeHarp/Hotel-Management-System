@@ -39,9 +39,9 @@
 
     <main>
       <!-- Message sent by the controller when the requested service does not exist -->
-      <div class="container" th:if="${error}">
-        <div class="alert alert-danger" role="alert" th:text="${error}"></div>
-      </div>
+      <aside class="container" th:if="${error}" aria-label="Service notice">
+        <p class="alert alert-danger" role="alert" th:text="${error}"></p>
+      </aside>
 
       <!-- Services hero using Bootstrap's responsive grid -->
       <section class="services-hero" aria-labelledby="services-title">
@@ -73,33 +73,35 @@
               <button class="filter-btn" data-filter="Laundry" type="button">Laundry</button>
             </nav>
             <!-- Card/list view switcher using Bootstrap's btn-group -->
-            <div class="view-mode-switcher btn-group" role="group" aria-label="View mode">
+            <nav class="view-mode-switcher btn-group" aria-label="View mode">
               <a th:href="@{/services/cards}" class="view-btn btn btn-sm is-active">Cards</a>
               <a th:href="@{/services/list}" class="view-btn btn btn-sm">List</a>
-            </div>
+            </nav>
           </div>
 
           <h2 id="services-grid-title" class="visually-hidden">Services in cards</h2>
 
           <!-- Luxury service card grid -->
           <div class="services-grid">
-            <a th:each="servicio : ${servicios}" th:href="@{'/services/' + ${servicio.urlName}}" class="service-card" th:data-category="${servicio.category}">
-              <div class="card-image-wrapper">
+            <article th:each="servicio : ${servicios}" class="service-card" th:data-category="${servicio.category}">
+              <a class="service-card__link" th:href="@{'/services/' + ${servicio.urlName}}">
+              <figure class="card-image-wrapper">
                 <img class="card-service-image img-fluid" th:src="${servicio.mainImageUrl}" th:alt="${servicio.name}" loading="lazy" />
-              </div>
-              <div class="card-body-content">
+              </figure>
+              <header class="card-body-content">
                 <h3 class="card-service-title" th:text="${servicio.name}">Service</h3>
                 <p class="card-service-desc" th:text="${servicio.description}">Service description.</p>
-              </div>
-              <div class="card-footer-bar">
+              </header>
+              <footer class="card-footer-bar">
                 <span class="card-price" th:if="${servicio.price > 0}" th:text="'$' + ${#numbers.formatInteger(servicio.price, 1, 'POINT')}">$0</span>
                 <span class="card-price" th:unless="${servicio.price > 0}">Included</span>
                 <span class="card-category" th:text="${servicio.category}">Category</span>
-              </div>
-            </a>
+              </footer>
+              </a>
+            </article>
           </div>
           <!-- Empty category message using Bootstrap utilities -->
-          <div id="no-services-msg" class="services-empty-grid text-center py-4 d-none"><p>No services are available in this category.</p></div>
+          <p id="no-services-msg" class="services-empty-grid text-center py-4 d-none" role="status">No services are available in this category.</p>
         </div>
       </section>
     </main>

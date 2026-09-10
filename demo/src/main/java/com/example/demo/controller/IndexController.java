@@ -1,20 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.RoomTypeService;
-import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class IndexController {
-
-    private static final List<String> ROOM_TYPE_IMAGES = List.of(
-            "https://images.unsplash.com/photo-1631049307264-da0ec9d70304",
-            "https://images.unsplash.com/photo-1590490360182-c33d57733427",
-            "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b",
-            "https://images.unsplash.com/photo-1566665797739-1674de7a421a",
-            "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea");
 
     private final RoomTypeService roomTypeService;
 
@@ -26,7 +18,6 @@ public class IndexController {
     @GetMapping({"/", "/index", "/home"})
     public String index(Model model) {
         model.addAttribute("roomTypes", roomTypeService.listTypes());
-        model.addAttribute("roomTypeImages", ROOM_TYPE_IMAGES);
         return "landing-page";
     }
 

@@ -205,8 +205,8 @@
           <div class="carousel-inner">
             <div
               class="room-type-source"
-              th:each="roomType, roomTypeStat : ${roomTypes}"
-              th:attr="data-name=${roomType.name},data-description=${roomType.description},data-price=${roomType.nightlyPrice},data-capacity=${roomType.maxCapacity},data-image=${roomTypeImages[roomTypeStat.index]}"
+              th:each="roomType : ${roomTypes}"
+              th:attr="data-name=${roomType.name},data-description=${roomType.description},data-price=${roomType.nightlyPrice},data-capacity=${roomType.maxCapacity},data-image=${roomType.mainPhoto}"
             ></div>
             <div class="carousel-item active">
               <article class="room-card room-card--ocean">
