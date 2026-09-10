@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import java.util.UUID;
 
 /** Handles the administrator's client listing screen. */
 @Controller
@@ -32,7 +31,7 @@ public class AdminClientController {
      */
     // Full URL: http://localhost:8080/admin/clients/delete/{clientId}
     @PostMapping("/delete/{clientId}")
-    public String deleteClient(@PathVariable UUID clientId) {
+    public String deleteClient(@PathVariable Integer clientId) {
         clientService.deleteProfile(clientId);
         return "redirect:/admin/clients/read";
     }

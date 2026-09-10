@@ -42,6 +42,13 @@ public class RoomTypeController {
         return "room-types/list";
     }
 
+    // Full URL: http://localhost:8080/admin/room-types/read/{name}
+    @GetMapping("/read/{name}")
+    public String showDetails(@PathVariable String name, Model model) {
+        model.addAttribute("tipo", roomTypeService.findByName(name));
+        return "room-types/details";
+    }
+
     /**
      * Muestra el formulario de creación vacío.
      * URL: http://localhost:8080/admin/room-types/create
@@ -49,7 +56,7 @@ public class RoomTypeController {
     // Full URL: http://localhost:8080/admin/room-types/create
     @GetMapping("/create")
     public String showFormCreacion(Model model) {
-        prepareForm(model, new RoomType(), "New room type", "/admin/room-types/create");
+        prepareForm(model, RoomType.builder().build(), "New room type", "/admin/room-types/create");
         return "room-types/form";
     }
 

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
-import java.util.UUID;
 
 /**
  * CAPA DE CONTROLADOR: pantallas del cliente.
@@ -21,7 +20,7 @@ import java.util.UUID;
  * A diferencia del CRUD del administrador, aquí el cliente se crea a sí mismo:
  * no hay una pantalla de "crear cliente", hay un registro público al que llega
  * cualquier visitante. Por lo mismo tampoco hay edición de terceros: cada cliente
- * ve y modifica su propia cuenta, identificada por su UUID.
+ * ve y modifica su propia cuenta, identificada por su id autogenerado.
  *
  * El controlador NO valida nada: llama al servicio. Los errores de los datos
  * del formulario y de contraseña de confirmación vuelven al formulario con un
@@ -41,7 +40,7 @@ public class ClientController {
     // Full URL: http://localhost:8080/clients/create
     @GetMapping("/create")
     public String showFormRegistro(Model model) {
-        prepareForm(model, new Client(), "Client registration", "/clients/create", false);
+        prepareForm(model, Client.builder().build(), "Client registration", "/clients/create", false);
         return "clients/form";
     }
 
@@ -69,7 +68,7 @@ public class ClientController {
      */
     // Full URL: http://localhost:8080/clients/read/{clientId}
     @GetMapping("/read/{clientId}")
-    public String verProfile(@PathVariable UUID clientId,
+    public String verProfile(@PathVariable Integer clientId,
                             Model model) {
         model.addAttribute("cliente", clientService.findById(clientId));
         return "clients/details";
@@ -81,7 +80,7 @@ public class ClientController {
      */
     // Full URL: http://localhost:8080/clients/update/{clientId}
     @GetMapping("/update/{clientId}")
-    public String showFormEditing(@PathVariable UUID clientId,
+    public String showFormEditing(@PathVariable Integer clientId,
                                            Model model) {
         Client client = clientService.findById(clientId);
         prepareForm(model, client, "Edit my details", "/clients/update/" + clientId, true);
@@ -89,12 +88,12 @@ public class ClientController {
     }
 
     /**
-     * Guarda los cambios del perfil. El UUID de la URL identifica la cuenta
+     * Guarda los cambios del perfil. El id de la URL identifica la cuenta
      * incluso si el cliente cambia su email.
      */
     // Full URL: http://localhost:8080/clients/update/{clientId}
     @PostMapping("/update/{clientId}")
-    public String updateProfile(@PathVariable UUID clientId,
+    public String updateProfile(@PathVariable Integer clientId,
                                    @ModelAttribute Client client,
                                    @RequestParam String passwordCurrent,
                                    Model model) {
@@ -115,7 +114,7 @@ public class ClientController {
      */
     // Full URL: http://localhost:8080/clients/delete/{clientId}
     @PostMapping("/delete/{clientId}")
-    public String deleteProfile(@PathVariable UUID clientId) {
+    public String deleteProfile(@PathVariable Integer clientId) {
         clientService.deleteProfile(clientId);
         return "redirect:/login";
     }

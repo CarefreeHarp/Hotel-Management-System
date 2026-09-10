@@ -16,20 +16,16 @@
       <section class="surface-card" aria-labelledby="room-list-title">
         <h2 class="tw-sr-only" id="room-list-title">Room list</h2>
         <div class="table-shell"><table class="table portal-table">
-          <thead><tr><th>View</th><th>Number</th><th>Floor</th><th>Status</th><th>Type</th><th>Actions</th></tr></thead>
+          <thead><tr><th>Number</th><th>Floor</th><th>Status</th><th>Type</th><th>Actions</th></tr></thead>
           <tbody>
-            <tr
-              th:each="habitacion : ${habitaciones}"
-              th:with="fotoTipo=${habitacion.mainPhoto != null and !habitacion.mainPhoto.isBlank() ? habitacion.mainPhoto : 'https://cache.marriott.com/content/dam/marriott-renditions/DPSSW/dpssw-villa-0030-hor-wide.jpg?output-quality=70&amp;interpolation=progressive-bilinear&amp;downsize=540px:*'}"
-            >
-              <td><img class="room-thumbnail" th:src="${fotoTipo}" th:alt="|Room ${habitacion.number}|" loading="lazy" /></td>
+            <tr th:each="habitacion : ${habitaciones}">
               <td><span class="room-number" th:text="${habitacion.number}">101</span></td>
               <td class="room-data-cell" th:text="${habitacion.floor}">1</td>
               <td><span class="status-badge" th:classappend="${habitacion.status.name() == 'AVAILABLE' ? ' status-badge--success' : ' status-badge--occupied'}" th:text="${habitacion.status.name() == 'AVAILABLE' ? 'Available' : (habitacion.status.name() == 'OCCUPIED' ? 'Occupied' : 'Maintenance')}">Available</span></td>
               <td class="room-data-cell" th:text="${habitacion.roomType != null ? habitacion.roomType.name : '—'}">Normal</td>
               <td><div class="table-actions tw-flex tw-gap-2"><a class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="@{/admin/rooms/read/{number}(number=${habitacion.number})}">View</a><a class="atlan-btn atlan-btn--edit atlan-btn--small" th:href="@{/admin/rooms/update/{number}(number=${habitacion.number})}">Edit</a><form th:action="@{/admin/rooms/delete/{number}(number=${habitacion.number})}" method="post" onsubmit="return confirm('Do you want to delete this room?');"><button class="atlan-btn atlan-btn--danger atlan-btn--small" type="submit">Delete</button></form></div></td>
             </tr>
-            <tr th:if="${#lists.isEmpty(habitaciones)}"><td class="empty-state" colspan="6">No rooms are registered. Add the first one to get started.</td></tr>
+            <tr th:if="${#lists.isEmpty(habitaciones)}"><td class="empty-state" colspan="5">No rooms are registered. Add the first one to get started.</td></tr>
           </tbody>
         </table></div>
       </section>
