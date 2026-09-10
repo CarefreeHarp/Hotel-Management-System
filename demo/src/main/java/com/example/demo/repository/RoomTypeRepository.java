@@ -14,10 +14,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoomTypeRepository extends JpaRepository<RoomType, Integer> {
 
-    /**
-     * SELECT * FROM room_type WHERE UPPER(name) = UPPER(?)
-     *
-     * El name es único en la tabla, así que como máximo devuelve un registro.
-     */
+    /* Busca un tipo de habitación por nombre sin distinguir mayúsculas de minúsculas. */
     Optional<RoomType> findByNameIgnoreCase(String name);
 }
