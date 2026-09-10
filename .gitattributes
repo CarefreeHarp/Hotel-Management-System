@@ -1,2 +1,2 @@
 *NavigationDiagramSprint3AtlanSuites.html linguist-vendored linguist-detectable=false
-demo/** linguist-detectable=true linguist-vendored=false linguist-generated=false
+demo/** linguist-detectable -linguist-vendored -linguist-generated
