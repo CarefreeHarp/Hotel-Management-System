@@ -15,13 +15,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ServiceRepository extends JpaRepository<Service, Integer> {
 
-    /**
-     * SELECT * FROM service WHERE UPPER(url_name) = UPPER(?)
-     *
-     * El urlName es el identificador que viaja en la URL pública del servicio
-     * (por ejemplo /services/spa) y es único en la tabla.
-     */
+    /* Busca un servicio por su nombre de URL sin distinguir mayúsculas de minúsculas. */
     Optional<Service> findByUrlNameIgnoreCase(String urlName);
 
+    /* Lista los servicios excepto el indicado, ordenados ascendentemente por identificador. */
     List<Service> findByServiceIdNotOrderByServiceIdAsc(Integer serviceId);
 }

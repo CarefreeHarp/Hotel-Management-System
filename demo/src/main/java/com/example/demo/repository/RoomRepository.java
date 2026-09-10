@@ -18,9 +18,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Integer> {
 
+    /* Busca una habitación por su número físico. */
     Optional<Room> findByNumber(Integer number);
 
+    /* Verifica si existe una habitación con el número físico indicado. */
     boolean existsByNumber(Integer number);
 
+    /* Lista las habitaciones excepto la indicada, ordenadas ascendentemente por número. */
     List<Room> findByRoomIdNotOrderByNumberAsc(Integer roomId);
 }
