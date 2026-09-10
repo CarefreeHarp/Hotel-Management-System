@@ -85,9 +85,7 @@
         <div class="overview-copy">
           <p class="eyebrow">Service details</p>
           <h2 id="about-title">Everything about this experience.</h2>
-          <p class="description" th:text="${servicio.description}">
-            Service description.
-          </p>
+          <p class="description" th:text="${servicio.description}">Service description.</p>
 
         </div>
 
@@ -175,6 +173,16 @@
               <img
                 th:src="${servicio.mainImageUrl}"
                 th:alt="|${servicio.name} — main image|"
+                loading="lazy"
+              />
+              <figcaption th:text="${servicio.name}">Service</figcaption>
+            </figure>
+          </li>
+          <li class="gallery-card" th:each="secondaryImage : ${servicio.secondaryImageUrls}">
+            <figure>
+              <img
+                th:src="${secondaryImage}"
+                th:alt="|${servicio.name} — gallery image|"
                 loading="lazy"
               />
               <figcaption th:text="${servicio.name}">Service</figcaption>

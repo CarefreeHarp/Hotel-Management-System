@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entities.Room;
 import com.example.demo.errors.InvalidRoomDataException;
-import com.example.demo.errors.RoomNotFoundException;
+import com.example.demo.errors.ResourceNotFoundException;
 import java.util.List;
 
 /**
@@ -11,7 +11,7 @@ import java.util.List;
  * MANEJO DE ERRORES: las reglas del negocio se validan aquí y el error se
  * comunica lanzando una excepción personalizada con un mensaje:
  *
- * - RoomNotFoundException -> la habitación buscada no existe.
+ * - ResourceNotFoundException -> la habitación buscada no existe.
  * - InvalidRoomDataException -> los datos del formulario no son válidos.
  */
 public interface RoomService {
@@ -21,7 +21,7 @@ public interface RoomService {
     /**
      * Devuelve la habitación con ese número.
      *
-     * @throws RoomNotFoundException si no existe una habitación con ese número.
+     * @throws ResourceNotFoundException si no existe una habitación con ese número.
      */
     Room findByNumber(int number);
 
@@ -36,7 +36,7 @@ public interface RoomService {
      * Actualiza una habitación existente. numeroActual es el número que tenía
      * antes de editarla, porque el administrador puede estar cambiándolo.
      *
-     * @throws RoomNotFoundException si no existe la habitación numeroActual.
+     * @throws ResourceNotFoundException si no existe la habitación numeroActual.
      * @throws InvalidRoomDataException si los datos nuevos no son válidos.
      */
     void update(int numberCurrent, Room room);
@@ -44,7 +44,7 @@ public interface RoomService {
     /**
      * Elimina la habitación con ese número.
      *
-     * @throws RoomNotFoundException si no existe una habitación con ese número.
+     * @throws ResourceNotFoundException si no existe una habitación con ese número.
      */
     void delete(int number);
 }

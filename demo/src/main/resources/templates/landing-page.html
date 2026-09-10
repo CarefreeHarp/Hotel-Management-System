@@ -203,6 +203,11 @@
           </div>
 
           <div class="carousel-inner">
+            <div
+              class="room-type-source"
+              th:each="roomType, roomTypeStat : ${roomTypes}"
+              th:attr="data-name=${roomType.name},data-description=${roomType.description},data-price=${roomType.nightlyPrice},data-capacity=${roomType.maxCapacity},data-image=${roomTypeImages[roomTypeStat.index]}"
+            ></div>
             <div class="carousel-item active">
               <article class="room-card room-card--ocean">
                 <div class="room-card-inner">
@@ -863,7 +868,7 @@
             data-bs-slide="prev"
             aria-label="Previous suite"
           >
-            <span aria-hidden="true">←</span>
+            <span aria-hidden="true">&lt;</span>
           </button>
           <button
             class="carousel-control-next"
@@ -872,7 +877,7 @@
             data-bs-slide="next"
             aria-label="Next suite"
           >
-            <span aria-hidden="true">→</span>
+            <span aria-hidden="true">&gt;</span>
           </button>
         </div>
       </section>

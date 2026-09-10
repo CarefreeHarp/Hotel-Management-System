@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entities.RoomType;
 import com.example.demo.errors.InvalidRoomTypeDataException;
-import com.example.demo.errors.RoomTypeNotFoundException;
+import com.example.demo.errors.ResourceNotFoundException;
 import com.example.demo.repository.RoomTypeRepository;
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
  * catálogo se guarda en la base de datos H2. Las validaciones y los mensajes de
  * error viven aquí, expresados con las excepciones propias del proyecto:
  *
- * - RoomTypeNotFoundException    -> el tipo buscado no está en el catálogo.
+ * - ResourceNotFoundException    -> el tipo buscado no está en el catálogo.
  * - InvalidRoomTypeDataException -> el formulario trae un dato inválido.
  */
 @Service
@@ -36,13 +36,15 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     @Override
     public RoomType findByName(String name) {
         return typeRoomRepository.findByNameIgnoreCase(name)
-                .orElseThrow(() -> new RoomTypeNotFoundException(name));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No room type named " + name + " exists."));
     }
 
     @Override
     public RoomType findById(int roomTypeId) {
         return typeRoomRepository.findById(roomTypeId)
-                .orElseThrow(() -> new RoomTypeNotFoundException(roomTypeId));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No room type with the id " + roomTypeId + " exists."));
     }
 
     @Override

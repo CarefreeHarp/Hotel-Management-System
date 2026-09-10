@@ -9,14 +9,19 @@
 .rooms-description .eyebrow { display: block; margin-bottom: .8rem; font-size: .58rem; }
 .rooms-description p { font-family: var(--font-display); font-size: clamp(1.2rem, 2vw, 1.6rem); line-height: 1.28; color: rgba(244,246,248,.88); }
 .rooms-label { margin: 2.5rem 0 1.25rem; }
-.room-carousel { width: 100%; max-width: 1800px; margin: 0 auto; padding: 0 2.75rem 2.75rem; }
-.room-carousel .carousel-item { padding: 0; }
-.suite-carousel-page { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+.room-carousel { position: relative; width: 100%; max-width: 1800px; margin: 0 auto; padding: 0 2.75rem 2.75rem; }
+.room-type-source { display: none; }
+.room-carousel > .carousel-inner { overflow: hidden; }
+.room-carousel > .carousel-inner > .carousel-item { display: none; }
+.suite-carousel-track { display: flex; gap: 1.5rem; transition: transform .55s var(--ease); will-change: transform; }
+.suite-carousel-track .room-card { flex: 0 0 calc((100% - 3rem) / 3); min-width: 0; }
 .room-carousel .carousel-indicators { bottom: 0; margin: 0; }
 .room-carousel .carousel-indicators button { width: .55rem; height: .55rem; margin: 0 .35rem; border: 0; border-radius: 50%; background: var(--color-text-light); }
-.room-carousel .carousel-control-prev, .room-carousel .carousel-control-next { width: 3rem; opacity: 1; }
-.room-carousel .carousel-control-prev span, .room-carousel .carousel-control-next span { display: grid; width: 2.25rem; height: 2.25rem; place-items: center; border: 1px solid rgba(244,246,248,.5); border-radius: 50%; color: var(--color-text-light); font-size: 1.15rem; }
-.room-carousel .carousel-control-prev:hover span, .room-carousel .carousel-control-next:hover span { background: var(--color-gold); border-color: var(--color-gold); color: var(--color-ink); }
+.room-carousel .carousel-control-prev, .room-carousel .carousel-control-next { position: absolute; top: 50%; z-index: 2; display: grid; width: 3rem; height: 3rem; padding: 0; place-items: center; border: 0; background: transparent; opacity: 1; transform: translateY(-50%); cursor: pointer; }
+.room-carousel .carousel-control-prev { left: -.65rem; }
+.room-carousel .carousel-control-next { right: -.65rem; }
+.room-carousel .carousel-control-prev span, .room-carousel .carousel-control-next span { color: var(--color-text-light); font-size: 2.25rem; font-weight: 400; line-height: 1; text-align: center; transition: color .2s ease, transform .2s ease; }
+.room-carousel .carousel-control-prev:hover span, .room-carousel .carousel-control-next:hover span { color: var(--color-gold); transform: scale(1.14); }
 .room-card--ocean { --card-tint: var(--color-umber); }
 .room-card--garden { --card-tint: var(--color-slate); }
 .room-card { perspective: 1400px; }
@@ -29,6 +34,7 @@
 .room-card-name { font-family: var(--font-display); font-size: 1.3rem; }
 .room-card-sub { padding-bottom: .85rem; border-bottom: 1px solid rgba(244,246,248,.16); font-size: .75rem; opacity: .75; margin: .3rem 0 .75rem; }
 .room-card-sub::after { content: 'From SGD 580 / night'; display: block; margin-top: .85rem; color: var(--color-text-light); font-size: .65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+.room-type-description { min-height: 4.2em; margin: 0; color: rgba(244,246,248,.76); font-size: .78rem; line-height: 1.55; }
 .room-card-back { background: var(--color-charcoal); color: var(--color-text-light); transform: rotateY(180deg); justify-content: flex-start; gap: .35rem; }
 .room-card-back-text { font-size: .82rem; opacity: .85; margin: .5rem 0 .9rem; }
 .room-card-list { display: flex; flex-direction: column; gap: .4rem; font-size: .78rem; opacity: .75; margin-bottom: 1rem; }
@@ -41,3 +47,6 @@
 .room-detail-controls button { width: 1.75rem; height: 1.75rem; border: 1px solid rgba(244,246,248,.35); border-radius: 50%; background: transparent; color: var(--color-text-light); cursor: pointer; }
 .room-detail-controls button:hover { border-color: var(--color-gold); background: var(--color-gold); color: var(--color-ink); }
 .room-card-back .room-card-flip-btn { margin-top: auto; }
+
+@media (max-width: 1023px) { .suite-carousel-track .room-card { flex-basis: calc((100% - 1.5rem) / 2); } }
+@media (max-width: 639px) { .room-carousel { padding-inline: 2.25rem; } .suite-carousel-track .room-card { flex-basis: 100%; } }

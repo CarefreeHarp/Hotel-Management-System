@@ -14,7 +14,7 @@ import com.example.demo.service.ServiceService;
  * le pide los datos a la capa de servicio y los envía a la vista con el modelo.
  *
  * Si el servicio pedido no existe, la capa de servicio lanza
- * ServiceNotFoundException. Aquí no se atrapa a propósito: la recoge el
+ * ResourceNotFoundException. Aquí no se atrapa a propósito: la recoge el
  * @ExceptionHandler de GlobalExceptionHandler, que muestra la página de error
  * con el mensaje. Al ser una pantalla de solo lectura no hay formulario al que
  * volver, así que no hace falta un try/catch local.

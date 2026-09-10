@@ -54,6 +54,8 @@ El diseño de la interfaz está disponible en Figma:
 
 Este diagrama representa la estructura de la base de datos del sistema. Muestra las entidades, sus atributos, claves primarias (PK), claves foráneas (FK), restricciones de unicidad (UK) y las relaciones de cardinalidad entre ellas.
 
+![Atlan Suites entity-relationship diagram](ReadMe%20assets/AtlanSuites_Entidad-Relacion.png)
+
 ```mermaid
 erDiagram
 

@@ -1,6 +1,7 @@
 package com.example.demo.entities;
 
 import jakarta.persistence.*;
+import java.util.UUID;
 import lombok.*;
 
 @Data
@@ -12,9 +13,9 @@ import lombok.*;
 @ToString
 public class Client {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "client_id")
-    private Integer clientId; // Identificador del cliente.
+    private UUID clientId; // Identificador público y único del cliente.
     @Column(nullable = false, length = 60)
     private String name; // Nombre del registro.
     @Column(nullable = false, length = 60)
@@ -30,7 +31,7 @@ public class Client {
     @Column(name = "profile_photo", length = 500)
     private String profilePhoto; // URL opcional de la foto de perfil.
 
-    /** Crea un cliente nuevo; la base de datos genera su identificador. */
+    /** Crea un cliente nuevo; la base de datos genera su identificador UUID. */
     public Client(String name,
                   String lastName,
                   String nationalId,

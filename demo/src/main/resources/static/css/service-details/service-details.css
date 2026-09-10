@@ -95,6 +95,7 @@
   max-width: 65ch;
   line-height: 1.85;
   opacity: .83;
+  white-space: pre-line;
 }
 
 .benefits {

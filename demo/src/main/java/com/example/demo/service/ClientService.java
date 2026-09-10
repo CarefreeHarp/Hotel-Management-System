@@ -1,10 +1,11 @@
 package com.example.demo.service;
 
 import com.example.demo.entities.Client;
-import com.example.demo.errors.ClientNotFoundException;
 import com.example.demo.errors.InvalidClientDataException;
 import com.example.demo.errors.InvalidCurrentPasswordException;
+import com.example.demo.errors.ResourceNotFoundException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * CAPA DE SERVICIO: lógica de negocio de los clientes.
@@ -19,7 +20,7 @@ import java.util.List;
  * lanza una excepción personalizada con un mensaje, y el
  * controlador solo la atrapa para decidir a qué pantalla lleva cada caso:
  *
- * - ClientNotFoundException -> la cuenta buscada no existe.
+ * - ResourceNotFoundException -> la cuenta buscada no existe.
  * - InvalidClientDataException -> los datos enviados no son válidos.
  * - InvalidCurrentPasswordException -> la contraseña de confirmación no coincide.
  */
@@ -29,11 +30,11 @@ public interface ClientService {
     List<Client> listClients();
 
     /**
-     * Devuelve el cliente registrado con ese email.
+     * Devuelve el cliente registrado con ese UUID.
      *
-     * @throws ClientNotFoundException si no hay ninguna cuenta con ese email.
+     * @throws ResourceNotFoundException si no hay ninguna cuenta con ese UUID.
      */
-    Client findByEmail(String email);
+    Client findById(UUID clientId);
 
     /**
      * Devuelve el cliente con ese email para autenticarlo. Si no existe, lanza
@@ -52,19 +53,19 @@ public interface ClientService {
 
     /**
      * Actualiza los datos personales de un cliente registrado después de validar
-     * su contraseña actual. correoActual identifica la cuenta que se está editando,
-     * porque el cliente puede estar cambiando justamente su email.
+     * su contraseña actual. clientId identifica la cuenta que se está editando,
+     * incluso si el cliente cambia su email.
      *
-     * @throws ClientNotFoundException si no existe una cuenta con correoActual.
+     * @throws ResourceNotFoundException si no existe una cuenta con clientId.
      * @throws InvalidCurrentPasswordException si la contraseña actual no coincide.
      * @throws InvalidClientDataException si los datos nuevos no son válidos.
      */
-    void updateProfile(String emailCurrent, Client client, String passwordCurrent);
+    void updateProfile(UUID clientId, Client client, String passwordCurrent);
 
     /**
-     * Elimina la cuenta del cliente con ese email.
+     * Elimina la cuenta del cliente con ese UUID.
      *
-     * @throws ClientNotFoundException si no hay ninguna cuenta con ese email.
+     * @throws ResourceNotFoundException si no hay ninguna cuenta con ese UUID.
      */
-    void deleteProfile(String email);
+    void deleteProfile(UUID clientId);
 }

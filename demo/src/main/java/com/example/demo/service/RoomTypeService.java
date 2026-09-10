@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entities.RoomType;
 import com.example.demo.errors.InvalidRoomTypeDataException;
-import com.example.demo.errors.RoomTypeNotFoundException;
+import com.example.demo.errors.ResourceNotFoundException;
 import java.util.List;
 
 /**
@@ -16,7 +16,7 @@ import java.util.List;
  * MANEJO DE ERRORES: el servicio valida las reglas del negocio y avisa del error
  * lanzando una de las excepciones propias del proyecto:
  *
- * - RoomTypeNotFoundException    -> el tipo de habitación buscado no existe.
+ * - ResourceNotFoundException    -> el tipo de habitación buscado no existe.
  * - InvalidRoomTypeDataException -> los datos del formulario no son válidos.
  */
 public interface RoomTypeService {
@@ -27,14 +27,14 @@ public interface RoomTypeService {
     /**
      * Devuelve el tipo de habitación con ese name.
      *
-     * @throws RoomTypeNotFoundException si no existe un tipo con ese name.
+     * @throws ResourceNotFoundException si no existe un tipo con ese name.
      */
     RoomType findByName(String name);
 
     /**
      * Devuelve el tipo de habitación con ese id.
      *
-     * @throws RoomTypeNotFoundException si no existe un tipo con ese id.
+     * @throws ResourceNotFoundException si no existe un tipo con ese id.
      */
     RoomType findById(int roomTypeId);
 
@@ -50,7 +50,7 @@ public interface RoomTypeService {
      * currentName identifica el tipo que se está editando, porque el
      * administrador puede estar cambiando justamente su name.
      *
-     * @throws RoomTypeNotFoundException    si no existe un tipo llamado currentName.
+     * @throws ResourceNotFoundException    si no existe un tipo llamado currentName.
      * @throws InvalidRoomTypeDataException si los datos nuevos no son válidos.
      */
     void update(String currentName, RoomType typeRoom);
@@ -58,7 +58,7 @@ public interface RoomTypeService {
     /**
      * Elimina del catálogo el tipo de habitación con ese name.
      *
-     * @throws RoomTypeNotFoundException si no existe un tipo con ese name.
+     * @throws ResourceNotFoundException si no existe un tipo con ese name.
      */
     void delete(String name);
 }

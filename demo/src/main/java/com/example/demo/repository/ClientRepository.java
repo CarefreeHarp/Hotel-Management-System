@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.entities.Client;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Repository;
  *
  * Al extender JpaRepository ya se heredan las operaciones básicas sin escribir
  * código: findAll, findById, save, deleteById, existsById y count. El segundo
- * tipo genérico es el de la llave primaria (client_id, de tipo Integer).
+ * tipo genérico es el de la llave primaria (client_id, de tipo UUID).
  *
  * Los dos métodos declarados abajo son "derived queries": Spring Data lee el
  * nombre del método y genera él mismo la consulta, así que tampoco hay que
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Repository;
  * es la capa de servicio la que decide si eso es un error.
  */
 @Repository
-public interface ClientRepository extends JpaRepository<Client, Integer> {
+public interface ClientRepository extends JpaRepository<Client, UUID> {
 
     /** SELECT * FROM client WHERE UPPER(email) = UPPER(?) */
     Optional<Client> findByEmailIgnoreCase(String email);

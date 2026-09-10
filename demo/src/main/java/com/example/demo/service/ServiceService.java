@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entities.Service;
-import com.example.demo.errors.ServiceNotFoundException;
+import com.example.demo.errors.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public interface ServiceService {
     /**
      * Devuelve un servicio por su urlName.
      *
-     * @throws ServiceNotFoundException si no existe un servicio con ese urlName.
+     * @throws ResourceNotFoundException si no existe un servicio con ese urlName.
      */
     Service getServiceByUrlName(String urlName);
 }

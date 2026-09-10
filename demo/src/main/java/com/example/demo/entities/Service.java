@@ -3,6 +3,8 @@ package com.example.demo.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -39,6 +41,10 @@ public class Service {
     private String location; // Ubicación opcional del servicio.
     @Column(nullable = false, name = "main_image_url", length = 500)
     private String mainImageUrl; // URL opcional de la imagen principal del servicio.
+    @ElementCollection
+    @CollectionTable(name = "service_secondary_image", joinColumns = @JoinColumn(name = "service_id"))
+    @Column(name = "image_url", nullable = false, length = 500)
+    private List<String> secondaryImageUrls = new ArrayList<>(); // URLs de las imágenes secundarias del servicio.
 
     /** Crea un servicio nuevo; la base de datos genera su identificador. */
     public Service(String name,

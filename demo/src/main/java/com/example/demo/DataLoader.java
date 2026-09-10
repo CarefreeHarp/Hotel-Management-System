@@ -11,6 +11,7 @@ import com.example.demo.repository.RoomTypeRepository;
 import com.example.demo.repository.ServiceRepository;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -77,25 +78,25 @@ public class DataLoader implements CommandLineRunner {
 
         // Clientes
         clientRepository.save(new Client("Emma", "Thompson", "1001001001", "3001001001",
-                "emma.thompson@example.com", "Emma2026!", ""));
+                "emma.thompson@example.com", "Emma2026!", "https://images.unsplash.com/photo-1494790108377-be9c29b29330"));
         clientRepository.save(new Client("Liam", "Anderson", "1001001002", "3001001002",
-                "liam.anderson@example.com", "Liam2026!", ""));
+                "liam.anderson@example.com", "Liam2026!", "https://images.unsplash.com/photo-1500648767791-00dcc994a43e"));
         clientRepository.save(new Client("Olivia", "Martinez", "1001001003", "3001001003",
-                "olivia.martinez@example.com", "Olivia2026!", ""));
+                "olivia.martinez@example.com", "Olivia2026!", "https://images.unsplash.com/photo-1534528741775-53994a69daeb"));
         clientRepository.save(new Client("Noah", "Williams", "1001001004", "3001001004",
-                "noah.williams@example.com", "Noah2026!", ""));
+                "noah.williams@example.com", "Noah2026!", "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d"));
         clientRepository.save(new Client("Ava", "Robinson", "1001001005", "3001001005",
-                "ava.robinson@example.com", "Ava2026!", ""));
+                "ava.robinson@example.com", "Ava2026!", "https://images.unsplash.com/photo-1517841905240-472988babdf9"));
         clientRepository.save(new Client("Ethan", "Walker", "1001001006", "3001001006",
-                "ethan.walker@example.com", "Ethan2026!", ""));
+                "ethan.walker@example.com", "Ethan2026!", "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7"));
         clientRepository.save(new Client("Sophia", "Harris", "1001001007", "3001001007",
-                "sophia.harris@example.com", "Sophia2026!", ""));
+                "sophia.harris@example.com", "Sophia2026!", "https://images.unsplash.com/photo-1531123897727-8f129e1688ce"));
         clientRepository.save(new Client("Lucas", "Clark", "1001001008", "3001001008",
-                "lucas.clark@example.com", "Lucas2026!", ""));
+                "lucas.clark@example.com", "Lucas2026!", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"));
         clientRepository.save(new Client("Mia", "Lewis", "1001001009", "3001001009",
-                "mia.lewis@example.com", "Mia2026!", ""));
+                "mia.lewis@example.com", "Mia2026!", "https://images.unsplash.com/photo-1524504388940-b1c1722653e1"));
         clientRepository.save(new Client("James", "Young", "1001001010", "3001001010",
-                "james.young@example.com", "James2026!", ""));
+                "james.young@example.com", "James2026!", "https://images.unsplash.com/photo-1507591064344-4c6ce005b128"));
 
         // Habitaciones
         roomRepository.save(new Room(101, 1, RoomStatus.AVAILABLE, standardRoom,
@@ -329,5 +330,31 @@ public class DataLoader implements CommandLineRunner {
                 "Recreation", true, "Stories and places waiting to be discovered", "Half day",
                 "Reservation required", "Lobby",
                 "https://images.unsplash.com/photo-1469474968028-56623f02e42e"));
+
+        serviceRepository.findAll().stream()
+                .filter(service -> Boolean.TRUE.equals(service.getActive()))
+                .forEach(service -> {
+                    service.setDescription(buildDetailedDescription(service));
+                    service.setSecondaryImageUrls(new ArrayList<>(serviceGalleryImages()));
+                });
+    }
+
+    /** Amplía cada descripción de servicio para que la página de detalle tenga contenido informativo. */
+    private String buildDetailedDescription(Service service) {
+        return service.getDescription()
+                + "\n\nAtlan Suites designs this experience around a calm, attentive stay. "
+                + service.getSummary() + " Our team prepares the service with the same care given to every guest request, "
+                + "so the experience feels personal whether you are visiting for business, rest, or a special occasion."
+                + "\n\nThe service is offered at " + service.getLocation() + " and is "
+                + service.getAvailability().toLowerCase() + ". Its usual duration is " + service.getDuration()
+                + ", and our concierge can help coordinate any details before or during your stay.";
+    }
+
+    /** Devuelve tres imágenes complementarias para la galería de cada servicio activo. */
+    private List<String> serviceGalleryImages() {
+        return List.of(
+                "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb",
+                "https://images.unsplash.com/photo-1564501049412-61c2a3083791",
+                "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa");
     }
 }
