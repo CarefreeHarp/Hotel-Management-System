@@ -20,8 +20,8 @@
     <link rel="stylesheet" th:href="@{/css/error/error.css}" href="/css/error/error.css" />
   </head>
   <body class="error-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem]">
-    <div class="error-container">
-      <main class="error-card" role="main">
+    <main class="error-container">
+      <article class="error-card">
         <a th:href="@{/}" class="error-logo" aria-label="Atlan Suites Home">
           <img
             th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}"
@@ -30,16 +30,14 @@
           />
         </a>
 
-        <div>
-          <div class="error-badge" th:if="${status != null and status >= 500}">
+        <p class="error-badge" th:if="${status != null and status >= 500}">
             <span aria-hidden="true">●</span>
             <span>Server Interruption</span>
-          </div>
-          <div class="error-badge error-badge--warning" th:if="${status == null or status < 500}">
+        </p>
+        <p class="error-badge error-badge--warning" th:if="${status == null or status < 500}">
             <span aria-hidden="true">●</span>
             <span>Notice</span>
-          </div>
-        </div>
+        </p>
 
         <h1 class="error-code" th:text="${status != null} ? ${status} : '404'">404</h1>
 
@@ -61,18 +59,18 @@
         </p>
 
         <!-- Technical details (if available) -->
-        <div class="error-meta" th:if="${path != null or timestamp != null}">
+        <dl class="error-meta" th:if="${path != null or timestamp != null}">
           <div class="error-meta-item" th:if="${path != null}">
-            <span class="error-meta-label">Path</span>
-            <span th:text="${path}">/unknown</span>
+            <dt class="error-meta-label">Path</dt>
+            <dd th:text="${path}">/unknown</dd>
           </div>
           <div class="error-meta-item" th:if="${timestamp != null}">
-            <span class="error-meta-label">Timestamp</span>
-            <span th:text="${#dates.format(timestamp, 'yyyy-MM-dd HH:mm:ss')}">2026-09-07 00:00:00</span>
+            <dt class="error-meta-label">Timestamp</dt>
+            <dd th:text="${#dates.format(timestamp, 'yyyy-MM-dd HH:mm:ss')}">2026-09-07 00:00:00</dd>
           </div>
-        </div>
+        </dl>
 
-        <div class="error-actions">
+        <nav class="error-actions" aria-label="Error page actions">
           <a th:href="@{/}" class="btn-error-primary">
             <span>Return to Home</span>
             <span aria-hidden="true">↗</span>
@@ -84,9 +82,9 @@
           <a th:href="@{/login}" class="btn-error-secondary">
             <span>Sign In</span>
           </a>
-        </div>
-      </main>
-    </div>
+        </nav>
+      </article>
+    </main>
 
     <footer class="error-footer">
       <p>© 2026 Atlan Suites. All rights reserved.</p>

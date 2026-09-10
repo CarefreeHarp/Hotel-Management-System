@@ -37,7 +37,7 @@
           <h2 class="login-title" id="login-title">Sign in</h2>
           <p class="login-copy">Sign in with your guest email or administrative credentials.</p>
 
-          <div class="portal-alert" th:if="${error}" role="alert"><span th:text="${error}">Incorrect username or password.</span></div>
+          <aside class="portal-alert" th:if="${error}" role="alert"><span th:text="${error}">Incorrect username or password.</span></aside>
 
           <form class="login-form" th:action="@{/login}" method="post">
             <div>

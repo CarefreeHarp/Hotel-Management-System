@@ -38,7 +38,7 @@
         </header>
 
         <form class="surface-card form-card client-form-card" th:action="${accion}" th:object="${cliente}" method="post" novalidate>
-          <div class="portal-alert" th:if="${error}" role="alert" th:text="${error}"></div>
+          <aside class="portal-alert" th:if="${error}" role="alert" th:text="${error}"></aside>
 
           <section class="form-section" aria-labelledby="personal-info-title">
             <h2 class="form-section__title" id="personal-info-title">Personal information</h2>

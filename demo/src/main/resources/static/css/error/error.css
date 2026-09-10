@@ -76,7 +76,7 @@ body.error-body {
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  margin-bottom: 1.25rem;
+  margin: 0 0 1.25rem;
 }
 
 .error-badge--warning {
@@ -119,7 +119,7 @@ body.error-body {
   border: 1px solid rgba(221, 232, 239, 0.08);
   border-radius: 0.75rem;
   padding: 0.85rem 1.25rem;
-  margin-bottom: 2rem;
+  margin: 0 0 2rem;
   font-size: 0.8rem;
   color: var(--atlan-muted, #9faeb9);
   text-align: left;
@@ -133,6 +133,10 @@ body.error-body {
   justify-content: space-between;
   gap: 1rem;
   word-break: break-all;
+}
+
+.error-meta dd {
+  margin: 0;
 }
 
 .error-meta-label {
