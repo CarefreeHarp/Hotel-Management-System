@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entities.Room;
 import com.example.demo.errors.InvalidRoomDataException;
-import com.example.demo.errors.RoomNotFoundException;
+import com.example.demo.errors.ResourceNotFoundException;
 import com.example.demo.repository.RoomRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,8 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Room findByNumber(int number) {
         return roomRepository.findByNumber(number)
-                .orElseThrow(() -> new RoomNotFoundException(number));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "The room " + number + " does not exist."));
     }
 
     @Override

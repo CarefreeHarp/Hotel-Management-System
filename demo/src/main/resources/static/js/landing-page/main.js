@@ -134,46 +134,88 @@ document.querySelectorAll('.room-detail-carousel').forEach((detailCarousel) => {
   });
 });
 
-// Al cambiar de suite, el carrusel vuelve a mostrar la cara principal.
+// El carrusel muestra los tipos de habitación reales en una ventana deslizante.
 const suiteCarousel = document.getElementById('room-grid');
-
-// Agrupa tres tarjetas por página para el carrusel principal de Suites.
 const suiteCarouselInner = suiteCarousel.querySelector(':scope > .carousel-inner');
-const suiteCards = [...suiteCarouselInner.children].map((item) => item.querySelector('.room-card'));
+const roomTypeSources = [...suiteCarouselInner.querySelectorAll('.room-type-source')];
+
+function createSuiteCard(source, index) {
+  const card = document.createElement('article');
+  card.className = `room-card room-card--${index % 2 === 0 ? 'ocean' : 'garden'}`;
+
+  const image = document.createElement('img');
+  image.src = source.dataset.image;
+  image.alt = source.dataset.name;
+  image.loading = 'lazy';
+
+  const eyebrow = document.createElement('p');
+  eyebrow.className = 'eyebrow';
+  eyebrow.textContent = 'Room type';
+
+  const imageWrapper = document.createElement('div');
+  imageWrapper.className = 'room-card-swatch';
+  imageWrapper.append(image);
+
+  const name = document.createElement('h3');
+  name.className = 'room-card-name';
+  name.textContent = source.dataset.name;
+
+  const details = document.createElement('p');
+  details.className = 'room-card-sub';
+  details.textContent = `${source.dataset.capacity} guests · COP ${Number(source.dataset.price).toLocaleString('en-US')} / night`;
+
+  const description = document.createElement('p');
+  description.className = 'room-type-description';
+  description.textContent = source.dataset.description;
+
+  card.append(eyebrow, imageWrapper, name, details, description);
+  return card;
+}
+
+const suiteCards = roomTypeSources.map(createSuiteCard);
 suiteCarouselInner.replaceChildren();
 
-const suitePages = [];
-for (let index = 0; index < suiteCards.length; index += 3) {
-  const page = document.createElement('div');
-  page.className = `carousel-item${index === 0 ? ' active' : ''}`;
-
-  const pageGrid = document.createElement('div');
-  pageGrid.className = 'suite-carousel-page';
-  suiteCards.slice(index, index + 3).forEach((card) => pageGrid.append(card));
-
-  page.append(pageGrid);
-  suiteCarouselInner.append(page);
-  suitePages.push(page);
-}
+const suiteTrack = document.createElement('div');
+suiteTrack.className = 'suite-carousel-track';
+suiteCards.forEach((card) => suiteTrack.append(card));
+suiteCarouselInner.append(suiteTrack);
 
 const suiteIndicators = suiteCarousel.querySelector('.carousel-indicators');
 suiteIndicators.replaceChildren();
-suitePages.forEach((_, index) => {
+suiteCards.forEach((_, index) => {
   const indicator = document.createElement('button');
   indicator.type = 'button';
-  indicator.dataset.bsTarget = '#room-grid';
-  indicator.dataset.bsSlideTo = index;
-  indicator.setAttribute('aria-label', `Suite page ${index + 1}`);
+  indicator.setAttribute('aria-label', `Room type ${index + 1}`);
   if (index === 0) {
     indicator.classList.add('active');
     indicator.setAttribute('aria-current', 'true');
   }
+  indicator.addEventListener('click', () => moveSuiteCarousel(index));
   suiteIndicators.append(indicator);
 });
 
-suiteCarousel.addEventListener('slide.bs.carousel', (event) => {
-  if (event.target !== suiteCarousel) return;
-  suiteCarousel.querySelectorAll('.room-card.is-flipped').forEach((card) => {
-    card.classList.remove('is-flipped');
+let suiteIndex = 0;
+
+function visibleSuiteCount() {
+  if (window.matchMedia('(min-width: 1024px)').matches) return 3;
+  if (window.matchMedia('(min-width: 640px)').matches) return 2;
+  return 1;
+}
+
+function moveSuiteCarousel(nextIndex) {
+  const maxIndex = Math.max(0, suiteCards.length - visibleSuiteCount());
+  suiteIndex = Math.max(0, Math.min(nextIndex, maxIndex));
+  const cardWidth = suiteCards[0]?.getBoundingClientRect().width || 0;
+  const gap = Number.parseFloat(getComputedStyle(suiteTrack).gap) || 0;
+  suiteTrack.style.transform = `translateX(-${suiteIndex * (cardWidth + gap)}px)`;
+
+  [...suiteIndicators.children].forEach((indicator, index) => {
+    const isActive = index === suiteIndex;
+    indicator.classList.toggle('active', isActive);
+    indicator.toggleAttribute('aria-current', isActive);
   });
-});
+}
+
+suiteCarousel.querySelector('[data-bs-slide="prev"]').addEventListener('click', () => moveSuiteCarousel(suiteIndex - 1));
+suiteCarousel.querySelector('[data-bs-slide="next"]').addEventListener('click', () => moveSuiteCarousel(suiteIndex + 1));
+addEventListener('resize', () => moveSuiteCarousel(suiteIndex));

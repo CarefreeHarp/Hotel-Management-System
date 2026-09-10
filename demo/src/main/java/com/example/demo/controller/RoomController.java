@@ -3,7 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.entities.enums.RoomStatus;
 import com.example.demo.entities.Room;
 import com.example.demo.errors.InvalidRoomDataException;
-import com.example.demo.errors.RoomTypeNotFoundException;
+import com.example.demo.errors.ResourceNotFoundException;
 import com.example.demo.service.RoomService;
 import com.example.demo.service.RoomTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +66,7 @@ public class RoomController {
             }
             roomService.create(room);
             return "redirect:/admin/rooms/read";
-        } catch (RoomTypeNotFoundException | InvalidRoomDataException exception) {
+        } catch (ResourceNotFoundException | InvalidRoomDataException exception) {
             prepareForm(model, room, "Create room", "/admin/rooms/create");
             model.addAttribute("error", exception.getMessage());
             return "rooms/form";
@@ -102,7 +102,7 @@ public class RoomController {
             }
             roomService.update(number, room);
             return "redirect:/admin/rooms/read";
-        } catch (RoomTypeNotFoundException | InvalidRoomDataException exception) {
+        } catch (ResourceNotFoundException | InvalidRoomDataException exception) {
             prepareForm(model, room, "Update room", "/admin/rooms/update/" + number);
             model.addAttribute("error", exception.getMessage());
             return "rooms/form";

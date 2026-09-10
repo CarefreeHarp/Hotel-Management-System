@@ -1,13 +1,14 @@
 package com.example.demo.service;
 
 import com.example.demo.entities.Client;
-import com.example.demo.errors.ClientNotFoundException;
 import com.example.demo.errors.InvalidClientDataException;
 import com.example.demo.errors.InvalidCurrentPasswordException;
+import com.example.demo.errors.ResourceNotFoundException;
 import com.example.demo.repository.ClientRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,9 +37,10 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client findByEmail(String email) {
-        return clientRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new ClientNotFoundException(email));
+    public Client findById(UUID clientId) {
+        return clientRepository.findById(clientId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No guest profile is registered with the identifier " + clientId + "."));
     }
 
     @Override
@@ -49,8 +51,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void register(Client client) {
-        // El id lo genera la base de datos (IDENTITY). Se envía en null para que
-        // Hibernate haga un INSERT: el formulario del registro nunca lo manda.
+        // El UUID lo genera Hibernate. Se envía en null para que haga un INSERT:
+        // el formulario del registro nunca lo manda.
         client.setClientId(null);
 
         validateData(client, true);
@@ -58,11 +60,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void updateProfile(String emailCurrent, Client client, String passwordCurrent) {
-        Client profileRegistrada = findByEmail(emailCurrent);
+    public void updateProfile(UUID clientId, Client client, String passwordCurrent) {
+        Client profileRegistrada = findById(clientId);
 
         if (!profileRegistrada.getPassword().equals(passwordCurrent)) {
-            throw new InvalidCurrentPasswordException(emailCurrent);
+            throw new InvalidCurrentPasswordException(profileRegistrada.getEmail());
         }
 
         // Se conserva el id para que save() actualice la fila que ya existe en vez
@@ -75,8 +77,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void deleteProfile(String email) {
-        Client profileRegistrada = findByEmail(email);
+    public void deleteProfile(UUID clientId) {
+        Client profileRegistrada = findById(clientId);
         clientRepository.deleteById(profileRegistrada.getClientId());
     }
 

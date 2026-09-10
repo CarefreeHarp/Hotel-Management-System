@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entities.Service;
-import com.example.demo.errors.ServiceNotFoundException;
+import com.example.demo.errors.ResourceNotFoundException;
 import com.example.demo.repository.ServiceRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * servicios se leen de la base de datos H2.
  *
  * Los servicios son de solo lectura, así que el único error posible es pedir uno
- * que no existe: ServiceNotFoundException.
+ * que no existe: ResourceNotFoundException.
  */
 @org.springframework.stereotype.Service
 public class ServiceServiceImpl implements ServiceService {
@@ -36,6 +36,7 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     public Service getServiceByUrlName(String urlName) {
         return serviceRepository.findByUrlNameIgnoreCase(urlName)
-                .orElseThrow(() -> new ServiceNotFoundException(urlName));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "The service " + urlName + " does not exist."));
     }
 }

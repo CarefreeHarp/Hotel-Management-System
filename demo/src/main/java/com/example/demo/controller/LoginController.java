@@ -38,7 +38,7 @@ public class LoginController {
 
         try {
             Client client = loginService.authenticateClient(user, password);
-            return "redirect:/clients/read/" + client.getEmail();
+            return "redirect:/clients/read/" + client.getClientId();
         } catch (SecurityException credencialesInvalidas) {
             model.addAttribute("error", credencialesInvalidas.getMessage());
             return "login/login";
