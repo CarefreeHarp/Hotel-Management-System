@@ -40,7 +40,6 @@ public class RoomServiceImpl implements RoomService {
     public void create(Room room) {
         // El id lo genera la base de datos. El formulario nunca debe conservarlo.
         room.setRoomId(null);
-        normalizePhotos(room);
         validateData(room, 0);
         roomRepository.save(room);
     }
@@ -49,7 +48,6 @@ public class RoomServiceImpl implements RoomService {
     public void update(int numberCurrent, Room room) {
         Room registeredRoom = findByNumber(numberCurrent);
 
-        normalizePhotos(room);
         validateData(room, numberCurrent);
 
         // Se conserva el id para actualizar la misma fila si cambia el número.
@@ -99,24 +97,5 @@ public class RoomServiceImpl implements RoomService {
                     InvalidRoomDataException.Reason.ROOM_TYPE_REQUIRED, room.getNumber());
         }
 
-        if (room.getMainPhoto() == null || room.getMainPhoto().isBlank()) {
-            throw new InvalidRoomDataException(
-                    InvalidRoomDataException.Reason.MAIN_PHOTO_REQUIRED, room.getNumber());
-        }
-    }
-
-    /**
-     * Limpia los espacios de la foto principal y descarta las filas de fotos
-     * secundarias que el administrador dejó vacías en el formulario, para que no
-     * se guarden URLs en blanco en la tabla ROOM_SECONDARY_PHOTO.
-     */
-    private void normalizePhotos(Room room) {
-        if (room.getMainPhoto() != null) {
-            room.setMainPhoto(room.getMainPhoto().trim());
-        }
-
-        if (room.getSecondaryPhotos() != null) {
-            room.getSecondaryPhotos().removeIf(photo -> photo == null || photo.isBlank());
-        }
     }
 }

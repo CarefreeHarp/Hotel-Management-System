@@ -8,7 +8,6 @@ import com.example.demo.repository.ClientRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +36,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client findById(UUID clientId) {
+    public Client findById(Integer clientId) {
         return clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "No guest profile is registered with the identifier " + clientId + "."));
@@ -51,7 +50,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void register(Client client) {
-        // El UUID lo genera Hibernate. Se envía en null para que haga un INSERT:
+        // El id lo genera la base de datos. Se envía en null para que haga un INSERT:
         // el formulario del registro nunca lo manda.
         client.setClientId(null);
 
@@ -60,7 +59,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void updateProfile(UUID clientId, Client client, String passwordCurrent) {
+    public void updateProfile(Integer clientId, Client client, String passwordCurrent) {
         Client profileRegistrada = findById(clientId);
 
         if (!profileRegistrada.getPassword().equals(passwordCurrent)) {
@@ -77,7 +76,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void deleteProfile(UUID clientId) {
+    public void deleteProfile(Integer clientId) {
         Client profileRegistrada = findById(clientId);
         clientRepository.deleteById(profileRegistrada.getClientId());
     }

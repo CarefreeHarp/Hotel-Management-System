@@ -13,4 +13,10 @@ public class GlobalExceptionHandler {
         return "error";
     }
 
+    @ExceptionHandler(DeletionRestrictedException.class)
+    public String handleDeletionRestricted(DeletionRestrictedException exception, Model model) {
+        model.addAttribute("error", exception.getMessage());
+        return "error";
+    }
+
 }

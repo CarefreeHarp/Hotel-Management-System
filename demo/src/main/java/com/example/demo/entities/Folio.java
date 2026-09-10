@@ -36,18 +36,4 @@ public class Folio {
     @Column(name = "issued_at", nullable = false)
     private LocalDateTime issuedAt; // Fecha y hora de emisión del folio.
 
-    /** Crea un folio nuevo; la base de datos genera su identificador. */
-    public Folio(Reservation reservation,
-                 BigDecimal subtotal,
-                 BigDecimal taxes,
-                 BigDecimal total,
-                 FolioStatus status,
-                 LocalDateTime issuedAt) {
-        this.reservation = reservation;
-        this.subtotal = subtotal;
-        this.taxes = taxes;
-        this.total = total;
-        this.status = status;
-        this.issuedAt = issuedAt;
-    }
 }

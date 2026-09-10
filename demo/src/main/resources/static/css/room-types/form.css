@@ -4,3 +4,6 @@
 .currency-field { position: relative; }
 .currency-field::before { content: "$"; position: absolute; z-index: 2; top: 50%; left: 1rem; color: var(--atlan-gold-light); transform: translateY(-50%); }
 .currency-field input { padding-left: 2rem; }
+.photo-fields { display: grid; gap: 0.8rem; }
+.photo-field { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr); align-items: center; gap: 0.65rem; margin: 0; }
+.photo-field__number { display: grid; width: 2.25rem; height: 2.25rem; place-items: center; border-radius: 50%; color: var(--atlan-muted); background: rgba(255, 255, 255, 0.04); font-size: 0.68rem; }

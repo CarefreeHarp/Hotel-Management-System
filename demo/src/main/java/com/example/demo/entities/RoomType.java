@@ -3,6 +3,10 @@ package com.example.demo.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Data
 @Entity
@@ -24,12 +28,13 @@ public class RoomType {
     private BigDecimal nightlyPrice; // Tarifa acordada por noche.
     @Column(name = "max_capacity", nullable = false)
     private Integer maxCapacity; // Capacidad máxima de huéspedes.
+    @Column(name = "main_photo", nullable = false, length = 500)
+    private String mainPhoto; // URL obligatoria de la imagen principal del tipo.
+    @ElementCollection
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @CollectionTable(name = "room_type_secondary_photo", joinColumns = @JoinColumn(name = "room_type_id"))
+    @Column(name = "photo_url", nullable = false, length = 500)
+    @Builder.Default
+    private List<String> secondaryPhotos = new ArrayList<>(); // URLs secundarias compartidas por el tipo.
 
-    /** Crea un tipo de habitación nuevo; la base de datos genera su identificador. */
-    public RoomType(String name, String description, BigDecimal nightlyPrice, Integer maxCapacity) {
-        this.name = name;
-        this.description = description;
-        this.nightlyPrice = nightlyPrice;
-        this.maxCapacity = maxCapacity;
-    }
 }

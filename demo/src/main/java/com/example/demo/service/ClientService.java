@@ -5,7 +5,6 @@ import com.example.demo.errors.InvalidClientDataException;
 import com.example.demo.errors.InvalidCurrentPasswordException;
 import com.example.demo.errors.ResourceNotFoundException;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * CAPA DE SERVICIO: lógica de negocio de los clientes.
@@ -30,11 +29,11 @@ public interface ClientService {
     List<Client> listClients();
 
     /**
-     * Devuelve el cliente registrado con ese UUID.
+     * Devuelve el cliente registrado con ese identificador autogenerado.
      *
-     * @throws ResourceNotFoundException si no hay ninguna cuenta con ese UUID.
+     * @throws ResourceNotFoundException si no hay ninguna cuenta con ese identificador.
      */
-    Client findById(UUID clientId);
+    Client findById(Integer clientId);
 
     /**
      * Devuelve el cliente con ese email para autenticarlo. Si no existe, lanza
@@ -60,12 +59,12 @@ public interface ClientService {
      * @throws InvalidCurrentPasswordException si la contraseña actual no coincide.
      * @throws InvalidClientDataException si los datos nuevos no son válidos.
      */
-    void updateProfile(UUID clientId, Client client, String passwordCurrent);
+    void updateProfile(Integer clientId, Client client, String passwordCurrent);
 
     /**
-     * Elimina la cuenta del cliente con ese UUID.
+     * Elimina la cuenta del cliente con ese identificador.
      *
-     * @throws ResourceNotFoundException si no hay ninguna cuenta con ese UUID.
+     * @throws ResourceNotFoundException si no hay ninguna cuenta con ese identificador.
      */
-    void deleteProfile(UUID clientId);
+    void deleteProfile(Integer clientId);
 }

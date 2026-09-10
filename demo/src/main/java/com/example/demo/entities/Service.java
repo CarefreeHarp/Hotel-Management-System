@@ -44,30 +44,6 @@ public class Service {
     @ElementCollection
     @CollectionTable(name = "service_secondary_image", joinColumns = @JoinColumn(name = "service_id"))
     @Column(name = "image_url", nullable = false, length = 500)
+    @Builder.Default
     private List<String> secondaryImageUrls = new ArrayList<>(); // URLs de las imágenes secundarias del servicio.
-
-    /** Crea un servicio nuevo; la base de datos genera su identificador. */
-    public Service(String name,
-                   String urlName,
-                   String description,
-                   BigDecimal price,
-                   String category,
-                   Boolean active,
-                   String summary,
-                   String duration,
-                   String availability,
-                   String location,
-                   String mainImageUrl) {
-        this.name = name;
-        this.urlName = urlName;
-        this.description = description;
-        this.price = price;
-        this.category = category;
-        this.active = active;
-        this.summary = summary;
-        this.duration = duration;
-        this.availability = availability;
-        this.location = location;
-        this.mainImageUrl = mainImageUrl;
-    }
 }

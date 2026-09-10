@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entities.RoomType;
+import com.example.demo.errors.DeletionRestrictedException;
 import com.example.demo.errors.InvalidRoomTypeDataException;
 import com.example.demo.errors.ResourceNotFoundException;
 import com.example.demo.repository.RoomTypeRepository;
@@ -8,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -53,6 +55,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
         // Hibernate haga un INSERT. El formulario nunca lo envía.
         typeRoom.setRoomTypeId(null);
 
+        normalizePhotos(typeRoom);
         validateData(typeRoom);
         typeRoomRepository.save(typeRoom);
     }
@@ -65,6 +68,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
         // fila en vez de crear un registro nuevo.
         typeRoom.setRoomTypeId(typeRegistered.getRoomTypeId());
 
+        normalizePhotos(typeRoom);
         validateData(typeRoom);
         typeRoomRepository.save(typeRoom);
     }
@@ -72,7 +76,14 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     @Override
     public void delete(String name) {
         RoomType typeRegistered = findByName(name);
-        typeRoomRepository.deleteById(typeRegistered.getRoomTypeId());
+        try {
+            typeRoomRepository.deleteById(typeRegistered.getRoomTypeId());
+        } catch (DataIntegrityViolationException exception) {
+            throw new DeletionRestrictedException(
+                    "The room type \"" + typeRegistered.getName()
+                            + "\" cannot be deleted because rooms are associated with it.",
+                    exception);
+        }
     }
 
     /**
@@ -124,6 +135,22 @@ public class RoomTypeServiceImpl implements RoomTypeService {
         if (typeRoom.getMaxCapacity() == null || typeRoom.getMaxCapacity() < 1) {
             throw new InvalidRoomTypeDataException(
                     InvalidRoomTypeDataException.Reason.MAX_CAPACITY_INVALID, typeRoom.getMaxCapacity());
+        }
+
+        if (typeRoom.getMainPhoto() == null || typeRoom.getMainPhoto().isBlank()) {
+            throw new InvalidRoomTypeDataException(
+                    InvalidRoomTypeDataException.Reason.MAIN_PHOTO_REQUIRED, null);
+        }
+    }
+
+    /** Limpia URLs vacías para mantener una galería válida por cada tipo de habitación. */
+    private void normalizePhotos(RoomType typeRoom) {
+        if (typeRoom.getMainPhoto() != null) {
+            typeRoom.setMainPhoto(typeRoom.getMainPhoto().trim());
+        }
+
+        if (typeRoom.getSecondaryPhotos() != null) {
+            typeRoom.getSecondaryPhotos().removeIf(photo -> photo == null || photo.isBlank());
         }
     }
 }

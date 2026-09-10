@@ -49,26 +49,4 @@ public class Reservation {
     @OnDelete(action = OnDeleteAction.SET_DEFAULT)
     private Room room; // Habitación asignada a la reserva.
 
-    /** Crea una reserva nueva; la base de datos genera su identificador. */
-    public Reservation(String reservationCode,
-                       LocalDate checkInDate,
-                       LocalDate checkOutDate,
-                       Integer guestCount,
-                       BigDecimal nightlyPrice,
-                       BigDecimal estimatedTotal,
-                       ReservationStatus status,
-                       LocalDateTime createdAt,
-                       Client client,
-                       Room room) {
-        this.reservationCode = reservationCode;
-        this.checkInDate = checkInDate;
-        this.checkOutDate = checkOutDate;
-        this.guestCount = guestCount;
-        this.nightlyPrice = nightlyPrice;
-        this.estimatedTotal = estimatedTotal;
-        this.status = status;
-        this.createdAt = createdAt;
-        this.client = client;
-        this.room = room;
-    }
 }

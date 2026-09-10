@@ -22,10 +22,4 @@ public class Administrator {
     @Column(nullable = false, length = 255)
     private String password; // Contraseña de la cuenta.
 
-    /** Crea un administrador nuevo; la base de datos genera su identificador. */
-    public Administrator(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
 }
