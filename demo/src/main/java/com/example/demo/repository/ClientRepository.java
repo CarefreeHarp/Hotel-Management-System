@@ -24,9 +24,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, UUID> {
 
-    /** SELECT * FROM client WHERE UPPER(email) = UPPER(?) */
+    /* Busca un cliente por correo electrónico sin distinguir mayúsculas de minúsculas. */
     Optional<Client> findByEmailIgnoreCase(String email);
 
-    /** SELECT * FROM client WHERE national_id = ? */
+    /* Busca un cliente por su número de identificación nacional. */
     Optional<Client> findByNationalId(String nationalId);
 }
