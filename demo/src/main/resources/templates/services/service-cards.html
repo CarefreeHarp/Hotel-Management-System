@@ -15,27 +15,7 @@
     <link rel="stylesheet" th:href="@{/css/service-cards/service-cards.css}" />
   </head>
   <body class="page-services dark-theme">
-    <!-- Bootstrap responsive header navigation -->
-    <header class="site-header navbar navbar-expand-md">
-      <a th:href="@{/}" class="brand-mark">
-        <img th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}" alt="Atlan Suites" class="brand-logo img-fluid" />
-      </a>
-      <div class="collapse navbar-collapse" id="main-nav">
-        <nav class="main-nav navbar-nav flex-column flex-md-row">
-          <a th:href="@{/}" class="nav-link flex-fill">Home</a>
-          <a th:href="@{/#video-section}" class="nav-link flex-fill">The hotel</a>
-          <a th:href="@{/#rooms-section}" class="nav-link flex-fill">Suites</a>
-          <a th:href="@{/services/cards}" class="nav-link flex-fill is-active">Services</a>
-        </nav>
-      </div>
-      <div class="header-actions">
-        <a href="#book-section" class="btn btn-primary">Book now <span aria-hidden="true">↗</span></a>
-        <!-- Bootstrap mobile navigation toggler -->
-        <button class="nav-toggle navbar-toggler d-flex d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav" aria-label="Toggle menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </header>
+    <header th:replace="~{fragments/public-header :: publicHeader('services')}"></header>
 
     <main>
       <!-- Message sent by the controller when the requested service does not exist -->
@@ -83,7 +63,7 @@
 
           <!-- Luxury service card grid -->
           <div class="services-grid">
-            <article th:each="servicio : ${servicios}" class="service-card" th:data-category="${servicio.category}">
+            <article th:each="servicio, status : ${servicios}" class="service-card" th:data-category="${servicio.category}" th:data-page="${status.index < (#lists.size(servicios) + 1) / 2 ? 'one' : 'two'}">
               <a class="service-card__link" th:href="@{'/services/' + ${servicio.urlName}}">
               <figure class="card-image-wrapper">
                 <img
@@ -106,6 +86,13 @@
           </div>
           <!-- Empty category message using Bootstrap utilities -->
           <p id="no-services-msg" class="services-empty-grid text-center py-4 d-none" role="status">No services are available in this category.</p>
+
+          <nav class="service-pagination" aria-label="Service pages">
+            <button class="service-pagination__button service-pagination__button--arrow" type="button" data-page-direction="previous" aria-label="Previous service page" disabled><span aria-hidden="true">‹</span></button>
+            <button class="service-pagination__button is-active" type="button" data-service-page="one" aria-label="Service page 1" aria-current="page">1</button>
+            <button class="service-pagination__button" type="button" data-service-page="two" aria-label="Service page 2">2</button>
+            <button class="service-pagination__button service-pagination__button--arrow" type="button" data-page-direction="next" aria-label="Next service page"><span aria-hidden="true">›</span></button>
+          </nav>
         </div>
       </section>
     </main>

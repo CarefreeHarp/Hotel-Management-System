@@ -22,42 +22,7 @@
     />
   </head>
   <body class="service-page tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
-    <header class="site-header tw-flex tw-flex-wrap tw-items-center tw-justify-between">
-      <a th:href="@{/}" class="brand-mark">
-        <img
-          th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}"
-          alt="Atlan Suites"
-          class="brand-logo"
-        />
-      </a>
-      <div class="tw-hidden tw-w-full md:tw-block md:tw-w-auto" id="main-nav" data-public-menu>
-        <nav
-          class="main-nav tw-flex-col md:tw-flex-row"
-          aria-label="Main navigation"
-        >
-          <a th:href="@{/}" class="nav-link tw-flex-1">Home</a>
-          <a th:href="@{/#video-section}" class="nav-link tw-flex-1">The hotel</a>
-          <a th:href="@{/#rooms-section}" class="nav-link tw-flex-1">Suites</a>
-          <a th:href="@{/#experiences-section}" class="nav-link tw-flex-1">Experiences</a>
-          <a th:href="@{/services/cards}" class="nav-link tw-flex-1 is-active">Services</a>
-        </nav>
-      </div>
-      <div class="header-actions">
-        <a href="#reservation" class="btn btn-primary"
-          >Book now <span aria-hidden="true">↗</span></a
-        >
-        <button
-          class="nav-toggle tw-flex md:tw-hidden"
-          type="button"
-          aria-label="Toggle menu"
-          aria-expanded="false"
-          aria-controls="main-nav"
-          data-public-menu-toggle
-        >
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </header>
+    <header th:replace="~{fragments/public-header :: publicHeader('services')}"></header>
 
     <main>
       <section

@@ -2,7 +2,7 @@
 
 body.login-body { min-height: 100vh; background: var(--atlan-ink); }
 
-.login-shell { display: grid; min-height: 100vh; grid-template-columns: minmax(0, 1.15fr) minmax(420px, 0.85fr); }
+.login-shell { position: relative; display: grid; min-height: 100vh; grid-template-columns: minmax(0, 1.15fr) minmax(420px, 0.85fr); }
 .login-visual { position: relative; min-height: 100vh; overflow: hidden; }
 .login-visual__image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .login-visual__veil { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 13, 17, 0.2), rgba(8, 13, 17, 0.78)), linear-gradient(0deg, rgba(8, 13, 17, 0.84), transparent 55%); }
@@ -11,8 +11,8 @@ body.login-body { min-height: 100vh; background: var(--atlan-ink); }
 .login-visual__text { max-width: 38ch; margin: 1.5rem 0 0; color: rgba(255, 255, 255, 0.72); font-size: 0.88rem; }
 
 .login-panel { display: flex; min-height: 100vh; flex-direction: column; padding: clamp(1.5rem, 4vw, 3.5rem); background: radial-gradient(circle at 100% 0%, rgba(95, 125, 149, 0.2), transparent 22rem), var(--atlan-ink); }
-.login-panel__top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-.login-logo { width: 7rem; }
+.login-panel__top { display: flex; align-items: center; justify-content: flex-end; gap: 1rem; }
+.login-logo { position: absolute; top: clamp(1.5rem, 4vw, 3.5rem); left: clamp(1.5rem, 4vw, 3.5rem); z-index: 2; width: clamp(11rem, 14vw, 15rem); }
 .login-logo img { width: 100%; filter: brightness(0) invert(1); }
 .login-back { color: var(--atlan-muted); font-size: 0.72rem; font-weight: 700; text-decoration: none; }
 .login-back:hover { color: var(--atlan-sky); }
@@ -38,4 +38,5 @@ body.login-body { min-height: 100vh; background: var(--atlan-ink); }
   .login-visual { min-height: 29vh; }
   .login-panel { padding: 1.25rem; }
   .login-panel__content { padding: 3rem 0; }
+  .login-logo { width: 9rem; }
 }

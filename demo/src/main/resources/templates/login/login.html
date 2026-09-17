@@ -14,6 +14,10 @@
   </head>
   <body class="portal-body login-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
     <main class="login-shell">
+      <a class="login-logo" th:href="@{/}" aria-label="Atlan Suites, home">
+        <img th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}" src="/images/images-utils/hotel-identity/logo-transparent.png" alt="Atlan Suites" />
+      </a>
+
       <section class="login-visual" aria-labelledby="hotel-access-title">
         <img class="login-visual__image" th:src="@{/images/landing-page/home_photo.png}" src="/images/landing-page/home_photo.png" alt="Main lobby of Atlan Suites" />
         <div class="login-visual__veil" aria-hidden="true"></div>
@@ -26,9 +30,6 @@
 
       <section class="login-panel" aria-labelledby="login-title">
         <div class="login-panel__top">
-          <a class="login-logo" th:href="@{/}" aria-label="Atlan Suites, home">
-            <img th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}" src="/images/images-utils/hotel-identity/logo-transparent.png" alt="Atlan Suites" />
-          </a>
           <a class="login-back" th:href="@{/}">Back to the hotel <span aria-hidden="true">↗</span></a>
         </div>
 
