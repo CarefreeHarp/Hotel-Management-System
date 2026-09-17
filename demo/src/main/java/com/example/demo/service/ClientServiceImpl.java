@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entities.Client;
+import com.example.demo.service.interfaces.ClientService;
 import com.example.demo.errors.InvalidClientDataException;
 import com.example.demo.errors.InvalidCurrentPasswordException;
 import com.example.demo.errors.ResourceNotFoundException;

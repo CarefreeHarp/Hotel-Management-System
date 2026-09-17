@@ -5,6 +5,7 @@ import com.example.demo.errors.DeletionRestrictedException;
 import com.example.demo.errors.InvalidRoomTypeDataException;
 import com.example.demo.errors.ResourceNotFoundException;
 import com.example.demo.repository.RoomTypeRepository;
+import com.example.demo.service.interfaces.RoomTypeService;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;

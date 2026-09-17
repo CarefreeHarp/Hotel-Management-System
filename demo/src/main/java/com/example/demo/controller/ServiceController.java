@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.demo.service.ServiceService;
+import com.example.demo.service.interfaces.ServiceService;
 
 /**
  * CAPA DE CONTROLADOR: recibe las peticiones de la pantalla de servicios,
