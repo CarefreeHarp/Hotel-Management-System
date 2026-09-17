@@ -92,16 +92,6 @@ document.querySelectorAll('[data-scroll-target]').forEach((button) => {
   });
 });
 
-// CLICK PARA VOLTEAR LAS TARJETAS DE HABITACIONES 
-document.querySelectorAll('.room-card-flip-btn').forEach((button) => {
-  button.addEventListener('click', () => {
-    button.closest('.room-card').classList.toggle(
-      'is-flipped',
-      button.dataset.cardAction === 'details'
-    );
-  });
-});
-
 // Los detalles de cada suite usan controles propios para no interferir con el carrusel principal.
 document.querySelectorAll('.room-detail-carousel').forEach((detailCarousel) => {
   detailCarousel.classList.remove('carousel', 'slide');
@@ -144,13 +134,12 @@ function createSuiteCard(source, index) {
   card.className = `room-card room-card--${index % 2 === 0 ? 'ocean' : 'garden'}`;
 
   const image = document.createElement('img');
-  image.src = source.dataset.image;
   image.alt = source.dataset.name;
   image.loading = 'lazy';
-
-  const eyebrow = document.createElement('p');
-  eyebrow.className = 'eyebrow';
-  eyebrow.textContent = 'Room type';
+  image.addEventListener('load', () => {
+    card.style.setProperty('--room-image-ratio', `${image.naturalWidth} / ${image.naturalHeight}`);
+  });
+  image.src = source.dataset.image;
 
   const imageWrapper = document.createElement('div');
   imageWrapper.className = 'room-card-swatch';
@@ -160,15 +149,29 @@ function createSuiteCard(source, index) {
   name.className = 'room-card-name';
   name.textContent = source.dataset.name;
 
-  const details = document.createElement('p');
-  details.className = 'room-card-sub';
-  details.textContent = `${source.dataset.capacity} guests · COP ${Number(source.dataset.price).toLocaleString('en-US')} / night`;
-
   const description = document.createElement('p');
-  description.className = 'room-type-description';
+  description.className = 'room-card-back-text';
   description.textContent = source.dataset.description;
 
-  card.append(eyebrow, imageWrapper, name, details, description);
+  const details = document.createElement('ul');
+  details.className = 'room-card-list';
+  details.innerHTML = `
+    <li>${source.dataset.capacity} guests</li>
+    <li>From COP ${Number(source.dataset.price).toLocaleString('en-US')} per night</li>
+  `;
+
+  const front = document.createElement('div');
+  front.className = 'room-card-face room-card-front';
+  front.append(imageWrapper);
+
+  const back = document.createElement('div');
+  back.className = 'room-card-face room-card-back';
+  back.append(description, details);
+
+  const inner = document.createElement('div');
+  inner.className = 'room-card-inner';
+  inner.append(front, back);
+  card.append(inner, name);
   return card;
 }
 
@@ -179,20 +182,6 @@ const suiteTrack = document.createElement('div');
 suiteTrack.className = 'suite-carousel-track';
 suiteCards.forEach((card) => suiteTrack.append(card));
 suiteCarouselInner.append(suiteTrack);
-
-const suiteIndicators = suiteCarousel.querySelector('.carousel-indicators');
-suiteIndicators.replaceChildren();
-suiteCards.forEach((_, index) => {
-  const indicator = document.createElement('button');
-  indicator.type = 'button';
-  indicator.setAttribute('aria-label', `Room type ${index + 1}`);
-  if (index === 0) {
-    indicator.classList.add('active');
-    indicator.setAttribute('aria-current', 'true');
-  }
-  indicator.addEventListener('click', () => moveSuiteCarousel(index));
-  suiteIndicators.append(indicator);
-});
 
 let suiteIndex = 0;
 
@@ -209,11 +198,6 @@ function moveSuiteCarousel(nextIndex) {
   const gap = Number.parseFloat(getComputedStyle(suiteTrack).gap) || 0;
   suiteTrack.style.transform = `translateX(-${suiteIndex * (cardWidth + gap)}px)`;
 
-  [...suiteIndicators.children].forEach((indicator, index) => {
-    const isActive = index === suiteIndex;
-    indicator.classList.toggle('active', isActive);
-    indicator.toggleAttribute('aria-current', isActive);
-  });
 }
 
 suiteCarousel.querySelector('[data-bs-slide="prev"]').addEventListener('click', () => moveSuiteCarousel(suiteIndex - 1));

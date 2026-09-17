@@ -33,8 +33,8 @@
         />
       </a>
 
-      <div class="tw-hidden tw-w-full md:tw-block md:tw-w-auto" id="main-nav" data-public-menu>
-        <nav class="main-nav tw-flex-col md:tw-flex-row">
+      <div class="tw-hidden tw-w-full xl:tw-block xl:tw-w-auto" id="main-nav" data-public-menu>
+        <nav class="main-nav tw-flex-col xl:tw-flex-row">
           <a th:href="@{/}" class="nav-link tw-flex-1">Home</a>
           <a th:href="@{/#video-section}" class="nav-link tw-flex-1">The hotel</a>
           <a th:href="@{/#rooms-section}" class="nav-link tw-flex-1">Suites</a>
@@ -44,14 +44,14 @@
       </div>
 
       <div class="header-actions">
-        <a th:href="@{/login}" class="btn btn-primary"
+        <a th:href="@{/login}" class="btn btn-glass"
           >Login<span aria-hidden="true">↗</span></a
         >
-        <a th:href="@{/#book-section}" class="btn btn-primary"
+        <a th:href="@{/#book-section}" class="btn btn-glass"
           >Book now<span aria-hidden="true">↗</span></a
         >
         <button
-          class="nav-toggle tw-flex md:tw-hidden"
+          class="nav-toggle tw-flex xl:tw-hidden"
           type="button"
           aria-label="Toggle menu"
           aria-expanded="false"
@@ -139,8 +139,6 @@
           </aside>
         </div>
 
-        <p class="eyebrow rooms-label fade-in">Featured rooms</p>
-
         <div
           class="room-carousel carousel slide fade-in"
           id="room-grid"
@@ -149,65 +147,14 @@
           aria-roledescription="carousel"
           aria-label="Suites carousel"
         >
-          <div class="carousel-indicators">
-            <button
-              type="button"
-              data-bs-target="#room-grid"
-              data-bs-slide-to="0"
-              class="active"
-              aria-current="true"
-              aria-label="Ocean View Suite"
-            ></button>
-            <button
-              type="button"
-              data-bs-target="#room-grid"
-              data-bs-slide-to="1"
-              aria-label="Garden Junior Suite"
-            ></button>
-            <button
-              type="button"
-              data-bs-target="#room-grid"
-              data-bs-slide-to="2"
-              aria-label="Atlan Penthouse"
-            ></button>
-            <button
-              type="button"
-              data-bs-target="#room-grid"
-              data-bs-slide-to="3"
-              aria-label="Marina King Room"
-            ></button>
-            <button
-              type="button"
-              data-bs-target="#room-grid"
-              data-bs-slide-to="4"
-              aria-label="Skyline Family Suite"
-            ></button>
-            <button
-              type="button"
-              data-bs-target="#room-grid"
-              data-bs-slide-to="5"
-              aria-label="Garden Residence"
-            ></button>
-            <button
-              type="button"
-              data-bs-target="#room-grid"
-              data-bs-slide-to="6"
-              aria-label="Harbour Loft"
-            ></button>
-            <button
-              type="button"
-              data-bs-target="#room-grid"
-              data-bs-slide-to="7"
-              aria-label="Presidential Suite"
-            ></button>
-          </div>
-
           <div class="carousel-inner">
             <div
               class="room-type-source"
               th:each="roomType : ${roomTypes}"
               th:attr="data-name=${roomType.name},data-description=${roomType.description},data-price=${roomType.nightlyPrice},data-capacity=${roomType.maxCapacity},data-image=${roomType.mainPhoto}"
             ></div>
+            <!-- La maqueta anterior se conserva fuera del DOM renderizado; main.js crea las tarjetas reales desde roomTypes. -->
+            <template>
             <div class="carousel-item active">
               <article class="room-card room-card--ocean">
                 <div class="room-card-inner">
@@ -859,6 +806,7 @@
                 </div>
               </article>
             </div>
+            </template>
           </div>
 
           <button

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <header th:fragment="publicHeader(activePage)" class="site-header public-header">
+      <a th:href="@{/}" class="brand-mark">
+        <img
+          th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}"
+          alt="Atlan Suites"
+          class="brand-logo"
+        />
+      </a>
+
+      <div class="public-nav-menu" id="public-nav" data-public-menu>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a th:href="@{/}" class="nav-link">Home</a>
+          <a th:href="@{/#video-section}" class="nav-link">The hotel</a>
+          <a th:href="@{/#rooms-section}" class="nav-link">Suites</a>
+          <a th:href="@{/#experiences-section}" class="nav-link">Experiences</a>
+          <a th:href="@{/services/cards}" class="nav-link" th:classappend="${activePage == 'services'} ? ' is-active' : ''">Services</a>
+        </nav>
+      </div>
+
+      <div class="header-actions">
+        <a th:href="@{/login}" class="btn btn-glass">Login <span aria-hidden="true">↗</span></a>
+        <a th:href="@{/#book-section}" class="btn btn-glass">Book now <span aria-hidden="true">↗</span></a>
+        <button
+          class="nav-toggle public-nav-toggle"
+          type="button"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+          aria-controls="public-nav"
+          data-public-menu-toggle
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+      <script>
+        (() => {
+          const header = document.currentScript.closest('.public-header');
+          const toggle = header?.querySelector('[data-public-menu-toggle]');
+          const menu = header?.querySelector('[data-public-menu]');
+          if (!toggle || !menu) return;
+
+          toggle.addEventListener('click', () => {
+            const isOpen = menu.classList.toggle('is-open');
+            toggle.setAttribute('aria-expanded', String(isOpen));
+          });
+        })();
+      </script>
+    </header>
+  </body>
+</html>

@@ -21,7 +21,7 @@
 
 * { box-sizing: border-box; }
 
-html { min-height: 100%; }
+html { min-height: 100%; font-size: 112.5%; }
 
 body.portal-body {
   min-height: 100vh;
@@ -49,6 +49,7 @@ a { color: inherit; }
 .portal-header__inner { min-height: 5.5rem; gap: 1.25rem; }
 
 .portal-brand { width: 6.5rem; flex: 0 0 auto; }
+.portal-header--admin .portal-brand { width: clamp(8.25rem, 11vw, 9.5rem); }
 .portal-brand img { display: block; width: 100%; filter: brightness(0) invert(1); }
 
 .portal-nav {

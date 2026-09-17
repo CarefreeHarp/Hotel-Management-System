@@ -137,11 +137,11 @@ body.page-services {
   box-shadow: 0 4px 15px rgba(184, 140, 90, 0.3);
 }
 
-/* GRID DE 5 COLUMNAS DE TARJETAS DE LUJO */
+/* GRID DE TARJETAS: máximo tres columnas para priorizar legibilidad. */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 1.1rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
 }
 
 /* TARJETA INDIVIDUAL (CARD) */
@@ -149,7 +149,8 @@ body.page-services {
   background: rgba(18, 25, 34, 0.82);
   border: 1px solid rgba(184, 140, 90, 0.32);
   border-radius: 6px;
-  padding: 1.6rem 1.1rem 1rem;
+  min-height: 31rem;
+  padding: 1.65rem 1.35rem 1.2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -200,8 +201,8 @@ body.page-services {
 /* IMAGEN PRINCIPAL DEL SERVICIO */
 .card-image-wrapper {
   width: 100%;
-  height: 170px;
-  margin: 0 0 1.1rem;
+  height: 245px;
+  margin: 0 0 1.35rem;
   overflow: hidden;
   border-bottom: 1px solid rgba(184, 140, 90, 0.3);
 }
@@ -230,7 +231,7 @@ body.page-services {
 
 .card-service-title {
   font-family: var(--font-display), 'Cormorant Garamond', serif;
-  font-size: 1.22rem;
+  font-size: clamp(1.65rem, 2.1vw, 2.05rem);
   font-weight: 600;
   color: #ffffff;
   margin-bottom: 0.45rem;
@@ -238,7 +239,7 @@ body.page-services {
 }
 
 .card-service-desc {
-  font-size: 0.76rem;
+  font-size: 1rem;
   font-weight: 300;
   color: rgba(229, 233, 238, 0.68);
   line-height: 1.4;
@@ -257,13 +258,13 @@ body.page-services {
   justify-content: space-between;
   padding-top: 0.7rem;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 0.72rem;
+  font-size: .95rem;
 }
 
 .card-price {
   font-weight: 500;
   color: rgba(255, 255, 255, 0.95);
-  font-size: 0.75rem;
+  font-size: 1rem;
   letter-spacing: 0.02em;
 }
 
@@ -272,7 +273,7 @@ body.page-services {
   align-items: center;
   gap: 0.3rem;
   color: rgba(229, 233, 238, 0.6);
-  font-size: 0.68rem;
+  font-size: .88rem;
   letter-spacing: 0.02em;
 }
 
@@ -292,6 +293,39 @@ body.page-services {
   padding: 4rem 1rem;
   color: rgba(244, 246, 248, 0.6);
   font-size: 0.9rem;
+}
+
+.service-pagination {
+  display: flex;
+  justify-content: center;
+  gap: .6rem;
+  margin: 2.25rem 0 0;
+}
+
+.service-pagination__button {
+  display: grid;
+  width: 3.4rem;
+  height: 3.4rem;
+  place-items: center;
+  border: 1px solid rgba(184, 140, 90, .28);
+  border-radius: .2rem;
+  background: rgba(255, 255, 255, .045);
+  color: rgba(244, 246, 248, .8);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .25s var(--ease);
+}
+
+.service-pagination__button--arrow { width: 6rem; color: var(--color-gold); font-size: 2.45rem; line-height: 1; }
+.service-pagination__button:hover:not(:disabled),
+.service-pagination__button.is-active { border-color: var(--color-gold); background: var(--color-gold); color: var(--color-ink); }
+.service-pagination__button:disabled { opacity: .32; cursor: not-allowed; }
+
+@media (max-width: 575px) {
+  .service-pagination { gap: .4rem; }
+  .service-pagination__button { width: 3rem; height: 3rem; }
+  .service-pagination__button--arrow { width: 3.6rem; }
 }
 
 /* VISTA TABLA & SWITCHER DE VISTAS */
@@ -406,16 +440,9 @@ body.page-services {
 }
 
 /* RESPONSIVE DESIGN FOR CARDS GRID */
-@media (max-width: 1399px) {
-  .services-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-  }
-}
-
 @media (max-width: 1099px) {
   .services-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
 }
@@ -426,11 +453,13 @@ body.page-services {
     gap: 0.85rem;
   }
   .service-card {
+    min-height: 26rem;
     padding: 1.2rem 0.85rem 0.85rem;
   }
   .card-service-title {
-    font-size: 1.1rem;
+    font-size: 1.55rem;
   }
+  .card-image-wrapper { height: 210px; }
 }
 
 @media (max-width: 480px) {
