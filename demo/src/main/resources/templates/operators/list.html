@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Operators | Atlan Suites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script><script>tailwind.config = { prefix: "tw-", corePlugins: { preflight: false } };</script>
+    <link rel="stylesheet" th:href="@{/css/operators/list.css}" href="/css/operators/list.css" />
+  </head>
+  <body class="portal-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
+    <th:block th:replace="~{fragments/admin-shell :: header('operarios')}"></th:block>
+    <main class="portal-main">
+      <div class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
+        <header class="page-heading">
+          <div><p class="page-eyebrow">Staff management</p><h1 class="page-title">Registered operators</h1><p class="page-description">Review the operators on duty and the administrator in charge of each one.</p></div>
+        </header>
+
+        <aside class="portal-alert" th:if="${error}" role="alert" th:text="${error}"></aside>
+
+        <section class="surface-card" aria-labelledby="operator-list-title">
+          <h2 class="tw-sr-only" id="operator-list-title">Operator list</h2>
+          <div class="table-shell">
+            <table class="table portal-table">
+              <thead><tr><th>Operator</th><th>Email</th><th>Administrator in charge</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr th:each="operario : ${operarios}">
+                  <td><span class="staff-name" th:text="|${operario.name} ${operario.lastName}|">First name Last name</span></td>
+                  <td class="staff-email" th:text="${operario.email}">operator@example.com</td>
+                  <td class="muted-cell" th:text="${operario.admin.name}">Administrator name</td>
+                  <td><div class="table-actions tw-flex tw-gap-2"><a class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="@{/admin/operators/read/{operatorId}(operatorId=${operario.operatorId})}">View</a><a class="atlan-btn atlan-btn--edit atlan-btn--small" th:href="@{/admin/operators/update/{operatorId}(operatorId=${operario.operatorId})}">Edit</a></div></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(operarios)}"><td class="empty-state" colspan="4">No operators are registered yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <p class="staff-count tw-mt-3" th:if="${!#lists.isEmpty(operarios)}" th:text="|${#lists.size(operarios)} registered operators|">0 registered operators</p>
+      </div>
+    </main>
+    <th:block th:replace="~{fragments/admin-shell :: footer}"></th:block>
+  </body>
+</html>

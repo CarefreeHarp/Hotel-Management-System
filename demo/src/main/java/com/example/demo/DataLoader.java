@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.entities.Administrator;
 import com.example.demo.entities.Client;
 import com.example.demo.entities.Administrator;
 import com.example.demo.entities.Folio;
@@ -8,13 +9,16 @@ import com.example.demo.entities.Operator;
 import com.example.demo.entities.Payment;
 import com.example.demo.entities.Reservation;
 import com.example.demo.entities.Room;
+import com.example.demo.entities.Operator;
 import com.example.demo.entities.RoomType;
 import com.example.demo.entities.Service;
 import com.example.demo.entities.enums.FolioStatus;
 import com.example.demo.entities.enums.PaymentStatus;
 import com.example.demo.entities.enums.ReservationStatus;
 import com.example.demo.entities.enums.RoomStatus;
+import com.example.demo.repository.AdministratorRepository;
 import com.example.demo.repository.ClientRepository;
+import com.example.demo.repository.OperatorRepository;
 import com.example.demo.repository.RoomRepository;
 import com.example.demo.repository.RoomTypeRepository;
 import com.example.demo.repository.ServiceRepository;
@@ -40,6 +44,12 @@ public class DataLoader implements CommandLineRunner {
 
         @Autowired
         private ClientRepository clientRepository;
+
+        @Autowired
+        private AdministratorRepository administratorRepository;
+
+        @Autowired
+        private OperatorRepository operatorRepository;
 
         @Autowired
         private RoomRepository roomRepository;
@@ -109,6 +119,21 @@ public class DataLoader implements CommandLineRunner {
                 jdbcTemplate.update(
                                 "insert into room (room_id, room_number, floor, status, room_type_id) values (-1, -1, 0, ?, ?)",
                                 RoomStatus.MAINTENANCE.name(), standardRoom.getRoomTypeId());
+
+                // Administradores
+                Administrator sofiaAdmin = saveAdministrator(
+                                "Sofia Bennett", "sofia.bennett@atlansuites.com", "Sofia2026!");
+                Administrator marcusAdmin = saveAdministrator(
+                                "Marcus Reed", "marcus.reed@atlansuites.com", "Marcus2026!");
+                Administrator helenaAdmin = saveAdministrator(
+                                "Helena Duarte", "helena.duarte@atlansuites.com", "Helena2026!");
+
+                // Operarios
+                saveOperator("Daniel", "Ortiz", "daniel.ortiz@atlansuites.com", "Daniel2026!", sofiaAdmin);
+                saveOperator("Camila", "Ramirez", "camila.ramirez@atlansuites.com", "Camila2026!", sofiaAdmin);
+                saveOperator("Tomas", "Herrera", "tomas.herrera@atlansuites.com", "Tomas2026!", marcusAdmin);
+                saveOperator("Valeria", "Nunez", "valeria.nunez@atlansuites.com", "Valeria2026!", marcusAdmin);
+                saveOperator("Andres", "Castillo", "andres.castillo@atlansuites.com", "Andres2026!", helenaAdmin);
 
                 // Clientes
                 saveClient("Emma", "Thompson", "1001001001", "3001001001",
@@ -495,6 +520,27 @@ public class DataLoader implements CommandLineRunner {
         }
 
         /** Guarda un cliente creado mediante su builder. */
+        /** Guarda un administrador creado mediante su builder y lo devuelve ya con su id. */
+        private Administrator saveAdministrator(String name, String email, String password) {
+                return administratorRepository.save(Administrator.builder()
+                                .name(name)
+                                .email(email)
+                                .password(password)
+                                .build());
+        }
+
+        /** Guarda un operario a cargo del administrador recibido. */
+        private void saveOperator(String name, String lastName, String email, String password,
+                        Administrator admin) {
+                operatorRepository.save(Operator.builder()
+                                .name(name)
+                                .lastName(lastName)
+                                .email(email)
+                                .password(password)
+                                .admin(admin)
+                                .build());
+        }
+
         private void saveClient(String name, String lastName, String nationalId, String phone,
                         String email, String password, String profilePhoto) {
                 clientRepository.save(Client.builder()
