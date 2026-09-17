@@ -3,7 +3,7 @@ package com.example.demo.entities.enums;
 public enum ReservationStatus {
     PENDING,
     CONFIRMED,
-    IN_PROGRESS,
-    COMPLETED,
+    CHECKED_IN,
+    CHECKED_OUT,
     CANCELLED
 }
