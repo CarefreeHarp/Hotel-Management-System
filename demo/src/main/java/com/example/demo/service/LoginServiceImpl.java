@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.entities.Client;
+import com.example.demo.service.interfaces.ClientService;
+import com.example.demo.service.interfaces.LoginService;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.interfaces;
 
 import com.example.demo.entities.Room;
 import com.example.demo.errors.InvalidRoomDataException;

@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.entities.Service;
 import com.example.demo.errors.ResourceNotFoundException;
 import com.example.demo.repository.ServiceRepository;
+import com.example.demo.service.interfaces.ServiceService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 

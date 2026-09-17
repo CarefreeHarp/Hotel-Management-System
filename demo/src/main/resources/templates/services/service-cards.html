@@ -86,7 +86,11 @@
             <article th:each="servicio : ${servicios}" class="service-card" th:data-category="${servicio.category}">
               <a class="service-card__link" th:href="@{'/services/' + ${servicio.urlName}}">
               <figure class="card-image-wrapper">
-                <img class="card-service-image img-fluid" th:src="${servicio.mainImageUrl}" th:alt="${servicio.name}" loading="lazy" />
+                <img
+                  class="card-service-image img-fluid"
+                  th:src="${#strings.contains(servicio.mainImageUrl, 'images.unsplash.com') ? servicio.mainImageUrl + (#strings.contains(servicio.mainImageUrl, '?') ? '&amp;auto=format&amp;w=640&amp;q=80' : '?auto=format&amp;w=640&amp;q=80') : servicio.mainImageUrl}"
+                  th:alt="${servicio.name}"
+                />
               </figure>
               <header class="card-body-content">
                 <h3 class="card-service-title" th:text="${servicio.name}">Service</h3>

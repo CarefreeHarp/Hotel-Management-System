@@ -4,6 +4,7 @@ import com.example.demo.entities.Room;
 import com.example.demo.errors.InvalidRoomDataException;
 import com.example.demo.errors.ResourceNotFoundException;
 import com.example.demo.repository.RoomRepository;
+import com.example.demo.service.interfaces.RoomService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
