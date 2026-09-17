@@ -1,2 +1,6 @@
 # Graph artifacts are generated outside this repository.
 graphify-out/
+
+# Local H2 database artifacts.
+*.mv.db
+*.trace.db
