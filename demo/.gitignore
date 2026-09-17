@@ -1,6 +1,8 @@
 HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
+*.mv.db
+*.trace.db
 !**/src/main/**/target/
 !**/src/test/**/target/
 
