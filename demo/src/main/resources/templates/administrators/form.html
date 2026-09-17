@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${titulo + ' | Atlan Suites'}">Administrator form | Atlan Suites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script><script>tailwind.config = { prefix: "tw-", corePlugins: { preflight: false } };</script>
+    <link rel="stylesheet" th:href="@{/css/administrators/form.css}" href="/css/administrators/form.css" />
+  </head>
+  <body class="portal-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
+    <th:block th:replace="~{fragments/admin-shell :: header('administradores')}"></th:block>
+
+    <main class="portal-main">
+      <div class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
+        <header class="page-heading">
+          <div>
+            <p class="page-eyebrow">Staff management</p>
+            <h1 class="page-title" th:text="${titulo}">Edit administrator</h1>
+            <p class="page-description">Update the administrator's name and email address. The password is not modified from this screen.</p>
+          </div>
+        </header>
+
+        <form class="surface-card form-card staff-form-card" th:action="${accion}" th:object="${administrador}" method="post" novalidate>
+          <aside class="portal-alert" th:if="${error}" role="alert" th:text="${error}"></aside>
+
+          <section class="form-section" aria-labelledby="administrator-info-title">
+            <h2 class="form-section__title" id="administrator-info-title">Account information</h2>
+            <p class="form-section__description">The email address is unique and is used to sign in.</p>
+            <div class="tw-grid tw-grid-cols-1 tw-gap-4 sm:tw-grid-cols-2 lg:tw-gap-6">
+              <div class="tw-min-w-0">
+                <label class="portal-label" for="name">Name</label>
+                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="text" id="name" th:field="*{name}" placeholder="Administrator name" autocomplete="name" />
+                <p class="field-hint">Up to 50 characters.</p>
+              </div>
+              <div class="tw-min-w-0">
+                <label class="portal-label" for="email">Email address</label>
+                <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="email" id="email" th:field="*{email}" placeholder="name@atlansuites.com" autocomplete="email" />
+                <p class="field-hint">Must not be used by another administrator.</p>
+              </div>
+            </div>
+          </section>
+
+          <div class="form-actions tw-flex tw-gap-3">
+            <button class="atlan-btn atlan-btn--primary" type="submit">
+              <span>Save changes</span>
+              <span aria-hidden="true">→</span>
+            </button>
+            <a class="atlan-btn atlan-btn--secondary" th:href="@{/admin/administrators/read/{adminId}(adminId=${adminId})}">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <th:block th:replace="~{fragments/admin-shell :: footer}"></th:block>
+  </body>
+</html>

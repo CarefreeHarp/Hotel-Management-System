@@ -45,6 +45,16 @@
                 th:classappend="${activePage == 'habitaciones'} ? ' is-active' : ''"
                 th:href="@{/admin/rooms/read}"
               >Rooms</a>
+              <a
+                class="portal-nav__link"
+                th:classappend="${activePage == 'administradores'} ? ' is-active' : ''"
+                th:href="@{/admin/administrators/read}"
+              >Administrators</a>
+              <a
+                class="portal-nav__link"
+                th:classappend="${activePage == 'operarios'} ? ' is-active' : ''"
+                th:href="@{/admin/operators/read}"
+              >Operators</a>
             </div>
 
             <a class="portal-exit" th:href="@{/}">
