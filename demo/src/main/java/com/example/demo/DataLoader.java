@@ -1,16 +1,29 @@
 package com.example.demo;
 
 import com.example.demo.entities.Client;
+import com.example.demo.entities.Administrator;
+import com.example.demo.entities.Folio;
+import com.example.demo.entities.FolioItem;
+import com.example.demo.entities.Operator;
+import com.example.demo.entities.Payment;
+import com.example.demo.entities.Reservation;
 import com.example.demo.entities.Room;
 import com.example.demo.entities.RoomType;
 import com.example.demo.entities.Service;
+import com.example.demo.entities.enums.FolioStatus;
+import com.example.demo.entities.enums.PaymentStatus;
+import com.example.demo.entities.enums.ReservationStatus;
 import com.example.demo.entities.enums.RoomStatus;
 import com.example.demo.repository.ClientRepository;
 import com.example.demo.repository.RoomRepository;
 import com.example.demo.repository.RoomTypeRepository;
 import com.example.demo.repository.ServiceRepository;
+import com.example.demo.service.interfaces.PaymentService;
 import jakarta.transaction.Transactional;
+import jakarta.persistence.EntityManager;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +49,12 @@ public class DataLoader implements CommandLineRunner {
 
         @Autowired
         private JdbcTemplate jdbcTemplate;
+
+        @Autowired
+        private EntityManager entityManager;
+
+        @Autowired
+        private PaymentService paymentService;
 
         @Override
         public void run(String... args) throws Exception {
@@ -328,6 +347,138 @@ public class DataLoader implements CommandLineRunner {
                                         service.setDescription(buildDetailedDescription(service));
                                         service.setSecondaryImageUrls(new ArrayList<>(serviceGalleryImages()));
                                 });
+
+                seedHotelOperations();
+        }
+
+        /** Crea el historial inicial de usuarios, reservas, folios, pagos y cargos. */
+        private void seedHotelOperations() {
+                LocalDate baseDate = LocalDate.of(2026, 9, 1);
+                LocalDateTime createdAt = baseDate.atTime(9, 0);
+                List<Administrator> administrators = new ArrayList<>();
+                List<Operator> operators = new ArrayList<>();
+                List<Reservation> reservations = new ArrayList<>();
+                List<Folio> folios = new ArrayList<>();
+                List<Client> clients = clientRepository.findAll();
+                List<Room> rooms = List.of(
+                                roomRepository.findByNumber(101).orElseThrow(),
+                                roomRepository.findByNumber(102).orElseThrow(),
+                                roomRepository.findByNumber(103).orElseThrow(),
+                                roomRepository.findByNumber(104).orElseThrow(),
+                                roomRepository.findByNumber(106).orElseThrow(),
+                                roomRepository.findByNumber(201).orElseThrow(),
+                                roomRepository.findByNumber(202).orElseThrow(),
+                                roomRepository.findByNumber(203).orElseThrow(),
+                                roomRepository.findByNumber(204).orElseThrow(),
+                                roomRepository.findByNumber(206).orElseThrow());
+                List<Service> services = serviceRepository.findAll().stream()
+                                .filter(service -> service.getServiceId() > 0)
+                                .toList();
+
+                for (int index = 0; index < 5; index++) {
+                        Administrator administrator = Administrator.builder()
+                                        .name("Administrator " + (index + 1))
+                                        .email("admin" + (index + 1) + "@atlansuites.com")
+                                        .password("Admin2026!")
+                                        .build();
+                        entityManager.persist(administrator);
+                        administrators.add(administrator);
+                }
+                entityManager.flush();
+
+                for (int index = 0; index < 15; index++) {
+                        Operator operator = Operator.builder()
+                                        .name("Operator")
+                                        .lastName(String.format("%02d", index + 1))
+                                        .email("operator" + (index + 1) + "@atlansuites.com")
+                                        .password("Operator2026!")
+                                        .admin(administrators.get(index % administrators.size()))
+                                        .build();
+                        entityManager.persist(operator);
+                        operators.add(operator);
+                }
+
+                for (int index = 0; index < 10; index++) {
+                        Room room = rooms.get(index);
+                        BigDecimal nightlyPrice = room.getRoomType().getNightlyPrice();
+                        int nights = 2 + (index % 3);
+                        Reservation reservation = Reservation.builder()
+                                        .reservationCode(String.format("ATL-2026-%03d", index + 1))
+                                        .checkInDate(baseDate.plusDays(index * 3L))
+                                        .checkOutDate(baseDate.plusDays(index * 3L + nights))
+                                        .guestCount(1 + (index % room.getRoomType().getMaxCapacity()))
+                                        .nightlyPrice(nightlyPrice)
+                                        .estimatedTotal(nightlyPrice.multiply(BigDecimal.valueOf(nights)))
+                                        .status(ReservationStatus.PENDING)
+                                        .createdAt(createdAt.plusDays(index))
+                                        .client(clients.get(index))
+                                        .room(room)
+                                        .build();
+                        entityManager.persist(reservation);
+                        reservations.add(reservation);
+                }
+                entityManager.flush();
+
+                for (int index = 0; index < reservations.size(); index++) {
+                        Folio folio = Folio.builder()
+                                        .reservation(reservations.get(index))
+                                        .subtotal(BigDecimal.ZERO)
+                                        .taxes(BigDecimal.ZERO)
+                                        .total(BigDecimal.ZERO)
+                                        .status(FolioStatus.PENDING)
+                                        .issuedAt(createdAt.plusDays(index))
+                                        .build();
+                        entityManager.persist(folio);
+                        folios.add(folio);
+                }
+                entityManager.flush();
+
+                for (int index = 0; index < folios.size(); index++) {
+                        Folio folio = folios.get(index);
+                        int itemCount = index % 2 == 0 ? 2 : 3;
+                        BigDecimal subtotal = BigDecimal.ZERO;
+                        for (int itemIndex = 0; itemIndex < itemCount; itemIndex++) {
+                                Service service = services.get((index * 3 + itemIndex) % services.size());
+                                int quantity = itemIndex == 0 ? 1 : 2;
+                                BigDecimal itemSubtotal = service.getPrice()
+                                                .multiply(BigDecimal.valueOf(quantity));
+                                entityManager.persist(FolioItem.builder()
+                                                .folio(folio)
+                                                .service(service)
+                                                .concept(service.getName())
+                                                .unitPrice(service.getPrice())
+                                                .quantity(quantity)
+                                                .subtotal(itemSubtotal)
+                                                .chargedAt(createdAt.plusDays(index).plusHours(itemIndex))
+                                                .build());
+                                subtotal = subtotal.add(itemSubtotal);
+                        }
+                        BigDecimal taxes = subtotal.multiply(new BigDecimal("0.19"));
+                        folio.setSubtotal(subtotal);
+                        folio.setTaxes(taxes);
+                        folio.setTotal(subtotal.add(taxes));
+                }
+
+                for (int index = 0; index < 5; index++) {
+                        Folio folio = folios.get(index);
+                        BigDecimal customerAmount = folio.getTotal().divide(new BigDecimal("2"));
+                        paymentService.create(Payment.builder()
+                                        .folio(folio)
+                                        .operator(null)
+                                        .amount(customerAmount)
+                                        .paymentMethod("Customer online payment")
+                                        .status(PaymentStatus.APPROVED)
+                                        .paidAt(createdAt.plusDays(index).plusHours(10))
+                                        .build());
+                        paymentService.create(Payment.builder()
+                                        .folio(folio)
+                                        .operator(operators.get(index))
+                                        .amount(folio.getTotal().subtract(customerAmount))
+                                        .paymentMethod("Front desk payment")
+                                        .status(PaymentStatus.APPROVED)
+                                        .paidAt(createdAt.plusDays(index).plusHours(11))
+                                        .build());
+                }
         }
 
         /** Guarda un tipo de habitación creado mediante su builder. */
