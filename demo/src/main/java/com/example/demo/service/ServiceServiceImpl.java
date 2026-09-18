@@ -4,7 +4,10 @@ import com.example.demo.entities.Service;
 import com.example.demo.errors.ResourceNotFoundException;
 import com.example.demo.repository.ServiceRepository;
 import com.example.demo.service.interfaces.ServiceService;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -32,6 +35,29 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     public List<Service> listServices() {
         return serviceRepository.findByServiceIdNotOrderByServiceIdAsc(-1);
+    }
+
+    /** Verifica que cada ID corresponda a un servicio activo y conserva el orden elegido. */
+    @Override
+    public List<Service> getActiveServicesByIds(List<Integer> serviceIds) {
+        if (serviceIds == null || serviceIds.isEmpty()) {
+            return List.of();
+        }
+        if (serviceIds.stream().anyMatch(serviceId -> serviceId == null)
+                || serviceIds.stream().distinct().count() != serviceIds.size()) {
+            throw new IllegalArgumentException("A service can only be selected once.");
+        }
+
+        Map<Integer, Service> servicesById = new LinkedHashMap<>();
+        serviceRepository.findByServiceIdInAndActiveTrue(serviceIds)
+                .forEach(service -> servicesById.put(service.getServiceId(), service));
+        if (servicesById.size() != serviceIds.size()) {
+            throw new IllegalArgumentException("One or more selected services are unavailable.");
+        }
+
+        List<Service> selectedServices = new ArrayList<>();
+        serviceIds.forEach(serviceId -> selectedServices.add(servicesById.get(serviceId)));
+        return selectedServices;
     }
 
     @Override

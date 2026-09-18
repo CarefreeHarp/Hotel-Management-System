@@ -14,6 +14,9 @@ public interface ServiceService {
     /** Devuelve los servicios que se muestran en la carta pública del hotel. */
     List<Service> listServices();
 
+    /** Obtiene servicios activos por ID y rechaza IDs inexistentes, inactivos o repetidos. */
+    List<Service> getActiveServicesByIds(List<Integer> serviceIds);
+
     /**
      * Devuelve un servicio por su urlName.
      *

@@ -326,6 +326,14 @@
   font-size: .88rem;
 }
 
+.service-page .footer-book-button--prominent {
+  width: 158px;
+  padding: .82rem 1.05rem;
+  font-size: .72rem;
+  letter-spacing: .08em;
+  box-shadow: 0 .7rem 1.5rem rgba(184, 140, 90, .24);
+}
+
 @media (max-width: 850px) {
   .service-overview {
     grid-template-columns: 1fr;
