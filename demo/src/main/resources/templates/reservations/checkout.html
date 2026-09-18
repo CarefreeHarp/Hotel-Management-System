@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Choose payment — Atlan Suites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { prefix: "tw-", corePlugins: { preflight: false } };</script>
+    <link rel="stylesheet" th:href="@{/css/css-utils/base/common.css}" href="/css/css-utils/base/common.css" />
+    <link rel="stylesheet" th:href="@{/css/checkout/checkout.css}" href="/css/checkout/checkout.css" />
+  </head>
+  <body class="checkout-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
+    <header th:replace="~{fragments/public-header :: publicHeader('booking')}"></header>
+    <main class="checkout-main">
+      <section class="checkout-card tw-mx-auto tw-w-[calc(100%-2rem)] tw-max-w-5xl sm:tw-w-[calc(100%-3rem)]" aria-labelledby="checkout-title">
+        <header class="checkout-intro"><p class="eyebrow">One more choice</p><h1 id="checkout-title">How would you like to continue?</h1><p th:text="|${room.roomType.name} · Room ${room.number} · ${nights} night(s)|">Your selected stay.</p></header>
+        <div class="checkout-options">
+          <form class="checkout-option" th:action="|/reservation/checkout/book-later?${reservationQuery}|" method="post">
+            <p class="eyebrow">Reserve now</p>
+            <h2>Book and pay later</h2>
+            <p>Your reservation will remain in your account. You may pay it in several payments whenever you are ready.</p>
+            <button type="submit">Book and pay later <span aria-hidden="true">→</span></button>
+          </form>
+          <article class="checkout-option checkout-option--dark">
+            <p class="eyebrow">Pay today</p>
+            <h2>Pay now</h2>
+            <p>You may pay all or part today. Your remaining balance stays in your account and can be paid in several payments.</p>
+            <ul class="checkout-services">
+              <li class="checkout-stay-cost"><span th:text="|Accommodation · $ ${#numbers.formatDecimal(room.roomType.nightlyPrice, 0, 'POINT', 0, 'COMMA')} × ${nights} night(s)|">Accommodation</span><strong th:text="|$ ${#numbers.formatDecimal(stayTotal, 0, 'POINT', 0, 'COMMA')}|">$ 0</strong></li>
+              <li th:each="service : ${selectedServices}"><span th:text="${service.name}">Service</span><strong th:text="|$ ${#numbers.formatDecimal(service.price, 0, 'POINT', 0, 'COMMA')}|">$ 0</strong></li>
+            </ul>
+            <strong th:text="|Total stay: $ ${#numbers.formatDecimal(total, 0, 'POINT', 0, 'COMMA')}|">Total stay: $ 0</strong>
+            <a th:href="|/reservation/payment?${reservationQuery}|">Pay now <span aria-hidden="true">→</span></a>
+          </article>
+        </div>
+      </section>
+    </main>
+    <script th:src="@{/js/checkout/checkout.js}" src="/js/checkout/checkout.js"></script>
+  </body>
+</html>

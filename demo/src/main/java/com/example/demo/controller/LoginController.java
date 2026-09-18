@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entities.Client;
 import com.example.demo.service.interfaces.LoginService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,13 +32,23 @@ public class LoginController {
 
     // Full URL: http://localhost:8080/login
     @PostMapping("/login")
-    public String authenticate(@RequestParam String user, @RequestParam String password, Model model) {
+    public String authenticate(
+            @RequestParam String user, @RequestParam String password, Model model, HttpSession session) {
         if (loginService.isAdministrator(user, password)) {
+            session.removeAttribute("clientId");
+            session.removeAttribute("pendingClientDestination");
+            session.setAttribute("isAdmin", true);
             return "redirect:/admin/panel";
         }
 
         try {
             Client client = loginService.authenticateClient(user, password);
+            session.removeAttribute("isAdmin");
+            session.setAttribute("clientId", client.getClientId());
+            if ("/reservation/book".equals(session.getAttribute("pendingClientDestination"))) {
+                session.removeAttribute("pendingClientDestination");
+                return "redirect:/reservation/book";
+            }
             return "redirect:/clients/read/" + client.getClientId();
         } catch (SecurityException credencialesInvalidas) {
             model.addAttribute("error", credencialesInvalidas.getMessage());

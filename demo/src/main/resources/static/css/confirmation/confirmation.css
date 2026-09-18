@@ -1,0 +1,14 @@
+/* The centered confirmation card needs a framed composition beyond reusable utility styling. */
+.confirmation-body { min-height: 100vh; background: radial-gradient(circle at 50% 0, #273646 0, var(--color-ink) 42rem); color: var(--color-mist); }
+.confirmation-main { padding: clamp(2rem, 6vw, 5rem) 0 clamp(4rem, 10vw, 8rem); }
+.confirmation-card { box-sizing: border-box; padding: clamp(2rem, 7vw, 5.5rem); background: var(--color-mist); color: var(--color-ink); text-align: center; box-shadow: 0 2rem 5rem rgba(0, 0, 0, .3); }
+.confirmation-home { display: inline-flex; align-items: center; gap: .7rem; margin-bottom: 2rem; color: var(--color-ink); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.confirmation-home img { width: 2.25rem; height: 2.25rem; object-fit: contain; }
+.confirmation-home:hover { color: var(--color-sky-deep); }
+.confirmation-mark { display: grid; place-items: center; width: 4.6rem; height: 4.6rem; margin: 0 auto 1.5rem; border: 1px solid var(--color-gold); border-radius: 50%; color: var(--color-ink); font-family: var(--font-display); font-size: 2.5rem; }
+.confirmation-card h1 { margin: .35rem 0 .7rem; font-family: var(--font-display); font-size: clamp(3rem, 8vw, 5.75rem); font-weight: 500; line-height: .9; }
+.confirmation-lead { margin: 0 auto; max-width: 28rem; color: var(--color-slate); }
+.confirmation-details { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: clamp(2.25rem, 6vw, 4rem) 0 2rem; padding: 1.3rem 0; border-top: 1px solid rgba(46, 52, 59, .2); border-bottom: 1px solid rgba(46, 52, 59, .2); text-align: left; }
+.confirmation-details dt { color: var(--color-slate); font-size: .58rem; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; }
+.confirmation-details dd { margin: .4rem 0 0; font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; }
+@media (max-width: 767px) { .confirmation-details { grid-template-columns: repeat(2, minmax(0, 1fr)); }.confirmation-details > div:first-child { grid-column: span 2; } }

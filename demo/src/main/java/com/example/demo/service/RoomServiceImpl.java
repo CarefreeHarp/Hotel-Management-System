@@ -1,13 +1,22 @@
 package com.example.demo.service;
 
 import com.example.demo.entities.Room;
+import com.example.demo.entities.enums.FolioStatus;
+import com.example.demo.entities.enums.ReservationStatus;
+import com.example.demo.entities.enums.RoomStatus;
 import com.example.demo.errors.InvalidRoomDataException;
 import com.example.demo.errors.ResourceNotFoundException;
 import com.example.demo.repository.RoomRepository;
 import com.example.demo.service.interfaces.RoomService;
+import java.time.LocalDate;
+import java.time.Clock;
 import java.util.List;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementación de la lógica de negocio de las habitaciones.
@@ -25,9 +34,41 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     RoomRepository roomRepository;
 
+    @Autowired
+    private Clock applicationClock;
+
     @Override
     public List<Room> listRooms() {
-        return roomRepository.findByRoomIdNotOrderByNumberAsc(-1);
+        return roomRepository.findAll(Sort.by(Sort.Direction.ASC, "number"));
+    }
+
+    @Override
+    public Page<Room> listAvailableForStay(LocalDate checkInDate, LocalDate checkOutDate, int page) {
+        if (checkInDate == null || checkOutDate == null || !checkOutDate.isAfter(checkInDate)) {
+            throw new IllegalArgumentException("Check-out must be after check-in.");
+        }
+        return roomRepository.findAvailableForStay(checkInDate, checkOutDate, ReservationStatus.CANCELLED,
+                RoomStatus.MAINTENANCE, PageRequest.of(Math.max(0, page), 5));
+    }
+
+    /** Actualiza todas las habitaciones operativas y luego ocupa las estadías pagadas vigentes. */
+    @Override
+    @Transactional
+    public void synchronizeOccupancyStatus() {
+        roomRepository.markRoomsAsAvailable(RoomStatus.AVAILABLE, RoomStatus.MAINTENANCE);
+        roomRepository.markPaidStayRoomsAsOccupied(
+                RoomStatus.OCCUPIED,
+                RoomStatus.MAINTENANCE,
+                FolioStatus.PAID,
+                ReservationStatus.CANCELLED,
+                LocalDate.now(applicationClock));
+    }
+
+    @Override
+    public Room findById(int roomId) {
+        return roomRepository.findById(roomId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "The requested room does not exist."));
     }
 
     @Override

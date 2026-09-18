@@ -20,7 +20,7 @@
     <link rel="stylesheet" th:href="@{/css/landing-page/suites.css}" />
     <link rel="stylesheet" th:href="@{/css/landing-page/experiences.css}" />
   </head>
-  <body class="tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
+  <body class="landing-page-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
     <div class="scroll-progress" id="scroll-progress" role="progressbar" aria-label="Page scroll progress" aria-valuemin="0" aria-valuemax="100"></div>
 
     <!-- Header navigation -->
@@ -47,7 +47,7 @@
         <a th:href="@{/login}" class="btn btn-glass"
           >Login<span aria-hidden="true">↗</span></a
         >
-        <a th:href="@{/#book-section}" class="btn btn-glass"
+        <a th:href="@{/reservation/book}" class="btn btn-glass"
           >Book now<span aria-hidden="true">↗</span></a
         >
         <button
@@ -87,6 +87,31 @@
           </button>
         </aside>
 
+        <aside
+          class="tw-absolute tw-right-4 tw-top-28 tw-z-10 tw-w-[min(23rem,calc(100%-2rem))] tw-border tw-border-white/20 tw-bg-[#111417]/90 tw-p-4 tw-text-white tw-shadow-2xl tw-backdrop-blur sm:tw-right-8 sm:tw-top-32"
+          aria-labelledby="clock-controls-title"
+        >
+          <p class="eyebrow">Testing tools</p>
+          <h2 id="clock-controls-title" class="tw-mt-2 tw-font-['Cormorant_Garamond'] tw-text-3xl tw-font-medium">Application clock</h2>
+          <p class="tw-mt-2 tw-text-xs tw-uppercase tw-tracking-[.14em] tw-text-[#d8c7a8]" th:text="${applicationClockFixed ? 'Fixed time' : 'System time'}">System time</p>
+          <time class="tw-mt-1 tw-block tw-text-sm tw-text-white/80" th:datetime="${applicationDateTimeInput}" th:text="${applicationDateTime}">Current application time</time>
+
+          <form class="tw-mt-4 tw-grid tw-gap-2" th:action="@{/clock/fixed}" method="post">
+            <label class="tw-text-xs tw-font-semibold tw-uppercase tw-tracking-[.12em] tw-text-white/70" for="application-date-time">Set application time</label>
+            <input id="application-date-time" class="tw-border tw-border-white/20 tw-bg-white tw-px-3 tw-py-2 tw-text-sm tw-text-[#111417]" type="datetime-local" name="dateTime" th:value="${applicationDateTimeInput}" required />
+            <button class="tw-bg-[#d8c7a8] tw-px-3 tw-py-2 tw-text-xs tw-font-bold tw-uppercase tw-tracking-[.12em] tw-text-[#111417]" type="submit">Use fixed time</button>
+          </form>
+
+          <div class="tw-mt-3 tw-grid tw-grid-cols-2 tw-gap-2" aria-label="Application clock actions">
+            <form th:action="@{/clock/system}" method="post">
+              <button class="tw-w-full tw-border tw-border-white/35 tw-px-2 tw-py-2 tw-text-xs tw-font-semibold tw-uppercase tw-tracking-[.1em] tw-text-white" type="submit">Use real time</button>
+            </form>
+            <form th:action="@{/clock/run-midnight-actions}" method="post">
+              <button class="tw-w-full tw-bg-white tw-px-2 tw-py-2 tw-text-xs tw-font-bold tw-uppercase tw-tracking-[.1em] tw-text-[#111417]" type="submit">Run midnight actions</button>
+            </form>
+          </div>
+        </aside>
+
           <p class="hero-meta tw-flex tw-flex-col sm:tw-flex-row">
           <span class="hero-meta-item">Singapore</span>
         </p>
@@ -120,13 +145,6 @@
           <header class="rooms-intro fade-in lg:tw-col-span-5">
             <p class="eyebrow">Rooms and suites</p>
             <h2 class="section-title rooms-title" id="rooms-title">Rooms and<br />Suites</h2>
-            <button
-              type="button"
-              class="btn btn-outline-light"
-              data-scroll-target="#room-grid"
-            >
-              View rooms
-            </button>
           </header>
           <aside class="rooms-description fade-in lg:tw-col-span-4 lg:tw-col-start-8">
             <span class="eyebrow">Rooms and suites description</span>
@@ -855,13 +873,6 @@
               Choose the rhythm of your day, from first light on the reef to
               dinner on the sand.
             </p>
-            <button
-              type="button"
-              class="btn btn-outline-dark experience-cta"
-              data-scroll-target="#experience-grid"
-            >
-              Explore experiences <span aria-hidden="true">↗</span>
-            </button>
           </header>
 
           <div class="experience-grid tw-col-span-full tw-grid tw-grid-cols-1 tw-gap-6 sm:tw-grid-cols-2 xl:tw-grid-cols-4" id="experience-grid">
@@ -1000,9 +1011,7 @@
           <div class="lg:tw-col-span-6">
             <p class="eyebrow">Reserve</p>
             <h2 id="booking-title">Book your<br />stay</h2>
-            <span class="footer-book-button"
-              >Book now <span aria-hidden="true">↗</span></span
-            >
+            <a th:href="@{/reservation/book}" class="footer-book-button">Book now <span aria-hidden="true">↗</span></a>
           </div>
           <div class="lg:tw-col-span-4 lg:tw-col-start-9">
             <address class="footer-contact-card">
@@ -1084,7 +1093,6 @@
             <p class="footer-newsletter-text">
               Subscribe to our newsletter for the latest stories and offers.
             </p>
-            <button class="footer-subscribe" type="button">Subscribe</button>
           </section>
         </div>
 
