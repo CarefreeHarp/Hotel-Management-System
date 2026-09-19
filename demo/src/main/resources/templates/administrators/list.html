@@ -14,6 +14,7 @@
       <div class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
         <header class="page-heading">
           <div><p class="page-eyebrow">Staff management</p><h1 class="page-title">Registered administrators</h1><p class="page-description">Review the accounts that manage Atlan Suites and update their details.</p></div>
+          <a class="atlan-btn atlan-btn--primary" th:href="@{/admin/administrators/create}">Create administrator</a>
         </header>
 
         <aside class="portal-alert" th:if="${error}" role="alert" th:text="${error}"></aside>
@@ -27,7 +28,7 @@
                 <tr th:each="administrador : ${administradores}">
                   <td><span class="staff-name" th:text="${administrador.name}">Administrator name</span></td>
                   <td class="staff-email" th:text="${administrador.email}">admin@example.com</td>
-                  <td><div class="table-actions tw-flex tw-gap-2"><a class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="@{/admin/administrators/read/{adminId}(adminId=${administrador.adminId})}">View</a><a class="atlan-btn atlan-btn--edit atlan-btn--small" th:href="@{/admin/administrators/update/{adminId}(adminId=${administrador.adminId})}">Edit</a></div></td>
+                  <td><div class="table-actions tw-flex tw-gap-2"><a class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="@{/admin/administrators/read/{adminId}(adminId=${administrador.adminId})}">View</a><a th:if="${session.adminId == administrador.adminId}" class="atlan-btn atlan-btn--edit atlan-btn--small" th:href="@{/admin/administrators/update/{adminId}(adminId=${administrador.adminId})}">Edit</a></div></td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(administradores)}"><td class="empty-state" colspan="3">No administrators are registered yet.</td></tr>
               </tbody>

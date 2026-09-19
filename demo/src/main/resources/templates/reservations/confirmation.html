@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservation confirmed — Atlan Suites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { prefix: "tw-", corePlugins: { preflight: false } };</script>
+    <link rel="stylesheet" th:href="@{/css/css-utils/base/common.css}" href="/css/css-utils/base/common.css" />
+    <link rel="stylesheet" th:href="@{/css/confirmation/confirmation.css}" href="/css/confirmation/confirmation.css" />
+  </head>
+  <body class="confirmation-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
+    <main class="confirmation-main">
+      <section class="confirmation-card tw-mx-auto tw-w-[calc(100%-2rem)] tw-max-w-3xl sm:tw-w-[calc(100%-3rem)]" aria-labelledby="confirmation-title">
+        <a class="confirmation-home" th:href="@{/}"><img th:src="@{/images/images-utils/hotel-identity/logo-transparent.png}" src="/images/images-utils/hotel-identity/logo-transparent.png" alt="Atlan Suites" />Go Home</a>
+        <div class="confirmation-mark" aria-label="Confirmed">✓</div>
+        <p class="eyebrow" th:text="${reservationConfirmed} ? 'Reservation confirmed' : (${paymentRecorded} ? 'Payment received' : 'Reservation pending')">Reservation confirmed</p>
+        <h1 id="confirmation-title">Your booking is set.</h1>
+        <p class="confirmation-lead" th:text="${reservationConfirmed} ? 'We look forward to welcoming you to Atlan Suites.' : 'Your reservation remains pending until its folio is fully paid.'">We look forward to welcoming you to Atlan Suites.</p>
+
+        <dl class="confirmation-details">
+          <div><dt>Room type</dt><dd th:text="${room.roomType.name}">Standard Room</dd></div>
+          <div><dt>Room</dt><dd th:text="${room.number}">101</dd></div>
+          <div><dt>Check-in</dt><dd th:text="${#temporals.format(checkIn, 'MMM d, yyyy')}">Jan 1, 2026</dd></div>
+          <div><dt>Check-out</dt><dd th:text="${#temporals.format(checkOut, 'MMM d, yyyy')}">Jan 2, 2026</dd></div>
+          <div><dt>Guests</dt><dd th:text="${guests}">1</dd></div>
+          <div><dt>Paid today</dt><dd th:text="|$ ${#numbers.formatDecimal(paymentAmount, 0, 'POINT', 0, 'COMMA')}|">$ 0</dd></div>
+          <div th:each="item : ${serviceItems}"><dt th:text="${item.concept}">Service</dt><dd th:text="|$ ${#numbers.formatDecimal(item.subtotal, 0, 'POINT', 0, 'COMMA')}|">$ 0</dd></div>
+          <div><dt>Total</dt><dd th:text="|$ ${#numbers.formatDecimal(total, 0, 'POINT', 0, 'COMMA')}|">$ 0</dd></div>
+        </dl>
+      </section>
+    </main>
+    <script th:src="@{/js/confirmation/confirmation.js}" src="/js/confirmation/confirmation.js"></script>
+  </body>
+</html>

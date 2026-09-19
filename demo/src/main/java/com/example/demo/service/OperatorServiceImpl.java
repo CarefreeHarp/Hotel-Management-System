@@ -32,6 +32,45 @@ public class OperatorServiceImpl implements OperatorService {
     @Autowired
     public AdministratorService administratorService;
 
+    @Autowired
+    private AccountEmailService accountEmailService;
+
+    @Override
+    public void create(Operator operator, Integer adminId) {
+        operator.setOperatorId(null);
+        operator.setAdmin(administratorService.findById(adminId));
+        validateData(operator);
+        if (operator.getPassword() == null || operator.getPassword().isBlank()
+                || operator.getPassword().length() < 8 || operator.getPassword().length() > 255) {
+            throw new InvalidOperatorDataException(InvalidOperatorDataException.Reason.PASSWORD_INVALID, null);
+        }
+        operatorRepository.save(operator);
+    }
+
+    @Override
+    public List<Operator> listByAdministrator(Integer adminId) {
+        return operatorRepository.findByAdmin_AdminId(adminId);
+    }
+
+    @Override
+    public Operator findManagedBy(Integer operatorId, Integer adminId) {
+        Operator operator = findById(operatorId);
+        if (!Objects.equals(operator.getAdmin().getAdminId(), adminId)) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.FORBIDDEN, "This operator is not assigned to you.");
+        }
+        return operator;
+    }
+
+    @Override
+    @org.springframework.transaction.annotation.Transactional
+    public void deleteManagedBy(Integer operatorId, Integer adminId) {
+        findManagedBy(operatorId, adminId);
+        // La FK conserva PAYMENT con ON DELETE SET NULL. La consulta limpia el
+        // contexto JPA para no conservar pagos con una referencia ya eliminada.
+        operatorRepository.deleteManagedOperator(operatorId, adminId);
+    }
+
     @Override
     public List<Operator> listOperators() {
         return operatorRepository.findAll();
@@ -76,6 +115,7 @@ public class OperatorServiceImpl implements OperatorService {
      * @throws InvalidOperatorDataException con el mensaje del primer dato inválido.
      */
     private void validateData(Operator operator) {
+        if (operator.getEmail() != null) operator.setEmail(operator.getEmail().trim());
         if (operator.getName() == null || operator.getName().isBlank()) {
             throw new InvalidOperatorDataException(
                     InvalidOperatorDataException.Reason.NAME_REQUIRED, operator.getName());
@@ -104,8 +144,9 @@ public class OperatorServiceImpl implements OperatorService {
 
         Operator operatorWithThatEmail =
                 operatorRepository.findByEmailIgnoreCase(operator.getEmail()).orElse(null);
-        if (operatorWithThatEmail != null
-                && !Objects.equals(operatorWithThatEmail.getOperatorId(), operator.getOperatorId())) {
+        if ((operatorWithThatEmail != null
+                && !Objects.equals(operatorWithThatEmail.getOperatorId(), operator.getOperatorId()))
+                || accountEmailService.usedByAnotherRole(operator.getEmail(), AuthenticatedAccount.Role.OPERATOR)) {
             throw new InvalidOperatorDataException(
                     InvalidOperatorDataException.Reason.EMAIL_ALREADY_REGISTERED, operator.getEmail());
         }

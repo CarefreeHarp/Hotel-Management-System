@@ -1,50 +1,62 @@
 package com.example.demo.service;
 
-import com.example.demo.entities.Client;
-import com.example.demo.service.interfaces.ClientService;
+import com.example.demo.repository.AdministratorRepository;
+import com.example.demo.repository.ClientRepository;
+import com.example.demo.repository.OperatorRepository;
 import com.example.demo.service.interfaces.LoginService;
-import java.util.NoSuchElementException;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.stereotype.Service;
+import static com.example.demo.service.AuthenticatedAccount.Role.*;
 
-/**
- * Implementación de la autenticación del portal.
- *
- * El administrador todavía no se guarda en el repositorio, así que sus
- * credenciales viven aquí como constantes; el día que exista una entidad
- * administrador solo cambia esta clase y no el controlador.
- */
+/** Autenticación de las tres clases de cuenta guardadas en la base de datos. */
 @Service
 public class LoginServiceImpl implements LoginService {
+    private final AdministratorRepository admins;
+    private final OperatorRepository operators;
+    private final ClientRepository clients;
 
-    private static final String USUARIO_ADMIN = "admin";
-    private static final String PASSWORD_ADMIN = "admin";
-
-    /** Mensaje único para usuario inexistente y contraseña incorrecta: así no se revela cuál de los dos falló. */
-    private static final String CREDENCIALES_INVALIDAS = "Incorrect username or password.";
-
-    @Autowired
-    ClientService clientService;
-
-    @Override
-    public boolean isAdministrator(String user, String password) {
-        return USUARIO_ADMIN.equals(user) && PASSWORD_ADMIN.equals(password);
+    public LoginServiceImpl(AdministratorRepository admins, OperatorRepository operators, ClientRepository clients) {
+        this.admins = admins;
+        this.operators = operators;
+        this.clients = clients;
     }
 
     @Override
-    public Client authenticateClient(String user, String password) {
-        Client client;
-
-        try {
-            client = clientService.findByEmailForLogin(user);
-        } catch (NoSuchElementException profileNotFound) {
-            throw new SecurityException(CREDENCIALES_INVALIDAS);
+    public AuthenticatedAccount authenticate(String email, String password) {
+        if (email == null || password == null || password.isBlank()) {
+            throw new SecurityException("Incorrect email or password.");
         }
+        String normalized = email.trim();
+        List<AuthenticatedAccount> matches = new ArrayList<>();
+        admins.findByEmailIgnoreCase(normalized).filter(a -> password.equals(a.getPassword()))
+                .ifPresent(a -> matches.add(new AuthenticatedAccount(a.getAdminId(), ADMINISTRATOR)));
+        operators.findByEmailIgnoreCase(normalized).filter(o -> password.equals(o.getPassword()))
+                .ifPresent(o -> matches.add(new AuthenticatedAccount(o.getOperatorId(), OPERATOR)));
+        clients.findByEmailIgnoreCase(normalized).filter(c -> password.equals(c.getPassword()))
+                .ifPresent(c -> matches.add(new AuthenticatedAccount(c.getClientId(), CLIENT)));
+        if (matches.size() != 1) throw new SecurityException("Incorrect email or password.");
+        return matches.get(0);
+    }
 
-        if (!client.getPassword().equals(password)) {
-            throw new SecurityException(CREDENCIALES_INVALIDAS);
+    @Override
+    public void confirmPassword(AuthenticatedAccount account, String password) {
+        String stored = switch (account.role()) {
+            case ADMINISTRATOR -> admins.findById(account.id()).map(a -> a.getPassword()).orElse(null);
+            case OPERATOR -> operators.findById(account.id()).map(o -> o.getPassword()).orElse(null);
+            case CLIENT -> clients.findById(account.id()).map(c -> c.getPassword()).orElse(null);
+        };
+        if (stored == null || !stored.equals(password)) {
+            throw new SecurityException("Enter your current password to confirm this change.");
         }
+    }
 
-        return client;
+    @Override
+    public boolean exists(AuthenticatedAccount account) {
+        return switch (account.role()) {
+            case ADMINISTRATOR -> admins.existsById(account.id());
+            case OPERATOR -> operators.existsById(account.id());
+            case CLIENT -> clients.existsById(account.id());
+        };
     }
 }

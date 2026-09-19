@@ -1,0 +1,21 @@
+/* The split choice cards need paired visual states beyond reusable utility styling. */
+.checkout-body { min-height: 100vh; background: radial-gradient(circle at 50% 0, #273646 0, var(--color-ink) 42rem); color: var(--color-mist); }
+.checkout-body .site-header { position: fixed; }
+.checkout-main { padding: calc(clamp(2.5rem, 5vw, 5rem) + 7.5rem) 0 clamp(4rem, 10vw, 8rem); }
+.checkout-card { box-sizing: border-box; background: var(--color-mist); color: var(--color-ink); box-shadow: 0 2rem 5rem rgba(0,0,0,.3); }
+.checkout-intro { padding: clamp(2rem, 6vw, 4.5rem) clamp(1.5rem, 6vw, 5rem) 2rem; text-align: center; }
+.checkout-intro h1 { margin: .4rem 0 .8rem; font-family: var(--font-display); font-size: clamp(2.75rem, 7vw, 5.4rem); font-weight: 500; line-height: .9; }
+.checkout-intro > p:last-child { color: var(--color-slate); }
+.checkout-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.checkout-option { display: grid; align-content: start; gap: 1rem; min-height: 22rem; padding: clamp(1.75rem, 5vw, 3.75rem); background: #d8c7a8; }
+.checkout-option--dark { background: var(--color-ink); color: var(--color-mist); }
+.checkout-option h2 { margin: 0; font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.3rem); font-weight: 500; }
+.checkout-option p:not(.eyebrow) { max-width: 23rem; color: var(--color-slate); line-height: 1.7; }
+.checkout-option--dark p:not(.eyebrow) { color: rgba(229,233,238,.7); }
+.checkout-services { display: grid; gap: .4rem; margin: 0; padding: .9rem 0; list-style: none; border-top: 1px solid rgba(229,233,238,.18); color: rgba(229,233,238,.84); font-size: .73rem; }
+.checkout-services li { display: flex; justify-content: space-between; gap: 1rem; }.checkout-services strong { font-family: inherit; font-size: inherit; font-weight: 600; white-space: nowrap; }.checkout-stay-cost { padding-bottom: .65rem; border-bottom: 1px solid rgba(229,233,238,.13); color: var(--color-mist); }
+.checkout-option strong { font-family: var(--font-display); font-size: 1.45rem; font-weight: 500; }
+.checkout-option button, .checkout-option a { align-self: end; justify-self: start; margin-top: auto; border: 0; padding: 1rem 1.15rem; background: var(--color-ink); color: var(--color-mist); font: inherit; font-size: .67rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; cursor: pointer; }
+.checkout-option--dark a { background: var(--color-gold); color: var(--color-ink); }
+.checkout-option button:hover, .checkout-option a:hover { background: var(--color-gold); color: var(--color-ink); }
+@media (max-width: 767px) { .checkout-options { grid-template-columns: 1fr; }.checkout-option { min-height: 18rem; } }

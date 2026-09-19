@@ -35,14 +35,14 @@
 
         <div class="login-panel__content">
           <p class="page-eyebrow">Portal Atlan</p>
-          <h2 class="login-title" id="login-title">Sign in</h2>
-          <p class="login-copy">Sign in with your guest email or administrative credentials.</p>
+          <h2 class="login-title" id="login-title" th:text="${staffLogin ? 'Staff sign in' : 'Sign in'}">Sign in</h2>
+          <p class="login-copy">Sign in with the email and password registered for your account.</p>
 
           <aside class="portal-alert" th:if="${error}" role="alert"><span th:text="${error}">Incorrect username or password.</span></aside>
 
-          <form class="login-form" th:action="@{/login}" method="post">
+          <form class="login-form" th:action="${staffLogin ? '/staff/login' : '/login'}" method="post">
             <div>
-              <label class="portal-label" for="user">Email or username</label>
+              <label class="portal-label" for="user">Email address</label>
               <input class="portal-control tw-w-full tw-px-4 tw-py-3" id="user" name="user" type="text" placeholder="name@example.com" autocomplete="username" required autofocus />
             </div>
             <div>
@@ -52,7 +52,9 @@
             <button class="atlan-btn atlan-btn--primary login-submit" type="submit">Enter portal <span aria-hidden="true">→</span></button>
           </form>
 
-          <p class="login-register">Don't have a guest profile yet? <a th:href="@{/clients/create}">Create a guest profile</a></p>
+          <p class="login-register" th:unless="${staffLogin}">Don't have a guest profile yet? <a th:href="@{/clients/create}">Create a guest profile</a></p>
+          <p class="login-register" th:unless="${staffLogin}">Hotel team? <a th:href="@{/staff/login}">Staff sign in</a></p>
+          <p class="login-register" th:if="${staffLogin}">Staff accounts are created by an administrator. <a th:href="@{/login}">Guest sign in</a></p>
         </div>
 
         <p class="login-panel__foot">© 2026 Atlan Suites. Experiences designed for rest.</p>

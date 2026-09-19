@@ -16,7 +16,8 @@ public class InvalidOperatorDataException extends RuntimeException {
         LAST_NAME_TOO_LONG,
         EMAIL_INVALID,
         EMAIL_ALREADY_REGISTERED,
-        ADMIN_REQUIRED
+        ADMIN_REQUIRED,
+        PASSWORD_INVALID
     }
 
     public InvalidOperatorDataException(Reason reason, String value) {
@@ -25,6 +26,7 @@ public class InvalidOperatorDataException extends RuntimeException {
 
     private static String buildMessage(Reason reason, String value) {
         return switch (reason) {
+            case PASSWORD_INVALID -> "Enter a password with 8 to 255 characters.";
             case NAME_REQUIRED -> "Enter the operator's first name.";
             case NAME_TOO_LONG -> "The first name cannot exceed 50 characters.";
             case LAST_NAME_REQUIRED -> "Enter the operator's last name.";

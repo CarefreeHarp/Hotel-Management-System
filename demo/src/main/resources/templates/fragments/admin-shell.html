@@ -23,13 +23,13 @@
             <span></span><span></span><span></span>
           </button>
 
-          <div class="tw-hidden tw-w-full tw-flex-col tw-gap-3 tw-pb-4 lg:tw-flex lg:tw-w-auto lg:tw-flex-1 lg:tw-flex-row lg:tw-items-center lg:tw-justify-between lg:tw-pb-0" id="portalNavigation" data-admin-menu>
-            <div class="portal-nav tw-flex-col sm:tw-flex-row lg:tw-mx-auto">
+          <div class="tw-hidden tw-w-full tw-flex-col tw-gap-3 tw-pb-4 lg:tw-flex lg:tw-w-auto lg:tw-flex-1 lg:tw-flex-row lg:tw-flex-wrap lg:tw-items-center lg:tw-justify-between lg:tw-py-3" id="portalNavigation" data-admin-menu>
+            <div class="portal-nav tw-flex-col sm:tw-flex-row sm:tw-flex-wrap lg:tw-w-full lg:tw-justify-center">
               <a
                 class="portal-nav__link"
                 th:classappend="${activePage == 'panel'} ? ' is-active' : ''"
                 th:href="@{/admin/panel}"
-              >Admin panel</a>
+               th:text="${session.isAdmin == true ? 'Admin panel' : 'Operator panel'}">Panel</a>
               <a
                 class="portal-nav__link"
                 th:classappend="${activePage == 'clientes'} ? ' is-active' : ''"
@@ -48,15 +48,17 @@
               <a
                 class="portal-nav__link"
                 th:classappend="${activePage == 'administradores'} ? ' is-active' : ''"
-                th:href="@{/admin/administrators/read}"
+                th:if="${session.isAdmin == true}" th:href="@{/admin/administrators/read}"
               >Administrators</a>
               <a
                 class="portal-nav__link"
                 th:classappend="${activePage == 'operarios'} ? ' is-active' : ''"
-                th:href="@{/admin/operators/read}"
+                th:if="${session.isAdmin == true}" th:href="@{/admin/operators/read}"
               >Operators</a>
             </div>
 
+            <a class="portal-nav__link" th:if="${session.account != null}" th:href="${session.account.profilePath()}">My profile</a>
+            <form th:action="@{/logout}" method="post"><button class="atlan-btn atlan-btn--secondary atlan-btn--small" type="submit">Sign out</button></form>
             <a class="portal-exit" th:href="@{/}">
               Go to hotel <span aria-hidden="true">↗</span>
             </a>
@@ -67,7 +69,7 @@
 
     <footer class="portal-footer" th:fragment="footer">
       <div class="portal-footer__inner tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
-        <p>Atlan Suites <span aria-hidden="true">·</span> Admin portal</p>
+        <p>Atlan Suites <span aria-hidden="true">·</span> Staff portal</p>
         <a th:href="@{/}">Back to the hotel website</a>
       </div>
       <script>
