@@ -9,9 +9,7 @@ import java.util.List;
  * CAPA DE SERVICIO: lógica de negocio de los administradores.
  * El controlador solo conoce esta interfaz, nunca el repositorio.
  *
- * Por ahora el módulo solo expone READ y UPDATE: los administradores se cargan
- * con los datos de prueba del DataLoader y desde el portal únicamente se
- * consultan y se editan. Por eso no hay create ni delete.
+ * Expone la creación de cuentas desde el panel, la consulta y la edición.
  *
  * Al administrador se le identifica por su adminId autogenerado, igual que al
  * cliente, porque puede cambiar su propio correo al editarse.
@@ -23,6 +21,7 @@ import java.util.List;
  * - InvalidAdministratorDataException  -> los datos del formulario no son válidos.
  */
 public interface AdministratorService {
+    void create(Administrator administrator);
 
     /** Lista todos los administradores registrados. */
     List<Administrator> listAdministrators();

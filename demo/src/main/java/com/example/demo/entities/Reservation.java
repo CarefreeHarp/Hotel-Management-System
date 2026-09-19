@@ -6,7 +6,6 @@ import com.example.demo.entities.enums.ReservationStatus;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -43,10 +42,9 @@ public class Reservation {
     @JoinColumn(name = "client_id")
     @OnDelete(action = OnDeleteAction.SET_NULL)
     private Client client; // Client que realizó la reserva.
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "room_id", nullable = false)
-    @ColumnDefault("-1")
-    @OnDelete(action = OnDeleteAction.SET_DEFAULT)
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Room room; // Habitación asignada a la reserva.
 
 }

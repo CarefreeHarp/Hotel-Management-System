@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import com.example.demo.entities.Administrator;
 import com.example.demo.entities.Client;
 import com.example.demo.entities.Administrator;
 import com.example.demo.entities.Folio;
@@ -9,16 +8,13 @@ import com.example.demo.entities.Operator;
 import com.example.demo.entities.Payment;
 import com.example.demo.entities.Reservation;
 import com.example.demo.entities.Room;
-import com.example.demo.entities.Operator;
 import com.example.demo.entities.RoomType;
 import com.example.demo.entities.Service;
 import com.example.demo.entities.enums.FolioStatus;
 import com.example.demo.entities.enums.PaymentStatus;
 import com.example.demo.entities.enums.ReservationStatus;
 import com.example.demo.entities.enums.RoomStatus;
-import com.example.demo.repository.AdministratorRepository;
 import com.example.demo.repository.ClientRepository;
-import com.example.demo.repository.OperatorRepository;
 import com.example.demo.repository.RoomRepository;
 import com.example.demo.repository.RoomTypeRepository;
 import com.example.demo.repository.ServiceRepository;
@@ -44,12 +40,6 @@ public class DataLoader implements CommandLineRunner {
 
         @Autowired
         private ClientRepository clientRepository;
-
-        @Autowired
-        private AdministratorRepository administratorRepository;
-
-        @Autowired
-        private OperatorRepository operatorRepository;
 
         @Autowired
         private RoomRepository roomRepository;
@@ -114,26 +104,6 @@ public class DataLoader implements CommandLineRunner {
                                 "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea",
                                 List.of("https://images.unsplash.com/photo-1600607687920-4e2a09cf159d",
                                                 "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c"));
-
-                // Registro reservado para mantener reservas cuyo cuarto físico fue eliminado.
-                jdbcTemplate.update(
-                                "insert into room (room_id, room_number, floor, status, room_type_id) values (-1, -1, 0, ?, ?)",
-                                RoomStatus.MAINTENANCE.name(), standardRoom.getRoomTypeId());
-
-                // Administradores
-                Administrator sofiaAdmin = saveAdministrator(
-                                "Sofia Bennett", "sofia.bennett@atlansuites.com", "Sofia2026!");
-                Administrator marcusAdmin = saveAdministrator(
-                                "Marcus Reed", "marcus.reed@atlansuites.com", "Marcus2026!");
-                Administrator helenaAdmin = saveAdministrator(
-                                "Helena Duarte", "helena.duarte@atlansuites.com", "Helena2026!");
-
-                // Operarios
-                saveOperator("Daniel", "Ortiz", "daniel.ortiz@atlansuites.com", "Daniel2026!", sofiaAdmin);
-                saveOperator("Camila", "Ramirez", "camila.ramirez@atlansuites.com", "Camila2026!", sofiaAdmin);
-                saveOperator("Tomas", "Herrera", "tomas.herrera@atlansuites.com", "Tomas2026!", marcusAdmin);
-                saveOperator("Valeria", "Nunez", "valeria.nunez@atlansuites.com", "Valeria2026!", marcusAdmin);
-                saveOperator("Andres", "Castillo", "andres.castillo@atlansuites.com", "Andres2026!", helenaAdmin);
 
                 // Clientes
                 saveClient("Emma", "Thompson", "1001001001", "3001001001",
@@ -232,7 +202,7 @@ public class DataLoader implements CommandLineRunner {
                                 BigDecimal.ZERO, "System", false, "about:blank");
 
                 saveService("High-speed Wi-Fi", "high-speed-wi-fi",
-                                "Complimentary high-speed wireless internet throughout the hotel.", new BigDecimal("0"),
+                                "High-speed wireless internet throughout the hotel.", new BigDecimal("10000"),
                                 "Connectivity", true, "Stay connected throughout your visit", "24 hours",
                                 "Available every day", "Entire hotel",
                                 "https://images.unsplash.com/photo-1496181133206-80ce9b88a853");
@@ -280,14 +250,14 @@ public class DataLoader implements CommandLineRunner {
                                 "https://images.unsplash.com/photo-1506521781263-d8422e82f27a");
 
                 saveService("Swimming Pool", "swimming-pool",
-                                "Access to the hotel's temperature-controlled panoramic pool.", new BigDecimal("0"),
+                                "Access to the hotel's temperature-controlled panoramic pool.", new BigDecimal("30000"),
                                 "Wellness", true, "A quiet pause beside the water", "7:00 AM - 9:00 PM",
                                 "Available every day", "Third-floor terrace",
                                 "https://images.unsplash.com/photo-1566073771259-6a8506099945");
 
                 saveService("Fitness Center", "fitness-center",
                                 "A modern fitness center equipped for cardio and strength training.",
-                                new BigDecimal("0"),
+                                new BigDecimal("20000"),
                                 "Wellness", true, "Keep your energy moving every day", "5:00 AM - 11:00 PM",
                                 "Available every day", "Second floor",
                                 "https://images.unsplash.com/photo-1534438327276-14e5300c3a48");
@@ -341,13 +311,13 @@ public class DataLoader implements CommandLineRunner {
 
                 saveService("Luggage Storage", "luggage-storage",
                                 "Secure temporary luggage storage before check-in or after check-out.",
-                                new BigDecimal("0"),
+                                new BigDecimal("15000"),
                                 "Guest services", true, "Explore the city without carrying your bags", "24 hours",
                                 "Available every day", "Front desk",
                                 "https://images.unsplash.com/photo-1569154941061-e231b4725ef1");
 
                 saveService("Wake-up Call", "wake-up-call",
-                                "A personalized telephone wake-up call at your requested time.", new BigDecimal("0"),
+                                "A personalized telephone wake-up call at your requested time.", new BigDecimal("10000"),
                                 "Guest services", true, "Begin every day right on time", "24 hours",
                                 "Available every day", "Front desk",
                                 "https://images.unsplash.com/photo-1501139083538-0139583c060f");
@@ -378,7 +348,7 @@ public class DataLoader implements CommandLineRunner {
 
         /** Crea el historial inicial de usuarios, reservas, folios, pagos y cargos. */
         private void seedHotelOperations() {
-                LocalDate baseDate = LocalDate.of(2026, 9, 1);
+                LocalDate baseDate = LocalDate.of(2026, 10, 1);
                 LocalDateTime createdAt = baseDate.atTime(9, 0);
                 List<Administrator> administrators = new ArrayList<>();
                 List<Operator> operators = new ArrayList<>();
@@ -429,8 +399,8 @@ public class DataLoader implements CommandLineRunner {
                         int nights = 2 + (index % 3);
                         Reservation reservation = Reservation.builder()
                                         .reservationCode(String.format("ATL-2026-%03d", index + 1))
-                                        .checkInDate(baseDate.plusDays(index * 3L))
-                                        .checkOutDate(baseDate.plusDays(index * 3L + nights))
+                                        .checkInDate(baseDate.plusDays(index * 2L))
+                                        .checkOutDate(baseDate.plusDays(index * 2L + nights))
                                         .guestCount(1 + (index % room.getRoomType().getMaxCapacity()))
                                         .nightlyPrice(nightlyPrice)
                                         .estimatedTotal(nightlyPrice.multiply(BigDecimal.valueOf(nights)))
@@ -520,27 +490,6 @@ public class DataLoader implements CommandLineRunner {
         }
 
         /** Guarda un cliente creado mediante su builder. */
-        /** Guarda un administrador creado mediante su builder y lo devuelve ya con su id. */
-        private Administrator saveAdministrator(String name, String email, String password) {
-                return administratorRepository.save(Administrator.builder()
-                                .name(name)
-                                .email(email)
-                                .password(password)
-                                .build());
-        }
-
-        /** Guarda un operario a cargo del administrador recibido. */
-        private void saveOperator(String name, String lastName, String email, String password,
-                        Administrator admin) {
-                operatorRepository.save(Operator.builder()
-                                .name(name)
-                                .lastName(lastName)
-                                .email(email)
-                                .password(password)
-                                .admin(admin)
-                                .build());
-        }
-
         private void saveClient(String name, String lastName, String nationalId, String phone,
                         String email, String password, String profilePhoto) {
                 clientRepository.save(Client.builder()

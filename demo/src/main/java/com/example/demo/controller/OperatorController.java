@@ -2,105 +2,131 @@ package com.example.demo.controller;
 
 import com.example.demo.entities.Operator;
 import com.example.demo.errors.InvalidOperatorDataException;
+import com.example.demo.service.AuthenticatedAccount;
 import com.example.demo.service.interfaces.AdministratorService;
+import com.example.demo.service.interfaces.LoginService;
 import com.example.demo.service.interfaces.OperatorService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-/**
- * CAPA DE CONTROLADOR: pantalla de operarios del portal.
- *
- * Igual que el módulo de administradores, por ahora solo tiene READ y UPDATE.
- *
- * El administrador a cargo llega como un @RequestParam aparte y no dentro del
- * @ModelAttribute, porque el desplegable del formulario manda un número
- * (el adminId) y el atributo admin del operario es un objeto Administrator:
- * es el servicio el que busca ese administrador y lo asocia.
- */
+/** El operario edita su perfil; el administrador gestiona sus operarios a cargo. */
 @Controller
-@RequestMapping("/admin/operators")
 public class OperatorController {
+    private final OperatorService operators;
+    private final AdministratorService administrators;
+    private final LoginService login;
 
-    @Autowired
-    OperatorService operatorService;
+    public OperatorController(OperatorService operators, AdministratorService administrators, LoginService login) {
+        this.operators = operators;
+        this.administrators = administrators;
+        this.login = login;
+    }
 
-    @Autowired
-    AdministratorService administratorService;
+    @InitBinder("operator")
+    public void allowedFields(WebDataBinder binder) {
+        binder.setAllowedFields("name", "lastName", "email", "password");
+    }
 
-    /**
-     * Listado de todos los operarios.
-     * URL: http://localhost:8080/admin/operators/read
-     */
-    // Full URL: http://localhost:8080/admin/operators/read
-    @GetMapping("/read")
-    public String listOperators(Model model) {
-        model.addAttribute("operarios", operatorService.listOperators());
+    @GetMapping("/admin/operators/read")
+    public String listOperators(Model model, HttpSession session) {
+        model.addAttribute("operarios", operators.listByAdministrator(account(session).id()));
         return "operators/list";
     }
 
-    /**
-     * Detalle de un operario.
-     * URL: http://localhost:8080/admin/operators/read/{operatorId}
-     */
-    // Full URL: http://localhost:8080/admin/operators/read/{operatorId}
-    @GetMapping("/read/{operatorId}")
-    public String showDetails(@PathVariable Integer operatorId, Model model) {
-        model.addAttribute("operario", operatorService.findById(operatorId));
+    @GetMapping({"/admin/operators/read/{operatorId}", "/operators/read/{operatorId}"})
+    public String showDetails(@PathVariable Integer operatorId, Model model, HttpSession session) {
+        model.addAttribute("operario", accessibleOperator(operatorId, session));
         return "operators/details";
     }
 
-    /**
-     * Muestra el formulario con los datos actuales del operario.
-     * URL: http://localhost:8080/admin/operators/update/{operatorId}
-     */
-    // Full URL: http://localhost:8080/admin/operators/update/{operatorId}
-    @GetMapping("/update/{operatorId}")
-    public String showFormEditing(@PathVariable Integer operatorId, Model model) {
-        Operator operator = operatorService.findById(operatorId);
-        prepareForm(model, operator, operatorId, operator.getAdmin().getAdminId());
+    @GetMapping("/admin/operators/create")
+    public String showCreate(Model model, HttpSession session) {
+        prepareForm(model, new Operator(), null, session);
         return "operators/form";
     }
 
-    /**
-     * Guarda los cambios. El id de la URL identifica la cuenta incluso si el
-     * operario cambia su correo.
-     */
-    // Full URL: http://localhost:8080/admin/operators/update/{operatorId}
-    @PostMapping("/update/{operatorId}")
-    public String update(@PathVariable Integer operatorId,
-                         @ModelAttribute Operator operator,
-                         @RequestParam(required = false) Integer adminId,
-                         Model model) {
+    @PostMapping("/admin/operators/create")
+    public String create(@ModelAttribute Operator operator, Model model, HttpSession session) {
         try {
-            operatorService.update(operatorId, operator, adminId);
-            return "redirect:/admin/operators/read/" + operatorId;
+            // La asignación se toma de la sesión, nunca de un campo manipulable.
+            operators.create(operator, account(session).id());
+            return "redirect:/admin/operators/read/" + operator.getOperatorId();
         } catch (InvalidOperatorDataException exception) {
-            prepareForm(model, operator, operatorId, adminId);
+            prepareForm(model, operator, null, session);
             model.addAttribute("error", exception.getMessage());
             return "operators/form";
         }
     }
 
-    /**
-     * Atributos que necesita la vista del formulario de edición.
-     * El operatorId y el adminId se mandan aparte porque el formulario no envía
-     * de vuelta el id del operario ni el objeto Administrator completo: la vista
-     * los necesita para armar las URLs y para marcar la opción seleccionada del
-     * desplegable. La lista de administradores llena ese desplegable.
-     */
-    private void prepareForm(Model model, Operator operator, Integer operatorId, Integer adminId) {
+    @GetMapping({"/admin/operators/update/{operatorId}", "/operators/update/{operatorId}"})
+    public String showFormEditing(@PathVariable Integer operatorId, Model model, HttpSession session) {
+        prepareForm(model, accessibleOperator(operatorId, session), operatorId, session);
+        return "operators/form";
+    }
+
+    @PostMapping({"/admin/operators/update/{operatorId}", "/operators/update/{operatorId}"})
+    public String update(@PathVariable Integer operatorId, @ModelAttribute Operator operator,
+                         @RequestParam(defaultValue = "") String passwordCurrent, Model model, HttpSession session) {
+        Operator registered = accessibleOperator(operatorId, session);
+        try {
+            login.confirmPassword(account(session), passwordCurrent);
+            operators.update(operatorId, operator, registered.getAdmin().getAdminId());
+            return "redirect:" + prefix(session) + "/read/" + operatorId;
+        } catch (InvalidOperatorDataException | SecurityException exception) {
+            prepareForm(model, operator, operatorId, session);
+            model.addAttribute("error", exception.getMessage());
+            return "operators/form";
+        }
+    }
+
+    @PostMapping("/admin/operators/delete/{operatorId}")
+    public String delete(@PathVariable Integer operatorId, @RequestParam(defaultValue = "") String passwordCurrent,
+                         HttpSession session, RedirectAttributes redirect) {
+        accessibleOperator(operatorId, session);
+        try {
+            login.confirmPassword(account(session), passwordCurrent);
+            operators.deleteManagedBy(operatorId, account(session).id());
+            redirect.addFlashAttribute("success", "Operator deleted.");
+        } catch (SecurityException exception) {
+            redirect.addFlashAttribute("error", exception.getMessage());
+        }
+        return "redirect:/admin/operators/read";
+    }
+
+    private AuthenticatedAccount account(HttpSession session) {
+        return (AuthenticatedAccount) session.getAttribute("account");
+    }
+
+    private Operator accessibleOperator(Integer operatorId, HttpSession session) {
+        AuthenticatedAccount actor = account(session);
+        if (actor.role() == AuthenticatedAccount.Role.ADMINISTRATOR) {
+            return operators.findManagedBy(operatorId, actor.id());
+        }
+        if (actor.role() != AuthenticatedAccount.Role.OPERATOR || !operatorId.equals(actor.id())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can only access your own operator profile.");
+        }
+        return operators.findById(operatorId);
+    }
+
+    private String prefix(HttpSession session) {
+        return account(session).role() == AuthenticatedAccount.Role.ADMINISTRATOR ? "/admin/operators" : "/operators";
+    }
+
+    private void prepareForm(Model model, Operator operator, Integer operatorId, HttpSession session) {
+        Integer adminId = operatorId == null ? account(session).id()
+                : accessibleOperator(operatorId, session).getAdmin().getAdminId();
         model.addAttribute("operario", operator);
         model.addAttribute("operatorId", operatorId);
-        model.addAttribute("adminId", adminId);
-        model.addAttribute("administradores", administratorService.listAdministrators());
-        model.addAttribute("titulo", "Edit operator");
-        model.addAttribute("accion", "/admin/operators/update/" + operatorId);
+        model.addAttribute("adminName", administrators.findById(adminId).getName());
+        model.addAttribute("esCreacion", operatorId == null);
+        model.addAttribute("titulo", operatorId == null ? "Create operator" : "Edit operator");
+        model.addAttribute("accion", operatorId == null ? "/admin/operators/create" : prefix(session) + "/update/" + operatorId);
+        model.addAttribute("cancelUrl", operatorId == null ? "/admin/operators/read" : prefix(session) + "/read/" + operatorId);
     }
 }

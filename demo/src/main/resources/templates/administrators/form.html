@@ -17,7 +17,7 @@
           <div>
             <p class="page-eyebrow">Staff management</p>
             <h1 class="page-title" th:text="${titulo}">Edit administrator</h1>
-            <p class="page-description">Update the administrator's name and email address. The password is not modified from this screen.</p>
+            <p class="page-description" th:text="${esCreacion ? 'Create a staff account for hotel access.' : 'Update account details and confirm with your current password.'}"></p>
           </div>
         </header>
 
@@ -36,17 +36,30 @@
               <div class="tw-min-w-0">
                 <label class="portal-label" for="email">Email address</label>
                 <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="email" id="email" th:field="*{email}" placeholder="name@atlansuites.com" autocomplete="email" />
-                <p class="field-hint">Must not be used by another administrator.</p>
+                <p class="field-hint">Must not be used by another account.</p>
               </div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <div th:if="${esCreacion}">
+              <label class="portal-label" for="password">Account password</label>
+              <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="password" id="password" name="password" autocomplete="new-password" minlength="8" maxlength="255" required />
+              <p class="field-hint">8 to 255 characters. Share this password with the new account holder.</p>
+            </div>
+            <div th:unless="${esCreacion}">
+              <label class="portal-label" for="passwordCurrent">Your current password</label>
+              <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="password" id="passwordCurrent" name="passwordCurrent" autocomplete="current-password" required />
+              <p class="field-hint">Confirm your identity to save these changes.</p>
             </div>
           </section>
 
           <div class="form-actions tw-flex tw-gap-3">
             <button class="atlan-btn atlan-btn--primary" type="submit">
-              <span>Save changes</span>
+              <span th:text="${esCreacion ? 'Create account' : 'Save changes'}">Save changes</span>
               <span aria-hidden="true">→</span>
             </button>
-            <a class="atlan-btn atlan-btn--secondary" th:href="@{/admin/administrators/read/{adminId}(adminId=${adminId})}">Cancel</a>
+            <a class="atlan-btn atlan-btn--secondary" th:href="${cancelUrl}">Cancel</a>
           </div>
         </form>
       </div>

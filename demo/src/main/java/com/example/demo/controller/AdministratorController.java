@@ -2,96 +2,99 @@ package com.example.demo.controller;
 
 import com.example.demo.entities.Administrator;
 import com.example.demo.errors.InvalidAdministratorDataException;
+import com.example.demo.service.AuthenticatedAccount;
 import com.example.demo.service.interfaces.AdministratorService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.service.interfaces.LoginService;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-/**
- * CAPA DE CONTROLADOR: pantalla de administradores del portal.
- *
- * Por ahora el módulo solo tiene READ y UPDATE, así que hay tres rutas: el
- * listado, el detalle de un administrador y el formulario de edición (que se
- * muestra con GET y se guarda con POST sobre la misma URL).
- *
- * El controlador NO valida nada: llama al servicio. Los datos inválidos del
- * formulario vuelven al formulario con un aviso; que el administrador no exista
- * se atiende de forma centralizada en GlobalExceptionHandler.
- */
+/** Cuentas administrativas: creación desde el panel y edición del perfil propio. */
 @Controller
-@RequestMapping("/admin/administrators")
 public class AdministratorController {
+    private final AdministratorService administrators;
+    private final LoginService login;
 
-    @Autowired
-    AdministratorService administratorService;
+    public AdministratorController(AdministratorService administrators, LoginService login) {
+        this.administrators = administrators;
+        this.login = login;
+    }
 
-    /**
-     * Listado de todos los administradores.
-     * URL: http://localhost:8080/admin/administrators/read
-     */
-    // Full URL: http://localhost:8080/admin/administrators/read
-    @GetMapping("/read")
+    @InitBinder("administrator")
+    public void allowedFields(WebDataBinder binder) {
+        binder.setAllowedFields("name", "email", "password");
+    }
+
+    @GetMapping("/admin/administrators/read")
     public String listAdministrators(Model model) {
-        model.addAttribute("administradores", administratorService.listAdministrators());
+        model.addAttribute("administradores", administrators.listAdministrators());
         return "administrators/list";
     }
 
-    /**
-     * Detalle de un administrador.
-     * URL: http://localhost:8080/admin/administrators/read/{adminId}
-     */
-    // Full URL: http://localhost:8080/admin/administrators/read/{adminId}
-    @GetMapping("/read/{adminId}")
+    @GetMapping({"/admin/administrators/read/{adminId}", "/admins/read/{adminId}"})
     public String showDetails(@PathVariable Integer adminId, Model model) {
-        model.addAttribute("administrador", administratorService.findById(adminId));
+        model.addAttribute("administrador", administrators.findById(adminId));
         return "administrators/details";
     }
 
-    /**
-     * Muestra el formulario con los datos actuales del administrador.
-     * URL: http://localhost:8080/admin/administrators/update/{adminId}
-     */
-    // Full URL: http://localhost:8080/admin/administrators/update/{adminId}
-    @GetMapping("/update/{adminId}")
-    public String showFormEditing(@PathVariable Integer adminId, Model model) {
-        Administrator administrator = administratorService.findById(adminId);
-        prepareForm(model, administrator, adminId);
+    @GetMapping("/admin/administrators/create")
+    public String showCreate(Model model) {
+        prepareForm(model, new Administrator(), null);
         return "administrators/form";
     }
 
-    /**
-     * Guarda los cambios. El id de la URL identifica la cuenta incluso si el
-     * administrador cambia su correo.
-     */
-    // Full URL: http://localhost:8080/admin/administrators/update/{adminId}
-    @PostMapping("/update/{adminId}")
-    public String update(@PathVariable Integer adminId,
-                         @ModelAttribute Administrator administrator,
-                         Model model) {
+    @PostMapping("/admin/administrators/create")
+    public String create(@ModelAttribute Administrator administrator, Model model) {
         try {
-            administratorService.update(adminId, administrator);
-            return "redirect:/admin/administrators/read/" + adminId;
+            administrators.create(administrator);
+            return "redirect:/admin/administrators/read/" + administrator.getAdminId();
         } catch (InvalidAdministratorDataException exception) {
+            prepareForm(model, administrator, null);
+            model.addAttribute("error", exception.getMessage());
+            return "administrators/form";
+        }
+    }
+
+    @GetMapping({"/admin/administrators/update/{adminId}", "/admins/update/{adminId}"})
+    public String showFormEditing(@PathVariable Integer adminId, Model model, HttpSession session) {
+        requireOwnAccount(adminId, session);
+        prepareForm(model, administrators.findById(adminId), adminId);
+        return "administrators/form";
+    }
+
+    @PostMapping({"/admin/administrators/update/{adminId}", "/admins/update/{adminId}"})
+    public String update(@PathVariable Integer adminId, @ModelAttribute Administrator administrator,
+                         @RequestParam(defaultValue = "") String passwordCurrent, Model model, HttpSession session) {
+        AuthenticatedAccount account = requireOwnAccount(adminId, session);
+        try {
+            login.confirmPassword(account, passwordCurrent);
+            administrators.update(adminId, administrator);
+            return "redirect:/admins/read/" + adminId;
+        } catch (InvalidAdministratorDataException | SecurityException exception) {
             prepareForm(model, administrator, adminId);
             model.addAttribute("error", exception.getMessage());
             return "administrators/form";
         }
     }
 
-    /**
-     * Atributos que necesita la vista del formulario de edición.
-     * El adminId se manda aparte porque el formulario no envía el id de vuelta:
-     * la vista lo necesita para armar la URL de guardado y la de cancelar.
-     */
+    private AuthenticatedAccount requireOwnAccount(Integer adminId, HttpSession session) {
+        AuthenticatedAccount account = (AuthenticatedAccount) session.getAttribute("account");
+        if (account == null || account.role() != AuthenticatedAccount.Role.ADMINISTRATOR || !adminId.equals(account.id())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can only edit your own administrator profile.");
+        }
+        return account;
+    }
+
     private void prepareForm(Model model, Administrator administrator, Integer adminId) {
         model.addAttribute("administrador", administrator);
         model.addAttribute("adminId", adminId);
-        model.addAttribute("titulo", "Edit administrator");
-        model.addAttribute("accion", "/admin/administrators/update/" + adminId);
+        model.addAttribute("esCreacion", adminId == null);
+        model.addAttribute("titulo", adminId == null ? "Create administrator" : "Edit my details");
+        model.addAttribute("accion", adminId == null ? "/admin/administrators/create" : "/admins/update/" + adminId);
+        model.addAttribute("cancelUrl", adminId == null ? "/admin/administrators/read" : "/admins/read/" + adminId);
     }
 }

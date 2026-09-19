@@ -13,7 +13,7 @@
     <main class="portal-main"><div class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
       <header class="page-heading">
         <div><p class="page-eyebrow">Administrator profile</p><h1 class="page-title" th:text="${administrador.name}">Administrator name</h1><p class="page-description">Account details registered in the administration portal.</p></div>
-        <div class="tw-flex tw-shrink-0 tw-items-center tw-gap-2 tw-self-start"><a class="atlan-btn atlan-btn--primary" th:href="@{/admin/administrators/update/{adminId}(adminId=${administrador.adminId})}">Edit administrator</a><a class="atlan-btn atlan-btn--secondary" th:href="@{/admin/administrators/read}">Back to list</a></div>
+        <div class="tw-flex tw-flex-wrap tw-shrink-0 tw-items-center tw-gap-2 tw-self-start"><a th:if="${session.adminId == administrador.adminId}" class="atlan-btn atlan-btn--primary" th:href="@{/admin/administrators/update/{adminId}(adminId=${administrador.adminId})}">Edit administrator</a><a class="atlan-btn atlan-btn--secondary" th:href="@{/admin/administrators/read}">Back to list</a><a class="atlan-btn atlan-btn--secondary" th:href="@{/admin/panel}">Open panel</a></div>
       </header>
       <section class="detail-grid">
         <figure class="detail-visual staff-visual detail-placeholder" aria-label="Administrator without a photo"><span th:text="${#strings.substring(administrador.name, 0, 1)}">A</span></figure>

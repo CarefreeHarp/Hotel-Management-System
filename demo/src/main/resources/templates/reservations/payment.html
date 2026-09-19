@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment — Atlan Suites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { prefix: "tw-", corePlugins: { preflight: false } };</script>
+    <link rel="stylesheet" th:href="@{/css/css-utils/base/common.css}" href="/css/css-utils/base/common.css" />
+    <link rel="stylesheet" th:href="@{/css/payment/payment.css}" href="/css/payment/payment.css" />
+  </head>
+  <body class="payment-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
+    <header th:replace="~{fragments/public-header :: publicHeader('booking')}"></header>
+    <main class="payment-main">
+      <div class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
+        <form th:action="|/reservation/checkout/book-later?${reservationQuery}|" method="post" class="go-back-form">
+          <button type="submit" class="go-back"><span aria-hidden="true">←</span> Or book and pay later</button>
+        </form>
+        <header class="payment-intro"><p class="eyebrow">Step 4 of 4</p><h1>Payment</h1><p>Review your stay and enter your payment details.</p></header>
+        <div class="payment-layout">
+          <form class="payment-form" th:action="|/reservation/payment/confirm?${reservationQuery}|" method="post" aria-labelledby="payment-details-title">
+            <aside class="tw-border tw-border-red-300/50 tw-bg-red-100 tw-px-4 tw-py-3 tw-text-sm tw-text-red-900" th:if="${error}" role="alert" th:text="${error}"></aside>
+            <section>
+              <h2 id="payment-details-title">Choose your payment</h2>
+              <div class="payment-fields"><label>Amount to pay today<input type="number" name="paymentAmount" step="1" th:value="${paymentAmount != null ? paymentAmount : total}" data-payment-amount /></label></div>
+              <p class="payment-security">You can pay all or part of your stay total today.</p>
+            </section>
+            <section>
+              <h2>Card details</h2>
+              <div class="payment-fields"><label>Name on card<input type="text" name="cardholderName" autocomplete="cc-name" th:value="${cardholderName}" /></label><label>Card number<input type="text" name="cardNumber" inputmode="numeric" autocomplete="cc-number" placeholder="0000 0000 0000 0000" data-card-number th:value="${cardNumber}" /></label></div>
+              <div class="payment-fields payment-fields--two"><label>Expiry date<input type="text" name="expiryDate" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" data-expiry-date th:value="${expiryDate}" /></label><label>Security code<input type="text" name="securityCode" inputmode="numeric" autocomplete="cc-csc" placeholder="CVV" data-security-code th:value="${securityCode}" /></label></div>
+            </section>
+            <button type="submit" class="payment-submit">Confirm and pay <span data-payment-submit-amount th:text="|$ ${#numbers.formatDecimal(total, 0, 'POINT', 0, 'COMMA')}|">$ 0</span></button>
+          </form>
+
+          <aside class="reservation-summary" aria-labelledby="summary-title">
+            <h2 id="summary-title">Your reservation</h2>
+            <figure><img th:src="${room.roomType.mainPhoto}" th:alt="|${room.roomType.name} room|" /><figcaption><span th:text="|Room ${room.number}|">Room 101</span><strong th:text="${room.roomType.name}">Standard Room</strong></figcaption></figure>
+            <dl class="summary-stay"><div><dt>Check-in</dt><dd th:text="${#temporals.format(checkIn, 'MMM d, yyyy')}">Jan 1, 2026</dd></div><div><dt>Check-out</dt><dd th:text="${#temporals.format(checkOut, 'MMM d, yyyy')}">Jan 2, 2026</dd></div><div><dt>Guests</dt><dd th:text="${guests}">1</dd></div><div><dt>Nights</dt><dd th:text="${nights}">1</dd></div></dl>
+            <dl class="summary-costs"><div><dt th:text="|$ ${#numbers.formatDecimal(room.roomType.nightlyPrice, 0, 'POINT', 0, 'COMMA')} × ${nights} night(s)|">$ 0 × 1 night</dt><dd th:text="|$ ${#numbers.formatDecimal(stayTotal, 0, 'POINT', 0, 'COMMA')}|">$ 0</dd></div><div th:each="service : ${selectedServices}"><dt th:text="${service.name}">Service</dt><dd th:text="|$ ${#numbers.formatDecimal(service.price, 0, 'POINT', 0, 'COMMA')}|">$ 0</dd></div><div class="summary-total"><dt>Total</dt><dd th:text="|$ ${#numbers.formatDecimal(total, 0, 'POINT', 0, 'COMMA')}|">$ 0</dd></div></dl>
+          </aside>
+        </div>
+      </div>
+    </main>
+    <script th:src="@{/js/payment/payment.js}" src="/js/payment/payment.js"></script>
+  </body>
+</html>

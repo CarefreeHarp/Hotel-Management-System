@@ -31,6 +31,9 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     public ClientRepository clientRepository;
 
+    @Autowired
+    private AccountEmailService accountEmailService;
+
     @Override
     public List<Client> listClients() {
         return clientRepository.findAll();
@@ -93,6 +96,7 @@ public class ClientServiceImpl implements ClientService {
      * @throws InvalidClientDataException con el mensaje del primer dato inválido.
      */
     private void validateData(Client client, boolean isRegistration) {
+        if (client.getEmail() != null) client.setEmail(client.getEmail().trim());
         if (client.getName() == null || client.getName().isBlank()) {
             throw new InvalidClientDataException(InvalidClientDataException.Reason.NAME_REQUIRED, client.getName());
         }
@@ -127,8 +131,9 @@ public class ClientServiceImpl implements ClientService {
         }
 
         Client clientWithThatEmail = clientRepository.findByEmailIgnoreCase(client.getEmail()).orElse(null);
-        if (clientWithThatEmail != null
-                && !Objects.equals(clientWithThatEmail.getClientId(), client.getClientId())) {
+        if ((clientWithThatEmail != null
+                && !Objects.equals(clientWithThatEmail.getClientId(), client.getClientId()))
+                || accountEmailService.usedByAnotherRole(client.getEmail(), AuthenticatedAccount.Role.CLIENT)) {
             throw new InvalidClientDataException(
                     InvalidClientDataException.Reason.EMAIL_ALREADY_REGISTERED, client.getEmail());
         }

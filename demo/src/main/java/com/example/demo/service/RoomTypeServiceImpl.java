@@ -7,6 +7,8 @@ import com.example.demo.errors.ResourceNotFoundException;
 import com.example.demo.repository.RoomTypeRepository;
 import com.example.demo.service.interfaces.RoomTypeService;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,10 +139,35 @@ public class RoomTypeServiceImpl implements RoomTypeService {
             throw new InvalidRoomTypeDataException(
                     InvalidRoomTypeDataException.Reason.MAX_CAPACITY_INVALID, typeRoom.getMaxCapacity());
         }
+        if (typeRoom.getMaxCapacity() > 10) {
+            throw new InvalidRoomTypeDataException(
+                    InvalidRoomTypeDataException.Reason.MAX_CAPACITY_TOO_HIGH, typeRoom.getMaxCapacity());
+        }
 
         if (typeRoom.getMainPhoto() == null || typeRoom.getMainPhoto().isBlank()) {
             throw new InvalidRoomTypeDataException(
                     InvalidRoomTypeDataException.Reason.MAIN_PHOTO_REQUIRED, null);
+        }
+        validatePhotoUrl(typeRoom.getMainPhoto());
+        typeRoom.getSecondaryPhotos().forEach(this::validatePhotoUrl);
+    }
+
+    /** Verifica que cada URL de foto tenga longitud válida y use HTTP o HTTPS. */
+    private void validatePhotoUrl(String photoUrl) {
+        if (photoUrl.length() > 500) {
+            throw new InvalidRoomTypeDataException(InvalidRoomTypeDataException.Reason.MAIN_PHOTO_TOO_LONG,
+                    photoUrl);
+        }
+        try {
+            URI uri = new URI(photoUrl);
+            if ((!"http".equalsIgnoreCase(uri.getScheme()) && !"https".equalsIgnoreCase(uri.getScheme()))
+                    || uri.getHost() == null) {
+                throw new InvalidRoomTypeDataException(InvalidRoomTypeDataException.Reason.PHOTO_URL_INVALID,
+                        photoUrl);
+            }
+        } catch (URISyntaxException exception) {
+            throw new InvalidRoomTypeDataException(InvalidRoomTypeDataException.Reason.PHOTO_URL_INVALID,
+                    photoUrl);
         }
     }
 
@@ -152,6 +179,8 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 
         if (typeRoom.getSecondaryPhotos() != null) {
             typeRoom.getSecondaryPhotos().removeIf(photo -> photo == null || photo.isBlank());
+        } else {
+            typeRoom.setSecondaryPhotos(new java.util.ArrayList<>());
         }
     }
 }

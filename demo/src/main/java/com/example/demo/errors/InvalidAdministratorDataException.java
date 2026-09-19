@@ -13,7 +13,8 @@ public class InvalidAdministratorDataException extends RuntimeException {
         NAME_REQUIRED,
         NAME_TOO_LONG,
         EMAIL_INVALID,
-        EMAIL_ALREADY_REGISTERED
+        EMAIL_ALREADY_REGISTERED,
+        PASSWORD_INVALID
     }
 
     public InvalidAdministratorDataException(Reason reason, String value) {
@@ -22,6 +23,7 @@ public class InvalidAdministratorDataException extends RuntimeException {
 
     private static String buildMessage(Reason reason, String value) {
         return switch (reason) {
+            case PASSWORD_INVALID -> "Enter a password with 8 to 255 characters.";
             case NAME_REQUIRED -> "Enter the administrator's name.";
             case NAME_TOO_LONG -> "The name cannot exceed 50 characters.";
             case EMAIL_INVALID -> "Enter a valid email address with at most 80 characters.";

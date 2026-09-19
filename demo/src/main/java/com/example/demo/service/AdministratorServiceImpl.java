@@ -28,6 +28,21 @@ public class AdministratorServiceImpl implements AdministratorService {
     @Autowired
     public AdministratorRepository administratorRepository;
 
+    @Autowired
+    private AccountEmailService accountEmailService;
+
+    @Override
+    public void create(Administrator administrator) {
+        administrator.setAdminId(null);
+        validateData(administrator);
+        if (administrator.getPassword() == null || administrator.getPassword().isBlank()
+                || administrator.getPassword().length() < 8 || administrator.getPassword().length() > 255) {
+            throw new InvalidAdministratorDataException(
+                    InvalidAdministratorDataException.Reason.PASSWORD_INVALID, null);
+        }
+        administratorRepository.save(administrator);
+    }
+
     @Override
     public List<Administrator> listAdministrators() {
         return administratorRepository.findAll();
@@ -64,6 +79,7 @@ public class AdministratorServiceImpl implements AdministratorService {
      * @throws InvalidAdministratorDataException con el mensaje del primer dato inválido.
      */
     private void validateData(Administrator administrator) {
+        if (administrator.getEmail() != null) administrator.setEmail(administrator.getEmail().trim());
         if (administrator.getName() == null || administrator.getName().isBlank()) {
             throw new InvalidAdministratorDataException(
                     InvalidAdministratorDataException.Reason.NAME_REQUIRED, administrator.getName());
@@ -82,8 +98,9 @@ public class AdministratorServiceImpl implements AdministratorService {
 
         Administrator administratorWithThatEmail =
                 administratorRepository.findByEmailIgnoreCase(administrator.getEmail()).orElse(null);
-        if (administratorWithThatEmail != null
-                && !Objects.equals(administratorWithThatEmail.getAdminId(), administrator.getAdminId())) {
+        if ((administratorWithThatEmail != null
+                && !Objects.equals(administratorWithThatEmail.getAdminId(), administrator.getAdminId()))
+                || accountEmailService.usedByAnotherRole(administrator.getEmail(), AuthenticatedAccount.Role.ADMINISTRATOR)) {
             throw new InvalidAdministratorDataException(
                     InvalidAdministratorDataException.Reason.EMAIL_ALREADY_REGISTERED, administrator.getEmail());
         }
