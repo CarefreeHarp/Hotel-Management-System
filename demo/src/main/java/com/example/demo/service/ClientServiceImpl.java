@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.demo.service.interfaces.LoginService;
 
 /**
  * Implementación de la lógica de negocio de los clientes.
@@ -32,7 +33,7 @@ public class ClientServiceImpl implements ClientService {
     public ClientRepository clientRepository;
 
     @Autowired
-    private AccountEmailService accountEmailService;
+    private LoginService loginService;
 
     @Override
     public List<Client> listClients() {
@@ -133,7 +134,7 @@ public class ClientServiceImpl implements ClientService {
         Client clientWithThatEmail = clientRepository.findByEmailIgnoreCase(client.getEmail()).orElse(null);
         if ((clientWithThatEmail != null
                 && !Objects.equals(clientWithThatEmail.getClientId(), client.getClientId()))
-                || accountEmailService.usedByAnotherRole(client.getEmail(), AuthenticatedAccount.Role.CLIENT)) {
+                || loginService.emailUsedByAnotherRole(client.getEmail(), "CLIENT")) {
             throw new InvalidClientDataException(
                     InvalidClientDataException.Reason.EMAIL_ALREADY_REGISTERED, client.getEmail());
         }

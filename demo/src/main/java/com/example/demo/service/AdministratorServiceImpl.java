@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.demo.service.interfaces.LoginService;
 
 /**
  * Implementación de la lógica de negocio de los administradores.
@@ -29,7 +30,7 @@ public class AdministratorServiceImpl implements AdministratorService {
     public AdministratorRepository administratorRepository;
 
     @Autowired
-    private AccountEmailService accountEmailService;
+    private LoginService loginService;
 
     @Override
     public void create(Administrator administrator) {
@@ -100,7 +101,7 @@ public class AdministratorServiceImpl implements AdministratorService {
                 administratorRepository.findByEmailIgnoreCase(administrator.getEmail()).orElse(null);
         if ((administratorWithThatEmail != null
                 && !Objects.equals(administratorWithThatEmail.getAdminId(), administrator.getAdminId()))
-                || accountEmailService.usedByAnotherRole(administrator.getEmail(), AuthenticatedAccount.Role.ADMINISTRATOR)) {
+                || loginService.emailUsedByAnotherRole(administrator.getEmail(), "ADMINISTRATOR")) {
             throw new InvalidAdministratorDataException(
                     InvalidAdministratorDataException.Reason.EMAIL_ALREADY_REGISTERED, administrator.getEmail());
         }
