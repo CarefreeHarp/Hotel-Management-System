@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.interfaces.ClientService;
+import com.example.demo.security.SessionAccess;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +22,10 @@ public class AdminClientController {
 
     // Full URL: http://localhost:8080/admin/clients/read
     @GetMapping("/read")
-    public String listClients(Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+    public String listClients(Model model, @RequestParam(required = false) Integer adminId,
+                              @RequestParam(required = false) Integer operatorId, HttpSession session) {
+        // El listado completo de clientes es pantalla de staff.
+        if (!SessionAccess.isStaff(session)) return SessionAccess.deniedStaff(session);
         prepareNavigation(model, adminId, operatorId);
         model.addAttribute("clientes", clientService.listClients());
         return "clients/list";

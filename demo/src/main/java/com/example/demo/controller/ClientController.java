@@ -4,6 +4,8 @@ import com.example.demo.entities.Client;
 import com.example.demo.errors.InvalidClientDataException;
 import com.example.demo.errors.InvalidCurrentPasswordException;
 import com.example.demo.service.interfaces.ClientService;
+import com.example.demo.security.SessionAccess;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,7 +73,13 @@ public class ClientController {
     // Full URL: http://localhost:8080/clients/read/{clientId}
     @GetMapping("/read/{clientId}")
     public String verProfile(@PathVariable Integer clientId,
-                            Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+                            Model model, @RequestParam(required = false) Integer adminId,
+                            @RequestParam(required = false) Integer operatorId, HttpSession session) {
+        // Staff ve cualquier cliente; un cliente solo se ve a si mismo. El id de la
+        // URL no prueba nada: se compara contra el clientId guardado en sesion.
+        if (!SessionAccess.isStaff(session) && !SessionAccess.isSelfClient(session, clientId)) {
+            return SessionAccess.denied(session);
+        }
         prepareNavigation(model, adminId, operatorId);
         model.addAttribute("cliente", clientService.findById(clientId));
         return "clients/details";
