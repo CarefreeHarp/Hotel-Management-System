@@ -9,7 +9,7 @@
     <link rel="stylesheet" th:href="@{/css/clients/form.css}" href="/css/clients/form.css" />
   </head>
   <body class="portal-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
-    <header class="portal-header" th:if="${!esEdicion}">
+    <header class="portal-header" th:if="${adminId == null and operatorId == null and !esEdicion}">
       <nav aria-label="Registration navigation">
         <div class="portal-header__inner tw-mx-auto tw-flex tw-w-full tw-max-w-7xl tw-items-center tw-justify-between tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
           <a class="portal-brand" th:href="@{/}" aria-label="Back to the Atlan Suites home page">
@@ -26,6 +26,7 @@
       </nav>
     </header>
 
+    <th:block th:if="${adminId != null or operatorId != null}"><th:block th:replace="~{fragments/admin-shell :: header('clientes')}"></th:block></th:block>
     <main class="portal-main">
       <div class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
         <header class="page-heading">
@@ -38,6 +39,8 @@
         </header>
 
         <form class="surface-card form-card client-form-card" th:action="${accion}" th:object="${cliente}" method="post" novalidate>
+          <input th:if="${adminId != null}" type="hidden" name="adminId" th:value="${adminId}" />
+          <input th:if="${operatorId != null and adminId == null}" type="hidden" name="operatorId" th:value="${operatorId}" />
           <aside class="portal-alert" th:if="${error}" role="alert" th:text="${error}"></aside>
 
           <section class="form-section" aria-labelledby="personal-info-title">
@@ -96,8 +99,8 @@
               <span th:text="${esEdicion ? 'Save changes' : 'Create my profile'}">Create my profile</span>
               <span aria-hidden="true">→</span>
             </button>
-            <a class="atlan-btn atlan-btn--secondary" th:if="${!esEdicion}" th:href="@{/login}">Back to sign in</a>
-            <a class="atlan-btn atlan-btn--secondary" th:if="${esEdicion}" th:href="@{/clients/read/{clientId}(clientId=${cliente.clientId})}">Cancel</a>
+            <a class="atlan-btn atlan-btn--secondary" th:if="${!esEdicion}" th:href="${adminId != null ? '/admin/clients/read?adminId=' + adminId : (operatorId != null ? '/admin/clients/read?operatorId=' + operatorId : '/login')}" th:text="${adminId != null or operatorId != null ? 'Back to clients' : 'Back to sign in'}">Back to sign in</a>
+            <a class="atlan-btn atlan-btn--secondary" th:if="${esEdicion}" th:href="@{/clients/read/{clientId}(clientId=${cliente.clientId},adminId=${adminId},operatorId=${operatorId})}">Cancel</a>
           </div>
         </form>
       </div>
@@ -109,6 +112,6 @@
         <a th:href="@{/}">Back to the hotel website</a>
       </div>
     </footer>
-    <footer class="portal-footer tw-border-t tw-border-white/10" th:if="${esEdicion}"><div class="tw-mx-auto tw-flex tw-max-w-7xl tw-flex-col tw-gap-2 tw-px-4 tw-py-6 tw-text-center tw-text-xs tw-text-slate-400 sm:tw-flex-row sm:tw-items-center sm:tw-justify-between sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]"><p>Atlan Suites</p><a class="tw-text-sky-200 hover:tw-text-white" th:href="@{/clients/read/{clientId}(clientId=${cliente.clientId})}">Back to my profile</a></div></footer>
+    <footer class="portal-footer tw-border-t tw-border-white/10" th:if="${esEdicion}"><div class="tw-mx-auto tw-flex tw-max-w-7xl tw-flex-col tw-gap-2 tw-px-4 tw-py-6 tw-text-center tw-text-xs tw-text-slate-400 sm:tw-flex-row sm:tw-items-center sm:tw-justify-between sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]"><p>Atlan Suites</p><a class="tw-text-sky-200 hover:tw-text-white" th:href="@{/clients/read/{clientId}(clientId=${cliente.clientId},adminId=${adminId},operatorId=${operatorId})}">Back to my profile</a></div></footer>
   </body>
 </html>

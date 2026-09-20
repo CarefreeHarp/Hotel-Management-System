@@ -28,32 +28,32 @@
               <a
                 class="portal-nav__link"
                 th:classappend="${activePage == 'panel'} ? ' is-active' : ''"
-                th:href="${panelUrl != null ? panelUrl : (session.isAdmin == true ? '/admin/panel' : '/operators/panel')}"
-               th:text="${session.isAdmin == true ? 'Admin panel' : 'Operator panel'}">Panel</a>
+                th:href="${panelUrl != null ? panelUrl : (adminId != null ? '/admin/panel' : '/operators/panel')}"
+               th:text="${adminId != null ? 'Admin panel' : 'Operator panel'}">Panel</a>
               <a
                 class="portal-nav__link"
                 th:classappend="${activePage == 'clientes'} ? ' is-active' : ''"
-                th:href="@{/admin/clients/read}"
+                th:href="@{/admin/clients/read(adminId=${adminId},operatorId=${operatorId})}"
               >Clients</a>
               <a
                 class="portal-nav__link"
                 th:classappend="${activePage == 'tipos'} ? ' is-active' : ''"
-                th:href="@{/admin/room-types/read}"
+                th:href="@{/admin/room-types/read(adminId=${adminId},operatorId=${operatorId})}"
               >Room types</a>
               <a
                 class="portal-nav__link"
                 th:classappend="${activePage == 'habitaciones'} ? ' is-active' : ''"
-                th:href="@{/admin/rooms/read}"
+                th:href="@{/admin/rooms/read(adminId=${adminId},operatorId=${operatorId})}"
               >Rooms</a>
               <a
                 class="portal-nav__link"
                 th:classappend="${activePage == 'administradores'} ? ' is-active' : ''"
-                th:if="${session.isAdmin == true}" th:href="@{/admin/administrators/read(adminId=${adminId})}"
+                th:if="${adminId != null}" th:href="@{/admin/administrators/read(adminId=${adminId})}"
               >Administrators</a>
               <a
                 class="portal-nav__link"
                 th:classappend="${activePage == 'operarios'} ? ' is-active' : ''"
-                th:if="${session.isAdmin == true}" th:href="${adminId != null ? '/admins/' + adminId + '/operators' : '/admin/operators/read'}"
+                th:if="${adminId != null}" th:href="${adminId != null ? '/admins/' + adminId + '/operators' : '/admin/operators/read'}"
               >Operators</a>
             </div>
 
