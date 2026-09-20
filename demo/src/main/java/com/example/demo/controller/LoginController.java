@@ -4,6 +4,7 @@ import com.example.demo.entities.Administrator;
 import com.example.demo.entities.Client;
 import com.example.demo.entities.Operator;
 import com.example.demo.service.interfaces.LoginService;
+import com.example.demo.security.SessionAccess;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,12 @@ public class LoginController {
                                Model model, HttpServletRequest request) {
         boolean staffLogin = request.getServletPath().equals("/staff/login");
         if (staffLogin) {
-            return authenticateStaff(user, password, model);
+            return authenticateStaff(user, password, model, request);
         }
         return authenticateClient(user, password, model, request);
     }
 
-    private String authenticateStaff(String user, String password, Model model) {
+    private String authenticateStaff(String user, String password, Model model, HttpServletRequest request) {
         Administrator administrator = loginService.authenticateAdministrator(user, password);
         Operator operator = loginService.authenticateOperator(user, password);
 
@@ -44,8 +45,15 @@ public class LoginController {
             return "login/login";
         }
         if (administrator != null) {
+            HttpSession session = openFreshSession(request);
+            session.setAttribute(SessionAccess.ROLE, SessionAccess.ADMIN);
+            session.setAttribute("adminId", administrator.getAdminId());
+            session.setAttribute("isAdmin", true);
             return "redirect:/admin/panel/" + administrator.getAdminId();
         }
+        HttpSession session = openFreshSession(request);
+        session.setAttribute(SessionAccess.ROLE, SessionAccess.OPERATOR);
+        session.setAttribute("operatorId", operator.getOperatorId());
         return "redirect:/operators/panel/" + operator.getOperatorId();
     }
 
@@ -57,19 +65,33 @@ public class LoginController {
             return "login/login";
         }
 
-        // Se abre una sesión nueva para no mezclar cuentas al cambiar de usuario.
+        // El destino pendiente debe rescatarse ANTES de invalidar la sesion.
         HttpSession previous = request.getSession(false);
-        Object destination = null;
-        if (previous != null) {
-            destination = previous.getAttribute("pendingClientDestination");
-            previous.invalidate();
-        }
-        HttpSession session = request.getSession(true);
+        Object destination = previous == null ? null : previous.getAttribute("pendingClientDestination");
+
+        HttpSession session = openFreshSession(request);
+        session.setAttribute(SessionAccess.ROLE, SessionAccess.CLIENT);
         session.setAttribute("clientId", client.getClientId());
         if ("/reservation/book".equals(destination)) {
             return "redirect:/reservation/book";
         }
         return "redirect:/clients/read/" + client.getClientId();
+    }
+
+    /**
+     * Cierra la sesion anterior y abre una nueva.
+     *
+     * Rotar el identificador en cada login es lo que impide que alguien fije un
+     * JSESSIONID de antemano y herede la cuenta ajena (session fixation). Como
+     * invalidate() borra todos los atributos, lo que deba sobrevivir al cambio
+     * hay que rescatarlo antes y reescribirlo despues.
+     */
+    private HttpSession openFreshSession(HttpServletRequest request) {
+        HttpSession previous = request.getSession(false);
+        if (previous != null) {
+            previous.invalidate();
+        }
+        return request.getSession(true);
     }
 
 }

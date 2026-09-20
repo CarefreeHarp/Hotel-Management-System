@@ -4,6 +4,8 @@ import com.example.demo.entities.Operator;
 import com.example.demo.errors.InvalidOperatorDataException;
 import com.example.demo.service.interfaces.LoginService;
 import com.example.demo.service.interfaces.OperatorService;
+import com.example.demo.security.SessionAccess;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,14 +39,17 @@ public class OperatorController {
     }
 
     @GetMapping("/admin/operators/read")
-    public String listOperators(Model model, @RequestParam(required = false) Integer adminId) {
+    public String listOperators(Model model, @RequestParam(required = false) Integer adminId, HttpSession session) {
+        // ADMIN y OPERATOR ven operarios; el cliente no.
+        if (!SessionAccess.isStaff(session)) return SessionAccess.deniedStaff(session);
         if (adminId != null) return "redirect:/admins/" + adminId + "/operators";
         model.addAttribute("operarios", operators.listOperators());
         return "operators/list";
     }
 
     @GetMapping("/admin/operators/read/{id}")
-    public String showDetails(@PathVariable Integer id, Model model, @RequestParam(required = false) Integer adminId) {
+    public String showDetails(@PathVariable Integer id, Model model, @RequestParam(required = false) Integer adminId, HttpSession session) {
+        if (!SessionAccess.isStaff(session)) return SessionAccess.deniedStaff(session);
         if (adminId != null) return "redirect:/admins/" + adminId + "/operators/" + id;
         model.addAttribute("operario", operators.findById(id));
         model.addAttribute("ownProfile", false);
@@ -52,7 +57,12 @@ public class OperatorController {
     }
 
     @GetMapping("/operators/read/{id}")
-    public String myProfile(@PathVariable Integer id, Model model) {
+    public String myProfile(@PathVariable Integer id, Model model, HttpSession session) {
+        // Esta vista pinta ownProfile=true (botones de editar/borrar), asi que
+        // solo la abre el propio operario o un administrador.
+        boolean self = SessionAccess.isOperator(session)
+                && id.equals(session.getAttribute("operatorId"));
+        if (!self && !SessionAccess.isAdmin(session)) return SessionAccess.deniedStaff(session);
         model.addAttribute("operario", operators.findById(id));
         model.addAttribute("ownProfile", true);
         prepareNavigation(model, id);
@@ -81,7 +91,9 @@ public class OperatorController {
     }
 
     @GetMapping("/admins/{adminId}/operators")
-    public String managedList(@PathVariable Integer adminId, Model model) {
+    public String managedList(@PathVariable Integer adminId, Model model, HttpSession session) {
+        // Arbol de gestion del administrador: las vistas exponen crear/editar/borrar.
+        if (!SessionAccess.isAdmin(session)) return SessionAccess.deniedStaff(session);
         prepareAdminNavigation(model, adminId);
         model.addAttribute("operarios", operators.listByAdministrator(adminId));
         return "operators/list";
@@ -89,7 +101,8 @@ public class OperatorController {
 
     @GetMapping("/admins/{adminId}/operators/{id}")
     public String managedDetails(@PathVariable Integer adminId, @PathVariable Integer id,
-                                 Model model) {
+                                 Model model, HttpSession session) {
+        if (!SessionAccess.isAdmin(session)) return SessionAccess.deniedStaff(session);
         prepareAdminNavigation(model, adminId);
         model.addAttribute("operario", operators.findManagedBy(id, adminId));
         model.addAttribute("ownProfile", false);
@@ -144,7 +157,7 @@ public class OperatorController {
     @PostMapping("/admins/{adminId}/operators/{id}/delete")
     public String managedDelete(@PathVariable Integer adminId, @PathVariable Integer id,
                                 @RequestParam(defaultValue = "") String passwordCurrent,
-                                Model model) {
+                                Model model, HttpSession session) {
         operators.findManagedBy(id, adminId);
         try {
             login.confirmAdministratorPassword(adminId, passwordCurrent);
@@ -152,7 +165,7 @@ public class OperatorController {
             return "redirect:/admins/" + adminId + "/operators";
         } catch (SecurityException exception) {
             model.addAttribute("error", exception.getMessage());
-            return managedDetails(adminId, id, model);
+            return managedDetails(adminId, id, model, session);
         }
     }
 

@@ -47,8 +47,11 @@
         <a th:href="@{/login}" class="btn btn-glass"
           >Login<span aria-hidden="true">↗</span></a
         >
-        <a th:href="@{/reservation/book}" class="btn btn-glass"
+        <a th:if="${staffPanelUrl == null}" th:href="@{/reservation/book}" class="btn btn-glass"
           >Book now<span aria-hidden="true">↗</span></a
+        >
+        <a th:if="${staffPanelUrl != null}" th:href="@{${staffPanelUrl}}" class="btn btn-glass"
+          ><span th:text="${staffPanelLabel}">Panel</span><span aria-hidden="true">↗</span></a
         >
         <button
           class="nav-toggle tw-flex xl:tw-hidden"
