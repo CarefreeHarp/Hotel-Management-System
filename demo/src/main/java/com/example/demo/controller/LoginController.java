@@ -1,57 +1,79 @@
 package com.example.demo.controller;
 
-import com.example.demo.service.AuthenticatedAccount;
+import com.example.demo.entities.Administrator;
+import com.example.demo.entities.Client;
+import com.example.demo.entities.Operator;
 import com.example.demo.service.interfaces.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import static com.example.demo.service.AuthenticatedAccount.Role.*;
 
 @Controller
 public class LoginController {
-    private final LoginService loginService;
-    public LoginController(LoginService loginService) { this.loginService = loginService; }
+    @Autowired
+    private LoginService loginService;
 
     @GetMapping({"/login", "/staff/login"})
     public String showLogin(HttpServletRequest request, Model model) {
-        model.addAttribute("staffLogin", request.getRequestURI().equals(request.getContextPath() + "/staff/login"));
+        model.addAttribute("staffLogin", request.getServletPath().equals("/staff/login"));
         return "login/login";
     }
 
     @PostMapping({"/login", "/staff/login"})
     public String authenticate(@RequestParam String user, @RequestParam String password,
                                Model model, HttpServletRequest request) {
-        boolean staffLogin = request.getRequestURI().equals(request.getContextPath() + "/staff/login");
-        try {
-            AuthenticatedAccount account = loginService.authenticate(user, password);
-            if (staffLogin && account.role() == CLIENT) {
-                throw new SecurityException("Use guest sign in for your client account.");
-            }
-            HttpSession previous = request.getSession(false);
-            Object destination = previous == null ? null : previous.getAttribute("pendingClientDestination");
-            if (previous != null) previous.invalidate();
-            HttpSession session = request.getSession(true);
-            session.setAttribute("account", account);
-            session.setAttribute("isAdmin", account.role() == ADMINISTRATOR);
-            switch (account.role()) {
-                case CLIENT -> session.setAttribute("clientId", account.id());
-                case OPERATOR -> session.setAttribute("operatorId", account.id());
-                case ADMINISTRATOR -> session.setAttribute("adminId", account.id());
-            }
-            // Conserva el regreso al flujo de reservas iniciado por un cliente.
-            if (account.role() == CLIENT && "/reservation/book".equals(destination)) {
-                return "redirect:/reservation/book";
-            }
-            return "redirect:" + account.profilePath();
-        } catch (SecurityException exception) {
+        boolean staffLogin = request.getServletPath().equals("/staff/login");
+        Administrator administrator = loginService.authenticateAdministrator(user, password);
+        Operator operator = loginService.authenticateOperator(user, password);
+        Client client = loginService.authenticateClient(user, password);
+
+        int matches = 0;
+        if (administrator != null) matches++;
+        if (operator != null) matches++;
+        if (client != null) matches++;
+        if (matches != 1) {
             model.addAttribute("staffLogin", staffLogin);
-            model.addAttribute("error", exception.getMessage());
+            model.addAttribute("error", "Incorrect email or password.");
             return "login/login";
         }
+        if (staffLogin && client != null) {
+            model.addAttribute("staffLogin", true);
+            model.addAttribute("error", "Use guest sign in for your client account.");
+            return "login/login";
+        }
+
+        // Se abre una sesión nueva para no mezclar cuentas al cambiar de usuario.
+        HttpSession previous = request.getSession(false);
+        Object destination = null;
+        if (previous != null) {
+            destination = previous.getAttribute("pendingClientDestination");
+            previous.invalidate();
+        }
+        HttpSession session = request.getSession(true);
+        String profileUrl;
+        if (administrator != null) {
+            session.setAttribute("adminId", administrator.getAdminId());
+            session.setAttribute("isAdmin", true);
+            profileUrl = "/admins/read/" + administrator.getAdminId();
+        } else if (operator != null) {
+            session.setAttribute("operatorId", operator.getOperatorId());
+            session.setAttribute("isAdmin", false);
+            profileUrl = "/operators/read/" + operator.getOperatorId();
+        } else {
+            session.setAttribute("clientId", client.getClientId());
+            session.setAttribute("isAdmin", false);
+            profileUrl = "/clients/read/" + client.getClientId();
+        }
+        session.setAttribute("profileUrl", profileUrl);
+        if (client != null && "/reservation/book".equals(destination)) {
+            return "redirect:/reservation/book";
+        }
+        return "redirect:" + profileUrl;
     }
 
     @PostMapping("/logout")
@@ -61,5 +83,11 @@ public class LoginController {
     }
 
     @GetMapping("/admin/panel")
-    public String showPanelAdmin() { return "admin/panel"; }
+    public String showPanelAdmin(HttpSession session) {
+        if (!loginService.isStaff((Integer) session.getAttribute("adminId"),
+                (Integer) session.getAttribute("operatorId"))) {
+            return "redirect:/login";
+        }
+        return "admin/panel";
+    }
 }

@@ -7,6 +7,8 @@ import com.example.demo.errors.ResourceNotFoundException;
 import com.example.demo.service.interfaces.RoomService;
 import com.example.demo.service.interfaces.RoomTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.service.interfaces.LoginService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +36,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RoomController {
 
     @Autowired
+    private LoginService loginService;
+
+    @Autowired
     RoomService roomService;
 
     @Autowired
@@ -41,14 +46,20 @@ public class RoomController {
 
     // Full URL: http://localhost:8080/admin/rooms/read
     @GetMapping("/read")
-    public String listRooms(Model model) {
+    public String listRooms(Model model, HttpSession session) {
+        if (!loginService.isStaff((Integer) session.getAttribute("adminId"), (Integer) session.getAttribute("operatorId"))) {
+            return "redirect:/login";
+        }
         model.addAttribute("habitaciones", roomService.listRooms());
         return "rooms/list";
     }
 
     // Full URL: http://localhost:8080/admin/rooms/create
     @GetMapping("/create")
-    public String showFormCreacion(Model model) {
+    public String showFormCreacion(Model model, HttpSession session) {
+        if (!loginService.isStaff((Integer) session.getAttribute("adminId"), (Integer) session.getAttribute("operatorId"))) {
+            return "redirect:/login";
+        }
         // Se arma con el builder y no con new Room() porque así la lista de fotos
         // secundarias llega vacía en vez de en null, que es lo que espera la vista.
         prepareForm(model, Room.builder().build(), "Create room", "/admin/rooms/create");
@@ -59,7 +70,10 @@ public class RoomController {
     @PostMapping("/create")
     public String create(@ModelAttribute Room room,
                          @RequestParam(value = "roomTypeId", required = false) Integer roomTypeId,
-                         Model model) {
+                         Model model, HttpSession session) {
+        if (!loginService.isStaff((Integer) session.getAttribute("adminId"), (Integer) session.getAttribute("operatorId"))) {
+            return "redirect:/login";
+        }
         try {
             if (roomTypeId != null) {
                 room.setRoomType(roomTypeService.findById(roomTypeId));
@@ -75,7 +89,10 @@ public class RoomController {
 
     // Full URL: http://localhost:8080/admin/rooms/read/{number}
     @GetMapping("/read/{number}")
-    public String verDetalle(@PathVariable int number, Model model) {
+    public String verDetalle(@PathVariable int number, Model model, HttpSession session) {
+        if (!loginService.isStaff((Integer) session.getAttribute("adminId"), (Integer) session.getAttribute("operatorId"))) {
+            return "redirect:/login";
+        }
         // La vista llega al tipo navegando la relación (habitacion.roomType),
         // así que no hace falta mandarlo como un atributo aparte.
         model.addAttribute("habitacion", roomService.findByNumber(number));
@@ -84,7 +101,10 @@ public class RoomController {
 
     // Full URL: http://localhost:8080/admin/rooms/update/{number}
     @GetMapping("/update/{number}")
-    public String showFormEditing(@PathVariable int number, Model model) {
+    public String showFormEditing(@PathVariable int number, Model model, HttpSession session) {
+        if (!loginService.isStaff((Integer) session.getAttribute("adminId"), (Integer) session.getAttribute("operatorId"))) {
+            return "redirect:/login";
+        }
         Room room = roomService.findByNumber(number);
         prepareForm(model, room, "Update room", "/admin/rooms/update/" + number);
         return "rooms/form";
@@ -95,7 +115,10 @@ public class RoomController {
     public String update(@PathVariable int number,
                              @ModelAttribute Room room,
                              @RequestParam(value = "roomTypeId", required = false) Integer roomTypeId,
-                             Model model) {
+                             Model model, HttpSession session) {
+        if (!loginService.isStaff((Integer) session.getAttribute("adminId"), (Integer) session.getAttribute("operatorId"))) {
+            return "redirect:/login";
+        }
         try {
             if (roomTypeId != null) {
                 room.setRoomType(roomTypeService.findById(roomTypeId));
@@ -111,7 +134,10 @@ public class RoomController {
 
     // Full URL: http://localhost:8080/admin/rooms/delete/{number}
     @PostMapping("/delete/{number}")
-    public String delete(@PathVariable int number) {
+    public String delete(@PathVariable int number, HttpSession session) {
+        if (!loginService.isStaff((Integer) session.getAttribute("adminId"), (Integer) session.getAttribute("operatorId"))) {
+            return "redirect:/login";
+        }
         roomService.delete(number);
         return "redirect:/admin/rooms/read";
     }

@@ -24,6 +24,16 @@ public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private FolioRepository folioRepository;
 
+    /** Conserva los pagos cuando se elimina la cuenta de quien los registró. */
+    @Override
+    @Transactional
+    public void removeOperatorFromPayments(Integer operatorId) {
+        for (Payment payment : paymentRepository.findByOperator_OperatorId(operatorId)) {
+            payment.setOperator(null);
+            paymentRepository.save(payment);
+        }
+    }
+
     /** Registra un pago y recalcula el estado del folio dentro de una transacción. */
     @Override
     @Transactional

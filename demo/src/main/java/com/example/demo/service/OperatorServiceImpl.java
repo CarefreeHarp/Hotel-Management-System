@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.demo.service.interfaces.LoginService;
 
 /**
  * Implementación de la lógica de negocio de los operarios.
@@ -33,7 +34,10 @@ public class OperatorServiceImpl implements OperatorService {
     public AdministratorService administratorService;
 
     @Autowired
-    private AccountEmailService accountEmailService;
+    private LoginService loginService;
+
+    @Autowired
+    private com.example.demo.service.interfaces.PaymentService paymentService;
 
     @Override
     public void create(Operator operator, Integer adminId) {
@@ -56,19 +60,17 @@ public class OperatorServiceImpl implements OperatorService {
     public Operator findManagedBy(Integer operatorId, Integer adminId) {
         Operator operator = findById(operatorId);
         if (!Objects.equals(operator.getAdmin().getAdminId(), adminId)) {
-            throw new org.springframework.web.server.ResponseStatusException(
-                    org.springframework.http.HttpStatus.FORBIDDEN, "This operator is not assigned to you.");
+            throw new SecurityException("This operator is not assigned to you.");
         }
         return operator;
     }
 
     @Override
-    @org.springframework.transaction.annotation.Transactional
+    @jakarta.transaction.Transactional
     public void deleteManagedBy(Integer operatorId, Integer adminId) {
-        findManagedBy(operatorId, adminId);
-        // La FK conserva PAYMENT con ON DELETE SET NULL. La consulta limpia el
-        // contexto JPA para no conservar pagos con una referencia ya eliminada.
-        operatorRepository.deleteManagedOperator(operatorId, adminId);
+        Operator operator = findManagedBy(operatorId, adminId);
+        paymentService.removeOperatorFromPayments(operatorId);
+        operatorRepository.delete(operator);
     }
 
     @Override
@@ -146,7 +148,7 @@ public class OperatorServiceImpl implements OperatorService {
                 operatorRepository.findByEmailIgnoreCase(operator.getEmail()).orElse(null);
         if ((operatorWithThatEmail != null
                 && !Objects.equals(operatorWithThatEmail.getOperatorId(), operator.getOperatorId()))
-                || accountEmailService.usedByAnotherRole(operator.getEmail(), AuthenticatedAccount.Role.OPERATOR)) {
+                || loginService.emailUsedByAnotherRole(operator.getEmail(), "OPERATOR")) {
             throw new InvalidOperatorDataException(
                     InvalidOperatorDataException.Reason.EMAIL_ALREADY_REGISTERED, operator.getEmail());
         }

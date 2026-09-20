@@ -57,7 +57,7 @@
               >Operators</a>
             </div>
 
-            <a class="portal-nav__link" th:if="${session.account != null}" th:href="${session.account.profilePath()}">My profile</a>
+            <a class="portal-nav__link" th:if="${session.profileUrl != null}" th:href="${session.profileUrl}">My profile</a>
             <form th:action="@{/logout}" method="post"><button class="atlan-btn atlan-btn--secondary atlan-btn--small" type="submit">Sign out</button></form>
             <a class="portal-exit" th:href="@{/}">
               Go to hotel <span aria-hidden="true">↗</span>
