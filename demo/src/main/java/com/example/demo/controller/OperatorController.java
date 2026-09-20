@@ -4,7 +4,6 @@ import com.example.demo.entities.Operator;
 import com.example.demo.errors.InvalidOperatorDataException;
 import com.example.demo.service.interfaces.LoginService;
 import com.example.demo.service.interfaces.OperatorService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +20,8 @@ public class OperatorController {
     private com.example.demo.service.interfaces.AdministratorService administrators;
 
     @GetMapping("/operators/panel")
-    public String panel(Model model) {
+    public String panel(Model model, @RequestParam(required = false) Integer operatorId) {
+        if (operatorId != null) return "redirect:/operators/panel/" + operatorId;
         model.addAttribute("profileUrl", "/staff/login");
         model.addAttribute("panelUrl", "/operators/panel");
         model.addAttribute("panelTitle", "Operator panel");
@@ -37,13 +37,15 @@ public class OperatorController {
     }
 
     @GetMapping("/admin/operators/read")
-    public String listOperators(Model model) {
+    public String listOperators(Model model, @RequestParam(required = false) Integer adminId) {
+        if (adminId != null) return "redirect:/admins/" + adminId + "/operators";
         model.addAttribute("operarios", operators.listOperators());
         return "operators/list";
     }
 
     @GetMapping("/admin/operators/read/{id}")
-    public String showDetails(@PathVariable Integer id, Model model) {
+    public String showDetails(@PathVariable Integer id, Model model, @RequestParam(required = false) Integer adminId) {
+        if (adminId != null) return "redirect:/admins/" + adminId + "/operators/" + id;
         model.addAttribute("operario", operators.findById(id));
         model.addAttribute("ownProfile", false);
         return "operators/details";
@@ -58,16 +60,14 @@ public class OperatorController {
     }
 
     @GetMapping("/operators/update/{id}")
-    public String showFormEditing(@PathVariable Integer id, Model model, HttpSession session) {
-        if (Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/admin/panel";
+    public String showFormEditing(@PathVariable Integer id, Model model) {
         prepareForm(model, operators.findById(id), id);
         return "operators/form";
     }
 
     @PostMapping("/operators/update/{id}")
     public String update(@PathVariable Integer id, @ModelAttribute Operator operator,
-                         @RequestParam(defaultValue = "") String passwordCurrent, Model model, HttpSession session) {
-        if (Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/admin/panel";
+                         @RequestParam(defaultValue = "") String passwordCurrent, Model model) {
         Operator registered = operators.findById(id);
         try {
             login.confirmOperatorPassword(id, passwordCurrent);
@@ -81,8 +81,7 @@ public class OperatorController {
     }
 
     @GetMapping("/admins/{adminId}/operators")
-    public String managedList(@PathVariable Integer adminId, Model model, HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+    public String managedList(@PathVariable Integer adminId, Model model) {
         prepareAdminNavigation(model, adminId);
         model.addAttribute("operarios", operators.listByAdministrator(adminId));
         return "operators/list";
@@ -90,8 +89,7 @@ public class OperatorController {
 
     @GetMapping("/admins/{adminId}/operators/{id}")
     public String managedDetails(@PathVariable Integer adminId, @PathVariable Integer id,
-                                 Model model, HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+                                 Model model) {
         prepareAdminNavigation(model, adminId);
         model.addAttribute("operario", operators.findManagedBy(id, adminId));
         model.addAttribute("ownProfile", false);
@@ -100,16 +98,14 @@ public class OperatorController {
     }
 
     @GetMapping("/admins/{adminId}/operators/create")
-    public String managedCreateForm(@PathVariable Integer adminId, Model model, HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+    public String managedCreateForm(@PathVariable Integer adminId, Model model) {
         prepareManagedForm(model, new Operator(), adminId, null);
         return "operators/form";
     }
 
     @PostMapping("/admins/{adminId}/operators/create")
     public String managedCreate(@PathVariable Integer adminId, @ModelAttribute Operator operator,
-                                @RequestParam(defaultValue = "") String passwordCurrent, Model model, HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+                                @RequestParam(defaultValue = "") String passwordCurrent, Model model) {
         try {
             login.confirmAdministratorPassword(adminId, passwordCurrent);
             operators.create(operator, adminId);
@@ -124,8 +120,7 @@ public class OperatorController {
 
     @GetMapping("/admins/{adminId}/operators/{id}/update")
     public String managedEditForm(@PathVariable Integer adminId, @PathVariable Integer id,
-                                  Model model, HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+                                  Model model) {
         prepareManagedForm(model, operators.findManagedBy(id, adminId), adminId, id);
         return "operators/form";
     }
@@ -133,8 +128,7 @@ public class OperatorController {
     @PostMapping("/admins/{adminId}/operators/{id}/update")
     public String managedUpdate(@PathVariable Integer adminId, @PathVariable Integer id,
                                 @ModelAttribute Operator operator, @RequestParam(defaultValue = "") String passwordCurrent,
-                                Model model, HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+                                Model model) {
         operators.findManagedBy(id, adminId);
         try {
             login.confirmAdministratorPassword(adminId, passwordCurrent);
@@ -150,8 +144,7 @@ public class OperatorController {
     @PostMapping("/admins/{adminId}/operators/{id}/delete")
     public String managedDelete(@PathVariable Integer adminId, @PathVariable Integer id,
                                 @RequestParam(defaultValue = "") String passwordCurrent,
-                                Model model, HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+                                Model model) {
         operators.findManagedBy(id, adminId);
         try {
             login.confirmAdministratorPassword(adminId, passwordCurrent);
@@ -159,7 +152,7 @@ public class OperatorController {
             return "redirect:/admins/" + adminId + "/operators";
         } catch (SecurityException exception) {
             model.addAttribute("error", exception.getMessage());
-            return managedDetails(adminId, id, model, session);
+            return managedDetails(adminId, id, model);
         }
     }
 
@@ -180,6 +173,7 @@ public class OperatorController {
     }
 
     private void prepareNavigation(Model model, Integer id) {
+        model.addAttribute("operatorId", id);
         model.addAttribute("profileUrl", "/operators/read/" + id);
         model.addAttribute("panelUrl", "/operators/panel/" + id);
     }

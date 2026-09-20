@@ -47,6 +47,13 @@ public class LoginController {
             return "login/login";
         }
 
+        if (administrator != null) {
+            return "redirect:/admin/panel/" + administrator.getAdminId();
+        }
+        if (operator != null) {
+            return "redirect:/operators/panel/" + operator.getOperatorId();
+        }
+
         // Se abre una sesión nueva para no mezclar cuentas al cambiar de usuario.
         HttpSession previous = request.getSession(false);
         Object destination = null;
@@ -55,13 +62,6 @@ public class LoginController {
             previous.invalidate();
         }
         HttpSession session = request.getSession(true);
-        if (administrator != null) {
-            session.setAttribute("isAdmin", true);
-            return "redirect:/admin/panel/" + administrator.getAdminId();
-        }
-        if (operator != null) {
-            return "redirect:/operators/panel/" + operator.getOperatorId();
-        }
         session.setAttribute("clientId", client.getClientId());
         if ("/reservation/book".equals(destination)) {
             return "redirect:/reservation/book";

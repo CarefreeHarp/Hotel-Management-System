@@ -4,7 +4,6 @@ import com.example.demo.entities.Administrator;
 import com.example.demo.errors.InvalidAdministratorDataException;
 import com.example.demo.service.interfaces.AdministratorService;
 import com.example.demo.service.interfaces.LoginService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +21,8 @@ public class AdministratorController {
     private com.example.demo.config.ApplicationClock applicationClock;
 
     @GetMapping("/admin/panel")
-    public String panel(Model model, HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+    public String panel(Model model, @RequestParam(required = false) Integer adminId) {
+        if (adminId != null) return "redirect:/admin/panel/" + adminId;
         prepareClock(model);
         model.addAttribute("profileUrl", "/staff/login");
         model.addAttribute("panelUrl", "/admin/panel");
@@ -32,8 +31,7 @@ public class AdministratorController {
     }
 
     @GetMapping("/admin/panel/{id}")
-    public String ownPanel(@PathVariable Integer id, Model model, HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+    public String ownPanel(@PathVariable Integer id, Model model) {
         prepareClock(model);
         administrators.findById(id);
         prepareNavigation(model, id);
@@ -57,8 +55,7 @@ public class AdministratorController {
     }
 
     @GetMapping("/admins/read/{id}")
-    public String myProfile(@PathVariable Integer id, Model model, HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+    public String myProfile(@PathVariable Integer id, Model model) {
         model.addAttribute("administrador", administrators.findById(id));
         model.addAttribute("ownProfile", true);
         prepareNavigation(model, id);
@@ -66,16 +63,14 @@ public class AdministratorController {
     }
 
     @GetMapping("/admins/update/{id}")
-    public String showFormEditing(@PathVariable Integer id, Model model, HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+    public String showFormEditing(@PathVariable Integer id, Model model) {
         prepareForm(model, administrators.findById(id), id);
         return "administrators/form";
     }
 
     @PostMapping("/admins/update/{id}")
     public String update(@PathVariable Integer id, @ModelAttribute Administrator administrator,
-                         @RequestParam(defaultValue = "") String passwordCurrent, Model model, HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+                         @RequestParam(defaultValue = "") String passwordCurrent, Model model) {
         try {
             login.confirmAdministratorPassword(id, passwordCurrent);
             administrators.update(id, administrator);
@@ -88,8 +83,7 @@ public class AdministratorController {
     }
 
     @GetMapping("/admins/{adminId}/administrators/create")
-    public String createForm(@PathVariable Integer adminId, Model model, HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+    public String createForm(@PathVariable Integer adminId, Model model) {
         administrators.findById(adminId);
         prepareCreateForm(model, new Administrator(), adminId);
         return "administrators/form";
@@ -97,8 +91,7 @@ public class AdministratorController {
 
     @PostMapping("/admins/{adminId}/administrators/create")
     public String create(@PathVariable Integer adminId, @ModelAttribute Administrator administrator,
-                         @RequestParam(defaultValue = "") String passwordCurrent, Model model, HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+                         @RequestParam(defaultValue = "") String passwordCurrent, Model model) {
         try {
             login.confirmAdministratorPassword(adminId, passwordCurrent);
             administrators.create(administrator);
@@ -113,16 +106,14 @@ public class AdministratorController {
 
     @PostMapping("/admins/delete/{id}")
     public String delete(@PathVariable Integer id, @RequestParam(defaultValue = "") String passwordCurrent,
-                         Model model, HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+                         Model model) {
         try {
             login.confirmAdministratorPassword(id, passwordCurrent);
             administrators.delete(id);
-            session.invalidate();
             return "redirect:/";
         } catch (SecurityException | com.example.demo.errors.DeletionRestrictedException exception) {
             model.addAttribute("error", exception.getMessage());
-            return myProfile(id, model, session);
+            return myProfile(id, model);
         }
     }
 

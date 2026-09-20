@@ -14,7 +14,7 @@
       <div class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
         <header class="page-heading">
           <div><p class="page-eyebrow">Staff management</p><h1 class="page-title">Registered administrators</h1><p class="page-description">View the accounts that manage Atlan Suites.</p></div>
-        <a th:if="${adminId != null and session.isAdmin == true}" class="atlan-btn atlan-btn--primary" th:href="@{/admins/{id}/administrators/create(id=${adminId})}">Create administrator</a>
+        <a th:if="${adminId != null}" class="atlan-btn atlan-btn--primary" th:href="@{/admins/{id}/administrators/create(id=${adminId})}">Create administrator</a>
         </header>
 
         <aside class="portal-alert" th:if="${error}" role="alert" th:text="${error}"></aside>

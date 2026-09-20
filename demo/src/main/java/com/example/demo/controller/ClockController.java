@@ -24,24 +24,21 @@ public class ClockController {
     @PostMapping("/clock/fixed")
     public String setFixedTime(
             @RequestParam("dateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime,
-            @RequestParam(required = false) Integer adminId, jakarta.servlet.http.HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+            @RequestParam(required = false) Integer adminId) {
         applicationClock.setFixedDateTime(dateTime);
         return "redirect:/admin/panel" + (adminId == null ? "" : "/" + adminId);
     }
 
     /** Restaura la fuente de tiempo real cuando se solicita desde la panel de administrador. */
     @PostMapping("/clock/system")
-    public String useSystemTime(@RequestParam(required = false) Integer adminId, jakarta.servlet.http.HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+    public String useSystemTime(@RequestParam(required = false) Integer adminId) {
         applicationClock.useSystemTime();
         return "redirect:/admin/panel" + (adminId == null ? "" : "/" + adminId);
     }
 
     /** Ejecuta manualmente las reglas que normalmente se disparan a medianoche. */
     @PostMapping("/clock/run-midnight-actions")
-    public String runMidnightActions(@RequestParam(required = false) Integer adminId, jakarta.servlet.http.HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) return "redirect:/staff/login";
+    public String runMidnightActions(@RequestParam(required = false) Integer adminId) {
         reservationService.runMidnightReservationAndRoomStatusActions();
         return "redirect:/admin/panel" + (adminId == null ? "" : "/" + adminId);
     }

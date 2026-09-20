@@ -39,7 +39,8 @@ public class ClientController {
      */
     // Full URL: http://localhost:8080/clients/create
     @GetMapping("/create")
-    public String showFormRegistro(Model model) {
+    public String showFormRegistro(Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+        prepareNavigation(model, adminId, operatorId);
         prepareForm(model, Client.builder().build(), "Client registration", "/clients/create", false);
         return "clients/form";
     }
@@ -51,10 +52,11 @@ public class ClientController {
      */
     // Full URL: http://localhost:8080/clients/create
     @PostMapping("/create")
-    public String register(@ModelAttribute Client client, Model model) {
+    public String register(@ModelAttribute Client client, Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+        prepareNavigation(model, adminId, operatorId);
         try {
             clientService.register(client);
-            return "redirect:/login";
+            return adminId == null && operatorId == null ? "redirect:/login" : "redirect:/admin/clients/read" + navigationQuery(adminId, operatorId);
         } catch (InvalidClientDataException exception) {
             prepareForm(model, client, "Client registration", "/clients/create", false);
             model.addAttribute("error", exception.getMessage());
@@ -69,7 +71,8 @@ public class ClientController {
     // Full URL: http://localhost:8080/clients/read/{clientId}
     @GetMapping("/read/{clientId}")
     public String verProfile(@PathVariable Integer clientId,
-                            Model model) {
+                            Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+        prepareNavigation(model, adminId, operatorId);
         model.addAttribute("cliente", clientService.findById(clientId));
         return "clients/details";
     }
@@ -81,7 +84,8 @@ public class ClientController {
     // Full URL: http://localhost:8080/clients/update/{clientId}
     @GetMapping("/update/{clientId}")
     public String showFormEditing(@PathVariable Integer clientId,
-                                           Model model) {
+                                           Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+        prepareNavigation(model, adminId, operatorId);
         Client client = clientService.findById(clientId);
         prepareForm(model, client, "Edit my details", "/clients/update/" + clientId, true);
         return "clients/form";
@@ -96,10 +100,11 @@ public class ClientController {
     public String updateProfile(@PathVariable Integer clientId,
                                    @ModelAttribute Client client,
                                    @RequestParam String passwordCurrent,
-                                   Model model) {
+                                   Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+        prepareNavigation(model, adminId, operatorId);
         try {
             clientService.updateProfile(clientId, client, passwordCurrent);
-            return "redirect:/clients/read/" + clientId;
+            return "redirect:/clients/read/" + clientId + navigationQuery(adminId, operatorId);
         } catch (InvalidCurrentPasswordException | InvalidClientDataException exception) {
             prepareForm(model, client, "Edit my details", "/clients/update/" + clientId, true);
             model.addAttribute("error", exception.getMessage());
@@ -114,9 +119,10 @@ public class ClientController {
      */
     // Full URL: http://localhost:8080/clients/delete/{clientId}
     @PostMapping("/delete/{clientId}")
-    public String deleteProfile(@PathVariable Integer clientId) {
+    public String deleteProfile(@PathVariable Integer clientId, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId, Model model) {
+        prepareNavigation(model, adminId, operatorId);
         clientService.deleteProfile(clientId);
-        return "redirect:/login";
+        return adminId == null && operatorId == null ? "redirect:/login" : "redirect:/admin/clients/read" + navigationQuery(adminId, operatorId);
     }
 
     /** Atributos que necesita la vista del formulario, tanto al crear como al editar. */
@@ -125,5 +131,22 @@ public class ClientController {
         model.addAttribute("titulo", title);
         model.addAttribute("accion", action);
         model.addAttribute("esEdicion", esEditing);
+    }
+    // El identificador se conserva en la URL; no se guarda en sesion.
+    private void prepareNavigation(Model model, Integer adminId, Integer operatorId) {
+        if (adminId != null) {
+            model.addAttribute("adminId", adminId);
+            model.addAttribute("panelUrl", "/admin/panel/" + adminId);
+            model.addAttribute("profileUrl", "/admins/read/" + adminId);
+        } else if (operatorId != null) {
+            model.addAttribute("operatorId", operatorId);
+            model.addAttribute("panelUrl", "/operators/panel/" + operatorId);
+            model.addAttribute("profileUrl", "/operators/read/" + operatorId);
+        }
+    }
+
+    private String navigationQuery(Integer adminId, Integer operatorId) {
+        if (adminId != null) return "?adminId=" + adminId;
+        return operatorId == null ? "" : "?operatorId=" + operatorId;
     }
 }
