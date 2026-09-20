@@ -28,7 +28,7 @@
               <a
                 class="portal-nav__link"
                 th:classappend="${activePage == 'panel'} ? ' is-active' : ''"
-                th:href="@{/admin/panel}"
+                th:href="${panelUrl != null ? panelUrl : (session.isAdmin == true ? '/admin/panel' : '/operators/panel')}"
                th:text="${session.isAdmin == true ? 'Admin panel' : 'Operator panel'}">Panel</a>
               <a
                 class="portal-nav__link"
@@ -48,17 +48,16 @@
               <a
                 class="portal-nav__link"
                 th:classappend="${activePage == 'administradores'} ? ' is-active' : ''"
-                th:if="${session.isAdmin == true}" th:href="@{/admin/administrators/read}"
+                th:if="${session.isAdmin == true}" th:href="@{/admin/administrators/read(adminId=${adminId})}"
               >Administrators</a>
               <a
                 class="portal-nav__link"
                 th:classappend="${activePage == 'operarios'} ? ' is-active' : ''"
-                th:if="${session.isAdmin == true}" th:href="@{/admin/operators/read}"
+                th:if="${session.isAdmin == true}" th:href="${adminId != null ? '/admins/' + adminId + '/operators' : '/admin/operators/read'}"
               >Operators</a>
             </div>
 
-            <a class="portal-nav__link" th:if="${session.profileUrl != null}" th:href="${session.profileUrl}">My profile</a>
-            <form th:action="@{/logout}" method="post"><button class="atlan-btn atlan-btn--secondary atlan-btn--small" type="submit">Sign out</button></form>
+            <a class="portal-nav__link" th:href="${profileUrl != null ? profileUrl : '/staff/login'}">My Profile</a>
             <a class="portal-exit" th:href="@{/}">
               Go to hotel <span aria-hidden="true">↗</span>
             </a>

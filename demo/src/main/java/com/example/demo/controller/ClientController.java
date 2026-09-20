@@ -5,8 +5,6 @@ import com.example.demo.errors.InvalidClientDataException;
 import com.example.demo.errors.InvalidCurrentPasswordException;
 import com.example.demo.service.interfaces.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.example.demo.service.interfaces.LoginService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,9 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/clients")
 public class ClientController {
-
-    @Autowired
-    private LoginService loginService;
 
     @Autowired
     ClientService clientService;
@@ -74,10 +69,7 @@ public class ClientController {
     // Full URL: http://localhost:8080/clients/read/{clientId}
     @GetMapping("/read/{clientId}")
     public String verProfile(@PathVariable Integer clientId,
-                            Model model, HttpSession session) {
-        if (!canAccessProfile(clientId, session)) {
-            return "redirect:/login";
-        }
+                            Model model) {
         model.addAttribute("cliente", clientService.findById(clientId));
         return "clients/details";
     }
@@ -89,10 +81,7 @@ public class ClientController {
     // Full URL: http://localhost:8080/clients/update/{clientId}
     @GetMapping("/update/{clientId}")
     public String showFormEditing(@PathVariable Integer clientId,
-                                           Model model, HttpSession session) {
-        if (!canAccessProfile(clientId, session)) {
-            return "redirect:/login";
-        }
+                                           Model model) {
         Client client = clientService.findById(clientId);
         prepareForm(model, client, "Edit my details", "/clients/update/" + clientId, true);
         return "clients/form";
@@ -107,10 +96,7 @@ public class ClientController {
     public String updateProfile(@PathVariable Integer clientId,
                                    @ModelAttribute Client client,
                                    @RequestParam String passwordCurrent,
-                                   Model model, HttpSession session) {
-        if (!canAccessProfile(clientId, session)) {
-            return "redirect:/login";
-        }
+                                   Model model) {
         try {
             clientService.updateProfile(clientId, client, passwordCurrent);
             return "redirect:/clients/read/" + clientId;
@@ -128,10 +114,7 @@ public class ClientController {
      */
     // Full URL: http://localhost:8080/clients/delete/{clientId}
     @PostMapping("/delete/{clientId}")
-    public String deleteProfile(@PathVariable Integer clientId, HttpSession session) {
-        if (!canAccessProfile(clientId, session)) {
-            return "redirect:/login";
-        }
+    public String deleteProfile(@PathVariable Integer clientId) {
         clientService.deleteProfile(clientId);
         return "redirect:/login";
     }
@@ -142,13 +125,5 @@ public class ClientController {
         model.addAttribute("titulo", title);
         model.addAttribute("accion", action);
         model.addAttribute("esEdicion", esEditing);
-    }
-    /** El cliente usa su propio perfil; el personal accede desde su panel. */
-    private boolean canAccessProfile(Integer clientId, HttpSession session) {
-        Integer adminId = (Integer) session.getAttribute("adminId");
-        Integer operatorId = (Integer) session.getAttribute("operatorId");
-        if (loginService.isStaff(adminId, operatorId)) return true;
-        Integer loggedClientId = (Integer) session.getAttribute("clientId");
-        return clientId.equals(loggedClientId) && loginService.isClient(loggedClientId);
     }
 }

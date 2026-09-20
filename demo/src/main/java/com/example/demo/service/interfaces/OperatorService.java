@@ -9,10 +9,10 @@ import java.util.List;
  * CAPA DE SERVICIO: lógica de negocio de los operarios.
  * El controlador solo conoce esta interfaz, nunca el repositorio.
  *
- * Expone creación, consulta, edición y eliminación de operarios a cargo.
+ * Expone la consulta de operarios y la edición del perfil.
  *
  * Un operario siempre está a cargo de un administrador, así que la edición
- * recibe aparte el adminId determinado por la sesión: el servicio busca ese
+ * conserva el adminId del registro existente: el servicio busca ese
  * administrador y lo asocia, y avisa si no se seleccionó ninguno.
  *
  * MANEJO DE ERRORES:
@@ -21,10 +21,6 @@ import java.util.List;
  * - InvalidOperatorDataException  -> los datos del formulario no son válidos.
  */
 public interface OperatorService {
-    void create(Operator operator, Integer adminId);
-    List<Operator> listByAdministrator(Integer adminId);
-    Operator findManagedBy(Integer operatorId, Integer adminId);
-    void deleteManagedBy(Integer operatorId, Integer adminId);
 
     /** Lista todos los operarios registrados. */
     List<Operator> listOperators();
@@ -44,5 +40,11 @@ public interface OperatorService {
      * @throws ResourceNotFoundException    si no existe el operario o el administrador.
      * @throws InvalidOperatorDataException si los datos nuevos no son válidos.
      */
+    List<Operator> listByAdministrator(Integer adminId);
+    Operator findManagedBy(Integer operatorId, Integer adminId);
+    void create(Operator operator, Integer adminId);
+    void updateManagedBy(Integer operatorId, Operator operator, Integer adminId);
+    void deleteManagedBy(Integer operatorId, Integer adminId);
+
     void update(Integer operatorId, Operator operator, Integer adminId);
 }

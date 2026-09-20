@@ -9,10 +9,6 @@ public interface LoginService {
     Administrator authenticateAdministrator(String email, String password);
     Operator authenticateOperator(String email, String password);
     Client authenticateClient(String email, String password);
-    boolean isAdministrator(Integer adminId);
-    boolean isOperator(Integer operatorId);
-    boolean isClient(Integer clientId);
-    boolean isStaff(Integer adminId, Integer operatorId);
     void confirmAdministratorPassword(Integer adminId, String password);
     void confirmOperatorPassword(Integer operatorId, String password);
     boolean emailUsedByAnotherRole(String email, String role);

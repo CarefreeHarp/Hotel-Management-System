@@ -9,7 +9,7 @@ import java.util.List;
  * CAPA DE SERVICIO: lógica de negocio de los administradores.
  * El controlador solo conoce esta interfaz, nunca el repositorio.
  *
- * Expone la creación de cuentas desde el panel, la consulta y la edición.
+ * Expone la consulta de administradores y la edición del perfil.
  *
  * Al administrador se le identifica por su adminId autogenerado, igual que al
  * cliente, porque puede cambiar su propio correo al editarse.
@@ -21,7 +21,6 @@ import java.util.List;
  * - InvalidAdministratorDataException  -> los datos del formulario no son válidos.
  */
 public interface AdministratorService {
-    void create(Administrator administrator);
 
     /** Lista todos los administradores registrados. */
     List<Administrator> listAdministrators();
@@ -41,5 +40,9 @@ public interface AdministratorService {
      * @throws ResourceNotFoundException         si no existe un administrador con ese id.
      * @throws InvalidAdministratorDataException si los datos nuevos no son válidos.
      */
+    void create(Administrator administrator);
+
+    void delete(Integer adminId);
+
     void update(Integer adminId, Administrator administrator);
 }

@@ -17,7 +17,7 @@
           <div>
             <p class="page-eyebrow">Staff management</p>
             <h1 class="page-title" th:text="${titulo}">Edit operator</h1>
-            <p class="page-description" th:text="${esCreacion ? 'Create a staff account for hotel access.' : 'Update account details and confirm with your current password.'}"></p>
+            <p class="page-description" >Enter the account details and confirm with your current password.</p>
           </div>
         </header>
 
@@ -58,13 +58,13 @@
             </div>
           </section>
 
+          <section class="form-section" th:if="${esCreacion == true}">
+            <label class="portal-label" for="password">New account password</label>
+            <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="password" id="password" name="password" minlength="8" maxlength="255" autocomplete="new-password" required />
+            <p class="field-hint">Between 8 and 255 characters.</p>
+          </section>
           <section class="form-section">
-            <div th:if="${esCreacion}">
-              <label class="portal-label" for="password">Account password</label>
-              <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="password" id="password" name="password" autocomplete="new-password" minlength="8" maxlength="255" required />
-              <p class="field-hint">8 to 255 characters. Share this password with the new account holder.</p>
-            </div>
-            <div th:unless="${esCreacion}">
+            <div>
               <label class="portal-label" for="passwordCurrent">Your current password</label>
               <input class="portal-control tw-w-full tw-px-4 tw-py-3" type="password" id="passwordCurrent" name="passwordCurrent" autocomplete="current-password" required />
               <p class="field-hint">Confirm your identity to save these changes.</p>
@@ -73,7 +73,7 @@
 
           <div class="form-actions tw-flex tw-gap-3">
             <button class="atlan-btn atlan-btn--primary" type="submit">
-              <span th:text="${esCreacion ? 'Create account' : 'Save changes'}">Save changes</span>
+              <span>Save changes</span>
               <span aria-hidden="true">→</span>
             </button>
             <a class="atlan-btn atlan-btn--secondary" th:href="${cancelUrl}">Cancel</a>

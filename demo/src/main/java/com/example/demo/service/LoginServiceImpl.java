@@ -45,26 +45,6 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public boolean isAdministrator(Integer adminId) {
-        return adminId != null && administratorRepository.existsById(adminId);
-    }
-
-    @Override
-    public boolean isOperator(Integer operatorId) {
-        return operatorId != null && operatorRepository.existsById(operatorId);
-    }
-
-    @Override
-    public boolean isClient(Integer clientId) {
-        return clientId != null && clientRepository.existsById(clientId);
-    }
-
-    @Override
-    public boolean isStaff(Integer adminId, Integer operatorId) {
-        return isAdministrator(adminId) || isOperator(operatorId);
-    }
-
-    @Override
     public void confirmAdministratorPassword(Integer adminId, String password) {
         Administrator administrator = administratorRepository.findById(adminId).orElse(null);
         if (administrator == null || !administrator.getPassword().equals(password)) {

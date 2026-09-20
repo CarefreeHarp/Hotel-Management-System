@@ -4,8 +4,6 @@ import com.example.demo.entities.RoomType;
 import com.example.demo.errors.InvalidRoomTypeDataException;
 import com.example.demo.service.interfaces.RoomTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.example.demo.service.interfaces.LoginService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,9 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RoomTypeController {
 
     @Autowired
-    private LoginService loginService;
-
-    @Autowired
     RoomTypeService roomTypeService;
 
     /**
@@ -42,20 +37,14 @@ public class RoomTypeController {
      */
     // Full URL: http://localhost:8080/admin/room-types/read
     @GetMapping("/read")
-    public String listTypes(Model model, HttpSession session) {
-        if (!loginService.isStaff((Integer) session.getAttribute("adminId"), (Integer) session.getAttribute("operatorId"))) {
-            return "redirect:/login";
-        }
+    public String listTypes(Model model) {
         model.addAttribute("tipos", roomTypeService.listTypes());
         return "room-types/list";
     }
 
     // Full URL: http://localhost:8080/admin/room-types/read/{name}
     @GetMapping("/read/{name}")
-    public String showDetails(@PathVariable String name, Model model, HttpSession session) {
-        if (!loginService.isStaff((Integer) session.getAttribute("adminId"), (Integer) session.getAttribute("operatorId"))) {
-            return "redirect:/login";
-        }
+    public String showDetails(@PathVariable String name, Model model) {
         model.addAttribute("tipo", roomTypeService.findByName(name));
         return "room-types/details";
     }
@@ -66,10 +55,7 @@ public class RoomTypeController {
      */
     // Full URL: http://localhost:8080/admin/room-types/create
     @GetMapping("/create")
-    public String showFormCreacion(Model model, HttpSession session) {
-        if (!loginService.isStaff((Integer) session.getAttribute("adminId"), (Integer) session.getAttribute("operatorId"))) {
-            return "redirect:/login";
-        }
+    public String showFormCreacion(Model model) {
         prepareForm(model, RoomType.builder().build(), "New room type", "/admin/room-types/create");
         return "room-types/form";
     }
@@ -77,10 +63,7 @@ public class RoomTypeController {
     /** Crea el tipo de habitación que llenó el administrador. */
     // Full URL: http://localhost:8080/admin/room-types/create
     @PostMapping("/create")
-    public String create(@ModelAttribute RoomType type, Model model, HttpSession session) {
-        if (!loginService.isStaff((Integer) session.getAttribute("adminId"), (Integer) session.getAttribute("operatorId"))) {
-            return "redirect:/login";
-        }
+    public String create(@ModelAttribute RoomType type, Model model) {
         try {
             roomTypeService.create(type);
             return "redirect:/admin/room-types/read";
@@ -97,10 +80,7 @@ public class RoomTypeController {
      */
     // Full URL: http://localhost:8080/admin/room-types/update/{name}
     @GetMapping("/update/{name}")
-    public String showFormEditing(@PathVariable("name") String name, Model model, HttpSession session) {
-        if (!loginService.isStaff((Integer) session.getAttribute("adminId"), (Integer) session.getAttribute("operatorId"))) {
-            return "redirect:/login";
-        }
+    public String showFormEditing(@PathVariable("name") String name, Model model) {
         RoomType type = roomTypeService.findByName(name);
         prepareForm(model, type, "Edit room type", "/admin/room-types/update/" + name);
         return "room-types/form";
@@ -114,10 +94,7 @@ public class RoomTypeController {
     @PostMapping("/update/{name}")
     public String update(@PathVariable("name") String currentName,
                              @ModelAttribute RoomType type,
-                             Model model, HttpSession session) {
-        if (!loginService.isStaff((Integer) session.getAttribute("adminId"), (Integer) session.getAttribute("operatorId"))) {
-            return "redirect:/login";
-        }
+                             Model model) {
         try {
             roomTypeService.update(currentName, type);
             return "redirect:/admin/room-types/read";
@@ -134,10 +111,7 @@ public class RoomTypeController {
      */
     // Full URL: http://localhost:8080/admin/room-types/delete/{name}
     @PostMapping("/delete/{name}")
-    public String delete(@PathVariable("name") String name, HttpSession session) {
-        if (!loginService.isStaff((Integer) session.getAttribute("adminId"), (Integer) session.getAttribute("operatorId"))) {
-            return "redirect:/login";
-        }
+    public String delete(@PathVariable("name") String name) {
         roomTypeService.delete(name);
         return "redirect:/admin/room-types/read";
     }
