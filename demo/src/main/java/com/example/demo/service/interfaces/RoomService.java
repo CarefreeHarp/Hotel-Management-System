@@ -3,7 +3,9 @@ package com.example.demo.service.interfaces;
 import com.example.demo.entities.Room;
 import com.example.demo.errors.InvalidRoomDataException;
 import com.example.demo.errors.ResourceNotFoundException;
+import java.time.LocalDate;
 import java.util.List;
+import org.springframework.data.domain.Page;
 
 /**
  * CAPA DE SERVICIO: lógica de negocio del catálogo de habitaciones.
@@ -17,6 +19,15 @@ import java.util.List;
 public interface RoomService {
 
     List<Room> listRooms();
+
+    /** Pagina habitaciones sin reservas vigentes que se crucen con las fechas solicitadas. */
+    Page<Room> listAvailableForStay(LocalDate checkInDate, LocalDate checkOutDate, int page);
+
+    /** Sincroniza el estado de ocupación según folios pagados y fechas de estadía. */
+    void synchronizeOccupancyStatus();
+
+    /** Devuelve la habitación asociada al identificador interno indicado. */
+    Room findById(int roomId);
 
     /**
      * Devuelve la habitación con ese número.

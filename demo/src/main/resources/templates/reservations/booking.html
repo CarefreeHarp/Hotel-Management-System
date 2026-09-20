@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book your stay — Atlan Suites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { prefix: "tw-", corePlugins: { preflight: false } };</script>
+    <link rel="stylesheet" th:href="@{/css/css-utils/base/common.css}" href="/css/css-utils/base/common.css" />
+    <link rel="stylesheet" th:href="@{/css/booking/booking.css}" href="/css/booking/booking.css" />
+    <script th:src="@{/js/booking/booking.js}" src="/js/booking/booking.js" defer></script>
+  </head>
+  <body class="booking-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
+    <header th:replace="~{fragments/public-header :: publicHeader('booking')}"></header>
+    <main class="booking-main">
+      <div class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
+        <header class="booking-intro">
+          <p class="eyebrow">Reservations</p>
+          <h1>Choose your dates</h1>
+          <p>Select when you would like to stay and how many guests will join you.</p>
+        </header>
+
+        <ol class="booking-steps" aria-label="Reservation progress">
+          <li class="is-current"><span>1</span> Dates</li>
+          <li><span>2</span> Choose room</li>
+          <li><span>3</span> Services</li>
+          <li><span>4</span> Payment</li>
+        </ol>
+
+        <form class="booking-layout" th:action="@{/reservation/availability}" method="get" data-booking-form th:attr="data-application-today=${applicationToday}">
+          <section class="booking-calendar-card" aria-labelledby="dates-title">
+            <header class="dates-summary">
+              <div class="dates-summary__title"><p class="eyebrow">Your stay</p><h2 id="dates-title">Dates of stay</h2></div>
+              <dl class="dates-summary__values">
+                <div><dt>Check-in</dt><dd data-check-in-label>Choose a date</dd></div>
+                <div><dt>Check-out</dt><dd data-check-out-label>Choose a date</dd></div>
+                <div><dt>Duration</dt><dd data-duration-label>—</dd></div>
+              </dl>
+            </header>
+            <input type="hidden" name="checkIn" data-check-in-input />
+            <input type="hidden" name="checkOut" data-check-out-input />
+            <div class="calendar-toolbar">
+              <button class="calendar-arrow" type="button" aria-label="Show previous month" data-calendar-previous>←</button>
+              <p data-calendar-range aria-live="polite"></p>
+              <button class="calendar-arrow" type="button" aria-label="Show next month" data-calendar-next>→</button>
+            </div>
+            <div class="calendar-months" data-calendar-months></div>
+            <p class="calendar-hint">Choose a check-in date, then a check-out date.</p>
+          </section>
+
+          <aside class="guests-panel" aria-labelledby="guests-title">
+            <div><p class="eyebrow">Reservation details</p><h2 id="guests-title">Guests</h2></div>
+            <div class="guest-stepper">
+              <div><p>Guests</p><span>How many people will stay?</span></div>
+              <div class="guest-stepper__controls" aria-label="Guest quantity">
+                <button type="button" aria-label="Decrease guests" data-guests-decrease>−</button>
+                <output data-guests-output>1</output>
+                <button type="button" aria-label="Increase guests" data-guests-increase>+</button>
+              </div>
+            </div>
+            <input type="hidden" name="guests" value="1" data-guests-input />
+            <button class="booking-submit" type="submit">Check availability <span aria-hidden="true">→</span></button>
+          </aside>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

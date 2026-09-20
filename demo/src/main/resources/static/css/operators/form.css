@@ -1,0 +1,4 @@
+@import url("../admin/admin-shell.css");
+
+.staff-form-card { position: relative; }
+.staff-form-card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: linear-gradient(var(--atlan-gold-light), transparent 72%); }

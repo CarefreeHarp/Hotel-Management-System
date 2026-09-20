@@ -89,4 +89,12 @@ public class PaymentServiceImpl implements PaymentService {
         }
         folioRepository.save(folio);
     }
+    @Override
+    @jakarta.transaction.Transactional
+    public void removeOperatorFromPayments(Integer operatorId) {
+        for (Payment payment : paymentRepository.findByOperator_OperatorId(operatorId)) {
+            payment.setOperator(null);
+            paymentRepository.save(payment);
+        }
+    }
 }

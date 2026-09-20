@@ -1,15 +1,3 @@
-// Behavior exclusive to servicios-tarjetas.html.
-const cardsHeader = document.querySelector('.site-header');
-
-if (cardsHeader) {
-  const updateCardsHeaderScroll = () => {
-    cardsHeader.classList.toggle('is-scrolled', window.scrollY > 10);
-  };
-
-  window.addEventListener('scroll', updateCardsHeaderScroll, { passive: true });
-  updateCardsHeaderScroll();
-}
-
 const filterButtons = document.querySelectorAll('.filter-btn');
 const serviceCards = document.querySelectorAll('.service-card');
 const noServicesMessage = document.getElementById('no-services-msg');

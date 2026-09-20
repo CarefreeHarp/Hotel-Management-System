@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Select services — Atlan Suites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/css-utils/base/common.css}" href="/css/css-utils/base/common.css" />
+    <link rel="stylesheet" th:href="@{/css/service-cards/service-cards.css}" href="/css/service-cards/service-cards.css" />
+    <link rel="stylesheet" th:href="@{/css/reservation-services/reservation-services.css}" href="/css/reservation-services/reservation-services.css" />
+  </head>
+  <body class="page-services reservation-services-body">
+    <main>
+      <section class="services-hero reservation-services-hero" aria-labelledby="services-title">
+        <div class="container text-center">
+          <p class="eyebrow">Step 3 of 4</p>
+          <h1 class="services-hero-title" id="services-title">Would you like to add any services?</h1>
+          <p class="services-hero-text" th:text="|Room ${room.number} · ${#temporals.format(checkIn, 'MMM d')} — ${#temporals.format(checkOut, 'MMM d')} · ${guests} guest(s)|">Your selected stay.</p>
+        </div>
+      </section>
+
+      <form class="services-selection-form" th:action="@{/reservation/services/select}" method="post" data-service-selection-form>
+        <input type="hidden" name="roomId" th:value="${room.roomId}" />
+        <input type="hidden" name="checkIn" th:value="${checkIn}" />
+        <input type="hidden" name="checkOut" th:value="${checkOut}" />
+        <input type="hidden" name="guests" th:value="${guests}" />
+        <div class="services-selection-layout container-fluid">
+          <section class="services-section" aria-labelledby="services-grid-title">
+            <div class="services-container">
+              <div class="controls-toolbar d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                <nav class="category-filters mb-0" aria-label="Service filters">
+                  <button class="filter-btn is-active" data-filter="all" type="button">All</button>
+                  <button class="filter-btn" data-filter="Food and beverage" type="button">Food and beverage</button>
+                  <button class="filter-btn" data-filter="Wellness" type="button">Wellness</button>
+                  <button class="filter-btn" data-filter="Transportation" type="button">Transportation</button>
+                  <button class="filter-btn" data-filter="Connectivity" type="button">Connectivity</button>
+                  <button class="filter-btn" data-filter="Room" type="button">Room</button>
+                  <button class="filter-btn" data-filter="Guest services" type="button">Guest services</button>
+                  <button class="filter-btn" data-filter="Recreation" type="button">Recreation</button>
+                  <button class="filter-btn" data-filter="Laundry" type="button">Laundry</button>
+                </nav>
+              </div>
+              <h2 id="services-grid-title" class="visually-hidden">Available services</h2>
+              <div class="services-grid">
+                <article th:each="service, status : ${servicios}" class="service-card service-card--selectable" th:data-category="${service.category}" th:data-page="${status.index < (#lists.size(servicios) + 1) / 2 ? 'one' : 'two'}" th:data-service-id="${service.serviceId}" th:data-service-name="${service.name}" th:data-service-price="${service.price}">
+                  <figure class="card-image-wrapper"><img class="card-service-image img-fluid" th:src="${service.mainImageUrl}" th:alt="${service.name}" /></figure>
+                  <header class="card-body-content"><h3 class="card-service-title" th:text="${service.name}">Service</h3><p class="card-service-desc" th:text="${service.description}">Service description.</p></header>
+                  <footer class="card-footer-bar"><span class="card-price" th:text="|$ ${#numbers.formatDecimal(service.price, 0, 'POINT', 0, 'COMMA')}|">$0</span><span class="card-category" th:text="${service.category}">Category</span></footer>
+                  <button class="select-service-button" type="button" data-select-service>Select service</button>
+                </article>
+              </div>
+              <p id="no-services-msg" class="services-empty-grid text-center py-4 d-none" role="status">No services are available in this category.</p>
+              <nav class="service-pagination" aria-label="Service pages"><button class="service-pagination__button service-pagination__button--arrow" type="button" data-page-direction="previous" aria-label="Previous service page" disabled><span aria-hidden="true">‹</span></button><button class="service-pagination__button is-active" type="button" data-service-page="one" aria-label="Service page 1" aria-current="page">1</button><button class="service-pagination__button" type="button" data-service-page="two" aria-label="Service page 2">2</button><button class="service-pagination__button service-pagination__button--arrow" type="button" data-page-direction="next" aria-label="Next service page"><span aria-hidden="true">›</span></button></nav>
+            </div>
+          </section>
+
+          <aside class="service-cart" aria-labelledby="cart-title">
+            <p class="eyebrow">Your selection</p><h2 id="cart-title">Service cart</h2>
+            <p class="service-cart__empty" data-cart-empty>No services selected yet.</p>
+            <ul class="service-cart__items" data-cart-items aria-live="polite"></ul>
+            <p class="service-cart__total" data-cart-total>Total $ 0</p>
+            <button class="service-cart__clear" type="button" data-clear-cart disabled>Clear cart</button>
+            <a class="service-cart__skip" th:href="@{/reservation/checkout(roomId=${room.roomId},checkIn=${checkIn},checkOut=${checkOut},guests=${guests})}">Skip services</a>
+            <button class="service-cart__submit" type="submit" data-add-services disabled>Add selected services <span aria-hidden="true">→</span></button>
+          </aside>
+        </div>
+      </form>
+    </main>
+    <script th:src="@{/js/reservation-services/reservation-services.js}" src="/js/reservation-services/reservation-services.js"></script>
+  </body>
+</html>

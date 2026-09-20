@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Choose room — Atlan Suites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { prefix: "tw-", corePlugins: { preflight: false } };
+    </script>
+    <link
+      rel="stylesheet"
+      th:href="@{/css/css-utils/base/common.css}"
+      href="/css/css-utils/base/common.css"
+    />
+    <link
+      rel="stylesheet"
+      th:href="@{/css/availability/availability.css}"
+      href="/css/availability/availability.css"
+    />
+  </head>
+  <body
+    class="availability-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]"
+  >
+    <header
+      th:replace="~{fragments/public-header :: publicHeader('booking')}"
+    ></header>
+    <main class="availability-main">
+      <div
+        class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]"
+      >
+        <header class="availability-intro">
+          <p class="eyebrow">Step 2 of 4</p>
+          <h1>Choose your room</h1>
+          <p>These rooms are available for the dates you selected.</p>
+        </header>
+
+        <dl class="stay-summary" aria-label="Selected stay">
+          <div>
+            <dt>Check-in</dt>
+            <dd th:text="${#temporals.format(checkIn, 'MMM d, yyyy')}">
+              Jan 1, 2026
+            </dd>
+          </div>
+          <div>
+            <dt>Check-out</dt>
+            <dd th:text="${#temporals.format(checkOut, 'MMM d, yyyy')}">
+              Jan 2, 2026
+            </dd>
+          </div>
+          <div>
+            <dt>Guests</dt>
+            <dd th:text="${guests}">1</dd>
+          </div>
+          <div>
+            <a th:href="@{/reservation/book}" class="change-dates"
+              >Change booking details</a
+            >
+          </div>
+        </dl>
+
+        <section class="rooms-section" aria-labelledby="available-rooms-title">
+          <h2 id="available-rooms-title">Available rooms</h2>
+          <div class="rooms-grid" th:if="${!#lists.isEmpty(rooms)}">
+            <article class="room-card" th:each="room : ${rooms}">
+              <figure class="room-gallery">
+                <img
+                  class="room-gallery__main"
+                  th:src="${room.roomType.mainPhoto}"
+                  th:alt="|${room.roomType.name} room|"
+                  loading="lazy"
+                />
+                <figcaption th:text="|Room ${room.number}|">
+                  Room 101
+                </figcaption>
+                <div
+                  class="room-gallery__thumbnails"
+                  th:if="${!#lists.isEmpty(room.roomType.secondaryPhotos)}"
+                >
+                  <img
+                    th:each="photo : ${room.roomType.secondaryPhotos}"
+                    th:src="${photo}"
+                    th:alt="|${room.roomType.name} detail|"
+                    loading="lazy"
+                  />
+                </div>
+              </figure>
+              <section
+                class="room-card__details"
+                th:aria-labelledby="|room-${room.roomId}-title|"
+              >
+                <p class="eyebrow" th:text="|Floor ${room.floor}|">Floor 1</p>
+                <h3
+                  th:id="|room-${room.roomId}-title|"
+                  th:text="${room.roomType.name}"
+                >
+                  Standard Room
+                </h3>
+                <p
+                  class="room-description"
+                  th:text="${room.roomType.description}"
+                >
+                  Room description.
+                </p>
+                <dl class="room-features">
+                  <div>
+                    <dt>Room number</dt>
+                    <dd th:text="${room.number}">101</dd>
+                  </div>
+                  <div>
+                    <dt>Capacity</dt>
+                    <dd th:text="|Up to ${room.roomType.maxCapacity} guests|">
+                      Up to 2 guests
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Stay</dt>
+                    <dd>Available for your dates</dd>
+                  </div>
+                </dl>
+                <a
+                  class="details-link"
+                  th:href="@{/reservation/services(roomId=${room.roomId},checkIn=${checkIn},checkOut=${checkOut},guests=${guests})}"
+                  >Continue with this room <span aria-hidden="true">→</span></a
+                >
+              </section>
+              <aside class="room-card__rate" aria-label="Room rate">
+                <p>From</p>
+                <p class="rate-value">
+                  <span
+                    class="rate-amount"
+                    th:text="|$ ${#numbers.formatDecimal(room.roomType.nightlyPrice, 0, 'POINT', 0, 'COMMA')}|"
+                    >$ 0</span
+                  ><span class="rate-period">/ night</span>
+                </p>
+                <p class="rate-note">
+                  Taxes and additional charges are calculated before payment.
+                </p>
+                <a
+                  class="choose-room"
+                  th:href="@{/reservation/services(roomId=${room.roomId},checkIn=${checkIn},checkOut=${checkOut},guests=${guests})}"
+                  >Select room <span aria-hidden="true">→</span></a
+                >
+              </aside>
+            </article>
+          </div>
+          <p class="empty-rooms" th:if="${#lists.isEmpty(rooms)}">
+            No rooms are available for these dates. Please choose a different
+            stay.
+          </p>
+          <nav
+            class="availability-pagination"
+            aria-label="Available rooms pages"
+            th:if="${!#lists.isEmpty(rooms)}"
+          >
+            <span
+              class="pagination-button is-disabled"
+              th:unless="${hasPreviousPage}"
+              >← Previous page</span
+            >
+            <a
+              class="pagination-button"
+              th:if="${hasPreviousPage}"
+              th:href="@{/reservation/availability(checkIn=${checkIn},checkOut=${checkOut},guests=${guests},page=${currentPage - 1})}"
+              >← Previous page</a
+            >
+            <span class="pagination-page" th:text="|Page ${currentPage + 1}|"
+              >Page 1</span
+            >
+            <span
+              class="pagination-button is-disabled"
+              th:unless="${hasNextPage}"
+              >Next page →</span
+            >
+            <a
+              class="pagination-button"
+              th:if="${hasNextPage}"
+              th:href="@{/reservation/availability(checkIn=${checkIn},checkOut=${checkOut},guests=${guests},page=${currentPage + 1})}"
+              >Next page →</a
+            >
+          </nav>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

@@ -22,7 +22,7 @@
 
       <div class="header-actions">
         <a th:href="@{/login}" class="btn btn-glass">Login <span aria-hidden="true">↗</span></a>
-        <a th:href="@{/#book-section}" class="btn btn-glass">Book now <span aria-hidden="true">↗</span></a>
+        <a th:href="@{/reservation/book}" class="btn btn-glass">Book now <span aria-hidden="true">↗</span></a>
         <button
           class="nav-toggle public-nav-toggle"
           type="button"
@@ -46,6 +46,30 @@
             const isOpen = menu.classList.toggle('is-open');
             toggle.setAttribute('aria-expanded', String(isOpen));
           });
+
+          // Evita alternar el tamaño del encabezado repetidamente junto al tope.
+          // Se compacta al bajar 24 px y solo se expande de nuevo al volver a 4 px.
+          let isCompact = header.classList.contains('is-scrolled');
+          let scrollFrame;
+
+          const updateHeaderScroll = () => {
+            scrollFrame = undefined;
+            const scrollPosition = window.scrollY;
+            const shouldBeCompact = isCompact ? scrollPosition > 4 : scrollPosition > 24;
+
+            if (shouldBeCompact === isCompact) return;
+
+            isCompact = shouldBeCompact;
+            header.classList.toggle('is-scrolled', isCompact);
+          };
+
+          const requestHeaderScrollUpdate = () => {
+            if (scrollFrame !== undefined) return;
+            scrollFrame = window.requestAnimationFrame(updateHeaderScroll);
+          };
+
+          window.addEventListener('scroll', requestHeaderScrollUpdate, { passive: true });
+          updateHeaderScroll();
         })();
       </script>
     </header>
