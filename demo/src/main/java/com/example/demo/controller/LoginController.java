@@ -28,30 +28,33 @@ public class LoginController {
     public String authenticate(@RequestParam String user, @RequestParam String password,
                                Model model, HttpServletRequest request) {
         boolean staffLogin = request.getServletPath().equals("/staff/login");
+        if (staffLogin) {
+            return authenticateStaff(user, password, model);
+        }
+        return authenticateClient(user, password, model, request);
+    }
+
+    private String authenticateStaff(String user, String password, Model model) {
         Administrator administrator = loginService.authenticateAdministrator(user, password);
         Operator operator = loginService.authenticateOperator(user, password);
-        Client client = loginService.authenticateClient(user, password);
 
-        int matches = 0;
-        if (administrator != null) matches++;
-        if (operator != null) matches++;
-        if (client != null) matches++;
-        if (matches != 1) {
-            model.addAttribute("staffLogin", staffLogin);
+        if ((administrator == null && operator == null) || (administrator != null && operator != null)) {
+            model.addAttribute("staffLogin", true);
             model.addAttribute("error", "Incorrect email or password.");
             return "login/login";
         }
-        if (staffLogin && client != null) {
-            model.addAttribute("staffLogin", true);
-            model.addAttribute("error", "Use guest sign in for your client account.");
-            return "login/login";
-        }
-
         if (administrator != null) {
             return "redirect:/admin/panel/" + administrator.getAdminId();
         }
-        if (operator != null) {
-            return "redirect:/operators/panel/" + operator.getOperatorId();
+        return "redirect:/operators/panel/" + operator.getOperatorId();
+    }
+
+    private String authenticateClient(String user, String password, Model model, HttpServletRequest request) {
+        Client client = loginService.authenticateClient(user, password);
+        if (client == null) {
+            model.addAttribute("staffLogin", false);
+            model.addAttribute("error", "Incorrect email or password.");
+            return "login/login";
         }
 
         // Se abre una sesión nueva para no mezclar cuentas al cambiar de usuario.
@@ -68,6 +71,5 @@ public class LoginController {
         }
         return "redirect:/clients/read/" + client.getClientId();
     }
-
 
 }
