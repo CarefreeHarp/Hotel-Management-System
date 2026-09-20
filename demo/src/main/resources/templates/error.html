@@ -71,6 +71,8 @@
         </dl>
 
         <nav class="error-actions" aria-label="Error page actions">
+          <a th:if="${param.operatorId != null and param.adminId == null}" th:href="@{/operators/panel/{id}(id=${param.operatorId[0]})}" class="btn-error-primary">Back to operator panel</a>
+          <a th:if="${param.adminId != null}" th:href="@{/admin/panel/{id}(id=${param.adminId[0]})}" class="btn-error-primary">Back to admin panel</a>
           <a th:href="@{/}" class="btn-error-primary">
             <span>Return to Home</span>
             <span aria-hidden="true">↗</span>

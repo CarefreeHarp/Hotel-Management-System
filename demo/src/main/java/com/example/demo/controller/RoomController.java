@@ -41,14 +41,16 @@ public class RoomController {
 
     // Full URL: http://localhost:8080/admin/rooms/read
     @GetMapping("/read")
-    public String listRooms(Model model) {
+    public String listRooms(Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+        prepareNavigation(model, adminId, operatorId);
         model.addAttribute("habitaciones", roomService.listRooms());
         return "rooms/list";
     }
 
     // Full URL: http://localhost:8080/admin/rooms/create
     @GetMapping("/create")
-    public String showFormCreacion(Model model) {
+    public String showFormCreacion(Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+        prepareNavigation(model, adminId, operatorId);
         // Se arma con el builder y no con new Room() porque así la lista de fotos
         // secundarias llega vacía en vez de en null, que es lo que espera la vista.
         prepareForm(model, Room.builder().build(), "Create room", "/admin/rooms/create");
@@ -59,13 +61,14 @@ public class RoomController {
     @PostMapping("/create")
     public String create(@ModelAttribute Room room,
                          @RequestParam(value = "roomTypeId", required = false) Integer roomTypeId,
-                         Model model) {
+                         Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+        prepareNavigation(model, adminId, operatorId);
         try {
             if (roomTypeId != null) {
                 room.setRoomType(roomTypeService.findById(roomTypeId));
             }
             roomService.create(room);
-            return "redirect:/admin/rooms/read";
+            return "redirect:/admin/rooms/read" + navigationQuery(adminId, operatorId);
         } catch (ResourceNotFoundException | InvalidRoomDataException exception) {
             prepareForm(model, room, "Create room", "/admin/rooms/create");
             model.addAttribute("error", exception.getMessage());
@@ -75,7 +78,8 @@ public class RoomController {
 
     // Full URL: http://localhost:8080/admin/rooms/read/{number}
     @GetMapping("/read/{number}")
-    public String verDetalle(@PathVariable int number, Model model) {
+    public String verDetalle(@PathVariable int number, Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+        prepareNavigation(model, adminId, operatorId);
         // La vista llega al tipo navegando la relación (habitacion.roomType),
         // así que no hace falta mandarlo como un atributo aparte.
         model.addAttribute("habitacion", roomService.findByNumber(number));
@@ -84,7 +88,8 @@ public class RoomController {
 
     // Full URL: http://localhost:8080/admin/rooms/update/{number}
     @GetMapping("/update/{number}")
-    public String showFormEditing(@PathVariable int number, Model model) {
+    public String showFormEditing(@PathVariable int number, Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+        prepareNavigation(model, adminId, operatorId);
         Room room = roomService.findByNumber(number);
         prepareForm(model, room, "Update room", "/admin/rooms/update/" + number);
         return "rooms/form";
@@ -95,13 +100,14 @@ public class RoomController {
     public String update(@PathVariable int number,
                              @ModelAttribute Room room,
                              @RequestParam(value = "roomTypeId", required = false) Integer roomTypeId,
-                             Model model) {
+                             Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+        prepareNavigation(model, adminId, operatorId);
         try {
             if (roomTypeId != null) {
                 room.setRoomType(roomTypeService.findById(roomTypeId));
             }
             roomService.update(number, room);
-            return "redirect:/admin/rooms/read";
+            return "redirect:/admin/rooms/read" + navigationQuery(adminId, operatorId);
         } catch (ResourceNotFoundException | InvalidRoomDataException exception) {
             prepareForm(model, room, "Update room", "/admin/rooms/update/" + number);
             model.addAttribute("error", exception.getMessage());
@@ -111,9 +117,10 @@ public class RoomController {
 
     // Full URL: http://localhost:8080/admin/rooms/delete/{number}
     @PostMapping("/delete/{number}")
-    public String delete(@PathVariable int number) {
+    public String delete(@PathVariable int number, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId, Model model) {
+        prepareNavigation(model, adminId, operatorId);
         roomService.delete(number);
-        return "redirect:/admin/rooms/read";
+        return "redirect:/admin/rooms/read" + navigationQuery(adminId, operatorId);
     }
 
     private void prepareForm(Model model, Room room, String title, String action) {
@@ -122,5 +129,22 @@ public class RoomController {
         model.addAttribute("estados", RoomStatus.values());
         model.addAttribute("titulo", title);
         model.addAttribute("accion", action);
+    }
+    // El identificador se conserva en la URL; no se guarda en sesion.
+    private void prepareNavigation(Model model, Integer adminId, Integer operatorId) {
+        if (adminId != null) {
+            model.addAttribute("adminId", adminId);
+            model.addAttribute("panelUrl", "/admin/panel/" + adminId);
+            model.addAttribute("profileUrl", "/admins/read/" + adminId);
+        } else if (operatorId != null) {
+            model.addAttribute("operatorId", operatorId);
+            model.addAttribute("panelUrl", "/operators/panel/" + operatorId);
+            model.addAttribute("profileUrl", "/operators/read/" + operatorId);
+        }
+    }
+
+    private String navigationQuery(Integer adminId, Integer operatorId) {
+        if (adminId != null) return "?adminId=" + adminId;
+        return operatorId == null ? "" : "?operatorId=" + operatorId;
     }
 }

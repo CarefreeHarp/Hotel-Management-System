@@ -20,4 +20,7 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
 
     /* Lista los servicios excepto el indicado, ordenados ascendentemente por identificador. */
     List<Service> findByServiceIdNotOrderByServiceIdAsc(Integer serviceId);
+
+    /* Busca exclusivamente los servicios activos cuyos identificadores fueron solicitados. */
+    List<Service> findByServiceIdInAndActiveTrue(List<Integer> serviceIds);
 }

@@ -1,50 +1,71 @@
 package com.example.demo.service;
 
+import com.example.demo.entities.Administrator;
 import com.example.demo.entities.Client;
-import com.example.demo.service.interfaces.ClientService;
+import com.example.demo.entities.Operator;
+import com.example.demo.repository.AdministratorRepository;
+import com.example.demo.repository.ClientRepository;
+import com.example.demo.repository.OperatorRepository;
 import com.example.demo.service.interfaces.LoginService;
-import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * Implementación de la autenticación del portal.
- *
- * El administrador todavía no se guarda en el repositorio, así que sus
- * credenciales viven aquí como constantes; el día que exista una entidad
- * administrador solo cambia esta clase y no el controlador.
- */
+/** Consulta las cuentas y compara sus contraseñas en la capa de servicio. */
 @Service
 public class LoginServiceImpl implements LoginService {
-
-    private static final String USUARIO_ADMIN = "admin";
-    private static final String PASSWORD_ADMIN = "admin";
-
-    /** Mensaje único para usuario inexistente y contraseña incorrecta: así no se revela cuál de los dos falló. */
-    private static final String CREDENCIALES_INVALIDAS = "Incorrect username or password.";
-
     @Autowired
-    ClientService clientService;
+    private AdministratorRepository administratorRepository;
+    @Autowired
+    private OperatorRepository operatorRepository;
+    @Autowired
+    private ClientRepository clientRepository;
 
     @Override
-    public boolean isAdministrator(String user, String password) {
-        return USUARIO_ADMIN.equals(user) && PASSWORD_ADMIN.equals(password);
+    public Administrator authenticateAdministrator(String email, String password) {
+        if (email == null || password == null || password.isBlank()) return null;
+        Administrator administrator = administratorRepository.findByEmailIgnoreCase(email.trim()).orElse(null);
+        if (administrator != null && administrator.getPassword().equals(password)) return administrator;
+        return null;
     }
 
     @Override
-    public Client authenticateClient(String user, String password) {
-        Client client;
+    public Operator authenticateOperator(String email, String password) {
+        if (email == null || password == null || password.isBlank()) return null;
+        Operator operator = operatorRepository.findByEmailIgnoreCase(email.trim()).orElse(null);
+        if (operator != null && operator.getPassword().equals(password)) return operator;
+        return null;
+    }
 
-        try {
-            client = clientService.findByEmailForLogin(user);
-        } catch (NoSuchElementException profileNotFound) {
-            throw new SecurityException(CREDENCIALES_INVALIDAS);
+    @Override
+    public Client authenticateClient(String email, String password) {
+        if (email == null || password == null || password.isBlank()) return null;
+        Client client = clientRepository.findByEmailIgnoreCase(email.trim()).orElse(null);
+        if (client != null && client.getPassword().equals(password)) return client;
+        return null;
+    }
+
+    @Override
+    public void confirmAdministratorPassword(Integer adminId, String password) {
+        Administrator administrator = administratorRepository.findById(adminId).orElse(null);
+        if (administrator == null || !administrator.getPassword().equals(password)) {
+            throw new SecurityException("Enter your current password to confirm this change.");
         }
+    }
 
-        if (!client.getPassword().equals(password)) {
-            throw new SecurityException(CREDENCIALES_INVALIDAS);
+    @Override
+    public void confirmOperatorPassword(Integer operatorId, String password) {
+        Operator operator = operatorRepository.findById(operatorId).orElse(null);
+        if (operator == null || !operator.getPassword().equals(password)) {
+            throw new SecurityException("Enter your current password to confirm this change.");
         }
+    }
 
-        return client;
+    /** Los textos del rol solo los envían los servicios, no el formulario. */
+    @Override
+    public boolean emailUsedByAnotherRole(String email, String role) {
+        if (!"ADMINISTRATOR".equals(role) && administratorRepository.findByEmailIgnoreCase(email).isPresent()) return true;
+        if (!"OPERATOR".equals(role) && operatorRepository.findByEmailIgnoreCase(email).isPresent()) return true;
+        if (!"CLIENT".equals(role) && clientRepository.findByEmailIgnoreCase(email).isPresent()) return true;
+        return false;
     }
 }

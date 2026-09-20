@@ -1,6 +1,3 @@
-// Match the header scroll behavior used by index.html.
-const serviceHeader = document.querySelector('.site-header');
-
 const publicMenuToggle = document.querySelector('[data-public-menu-toggle]');
 const publicMenu = document.querySelector('[data-public-menu]');
 if (publicMenuToggle && publicMenu) {
@@ -10,13 +7,6 @@ if (publicMenuToggle && publicMenu) {
     publicMenuToggle.setAttribute('aria-expanded', String(!isOpen));
   });
 }
-
-const updateServiceHeaderScroll = () => {
-  serviceHeader.classList.toggle('is-scrolled', window.scrollY > 10);
-};
-
-window.addEventListener('scroll', updateServiceHeaderScroll, { passive: true });
-updateServiceHeaderScroll();
 
 const galleryImages = document.querySelectorAll('.gallery-card img');
 

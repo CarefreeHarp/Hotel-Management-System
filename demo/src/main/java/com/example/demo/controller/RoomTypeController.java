@@ -5,6 +5,7 @@ import com.example.demo.errors.InvalidRoomTypeDataException;
 import com.example.demo.service.interfaces.RoomTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -37,14 +38,16 @@ public class RoomTypeController {
      */
     // Full URL: http://localhost:8080/admin/room-types/read
     @GetMapping("/read")
-    public String listTypes(Model model) {
+    public String listTypes(Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+        prepareNavigation(model, adminId, operatorId);
         model.addAttribute("tipos", roomTypeService.listTypes());
         return "room-types/list";
     }
 
     // Full URL: http://localhost:8080/admin/room-types/read/{name}
     @GetMapping("/read/{name}")
-    public String showDetails(@PathVariable String name, Model model) {
+    public String showDetails(@PathVariable String name, Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+        prepareNavigation(model, adminId, operatorId);
         model.addAttribute("tipo", roomTypeService.findByName(name));
         return "room-types/details";
     }
@@ -55,7 +58,8 @@ public class RoomTypeController {
      */
     // Full URL: http://localhost:8080/admin/room-types/create
     @GetMapping("/create")
-    public String showFormCreacion(Model model) {
+    public String showFormCreacion(Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+        prepareNavigation(model, adminId, operatorId);
         prepareForm(model, RoomType.builder().build(), "New room type", "/admin/room-types/create");
         return "room-types/form";
     }
@@ -63,10 +67,11 @@ public class RoomTypeController {
     /** Crea el tipo de habitación que llenó el administrador. */
     // Full URL: http://localhost:8080/admin/room-types/create
     @PostMapping("/create")
-    public String create(@ModelAttribute RoomType type, Model model) {
+    public String create(@ModelAttribute RoomType type, Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+        prepareNavigation(model, adminId, operatorId);
         try {
             roomTypeService.create(type);
-            return "redirect:/admin/room-types/read";
+            return "redirect:/admin/room-types/read" + navigationQuery(adminId, operatorId);
         } catch (InvalidRoomTypeDataException exception) {
             prepareForm(model, type, "New room type", "/admin/room-types/create");
             model.addAttribute("error", exception.getMessage());
@@ -80,7 +85,8 @@ public class RoomTypeController {
      */
     // Full URL: http://localhost:8080/admin/room-types/update/{name}
     @GetMapping("/update/{name}")
-    public String showFormEditing(@PathVariable("name") String name, Model model) {
+    public String showFormEditing(@PathVariable("name") String name, Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+        prepareNavigation(model, adminId, operatorId);
         RoomType type = roomTypeService.findByName(name);
         prepareForm(model, type, "Edit room type", "/admin/room-types/update/" + name);
         return "room-types/form";
@@ -94,10 +100,11 @@ public class RoomTypeController {
     @PostMapping("/update/{name}")
     public String update(@PathVariable("name") String currentName,
                              @ModelAttribute RoomType type,
-                             Model model) {
+                             Model model, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId) {
+        prepareNavigation(model, adminId, operatorId);
         try {
             roomTypeService.update(currentName, type);
-            return "redirect:/admin/room-types/read";
+            return "redirect:/admin/room-types/read" + navigationQuery(adminId, operatorId);
         } catch (InvalidRoomTypeDataException exception) {
             prepareForm(model, type, "Edit room type", "/admin/room-types/update/" + currentName);
             model.addAttribute("error", exception.getMessage());
@@ -111,9 +118,10 @@ public class RoomTypeController {
      */
     // Full URL: http://localhost:8080/admin/room-types/delete/{name}
     @PostMapping("/delete/{name}")
-    public String delete(@PathVariable("name") String name) {
+    public String delete(@PathVariable("name") String name, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId, Model model) {
+        prepareNavigation(model, adminId, operatorId);
         roomTypeService.delete(name);
-        return "redirect:/admin/room-types/read";
+        return "redirect:/admin/room-types/read" + navigationQuery(adminId, operatorId);
     }
 
     /** Atributos que necesita la vista del formulario, tanto al crear como al editar. */
@@ -121,5 +129,22 @@ public class RoomTypeController {
         model.addAttribute("tipo", type);
         model.addAttribute("titulo", title);
         model.addAttribute("accion", action);
+    }
+    // El identificador se conserva en la URL; no se guarda en sesion.
+    private void prepareNavigation(Model model, Integer adminId, Integer operatorId) {
+        if (adminId != null) {
+            model.addAttribute("adminId", adminId);
+            model.addAttribute("panelUrl", "/admin/panel/" + adminId);
+            model.addAttribute("profileUrl", "/admins/read/" + adminId);
+        } else if (operatorId != null) {
+            model.addAttribute("operatorId", operatorId);
+            model.addAttribute("panelUrl", "/operators/panel/" + operatorId);
+            model.addAttribute("profileUrl", "/operators/read/" + operatorId);
+        }
+    }
+
+    private String navigationQuery(Integer adminId, Integer operatorId) {
+        if (adminId != null) return "?adminId=" + adminId;
+        return operatorId == null ? "" : "?operatorId=" + operatorId;
     }
 }
