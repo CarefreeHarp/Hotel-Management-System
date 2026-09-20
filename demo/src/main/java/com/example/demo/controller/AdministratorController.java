@@ -4,6 +4,8 @@ import com.example.demo.entities.Administrator;
 import com.example.demo.errors.InvalidAdministratorDataException;
 import com.example.demo.service.interfaces.AdministratorService;
 import com.example.demo.service.interfaces.LoginService;
+import com.example.demo.security.SessionAccess;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,14 +42,17 @@ public class AdministratorController {
     }
 
     @GetMapping("/admin/administrators/read")
-    public String listAdministrators(@RequestParam(required = false) Integer adminId, Model model) {
+    public String listAdministrators(@RequestParam(required = false) Integer adminId, Model model, HttpSession session) {
+        // Solo ADMIN: un operario no debe conocer siquiera la lista de administradores.
+        if (!SessionAccess.isAdmin(session)) return SessionAccess.deniedStaff(session);
         if (adminId != null) prepareNavigation(model, adminId);
         model.addAttribute("administradores", administrators.listAdministrators());
         return "administrators/list";
     }
 
     @GetMapping("/admin/administrators/read/{id}")
-    public String showDetails(@PathVariable Integer id, @RequestParam(required = false) Integer adminId, Model model) {
+    public String showDetails(@PathVariable Integer id, @RequestParam(required = false) Integer adminId, Model model, HttpSession session) {
+        if (!SessionAccess.isAdmin(session)) return SessionAccess.deniedStaff(session);
         if (adminId != null) prepareNavigation(model, adminId);
         model.addAttribute("administrador", administrators.findById(id));
         model.addAttribute("ownProfile", false);
@@ -55,7 +60,8 @@ public class AdministratorController {
     }
 
     @GetMapping("/admins/read/{id}")
-    public String myProfile(@PathVariable Integer id, Model model) {
+    public String myProfile(@PathVariable Integer id, Model model, HttpSession session) {
+        if (!SessionAccess.isAdmin(session)) return SessionAccess.deniedStaff(session);
         model.addAttribute("administrador", administrators.findById(id));
         model.addAttribute("ownProfile", true);
         prepareNavigation(model, id);
@@ -106,14 +112,14 @@ public class AdministratorController {
 
     @PostMapping("/admins/delete/{id}")
     public String delete(@PathVariable Integer id, @RequestParam(defaultValue = "") String passwordCurrent,
-                         Model model) {
+                         Model model, HttpSession session) {
         try {
             login.confirmAdministratorPassword(id, passwordCurrent);
             administrators.delete(id);
             return "redirect:/";
         } catch (SecurityException | com.example.demo.errors.DeletionRestrictedException exception) {
             model.addAttribute("error", exception.getMessage());
-            return myProfile(id, model);
+            return myProfile(id, model, session);
         }
     }
 
