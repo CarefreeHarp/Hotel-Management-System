@@ -32,16 +32,30 @@ public class AdministratorServiceImpl implements AdministratorService {
     @Autowired
     private LoginService loginService;
 
+    @Autowired
+    private com.example.demo.repository.OperatorRepository operatorRepository;
+
     @Override
     public void create(Administrator administrator) {
         administrator.setAdminId(null);
         validateData(administrator);
-        if (administrator.getPassword() == null || administrator.getPassword().isBlank()
-                || administrator.getPassword().length() < 8 || administrator.getPassword().length() > 255) {
+        if (administrator.getPassword() == null || administrator.getPassword().length() < 8
+                || administrator.getPassword().length() > 255) {
             throw new InvalidAdministratorDataException(
                     InvalidAdministratorDataException.Reason.PASSWORD_INVALID, null);
         }
         administratorRepository.save(administrator);
+    }
+
+    @Override
+    @jakarta.transaction.Transactional
+    public void delete(Integer adminId) {
+        Administrator administrator = findById(adminId);
+        if (operatorRepository.existsByAdmin_AdminId(adminId)) {
+            throw new com.example.demo.errors.DeletionRestrictedException(
+                    "Remove your assigned operators before deleting your account.", null);
+        }
+        administratorRepository.delete(administrator);
     }
 
     @Override

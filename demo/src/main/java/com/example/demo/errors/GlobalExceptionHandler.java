@@ -7,13 +7,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(SecurityException.class)
-    @org.springframework.web.bind.annotation.ResponseStatus(org.springframework.http.HttpStatus.FORBIDDEN)
-    public String handleAccessDenied(SecurityException exception, Model model) {
-        model.addAttribute("status", 403);
-        model.addAttribute("error", exception.getMessage());
-        return "error";
-    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public String handleResourceNotFound(ResourceNotFoundException exception, Model model) {

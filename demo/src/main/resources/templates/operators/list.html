@@ -13,8 +13,8 @@
     <main class="portal-main">
       <div class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
         <header class="page-heading">
-          <div><p class="page-eyebrow">Staff management</p><h1 class="page-title">Operators in my care</h1><p class="page-description">Create and manage the operators assigned to your account.</p></div>
-          <a class="atlan-btn atlan-btn--primary" th:href="@{/admin/operators/create}">Create operator</a>
+          <div><p class="page-eyebrow">Staff management</p><h1 class="page-title" th:text="${adminId != null ? 'My operators' : 'Registered operators'}">Registered operators</h1><p class="page-description">View the registered operators and their administrator in charge.</p></div>
+        <a th:if="${adminId != null}" class="atlan-btn atlan-btn--primary" th:href="@{/admins/{id}/operators/create(id=${adminId})}">Create operator</a>
         </header>
 
         <aside class="portal-alert" th:if="${success}" role="status" th:text="${success}"></aside>
@@ -29,16 +29,16 @@
                 <tr th:each="operario : ${operarios}">
                   <td><span class="staff-name" th:text="|${operario.name} ${operario.lastName}|">First name Last name</span></td>
                   <td class="staff-email" th:text="${operario.email}">operator@example.com</td>
-                  <td class="muted-cell"><a th:href="@{/admins/read/{adminId}(adminId=${operario.admin.adminId})}" th:text="${operario.admin.name}">Administrator name</a></td>
+                  <td class="muted-cell"><a th:href="@{/admin/administrators/read/{adminId}(adminId=${operario.admin.adminId})}" th:text="${operario.admin.name}">Administrator name</a></td>
                   <td>
                     <div class="table-actions tw-flex tw-flex-wrap tw-gap-2">
-                      <a class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="@{/admin/operators/read/{operatorId}(operatorId=${operario.operatorId})}">View</a>
-                      <a class="atlan-btn atlan-btn--edit atlan-btn--small" th:href="@{/admin/operators/update/{operatorId}(operatorId=${operario.operatorId})}">Edit</a>
-                      <a class="atlan-btn atlan-btn--danger atlan-btn--small" th:href="@{/admin/operators/read/{operatorId}#delete-operator(operatorId=${operario.operatorId})}">Delete</a>
+                      <a class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="${adminId != null ? '/admins/' + adminId + '/operators/' + operario.operatorId : '/admin/operators/read/' + operario.operatorId}">View</a>
+                      <a th:if="${adminId != null}" class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="@{/admins/{aid}/operators/{oid}/update(aid=${adminId},oid=${operario.operatorId})}">Edit</a>
+                      <a th:if="${adminId != null}" class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="@{/admins/{aid}/operators/{oid}#delete-operator(aid=${adminId},oid=${operario.operatorId})}">Delete</a>
                     </div>
                   </td>
                 </tr>
-                <tr th:if="${#lists.isEmpty(operarios)}"><td class="empty-state" colspan="4">You have no operators assigned yet. Create an operator to add them to your team.</td></tr>
+                <tr th:if="${#lists.isEmpty(operarios)}"><td class="empty-state" colspan="4">No operators are registered yet.</td></tr>
               </tbody>
             </table>
           </div>

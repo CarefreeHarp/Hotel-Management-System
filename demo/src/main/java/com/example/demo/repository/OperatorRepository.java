@@ -16,7 +16,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface OperatorRepository extends JpaRepository<Operator, Integer> {
+
     java.util.List<Operator> findByAdmin_AdminId(Integer adminId);
+
+    boolean existsByAdmin_AdminId(Integer adminId);
 
     /* Busca un operario por correo electrónico sin distinguir mayúsculas de minúsculas. */
     Optional<Operator> findByEmailIgnoreCase(String email);

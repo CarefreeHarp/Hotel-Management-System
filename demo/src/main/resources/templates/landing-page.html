@@ -87,30 +87,7 @@
           </button>
         </aside>
 
-        <aside
-          class="tw-absolute tw-right-4 tw-top-28 tw-z-10 tw-w-[min(23rem,calc(100%-2rem))] tw-border tw-border-white/20 tw-bg-[#111417]/90 tw-p-4 tw-text-white tw-shadow-2xl tw-backdrop-blur sm:tw-right-8 sm:tw-top-32"
-          aria-labelledby="clock-controls-title"
-        >
-          <p class="eyebrow">Testing tools</p>
-          <h2 id="clock-controls-title" class="tw-mt-2 tw-font-['Cormorant_Garamond'] tw-text-3xl tw-font-medium">Application clock</h2>
-          <p class="tw-mt-2 tw-text-xs tw-uppercase tw-tracking-[.14em] tw-text-[#d8c7a8]" th:text="${applicationClockFixed ? 'Fixed time' : 'System time'}">System time</p>
-          <time class="tw-mt-1 tw-block tw-text-sm tw-text-white/80" th:datetime="${applicationDateTimeInput}" th:text="${applicationDateTime}">Current application time</time>
 
-          <form class="tw-mt-4 tw-grid tw-gap-2" th:action="@{/clock/fixed}" method="post">
-            <label class="tw-text-xs tw-font-semibold tw-uppercase tw-tracking-[.12em] tw-text-white/70" for="application-date-time">Set application time</label>
-            <input id="application-date-time" class="tw-border tw-border-white/20 tw-bg-white tw-px-3 tw-py-2 tw-text-sm tw-text-[#111417]" type="datetime-local" name="dateTime" th:value="${applicationDateTimeInput}" required />
-            <button class="tw-bg-[#d8c7a8] tw-px-3 tw-py-2 tw-text-xs tw-font-bold tw-uppercase tw-tracking-[.12em] tw-text-[#111417]" type="submit">Use fixed time</button>
-          </form>
-
-          <div class="tw-mt-3 tw-grid tw-grid-cols-2 tw-gap-2" aria-label="Application clock actions">
-            <form th:action="@{/clock/system}" method="post">
-              <button class="tw-w-full tw-border tw-border-white/35 tw-px-2 tw-py-2 tw-text-xs tw-font-semibold tw-uppercase tw-tracking-[.1em] tw-text-white" type="submit">Use real time</button>
-            </form>
-            <form th:action="@{/clock/run-midnight-actions}" method="post">
-              <button class="tw-w-full tw-bg-white tw-px-2 tw-py-2 tw-text-xs tw-font-bold tw-uppercase tw-tracking-[.1em] tw-text-[#111417]" type="submit">Run midnight actions</button>
-            </form>
-          </div>
-        </aside>
 
           <p class="hero-meta tw-flex tw-flex-col sm:tw-flex-row">
           <span class="hero-meta-item">Singapore</span>

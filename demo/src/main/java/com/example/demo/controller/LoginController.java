@@ -55,39 +55,19 @@ public class LoginController {
             previous.invalidate();
         }
         HttpSession session = request.getSession(true);
-        String profileUrl;
         if (administrator != null) {
-            session.setAttribute("adminId", administrator.getAdminId());
             session.setAttribute("isAdmin", true);
-            profileUrl = "/admins/read/" + administrator.getAdminId();
-        } else if (operator != null) {
-            session.setAttribute("operatorId", operator.getOperatorId());
-            session.setAttribute("isAdmin", false);
-            profileUrl = "/operators/read/" + operator.getOperatorId();
-        } else {
-            session.setAttribute("clientId", client.getClientId());
-            session.setAttribute("isAdmin", false);
-            profileUrl = "/clients/read/" + client.getClientId();
+            return "redirect:/admin/panel/" + administrator.getAdminId();
         }
-        session.setAttribute("profileUrl", profileUrl);
-        if (client != null && "/reservation/book".equals(destination)) {
+        if (operator != null) {
+            return "redirect:/operators/panel/" + operator.getOperatorId();
+        }
+        session.setAttribute("clientId", client.getClientId());
+        if ("/reservation/book".equals(destination)) {
             return "redirect:/reservation/book";
         }
-        return "redirect:" + profileUrl;
+        return "redirect:/clients/read/" + client.getClientId();
     }
 
-    @PostMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/login";
-    }
 
-    @GetMapping("/admin/panel")
-    public String showPanelAdmin(HttpSession session) {
-        if (!loginService.isStaff((Integer) session.getAttribute("adminId"),
-                (Integer) session.getAttribute("operatorId"))) {
-            return "redirect:/login";
-        }
-        return "admin/panel";
-    }
 }

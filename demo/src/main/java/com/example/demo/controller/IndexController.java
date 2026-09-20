@@ -1,9 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.config.ApplicationClock;
 import com.example.demo.service.interfaces.RoomTypeService;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,22 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class IndexController {
 
     private final RoomTypeService roomTypeService;
-    private final ApplicationClock applicationClock;
 
-    public IndexController(RoomTypeService roomTypeService, ApplicationClock applicationClock) {
+    public IndexController(RoomTypeService roomTypeService) {
         this.roomTypeService = roomTypeService;
-        this.applicationClock = applicationClock;
     }
 
     // Full URL: http://localhost:8080/, http://localhost:8080/index, http://localhost:8080/home
     @GetMapping({"/", "/index", "/home"})
     public String index(Model model) {
-        LocalDateTime applicationDateTime = LocalDateTime.now(applicationClock);
         model.addAttribute("roomTypes", roomTypeService.listTypes());
-        model.addAttribute("applicationDateTime", applicationDateTime);
-        model.addAttribute("applicationDateTimeInput",
-                applicationDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")));
-        model.addAttribute("applicationClockFixed", applicationClock.isFixed());
         return "landing-page";
     }
 

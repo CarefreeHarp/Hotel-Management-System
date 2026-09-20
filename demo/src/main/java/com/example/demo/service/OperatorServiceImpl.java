@@ -40,19 +40,8 @@ public class OperatorServiceImpl implements OperatorService {
     private com.example.demo.service.interfaces.PaymentService paymentService;
 
     @Override
-    public void create(Operator operator, Integer adminId) {
-        operator.setOperatorId(null);
-        operator.setAdmin(administratorService.findById(adminId));
-        validateData(operator);
-        if (operator.getPassword() == null || operator.getPassword().isBlank()
-                || operator.getPassword().length() < 8 || operator.getPassword().length() > 255) {
-            throw new InvalidOperatorDataException(InvalidOperatorDataException.Reason.PASSWORD_INVALID, null);
-        }
-        operatorRepository.save(operator);
-    }
-
-    @Override
     public List<Operator> listByAdministrator(Integer adminId) {
+        administratorService.findById(adminId);
         return operatorRepository.findByAdmin_AdminId(adminId);
     }
 
@@ -60,9 +49,27 @@ public class OperatorServiceImpl implements OperatorService {
     public Operator findManagedBy(Integer operatorId, Integer adminId) {
         Operator operator = findById(operatorId);
         if (!Objects.equals(operator.getAdmin().getAdminId(), adminId)) {
-            throw new SecurityException("This operator is not assigned to you.");
+            throw new ResourceNotFoundException("This operator is not assigned to this administrator.");
         }
         return operator;
+    }
+
+    @Override
+    public void create(Operator operator, Integer adminId) {
+        operator.setOperatorId(null);
+        operator.setAdmin(administratorService.findById(adminId));
+        validateData(operator);
+        if (operator.getPassword() == null || operator.getPassword().length() < 8
+                || operator.getPassword().length() > 255) {
+            throw new InvalidOperatorDataException(InvalidOperatorDataException.Reason.PASSWORD_INVALID, null);
+        }
+        operatorRepository.save(operator);
+    }
+
+    @Override
+    public void updateManagedBy(Integer operatorId, Operator operator, Integer adminId) {
+        findManagedBy(operatorId, adminId);
+        update(operatorId, operator, adminId);
     }
 
     @Override

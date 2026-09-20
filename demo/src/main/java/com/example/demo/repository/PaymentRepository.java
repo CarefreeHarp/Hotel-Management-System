@@ -11,10 +11,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 
-    java.util.List<Payment> findByOperator_OperatorId(Integer operatorId);
 
     /* Suma los pagos aprobados registrados para el folio indicado. */
     @Query("SELECT COALESCE(SUM(payment.amount), 0) FROM Payment payment "
             + "WHERE payment.folio.folioId = :folioId AND payment.status = :status")
     BigDecimal sumAmountsByFolioIdAndStatus(Integer folioId, PaymentStatus status);
+    java.util.List<Payment> findByOperator_OperatorId(Integer operatorId);
 }
