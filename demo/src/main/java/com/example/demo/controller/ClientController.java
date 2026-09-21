@@ -35,6 +35,9 @@ public class ClientController {
     @Autowired
     ClientService clientService;
 
+    @Autowired
+    com.example.demo.service.interfaces.ReservationService reservationService;
+
     /**
      * Muestra el formulario de registro vacío.
      * URL: http://localhost:8080/clients/create
@@ -67,7 +70,7 @@ public class ClientController {
     }
 
     /**
-     * Perfil del cliente: sus datos personales.
+     * Perfil del cliente: sus datos personales y su historial de reservas.
      * URL: http://localhost:8080/clients/read/{clientId}
      */
     // Full URL: http://localhost:8080/clients/read/{clientId}
@@ -81,7 +84,10 @@ public class ClientController {
             return SessionAccess.denied(session);
         }
         prepareNavigation(model, adminId, operatorId);
+        boolean isStaff = SessionAccess.isStaff(session) || adminId != null || operatorId != null;
+        model.addAttribute("isStaff", isStaff);
         model.addAttribute("cliente", clientService.findById(clientId));
+        model.addAttribute("historialReservas", reservationService.getClientReservationHistory(clientId));
         return "clients/details";
     }
 

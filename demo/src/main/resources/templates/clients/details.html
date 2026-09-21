@@ -1,26 +1,277 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
-    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title th:text="${'Client: ' + cliente.name + ' | Atlan Suites'}">Client details | Atlan Suites</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script><script>tailwind.config = { prefix: "tw-", corePlugins: { preflight: false } };</script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { prefix: "tw-", corePlugins: { preflight: false } };</script>
+    <link rel="stylesheet" th:href="@{/css/css-utils/base/common.css}" href="/css/css-utils/base/common.css" />
     <link rel="stylesheet" th:href="@{/css/clients/details.css}" href="/css/clients/details.css" />
   </head>
   <body class="portal-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
-    <th:block th:if="${adminId != null or operatorId != null}"><th:block th:replace="~{fragments/admin-shell :: header('clientes')}"></th:block></th:block>
-    <main class="portal-main"><div class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
-      <header class="page-heading"><div><p class="page-eyebrow">Guest profile</p><h1 class="page-title" th:text="|${cliente.name} ${cliente.lastName}|">Client name</h1><p class="page-description">Personal information and contact details registered in the portal.</p></div><div class="tw-flex tw-shrink-0 tw-items-center tw-gap-2 tw-self-start"><a class="atlan-btn atlan-btn--primary" th:href="@{/clients/update/{clientId}(clientId=${cliente.clientId},adminId=${adminId},operatorId=${operatorId})}">Edit profile</a><form th:action="@{/clients/delete/{clientId}(clientId=${cliente.clientId},adminId=${adminId},operatorId=${operatorId})}" method="post" onsubmit="return confirm('Do you want to delete this client?');"><button class="atlan-btn atlan-btn--danger" type="submit">Delete profile</button></form></div></header>
-      <section class="detail-grid">
-        <figure class="detail-visual profile-visual mb-0" th:if="${cliente.profilePhoto != null and !cliente.profilePhoto.isBlank()}"><img th:src="${cliente.profilePhoto}" alt="Client profile photo" /></figure>
-        <figure class="detail-visual profile-visual detail-placeholder" th:unless="${cliente.profilePhoto != null and !cliente.profilePhoto.isBlank()}" aria-label="Profile without a photo"><span th:text="${#strings.substring(cliente.name, 0, 1)}">A</span></figure>
-        <article class="surface-card detail-content">
-          <p class="page-eyebrow">Registered details</p>
-          <dl class="detail-list"><div><dt>First name</dt><dd th:text="${cliente.name}">First name</dd></div><div><dt>Last name</dt><dd th:text="${cliente.lastName}">Last name</dd></div><div><dt>National ID</dt><dd th:text="${cliente.nationalId}">000000</dd></div><div><dt>Phone</dt><dd th:text="${cliente.phone}">3000000000</dd></div><div><dt>Email</dt><dd th:text="${cliente.email}">email@example.com</dd></div></dl>
-        </article>
-      </section>
-    </div></main>
-    <footer class="tw-mt-10 tw-border-t tw-border-white/10 tw-py-6 tw-text-center tw-text-xs tw-text-slate-400"><a class="tw-text-sky-200 hover:tw-text-white" th:href="${adminId != null ? '/admin/clients/read?adminId=' + adminId : (operatorId != null ? '/admin/clients/read?operatorId=' + operatorId : '/login')}" th:text="${adminId != null or operatorId != null ? 'Back to clients' : 'Back to sign in'}">Back to sign in</a></footer>
+    <th:block th:if="${adminId != null or operatorId != null}">
+      <th:block th:replace="~{fragments/admin-shell :: header('clientes')}"></th:block>
+    </th:block>
+    <th:block th:unless="${adminId != null or operatorId != null}">
+      <th:block th:replace="~{fragments/public-header :: publicHeader('profile')}"></th:block>
+    </th:block>
+
+    <main class="portal-main">
+      <div class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
+        
+        <!-- Profile Header -->
+        <header class="page-heading">
+          <div>
+            <p class="page-eyebrow">Guest profile</p>
+            <h1 class="page-title" th:text="|${cliente.name} ${cliente.lastName}|">Client name</h1>
+            <p class="page-description">Personal information and contact details registered in the portal.</p>
+          </div>
+          <div class="tw-flex tw-shrink-0 tw-items-center tw-gap-2 tw-self-start">
+            <a class="atlan-btn atlan-btn--primary" th:href="@{/clients/update/{clientId}(clientId=${cliente.clientId},adminId=${adminId},operatorId=${operatorId})}">Edit profile</a>
+            <form th:action="@{/clients/delete/{clientId}(clientId=${cliente.clientId},adminId=${adminId},operatorId=${operatorId})}" method="post" onsubmit="return confirm('Do you want to delete this client?');">
+              <button class="atlan-btn atlan-btn--danger" type="submit">Delete profile</button>
+            </form>
+          </div>
+        </header>
+
+        <!-- Profile Details Grid -->
+        <section class="detail-grid">
+          <figure class="detail-visual profile-visual mb-0" th:if="${cliente.profilePhoto != null and !cliente.profilePhoto.isBlank()}">
+            <img th:src="${cliente.profilePhoto}" alt="Client profile photo" />
+          </figure>
+          <figure class="detail-visual profile-visual detail-placeholder" th:unless="${cliente.profilePhoto != null and !cliente.profilePhoto.isBlank()}" aria-label="Profile without a photo">
+            <span th:text="${#strings.substring(cliente.name, 0, 1)}">A</span>
+          </figure>
+          <article class="surface-card detail-content">
+            <p class="page-eyebrow">Registered details</p>
+            <dl class="detail-list">
+              <div><dt>First name</dt><dd th:text="${cliente.name}">First name</dd></div>
+              <div><dt>Last name</dt><dd th:text="${cliente.lastName}">Last name</dd></div>
+              <div><dt>National ID</dt><dd th:text="${cliente.nationalId}">000000</dd></div>
+              <div><dt>Phone</dt><dd th:text="${cliente.phone}">3000000000</dd></div>
+              <div><dt>Email</dt><dd th:text="${cliente.email}">email@example.com</dd></div>
+            </dl>
+          </article>
+        </section>
+
+        <!-- RESERVATION HISTORY SECTION (Requirements 8 & 9) -->
+        <section class="tw-mt-10" aria-labelledby="history-section-title">
+          <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-4 tw-mb-6">
+            <div>
+              <p class="page-eyebrow" th:text="${isStaff ? 'Staff management view' : 'Guest records'}">Guest records</p>
+              <h2 class="page-title tw-text-2xl sm:tw-text-3xl" id="history-section-title" th:text="${isStaff ? 'Complete Reservation History' : 'My Reservation History'}">Reservation History</h2>
+            </div>
+            <div th:unless="${isStaff}">
+              <a class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="@{/reservation/book}">Book new stay <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+
+          <!-- Empty state when no reservations -->
+          <div th:if="${#lists.isEmpty(historialReservas)}" class="surface-card tw-p-8 tw-text-center">
+            <p class="tw-text-slate-300 tw-text-lg tw-mb-2">No reservations found for this guest.</p>
+            <p class="tw-text-slate-400 tw-text-sm" th:if="${!isStaff}">You haven't made any reservations yet. Ready to experience Atlan Suites?</p>
+            <div class="tw-mt-4" th:if="${!isStaff}">
+              <a class="atlan-btn atlan-btn--primary" th:href="@{/reservation/book}">Book a room</a>
+            </div>
+          </div>
+
+          <!-- List of Reservations -->
+          <div th:unless="${#lists.isEmpty(historialReservas)}" class="tw-space-y-6">
+            <article th:each="item : ${historialReservas}" class="surface-card reservation-card tw-p-6 sm:tw-p-8">
+              
+              <!-- Reservation Top Bar: Code, Status & Dates -->
+              <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-4 tw-border-b tw-border-white/10 tw-pb-4 tw-mb-6">
+                <div class="tw-flex tw-items-center tw-gap-3">
+                  <span class="reservation-code-badge" th:text="${item.reservation.reservationCode}">ATL-2026-001</span>
+                  <span th:class="|status-badge status-badge--${#strings.toLowerCase(item.reservation.status)}|" th:text="${item.reservation.status}">CONFIRMED</span>
+                </div>
+                <div class="tw-text-sm tw-text-slate-400">
+                  <span th:if="${isStaff}" class="tw-mr-4" th:text="|Reservation ID: #${item.reservation.reservationId}|">ID: #1</span>
+                  <span th:text="|Created: ${#temporals.format(item.reservation.createdAt, 'yyyy-MM-dd HH:mm')}|">Created: 2026-10-01 09:00</span>
+                </div>
+              </div>
+
+              <!-- Main Reservation Info Grid -->
+              <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-6 tw-mb-6">
+                
+                <!-- 1. Stay Details -->
+                <div class="reservation-subpanel">
+                  <h3 class="tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wider tw-text-amber-200/80 tw-mb-3">Stay Details</h3>
+                  <dl class="reservation-dl">
+                    <div>
+                      <dt>Room</dt>
+                      <dd th:text="${item.reservation.room != null ? 'Room ' + item.reservation.room.number + ' · ' + (item.reservation.room.roomType != null ? item.reservation.room.roomType.name : '') : 'Unassigned'}">Room 101 - Standard Room</dd>
+                    </div>
+                    <div th:if="${isStaff and item.reservation.room != null}">
+                      <dt>Floor / Capacity</dt>
+                      <dd th:text="|Floor ${item.reservation.room.floor} · Max ${item.reservation.room.roomType != null ? item.reservation.room.roomType.maxCapacity : '—'} guests|">Floor 1 · Max 2 guests</dd>
+                    </div>
+                    <div>
+                      <dt>Check-in</dt>
+                      <dd th:text="${#temporals.format(item.reservation.checkInDate, 'MMM d, yyyy')}">Oct 1, 2026</dd>
+                    </div>
+                    <div>
+                      <dt>Check-out</dt>
+                      <dd th:text="${#temporals.format(item.reservation.checkOutDate, 'MMM d, yyyy')}">Oct 3, 2026</dd>
+                    </div>
+                    <div>
+                      <dt>Guests</dt>
+                      <dd th:text="|${item.reservation.guestCount} guest(s)|">2 guest(s)</dd>
+                    </div>
+                  </dl>
+                </div>
+
+                <!-- 2. Pricing & Folio Details -->
+                <div class="reservation-subpanel">
+                  <h3 class="tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wider tw-text-amber-200/80 tw-mb-3" th:text="${isStaff ? 'Folio & Financial Details' : 'Pricing Summary'}">Pricing Details</h3>
+                  <dl class="reservation-dl">
+                    <div>
+                      <dt>Nightly rate</dt>
+                      <dd th:text="|$ ${#numbers.formatDecimal(item.reservation.nightlyPrice, 0, 'POINT', 0, 'COMMA')}|">$ 250.000</dd>
+                    </div>
+                    <div>
+                      <dt>Estimated total</dt>
+                      <dd class="tw-font-semibold tw-text-amber-300" th:text="|$ ${#numbers.formatDecimal(item.reservation.estimatedTotal, 0, 'POINT', 0, 'COMMA')}|">$ 500.000</dd>
+                    </div>
+                    <!-- Detailed Folio Information for Staff (Requirement 9) -->
+                    <th:block th:if="${isStaff and item.folio != null}">
+                      <div>
+                        <dt>Folio ID / Status</dt>
+                        <dd>
+                          <span th:text="|#${item.folio.folioId} |">#1 </span>
+                          <span th:class="|status-badge status-badge--${#strings.toLowerCase(item.folio.status)}|" th:text="${item.folio.status}">PAID</span>
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>Subtotal / Taxes</dt>
+                        <dd th:text="|$ ${#numbers.formatDecimal(item.folio.subtotal, 0, 'POINT', 0, 'COMMA')} + $ ${#numbers.formatDecimal(item.folio.taxes, 0, 'POINT', 0, 'COMMA')}|">$ 0 + $ 0</dd>
+                      </div>
+                      <div>
+                        <dt>Folio Total</dt>
+                        <dd class="tw-font-bold tw-text-white" th:text="|$ ${#numbers.formatDecimal(item.folio.total, 0, 'POINT', 0, 'COMMA')}|">$ 500.000</dd>
+                      </div>
+                      <div>
+                        <dt>Issued date</dt>
+                        <dd th:text="${#temporals.format(item.folio.issuedAt, 'yyyy-MM-dd HH:mm')}">2026-10-01 09:00</dd>
+                      </div>
+                    </th:block>
+                  </dl>
+                </div>
+
+                <!-- 3. Payment Information Panel (Requirement 8 vs Requirement 9) -->
+                <div class="reservation-subpanel">
+                  <h3 class="tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wider tw-text-amber-200/80 tw-mb-3">
+                    <span th:text="${isStaff ? 'Payment Records' : 'Payment Information'}">Payment Information</span>
+                  </h3>
+                  
+                  <!-- Basic Payment Information for Client (Requirement 8) -->
+                  <div th:unless="${isStaff}">
+                    <div th:if="${item.hasPayments()}" class="tw-space-y-3">
+                      <div th:each="pay : ${item.payments}" class="tw-rounded-lg tw-bg-white/5 tw-p-3 tw-border tw-border-white/5">
+                        <dl class="reservation-dl">
+                          <div>
+                            <dt>Payment method</dt>
+                            <dd class="tw-font-medium tw-text-white" th:text="${pay.paymentMethod}">Customer online payment</dd>
+                          </div>
+                          <div>
+                            <dt>Date</dt>
+                            <dd th:text="${#temporals.format(pay.paidAt, 'MMM d, yyyy HH:mm')}">Oct 1, 2026 19:00</dd>
+                          </div>
+                        </dl>
+                      </div>
+                    </div>
+                    <div th:unless="${item.hasPayments()}" class="tw-text-sm tw-text-slate-400 tw-italic tw-py-2">
+                      No payments registered yet (Pending).
+                    </div>
+                  </div>
+
+                  <!-- Complete Payment Information for Staff (Requirement 9) -->
+                  <div th:if="${isStaff}">
+                    <div th:if="${item.hasPayments()}" class="tw-space-y-3">
+                      <div th:each="pay : ${item.payments}" class="tw-rounded-lg tw-bg-white/5 tw-p-3 tw-border tw-border-white/10">
+                        <div class="tw-flex tw-justify-between tw-items-center tw-mb-2">
+                          <span class="tw-text-xs tw-text-slate-400" th:text="|Payment #${pay.paymentId}|">Payment #1</span>
+                          <span th:class="|status-badge status-badge--${#strings.toLowerCase(pay.status)}|" th:text="${pay.status}">APPROVED</span>
+                        </div>
+                        <dl class="reservation-dl">
+                          <div>
+                            <dt>Amount</dt>
+                            <dd class="tw-font-semibold tw-text-emerald-400" th:text="|$ ${#numbers.formatDecimal(pay.amount, 0, 'POINT', 0, 'COMMA')}|">$ 250.000</dd>
+                          </div>
+                          <div>
+                            <dt>Method</dt>
+                            <dd th:text="${pay.paymentMethod}">Customer online payment</dd>
+                          </div>
+                          <div>
+                            <dt>Paid at</dt>
+                            <dd th:text="${#temporals.format(pay.paidAt, 'yyyy-MM-dd HH:mm:ss')}">2026-10-01 19:00:00</dd>
+                          </div>
+                          <div>
+                            <dt>Processed by</dt>
+                            <dd th:text="${pay.operator != null ? pay.operator.name + ' ' + pay.operator.lastName : 'Client self-service'}">Client self-service</dd>
+                          </div>
+                        </dl>
+                      </div>
+                    </div>
+                    <div th:unless="${item.hasPayments()}" class="tw-text-sm tw-text-slate-400 tw-italic tw-py-2">
+                      No payment transactions registered for this reservation.
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- 4. Contracted Services Section (Folio Items) -->
+              <div class="tw-border-t tw-border-white/10 tw-pt-4">
+                <h4 class="tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wider tw-text-slate-300 tw-mb-3">
+                  Contracted Services & Add-ons
+                </h4>
+                <div th:if="${#lists.isEmpty(item.folioItems)}" class="tw-text-xs tw-text-slate-400 tw-italic">
+                  No additional services contracted for this reservation.
+                </div>
+                <div th:unless="${#lists.isEmpty(item.folioItems)}" class="tw-overflow-x-auto">
+                  <table class="tw-w-full tw-text-left tw-text-xs sm:tw-text-sm">
+                    <thead>
+                      <tr class="tw-border-b tw-border-white/10 tw-text-slate-400">
+                        <th th:if="${isStaff}" class="tw-py-2 tw-pr-3">Item #</th>
+                        <th class="tw-py-2 tw-pr-3">Service / Concept</th>
+                        <th class="tw-py-2 tw-pr-3">Qty</th>
+                        <th class="tw-py-2 tw-pr-3">Unit Price</th>
+                        <th class="tw-py-2 tw-pr-3">Subtotal</th>
+                        <th th:if="${isStaff}" class="tw-py-2">Charged At</th>
+                      </tr>
+                    </thead>
+                    <tbody class="tw-divide-y tw-divide-white/5">
+                      <tr th:each="serviceItem : ${item.folioItems}">
+                        <td th:if="${isStaff}" class="tw-py-2 tw-pr-3 tw-text-slate-400" th:text="|#${serviceItem.itemId}|">#1</td>
+                        <td class="tw-py-2 tw-pr-3 tw-font-medium tw-text-slate-200" th:text="${serviceItem.concept}">Breakfast Buffet</td>
+                        <td class="tw-py-2 tw-pr-3 tw-text-slate-300" th:text="${serviceItem.quantity}">1</td>
+                        <td class="tw-py-2 tw-pr-3 tw-text-slate-300" th:text="|$ ${#numbers.formatDecimal(serviceItem.unitPrice, 0, 'POINT', 0, 'COMMA')}|">$ 45.000</td>
+                        <td class="tw-py-2 tw-pr-3 tw-font-semibold tw-text-amber-200" th:text="|$ ${#numbers.formatDecimal(serviceItem.subtotal, 0, 'POINT', 0, 'COMMA')}|">$ 45.000</td>
+                        <td th:if="${isStaff}" class="tw-py-2 tw-text-slate-400" th:text="${#temporals.format(serviceItem.chargedAt, 'yyyy-MM-dd HH:mm')}">2026-10-01 10:00</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </article>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <footer class="tw-mt-10 tw-border-t tw-border-white/10 tw-py-6 tw-text-center tw-text-xs tw-text-slate-400">
+      <a class="tw-text-sky-200 hover:tw-text-white"
+         th:href="${adminId != null ? '/admin/clients/read?adminId=' + adminId : (operatorId != null ? '/admin/clients/read?operatorId=' + operatorId : '/login')}"
+         th:text="${adminId != null or operatorId != null ? 'Back to clients' : 'Back to sign in'}">
+        Back to sign in
+      </a>
+    </footer>
   </body>
 </html>
