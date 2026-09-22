@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.interfaces.ClientService;
+import com.example.demo.security.SessionAccess;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +22,11 @@ public class AdminClientController {
 
     // Full URL: http://localhost:8080/admin/clients/read
     @GetMapping("/read")
-    public String listClients(Model model) {
+    public String listClients(Model model, @RequestParam(required = false) Integer adminId,
+                              @RequestParam(required = false) Integer operatorId, HttpSession session) {
+        // El listado completo de clientes es pantalla de staff.
+        if (!SessionAccess.isStaff(session)) return SessionAccess.deniedStaff(session);
+        prepareNavigation(model, adminId, operatorId);
         model.addAttribute("clientes", clientService.listClients());
         return "clients/list";
     }
@@ -31,8 +38,26 @@ public class AdminClientController {
      */
     // Full URL: http://localhost:8080/admin/clients/delete/{clientId}
     @PostMapping("/delete/{clientId}")
-    public String deleteClient(@PathVariable Integer clientId) {
+    public String deleteClient(@PathVariable Integer clientId, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId, Model model) {
+        prepareNavigation(model, adminId, operatorId);
         clientService.deleteProfile(clientId);
-        return "redirect:/admin/clients/read";
+        return "redirect:/admin/clients/read" + navigationQuery(adminId, operatorId);
+    }
+    // El identificador se conserva en la URL; no se guarda en sesion.
+    private void prepareNavigation(Model model, Integer adminId, Integer operatorId) {
+        if (adminId != null) {
+            model.addAttribute("adminId", adminId);
+            model.addAttribute("panelUrl", "/admin/panel/" + adminId);
+            model.addAttribute("profileUrl", "/admins/read/" + adminId);
+        } else if (operatorId != null) {
+            model.addAttribute("operatorId", operatorId);
+            model.addAttribute("panelUrl", "/operators/panel/" + operatorId);
+            model.addAttribute("profileUrl", "/operators/read/" + operatorId);
+        }
+    }
+
+    private String navigationQuery(Integer adminId, Integer operatorId) {
+        if (adminId != null) return "?adminId=" + adminId;
+        return operatorId == null ? "" : "?operatorId=" + operatorId;
     }
 }

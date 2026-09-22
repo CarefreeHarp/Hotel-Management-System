@@ -105,11 +105,6 @@ public class DataLoader implements CommandLineRunner {
                                 List.of("https://images.unsplash.com/photo-1600607687920-4e2a09cf159d",
                                                 "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c"));
 
-                // Registro reservado para mantener reservas cuyo cuarto físico fue eliminado.
-                jdbcTemplate.update(
-                                "insert into room (room_id, room_number, floor, status, room_type_id) values (-1, -1, 0, ?, ?)",
-                                RoomStatus.MAINTENANCE.name(), standardRoom.getRoomTypeId());
-
                 // Clientes
                 saveClient("Emma", "Thompson", "1001001001", "3001001001",
                                 "emma.thompson@example.com", "Emma2026!",
@@ -207,7 +202,7 @@ public class DataLoader implements CommandLineRunner {
                                 BigDecimal.ZERO, "System", false, "about:blank");
 
                 saveService("High-speed Wi-Fi", "high-speed-wi-fi",
-                                "Complimentary high-speed wireless internet throughout the hotel.", new BigDecimal("0"),
+                                "High-speed wireless internet throughout the hotel.", new BigDecimal("10000"),
                                 "Connectivity", true, "Stay connected throughout your visit", "24 hours",
                                 "Available every day", "Entire hotel",
                                 "https://images.unsplash.com/photo-1496181133206-80ce9b88a853");
@@ -255,14 +250,14 @@ public class DataLoader implements CommandLineRunner {
                                 "https://images.unsplash.com/photo-1506521781263-d8422e82f27a");
 
                 saveService("Swimming Pool", "swimming-pool",
-                                "Access to the hotel's temperature-controlled panoramic pool.", new BigDecimal("0"),
+                                "Access to the hotel's temperature-controlled panoramic pool.", new BigDecimal("30000"),
                                 "Wellness", true, "A quiet pause beside the water", "7:00 AM - 9:00 PM",
                                 "Available every day", "Third-floor terrace",
                                 "https://images.unsplash.com/photo-1566073771259-6a8506099945");
 
                 saveService("Fitness Center", "fitness-center",
                                 "A modern fitness center equipped for cardio and strength training.",
-                                new BigDecimal("0"),
+                                new BigDecimal("20000"),
                                 "Wellness", true, "Keep your energy moving every day", "5:00 AM - 11:00 PM",
                                 "Available every day", "Second floor",
                                 "https://images.unsplash.com/photo-1534438327276-14e5300c3a48");
@@ -316,13 +311,13 @@ public class DataLoader implements CommandLineRunner {
 
                 saveService("Luggage Storage", "luggage-storage",
                                 "Secure temporary luggage storage before check-in or after check-out.",
-                                new BigDecimal("0"),
+                                new BigDecimal("15000"),
                                 "Guest services", true, "Explore the city without carrying your bags", "24 hours",
                                 "Available every day", "Front desk",
                                 "https://images.unsplash.com/photo-1569154941061-e231b4725ef1");
 
                 saveService("Wake-up Call", "wake-up-call",
-                                "A personalized telephone wake-up call at your requested time.", new BigDecimal("0"),
+                                "A personalized telephone wake-up call at your requested time.", new BigDecimal("10000"),
                                 "Guest services", true, "Begin every day right on time", "24 hours",
                                 "Available every day", "Front desk",
                                 "https://images.unsplash.com/photo-1501139083538-0139583c060f");
@@ -353,7 +348,7 @@ public class DataLoader implements CommandLineRunner {
 
         /** Crea el historial inicial de usuarios, reservas, folios, pagos y cargos. */
         private void seedHotelOperations() {
-                LocalDate baseDate = LocalDate.of(2026, 9, 1);
+                LocalDate baseDate = LocalDate.of(2026, 10, 1);
                 LocalDateTime createdAt = baseDate.atTime(9, 0);
                 List<Administrator> administrators = new ArrayList<>();
                 List<Operator> operators = new ArrayList<>();
@@ -404,8 +399,8 @@ public class DataLoader implements CommandLineRunner {
                         int nights = 2 + (index % 3);
                         Reservation reservation = Reservation.builder()
                                         .reservationCode(String.format("ATL-2026-%03d", index + 1))
-                                        .checkInDate(baseDate.plusDays(index * 3L))
-                                        .checkOutDate(baseDate.plusDays(index * 3L + nights))
+                                        .checkInDate(baseDate.plusDays(index * 2L))
+                                        .checkOutDate(baseDate.plusDays(index * 2L + nights))
                                         .guestCount(1 + (index % room.getRoomType().getMaxCapacity()))
                                         .nightlyPrice(nightlyPrice)
                                         .estimatedTotal(nightlyPrice.multiply(BigDecimal.valueOf(nights)))
@@ -435,8 +430,13 @@ public class DataLoader implements CommandLineRunner {
 
                 for (int index = 0; index < folios.size(); index++) {
                         Folio folio = folios.get(index);
+                        Reservation reservation = reservations.get(index);
+                        Room room = rooms.get(index);
+                        int nights = 2 + (index % 3);
+                        BigDecimal stayTotal = room.getRoomType().getNightlyPrice().multiply(BigDecimal.valueOf(nights));
+
                         int itemCount = index % 2 == 0 ? 2 : 3;
-                        BigDecimal subtotal = BigDecimal.ZERO;
+                        BigDecimal servicesSubtotal = BigDecimal.ZERO;
                         for (int itemIndex = 0; itemIndex < itemCount; itemIndex++) {
                                 Service service = services.get((index * 3 + itemIndex) % services.size());
                                 int quantity = itemIndex == 0 ? 1 : 2;
@@ -451,17 +451,25 @@ public class DataLoader implements CommandLineRunner {
                                                 .subtotal(itemSubtotal)
                                                 .chargedAt(createdAt.plusDays(index).plusHours(itemIndex))
                                                 .build());
-                                subtotal = subtotal.add(itemSubtotal);
+                                servicesSubtotal = servicesSubtotal.add(itemSubtotal);
                         }
-                        BigDecimal taxes = subtotal.multiply(new BigDecimal("0.19"));
+                        BigDecimal subtotal = stayTotal.add(servicesSubtotal);
+                        BigDecimal taxes = subtotal.multiply(new BigDecimal("0.19")).setScale(2, java.math.RoundingMode.HALF_UP);
+                        BigDecimal total = subtotal.add(taxes);
+
                         folio.setSubtotal(subtotal);
                         folio.setTaxes(taxes);
-                        folio.setTotal(subtotal.add(taxes));
+                        folio.setTotal(total);
+
+                        reservation.setEstimatedTotal(total);
+                        entityManager.merge(reservation);
+                        entityManager.merge(folio);
                 }
+                entityManager.flush();
 
                 for (int index = 0; index < 5; index++) {
                         Folio folio = folios.get(index);
-                        BigDecimal customerAmount = folio.getTotal().divide(new BigDecimal("2"));
+                        BigDecimal customerAmount = folio.getTotal().divide(new BigDecimal("2"), 2, java.math.RoundingMode.HALF_UP);
                         paymentService.create(Payment.builder()
                                         .folio(folio)
                                         .operator(null)

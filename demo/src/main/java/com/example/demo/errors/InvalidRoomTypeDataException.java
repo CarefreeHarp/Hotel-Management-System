@@ -17,7 +17,10 @@ public class InvalidRoomTypeDataException extends RuntimeException {
         DESCRIPTION_TOO_LONG,
         NIGHTLY_PRICE_INVALID,
         MAX_CAPACITY_INVALID,
-        MAIN_PHOTO_REQUIRED
+        MAX_CAPACITY_TOO_HIGH,
+        MAIN_PHOTO_REQUIRED,
+        MAIN_PHOTO_TOO_LONG,
+        PHOTO_URL_INVALID
     }
 
     public InvalidRoomTypeDataException(Reason reason, Object value) {
@@ -33,7 +36,10 @@ public class InvalidRoomTypeDataException extends RuntimeException {
             case DESCRIPTION_TOO_LONG -> "The description cannot exceed 500 characters.";
             case NIGHTLY_PRICE_INVALID -> "The nightly price cannot be negative; received: " + value + ".";
             case MAX_CAPACITY_INVALID -> "Maximum capacity must be at least one guest; received: " + value + ".";
+            case MAX_CAPACITY_TOO_HIGH -> "Maximum capacity cannot exceed 10 guests; received: " + value + ".";
             case MAIN_PHOTO_REQUIRED -> "Enter a main photo for the room type.";
+            case MAIN_PHOTO_TOO_LONG -> "A photo URL cannot exceed 500 characters.";
+            case PHOTO_URL_INVALID -> "Enter a valid HTTP or HTTPS photo URL.";
         };
     }
 }

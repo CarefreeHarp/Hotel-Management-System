@@ -1,6 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.interfaces.RoomTypeService;
+import com.example.demo.security.SessionAccess;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +19,23 @@ public class IndexController {
 
     // Full URL: http://localhost:8080/, http://localhost:8080/index, http://localhost:8080/home
     @GetMapping({"/", "/index", "/home"})
-    public String index(Model model) {
+    public String index(Model model, HttpServletRequest request) {
         model.addAttribute("roomTypes", roomTypeService.listTypes());
+        // getSession(false) a proposito: la landing es publica y no debe crear
+        // sesion ni cookie a quien solo pasa a mirar.
+        HttpSession session = request.getSession(false);
+        String staffPanelUrl = null;
+        String staffPanelLabel = null;
+        if (session != null && SessionAccess.isAdmin(session)) {
+            staffPanelUrl = "/admin/panel/" + session.getAttribute("adminId");
+            staffPanelLabel = "Admin panel";
+        } else if (session != null && SessionAccess.isOperator(session)) {
+            staffPanelUrl = "/operators/panel/" + session.getAttribute("operatorId");
+            staffPanelLabel = "Operator panel";
+        }
+        // Null para anonimos y clientes: la plantilla deja el boton de reserva.
+        model.addAttribute("staffPanelUrl", staffPanelUrl);
+        model.addAttribute("staffPanelLabel", staffPanelLabel);
         return "landing-page";
     }
 

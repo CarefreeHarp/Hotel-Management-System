@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${'Operator: ' + operario.name + ' | Atlan Suites'}">Operator details | Atlan Suites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script><script>tailwind.config = { prefix: "tw-", corePlugins: { preflight: false } };</script>
+    <link rel="stylesheet" th:href="@{/css/operators/details.css}" href="/css/operators/details.css" />
+  </head>
+  <body class="portal-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
+    <th:block th:replace="~{fragments/admin-shell :: header('operarios')}"></th:block>
+    <main class="portal-main"><div class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
+      <header class="page-heading">
+        <div><p class="page-eyebrow">Operator profile</p><h1 class="page-title" th:text="|${operario.name} ${operario.lastName}|">Operator name</h1><p class="page-description">Account details and reporting line registered in the portal.</p></div>
+        <div class="tw-flex tw-flex-wrap tw-shrink-0 tw-items-center tw-gap-2 tw-self-start">
+          <a th:if="${ownProfile == true}" class="atlan-btn atlan-btn--primary" th:href="@{/operators/update/{id}(id=${operario.operatorId})}">Edit my details</a>
+          <a th:if="${ownProfile == true}" class="atlan-btn atlan-btn--secondary" th:href="${panelUrl}">Back to panel</a>
+          <a th:unless="${ownProfile == true}" class="atlan-btn atlan-btn--secondary" th:href="${adminId != null ? '/admins/' + adminId + '/operators' : '/admin/operators/read'}">Back to list</a>
+        </div>
+        <a th:if="${managedProfile == true}" class="atlan-btn atlan-btn--primary" th:href="@{/admins/{aid}/operators/{oid}/update(aid=${adminId},oid=${operario.operatorId})}">Edit operator</a>
+      </header>
+      <section class="detail-grid">
+        <figure class="detail-visual staff-visual detail-placeholder" aria-label="Operator without a photo"><span th:text="${#strings.substring(operario.name, 0, 1)}">A</span></figure>
+        <article class="surface-card detail-content">
+          <p class="page-eyebrow">Registered details</p>
+          <dl class="detail-list"><div><dt>First name</dt><dd th:text="${operario.name}">First name</dd></div><div><dt>Last name</dt><dd th:text="${operario.lastName}">Last name</dd></div><div><dt>Email</dt><dd th:text="${operario.email}">email@example.com</dd></div><div><dt>Administrator in charge</dt><dd th:text="${operario.admin.name}">Administrator name</dd></div></dl>
+        </article>
+      </section>
+      <section id="delete-operator" class="surface-card tw-mt-6 tw-p-6" th:if="${managedProfile == true}">
+        <h2>Delete operator</h2>
+        <p>This removes the operator account. Existing payments are preserved.</p>
+        <aside class="portal-alert" th:if="${error}" th:text="${error}" role="alert"></aside>
+        <form th:action="@{/admins/{aid}/operators/{oid}/delete(aid=${adminId},oid=${operario.operatorId})}" method="post" onsubmit="return confirm('Delete this operator permanently?')">
+          <label class="portal-label" for="delete-password">Your administrator password</label>
+          <input class="portal-control tw-px-4 tw-py-3" id="delete-password" type="password" name="passwordCurrent" autocomplete="current-password" required />
+          <button class="atlan-btn atlan-btn--primary" type="submit">Delete operator</button>
+        </form>
+      </section>
+    </div></main>
+    <th:block th:replace="~{fragments/admin-shell :: footer}"></th:block>
+  </body>
+</html>

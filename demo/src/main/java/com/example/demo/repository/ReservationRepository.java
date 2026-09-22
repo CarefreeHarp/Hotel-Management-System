@@ -13,4 +13,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     /* Busca reservas con el estado indicado cuya fecha de llegada sea anterior a la fecha dada. */
     List<Reservation> findByStatusAndCheckInDateBefore(ReservationStatus status, LocalDate date);
+
+    /* Busca todas las reservas asociadas a un cliente ordenadas por fecha de creación descendente. */
+    List<Reservation> findByClient_ClientIdOrderByCreatedAtDesc(Integer clientId);
 }

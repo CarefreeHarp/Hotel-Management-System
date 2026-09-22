@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Administrators | Atlan Suites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script><script>tailwind.config = { prefix: "tw-", corePlugins: { preflight: false } };</script>
+    <link rel="stylesheet" th:href="@{/css/administrators/list.css}" href="/css/administrators/list.css" />
+  </head>
+  <body class="portal-body tw-text-[15px] sm:tw-text-base md:tw-text-[1.02rem] lg:tw-text-[1.04rem] xl:tw-text-[1.06rem] 2xl:tw-text-[1.08rem]">
+    <th:block th:replace="~{fragments/admin-shell :: header('administradores')}"></th:block>
+    <main class="portal-main">
+      <div class="tw-mx-auto tw-w-full tw-max-w-7xl tw-px-4 sm:tw-px-6 lg:tw-px-8 xl:tw-max-w-[1280px] 2xl:tw-max-w-[1440px]">
+        <header class="page-heading">
+          <div><p class="page-eyebrow">Staff management</p><h1 class="page-title">Registered administrators</h1><p class="page-description">View the accounts that manage Atlan Suites.</p></div>
+        <a th:if="${adminId != null}" class="atlan-btn atlan-btn--primary" th:href="@{/admins/{id}/administrators/create(id=${adminId})}">Create administrator</a>
+        </header>
+
+        <aside class="portal-alert" th:if="${error}" role="alert" th:text="${error}"></aside>
+
+        <section class="surface-card" aria-labelledby="administrator-list-title">
+          <h2 class="tw-sr-only" id="administrator-list-title">Administrator list</h2>
+          <div class="table-shell">
+            <table class="table portal-table">
+              <thead><tr><th>Administrator</th><th>Email</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr th:each="administrador : ${administradores}">
+                  <td><span class="staff-name" th:text="${administrador.name}">Administrator name</span></td>
+                  <td class="staff-email" th:text="${administrador.email}">admin@example.com</td>
+                  <td><div class="table-actions tw-flex tw-gap-2"><a class="atlan-btn atlan-btn--secondary atlan-btn--small" th:href="@{/admin/administrators/read/{id}(id=${administrador.adminId},adminId=${adminId})}">View</a></div></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(administradores)}"><td class="empty-state" colspan="3">No administrators are registered yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <p class="staff-count tw-mt-3" th:if="${!#lists.isEmpty(administradores)}" th:text="|${#lists.size(administradores)} registered administrators|">0 registered administrators</p>
+      </div>
+    </main>
+    <th:block th:replace="~{fragments/admin-shell :: footer}"></th:block>
+  </body>
+</html>

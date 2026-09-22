@@ -195,11 +195,25 @@
 <text text-anchor="middle" x="265.25" y="-596.73" font-family="Arial" font-size="10.50" fill="#ef4444">ModifySearch</text>
 </g>
 
-<g id="edge&#45;17&#45;checkAvailability&#45;guestDetails" class="edge">
-<title>checkAvailability&#45;&gt;guestDetails</title>
-<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M309.52,-488.75C312.26,-459.44 312.47,-403.51 310.16,-370.11"/>
-<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="312.95,-369.88 309.51,-362.13 307.37,-370.33 312.95,-369.88"/>
-<text text-anchor="middle" x="284.75" y="-416.93" font-family="Arial" font-size="10.50" fill="#ef4444">SelectSuite</text>
+<g id="edge&#45;17&#45;checkAvailability&#45;serviceSelection" class="edge">
+<title>checkAvailability&#45;&gt;serviceSelection</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M355,-488C388,-473 428,-454 466,-439"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="465,-436 475,-435 467,-441"/>
+<text text-anchor="middle" x="414" y="-467" font-family="Arial" font-size="10.50" fill="#ef4444">SelectRoom</text>
+</g>
+
+<g id="edge&#45;services&#45;checkout" class="edge">
+<title>serviceSelection&#45;&gt;guestDetails</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M500,-408C454,-388 398,-370 355,-354"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="356,-351 346,-350 354,-356"/>
+<text text-anchor="middle" x="436" y="-377" font-family="Arial" font-size="10.50" fill="#ef4444">Add selected services (POST) / Skip services</text>
+</g>
+
+<g id="edge&#45;services&#45;previous" class="edge">
+<title>serviceSelection&#45;&gt;previous</title>
+<path fill="none" stroke="#ef4444" stroke-width="2.1" d="M560,-409C730,-330 1122,-137 1290,-39"/>
+<polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="1292,-42 1298,-35 1289,-37"/>
+<text text-anchor="middle" x="900" y="-220" font-family="Arial" font-size="10.50" fill="#ef4444">SystemBack</text>
 </g>
 
 <g id="edge&#45;19&#45;checkAvailability&#45;previous" class="edge">
@@ -213,7 +227,7 @@
 <title>guestDetails&#45;&gt;home</title>
 <path fill="none" stroke="#ef4444" stroke-width="2.1" d="M328.46,-362.05C399.65,-419.97 612.29,-593.8 676.7,-655.8 804.47,-778.79 942.44,-940.9 994,-1002.64"/>
 <polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="992.02,-1004.63 999.29,-1008.99 996.32,-1001.05 992.02,-1004.63"/>
-<text text-anchor="middle" x="713.45" y="-667.38" font-family="Arial" font-size="10.50" fill="#ef4444">BotonHome</text>
+<text text-anchor="middle" x="713.45" y="-667.38" font-family="Arial" font-size="10.50" fill="#ef4444">BookAndPayLater</text>
 </g>
 
 <g id="edge&#45;22&#45;guestDetails&#45;checkAvailability" class="edge">
@@ -227,7 +241,7 @@
 <title>guestDetails&#45;&gt;payment</title>
 <path fill="none" stroke="#ef4444" stroke-width="2.1" d="M305,-323.7C305,-297.48 305,-250.47 305,-220.55"/>
 <polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="307.8,-220.23 305,-212.23 302.2,-220.23 307.8,-220.23"/>
-<text text-anchor="middle" x="256.5" y="-271.39" font-family="Arial" font-size="10.50" fill="#ef4444">ContinueToPayment</text>
+<text text-anchor="middle" x="256.5" y="-271.39" font-family="Arial" font-size="10.50" fill="#ef4444">PayNow</text>
 </g>
 
 <g id="edge&#45;23&#45;guestDetails&#45;previous" class="edge">
@@ -241,7 +255,7 @@
 <title>payment&#45;&gt;home</title>
 <path fill="none" stroke="#ef4444" stroke-width="2.1" d="M315.63,-212.1C345.81,-265.48 436.21,-419.59 533.8,-530.2 589.74,-593.6 616.41,-596.51 676.7,-655.8 802.85,-779.86 941.23,-940.7 993.46,-1002.38"/>
 <polygon fill="#ef4444" stroke="#ef4444" stroke-width="2.1" points="991.52,-1004.42 998.82,-1008.72 995.79,-1000.8 991.52,-1004.42"/>
-<text text-anchor="middle" x="615.67" y="-629.75" font-family="Arial" font-size="10.50" fill="#ef4444">BotonHome</text>
+<text text-anchor="middle" x="615.67" y="-629.75" font-family="Arial" font-size="10.50" fill="#ef4444">BookAndPayLater</text>
 </g>
 
 <g id="edge&#45;25&#45;payment&#45;paymentConfirmation" class="edge">
@@ -701,6 +715,9 @@
 <title>habitacionActualizar</title><rect fill="#2563eb" stroke="#1d4ed8" stroke-width="2" x="2970" y="-700" width="170" height="55" rx="8"/><text x="2986" y="-678" font-family="Arial" font-weight="bold" font-size="15" fill="white">Actualizar habitación</text><text x="2976" y="-661" font-family="Arial" font-size="7.5" fill="white">/admin/rooms/update/{number}</text>
 </g>
 
+<g id="edge&#45;home&#45;setClock" class="edge"><title>home&#45;&gt;home</title><path fill="none" stroke="#ef4444" stroke-width="2.1" d="M982,-1032C948,-1066 956,-1070 990,-1047"/><polygon fill="#ef4444" stroke="#ef4444" points="983,-1048 992,-1045 987,-1054"/><text text-anchor="middle" x="938" y="-1063" font-family="Arial" font-size="10.5" fill="#ef4444">Set test time (POST)</text></g>
+<g id="edge&#45;home&#45;useSystemClock" class="edge"><title>home&#45;&gt;home</title><path fill="none" stroke="#ef4444" stroke-width="2.1" d="M1048,-1032C1082,-1066 1074,-1070 1040,-1047"/><polygon fill="#ef4444" stroke="#ef4444" points="1043,-1054 1038,-1045 1047,-1048"/><text text-anchor="middle" x="1092" y="-1063" font-family="Arial" font-size="10.5" fill="#ef4444">Use real time (POST)</text></g>
+<g id="edge&#45;home&#45;runMidnightActions" class="edge"><title>home&#45;&gt;home</title><path fill="none" stroke="#ef4444" stroke-width="2.1" d="M990,-1012C950,-980 1080,-980 1040,-1012"/><polygon fill="#ef4444" stroke="#ef4444" points="1033,-1007 1042,-1014 1037,-1003"/><text text-anchor="middle" x="1015" y="-972" font-family="Arial" font-size="10.5" fill="#ef4444">Run midnight actions (POST)</text></g>
 <g id="node&#45;home" class="node">
 <title>home</title>
 <path fill="#ff7556" stroke="#a81e00" stroke-width="2" d="M1036.5,-1047C1036.5,-1047 993.5,-1047 993.5,-1047 987.5,-1047 981.5,-1041 981.5,-1035 981.5,-1035 981.5,-1021 981.5,-1021 981.5,-1015 987.5,-1009 993.5,-1009 993.5,-1009 1036.5,-1009 1036.5,-1009 1042.5,-1009 1048.5,-1015 1048.5,-1021 1048.5,-1021 1048.5,-1035 1048.5,-1035 1048.5,-1041 1042.5,-1047 1036.5,-1047"/>
@@ -732,35 +749,43 @@
 <title>bookNow</title>
 <path fill="#ff7556" stroke="#a81e00" stroke-width="2" d="M343.5,-697C343.5,-697 266.5,-697 266.5,-697 260.5,-697 254.5,-691 254.5,-685 254.5,-685 254.5,-671 254.5,-671 254.5,-665 260.5,-659 266.5,-659 266.5,-659 343.5,-659 343.5,-659 349.5,-659 355.5,-665 355.5,-671 355.5,-671 355.5,-685 355.5,-685 355.5,-691 349.5,-697 343.5,-697"/>
 <text text-anchor="start" x="265.5" y="-679.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Book Now</text>
-<text text-anchor="start" x="282" y="-668" font-family="Arial" font-size="10.00" fill="white">/book&#45;now</text>
+<text text-anchor="start" x="270" y="-668" font-family="Arial" font-size="10.00" fill="white">/reservation/book</text>
 </g>
 
 <g id="node&#45;checkAvailability" class="node">
 <title>checkAvailability</title>
 <path fill="#ff7556" stroke="#a81e00" stroke-width="2" d="M372.5,-527C372.5,-527 237.5,-527 237.5,-527 231.5,-527 225.5,-521 225.5,-515 225.5,-515 225.5,-501 225.5,-501 225.5,-495 231.5,-489 237.5,-489 237.5,-489 372.5,-489 372.5,-489 378.5,-489 384.5,-495 384.5,-501 384.5,-501 384.5,-515 384.5,-515 384.5,-521 378.5,-527 372.5,-527"/>
 <text text-anchor="start" x="236.5" y="-509.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Check Availability</text>
-<text text-anchor="start" x="265.5" y="-498" font-family="Arial" font-size="10.00" fill="white">/check&#45;availability</text>
+<text text-anchor="start" x="245" y="-498" font-family="Arial" font-size="10.00" fill="white">/reservation/availability</text>
 </g>
 
 <g id="node&#45;guestDetails" class="node">
 <title>guestDetails</title>
 <path fill="#39a852" stroke="#176b30" stroke-width="2" d="M355.5,-362C355.5,-362 254.5,-362 254.5,-362 248.5,-362 242.5,-356 242.5,-350 242.5,-350 242.5,-336 242.5,-336 242.5,-330 248.5,-324 254.5,-324 254.5,-324 355.5,-324 355.5,-324 361.5,-324 367.5,-330 367.5,-336 367.5,-336 367.5,-350 367.5,-350 367.5,-356 361.5,-362 355.5,-362"/>
-<text text-anchor="start" x="253.5" y="-344.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Guest Details</text>
-<text text-anchor="start" x="275.5" y="-333" font-family="Arial" font-size="10.00" fill="white">/guest&#45;details</text>
+<text text-anchor="start" x="272" y="-344.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Checkout</text>
+<text text-anchor="start" x="252" y="-333" font-family="Arial" font-size="10.00" fill="white">/reservation/checkout</text>
 </g>
 
+<g id="node&#45;serviceSelection" class="node">
+<title>serviceSelection</title>
+<path fill="#268bd2" stroke="#155b8f" stroke-width="2" d="M630,-454C630,-454 485,-454 485,-454 479,-454 473,-448 473,-442 473,-442 473,-416 473,-416 473,-410 479,-404 485,-404 485,-404 630,-404 630,-404 636,-404 642,-410 642,-416 642,-416 642,-442 642,-442 642,-448 636,-454 630,-454"/>
+<text text-anchor="start" x="487" y="-433" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Select Services</text>
+<text text-anchor="start" x="492" y="-419" font-family="Arial" font-size="10.00" fill="white">/reservation/services</text>
+</g>
+
+<g id="edge&#45;payment&#45;invalidPayment" class="edge"><title>payment&#45;&gt;payment</title><path fill="none" stroke="#ef4444" stroke-width="2.1" d="M260,-192C220,-240 390,-240 349,-192"/><polygon fill="#ef4444" stroke="#ef4444" points="341,-197 351,-190 344,-201"/><text text-anchor="middle" x="305" y="-235" font-family="Arial" font-size="10.5" fill="#ef4444">Invalid payment (POST)</text></g>
 <g id="node&#45;payment" class="node">
 <title>payment</title>
 <path fill="#39a852" stroke="#176b30" stroke-width="2" d="M337.5,-212C337.5,-212 272.5,-212 272.5,-212 266.5,-212 260.5,-206 260.5,-200 260.5,-200 260.5,-186 260.5,-186 260.5,-180 266.5,-174 272.5,-174 272.5,-174 337.5,-174 337.5,-174 343.5,-174 349.5,-180 349.5,-186 349.5,-186 349.5,-200 349.5,-200 349.5,-206 343.5,-212 337.5,-212"/>
-<text text-anchor="start" x="271.5" y="-194.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Payment</text>
-<text text-anchor="start" x="284.5" y="-183" font-family="Arial" font-size="10.00" fill="white">/payment</text>
+<text text-anchor="start" x="276" y="-194.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Payment</text>
+<text text-anchor="start" x="258" y="-183" font-family="Arial" font-size="10.00" fill="white">/reservation/payment</text>
 </g>
 
 <g id="node&#45;paymentConfirmation" class="node">
 <title>paymentConfirmation</title>
 <path fill="#39a852" stroke="#176b30" stroke-width="2" d="M389.5,-62C389.5,-62 220.5,-62 220.5,-62 214.5,-62 208.5,-56 208.5,-50 208.5,-50 208.5,-36 208.5,-36 208.5,-30 214.5,-24 220.5,-24 220.5,-24 389.5,-24 389.5,-24 395.5,-24 401.5,-30 401.5,-36 401.5,-36 401.5,-50 401.5,-50 401.5,-56 395.5,-62 389.5,-62"/>
-<text text-anchor="start" x="219.5" y="-44.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Payment Confirmation</text>
-<text text-anchor="start" x="256.5" y="-33" font-family="Arial" font-size="10.00" fill="white">/payment/confirmation</text>
+<text text-anchor="start" x="245" y="-44.2" font-family="Arial" font-weight="bold" font-size="16.00" fill="white">Confirmation</text>
+<text text-anchor="start" x="232" y="-33" font-family="Arial" font-size="10.00" fill="white">/reservation/confirmation</text>
 </g>
 
 <g id="node&#45;experiences" class="node">

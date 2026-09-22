@@ -1,15 +1,3 @@
-// HEADER: replica la reducción del encabezado de index.html al hacer scroll.
-const servicesHeader = document.querySelector('.site-header');
-
-if (servicesHeader) {
-  const updateServicesHeaderScroll = () => {
-    servicesHeader.classList.toggle('is-scrolled', window.scrollY > 10);
-  };
-
-  window.addEventListener('scroll', updateServicesHeaderScroll, { passive: true });
-  updateServicesHeaderScroll();
-}
-
 // TABLA DE SERVICIOS: hace clicable toda la fila, no solo el nombre del servicio.
 // El enlace real vive en el nombre, así que la página sigue funcionando aunque el JS no cargue.
 document.querySelectorAll('.services-row').forEach((fila) => {
