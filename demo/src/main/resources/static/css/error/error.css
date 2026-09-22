@@ -48,9 +48,9 @@ body.error-body {
 }
 
 .error-logo {
-  display: inline-block;
+  display: block;
   width: 7.5rem;
-  margin-bottom: 1.75rem;
+  margin: 0 auto 1.75rem;
   transition: opacity 0.2s ease;
 }
 
@@ -81,28 +81,6 @@ body.error-body {
 .error-icon svg {
   width: 2.1rem;
   height: 2.1rem;
-}
-
-.error-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.35rem 1rem;
-  border-radius: 999px;
-  background: rgba(218, 126, 118, 0.15);
-  border: 1px solid rgba(218, 126, 118, 0.3);
-  color: #da7e76;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin: 0 0 1.25rem;
-}
-
-.error-badge--warning {
-  background: rgba(184, 140, 90, 0.15);
-  border-color: rgba(184, 140, 90, 0.35);
-  color: var(--color-gold, #b88c5a);
 }
 
 /* El mensaje es el titular: se ajusta para que un aviso largo no desborde. */
