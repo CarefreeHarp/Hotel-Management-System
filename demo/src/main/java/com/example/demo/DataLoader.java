@@ -430,8 +430,13 @@ public class DataLoader implements CommandLineRunner {
 
                 for (int index = 0; index < folios.size(); index++) {
                         Folio folio = folios.get(index);
+                        Reservation reservation = reservations.get(index);
+                        Room room = rooms.get(index);
+                        int nights = 2 + (index % 3);
+                        BigDecimal stayTotal = room.getRoomType().getNightlyPrice().multiply(BigDecimal.valueOf(nights));
+
                         int itemCount = index % 2 == 0 ? 2 : 3;
-                        BigDecimal subtotal = BigDecimal.ZERO;
+                        BigDecimal servicesSubtotal = BigDecimal.ZERO;
                         for (int itemIndex = 0; itemIndex < itemCount; itemIndex++) {
                                 Service service = services.get((index * 3 + itemIndex) % services.size());
                                 int quantity = itemIndex == 0 ? 1 : 2;
@@ -446,17 +451,25 @@ public class DataLoader implements CommandLineRunner {
                                                 .subtotal(itemSubtotal)
                                                 .chargedAt(createdAt.plusDays(index).plusHours(itemIndex))
                                                 .build());
-                                subtotal = subtotal.add(itemSubtotal);
+                                servicesSubtotal = servicesSubtotal.add(itemSubtotal);
                         }
-                        BigDecimal taxes = subtotal.multiply(new BigDecimal("0.19"));
+                        BigDecimal subtotal = stayTotal.add(servicesSubtotal);
+                        BigDecimal taxes = subtotal.multiply(new BigDecimal("0.19")).setScale(2, java.math.RoundingMode.HALF_UP);
+                        BigDecimal total = subtotal.add(taxes);
+
                         folio.setSubtotal(subtotal);
                         folio.setTaxes(taxes);
-                        folio.setTotal(subtotal.add(taxes));
+                        folio.setTotal(total);
+
+                        reservation.setEstimatedTotal(total);
+                        entityManager.merge(reservation);
+                        entityManager.merge(folio);
                 }
+                entityManager.flush();
 
                 for (int index = 0; index < 5; index++) {
                         Folio folio = folios.get(index);
-                        BigDecimal customerAmount = folio.getTotal().divide(new BigDecimal("2"));
+                        BigDecimal customerAmount = folio.getTotal().divide(new BigDecimal("2"), 2, java.math.RoundingMode.HALF_UP);
                         paymentService.create(Payment.builder()
                                         .folio(folio)
                                         .operator(null)

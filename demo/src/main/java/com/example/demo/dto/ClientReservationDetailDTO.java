@@ -45,4 +45,11 @@ public class ClientReservationDetailDTO {
         Payment primary = getPrimaryPayment();
         return primary != null ? primary.getPaidAt() : null;
     }
+
+    public long getNights() {
+        if (reservation == null || reservation.getCheckInDate() == null || reservation.getCheckOutDate() == null) {
+            return 0;
+        }
+        return java.time.temporal.ChronoUnit.DAYS.between(reservation.getCheckInDate(), reservation.getCheckOutDate());
+    }
 }

@@ -119,6 +119,10 @@
                       <dd th:text="${#temporals.format(item.reservation.checkOutDate, 'MMM d, yyyy')}">Oct 3, 2026</dd>
                     </div>
                     <div>
+                      <dt>Nights</dt>
+                      <dd th:text="${item.nights}">2</dd>
+                    </div>
+                    <div>
                       <dt>Guests</dt>
                       <dd th:text="|${item.reservation.guestCount} guest(s)|">2 guest(s)</dd>
                     </div>
