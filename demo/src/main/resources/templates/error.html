@@ -30,25 +30,35 @@
           />
         </a>
 
+        <!-- Reemplaza al numero de estado como foco visual de la tarjeta. -->
+        <span class="error-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 7.5v5.25" />
+            <path d="M12 16.4h.01" />
+          </svg>
+        </span>
+
         <p class="error-badge error-badge--warning">
             <span aria-hidden="true">●</span>
             <span>Notice</span>
         </p>
 
-        <h2 class="error-title">Notice</h2>
-
-        <!-- Solo el aviso: ni codigo de estado ni detalles tecnicos. -->
-        <p class="error-desc" th:if="${error != null and error != ''}" th:text="${error}">
+        <!-- Solo el aviso: ni codigo de estado ni detalles tecnicos. El mensaje
+             es el titular, porque es la unica informacion util de la pantalla. -->
+        <h2 class="error-message"
+            th:text="${error != null and error != ''} ? ${error} : 'We could not complete the action you requested.'">
           We could not complete the action you requested.
-        </p>
-        <p class="error-desc" th:if="${error == null or error == ''}">
-          The page or resource you are looking for might have been removed, had its name changed, or is temporarily unavailable.
+        </h2>
+
+        <p class="error-desc">
+          You can go back to the previous page or return to the homepage.
         </p>
 
         <nav class="error-actions" aria-label="Error page actions">
           <a th:if="${param.operatorId != null and param.adminId == null}" th:href="@{/operators/panel/{id}(id=${param.operatorId[0]})}" class="btn-error-primary">Back to operator panel</a>
           <a th:if="${param.adminId != null}" th:href="@{/admin/panel/{id}(id=${param.adminId[0]})}" class="btn-error-primary">Back to admin panel</a>
-          <a th:href="@{/}" class="btn-error-primary">
+          <a th:href="@{/}" th:unless="${param.adminId != null or param.operatorId != null}" class="btn-error-primary">
             <span>Return to Home</span>
             <span aria-hidden="true">↗</span>
           </a>
@@ -56,10 +66,14 @@
             <span aria-hidden="true">←</span>
             <span>Go Back</span>
           </button>
-          <a th:href="@{/login}" class="btn-error-secondary">
-            <span>Sign In</span>
+          <a th:href="@{/}" th:if="${param.adminId != null or param.operatorId != null}" class="btn-error-secondary">
+            <span>Home</span>
           </a>
         </nav>
+
+        <p class="error-signin">
+          <a th:href="@{/login}">Sign in to your account</a>
+        </p>
       </article>
     </main>
 
