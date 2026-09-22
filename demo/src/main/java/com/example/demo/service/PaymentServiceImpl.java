@@ -24,6 +24,9 @@ public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private FolioRepository folioRepository;
 
+    @Autowired
+    private com.example.demo.service.interfaces.FolioService folioService;
+
     /** Registra un pago y recalcula el estado del folio dentro de una transacción. */
     @Override
     @Transactional
@@ -80,7 +83,9 @@ public class PaymentServiceImpl implements PaymentService {
     private void recalculateFolioStatus(Folio folio) {
         BigDecimal approvedTotal = paymentRepository.sumAmountsByFolioIdAndStatus(
                 folio.getFolioId(), PaymentStatus.APPROVED);
-        FolioStatus status = approvedTotal.compareTo(folio.getTotal()) >= 0
+        // El total no es una columna: lo calcula FolioService en cada consulta.
+        BigDecimal folioTotal = folioService.calculateTotal(folio.getFolioId());
+        FolioStatus status = approvedTotal.compareTo(folioTotal) >= 0
                 ? FolioStatus.PAID
                 : FolioStatus.PENDING;
         folio.setStatus(status);

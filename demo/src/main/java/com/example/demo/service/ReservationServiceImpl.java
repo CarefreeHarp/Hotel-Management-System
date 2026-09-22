@@ -15,6 +15,7 @@ import com.example.demo.repository.FolioRepository;
 import com.example.demo.repository.FolioItemRepository;
 import com.example.demo.repository.ReservationRepository;
 import com.example.demo.service.interfaces.ClientService;
+import com.example.demo.service.interfaces.FolioService;
 import com.example.demo.service.interfaces.ReservationService;
 import com.example.demo.service.interfaces.RoomService;
 import com.example.demo.service.interfaces.PaymentService;
@@ -47,6 +48,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
     private PaymentRepository paymentRepository;
+
+    @Autowired
+    private FolioService folioService;
 
     @Autowired
     private ClientService clientService;
@@ -96,7 +100,8 @@ public class ReservationServiceImpl implements ReservationService {
             List<Integer> serviceIds) {
         Folio folio = createReservationAndFolio(clientId, roomId, checkInDate, checkOutDate, guests, serviceIds);
         BigDecimal validatedPaymentAmount = validateCardPaymentData(
-                paymentAmount, folio.getTotal(), cardholderName, cardNumber, expiryDate, securityCode);
+                paymentAmount, folioService.calculateTotal(folio.getFolioId()),
+                cardholderName, cardNumber, expiryDate, securityCode);
         paymentService.create(Payment.builder()
                 .folio(folio)
                 .amount(validatedPaymentAmount)
@@ -172,20 +177,14 @@ public class ReservationServiceImpl implements ReservationService {
             throw new IllegalArgumentException("The guest count exceeds the room capacity.");
         }
 
-        long nights = java.time.temporal.ChronoUnit.DAYS.between(checkInDate, checkOutDate);
-        BigDecimal stayTotal = room.getRoomType().getNightlyPrice().multiply(BigDecimal.valueOf(nights));
         List<Service> selectedServices = serviceService.getActiveServicesByIds(serviceIds);
-        BigDecimal servicesTotal = selectedServices.stream()
-                .map(Service::getPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal estimatedTotal = stayTotal.add(servicesTotal);
+        // Los importes ya no se guardan: FolioService los deriva al consultarlos.
         Reservation reservation = Reservation.builder()
                 .reservationCode("ATL-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase())
                 .checkInDate(checkInDate)
                 .checkOutDate(checkOutDate)
                 .guestCount(guestCount)
                 .nightlyPrice(room.getRoomType().getNightlyPrice())
-                .estimatedTotal(estimatedTotal)
                 .status(ReservationStatus.PENDING)
                 .createdAt(LocalDateTime.now(applicationClock))
                 .client(client)
@@ -194,9 +193,6 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation savedReservation = reservationRepository.save(reservation);
         Folio folio = folioRepository.save(Folio.builder()
                 .reservation(savedReservation)
-                .subtotal(estimatedTotal)
-                .taxes(BigDecimal.ZERO)
-                .total(estimatedTotal)
                 .status(FolioStatus.PENDING)
                 .issuedAt(LocalDateTime.now(applicationClock))
                 .build());
@@ -207,7 +203,6 @@ public class ReservationServiceImpl implements ReservationService {
                         .concept(service.getName())
                         .unitPrice(service.getPrice())
                         .quantity(1)
-                        .subtotal(service.getPrice())
                         .chargedAt(LocalDateTime.now(applicationClock))
                         .build())
                 .toList());
@@ -249,12 +244,21 @@ public class ReservationServiceImpl implements ReservationService {
                     ? paymentRepository.findByFolioFolioIdOrderByPaidAtAsc(folio.getFolioId())
                     : Collections.emptyList();
 
-            history.add(ClientReservationDetailDTO.builder()
-                    .reservation(reservation)
-                    .folio(folio)
-                    .folioItems(items)
-                    .payments(payments)
-                    .build());
+            // Los importes se calculan aquí, en la capa de servicio, y viajan en
+            // el DTO porque ya no existen como columnas de la base de datos.
+            ClientReservationDetailDTO.ClientReservationDetailDTOBuilder detail =
+                    ClientReservationDetailDTO.builder()
+                            .reservation(reservation)
+                            .folio(folio)
+                            .folioItems(items)
+                            .payments(payments);
+            if (folio != null) {
+                detail.subtotal(folioService.calculateSubtotal(folio.getFolioId()))
+                        .taxes(folioService.calculateTaxes(folio.getFolioId()))
+                        .total(folioService.calculateTotal(folio.getFolioId()))
+                        .itemSubtotals(folioService.calculateItemSubtotals(folio.getFolioId()));
+            }
+            history.add(detail.build());
         }
         return history;
     }

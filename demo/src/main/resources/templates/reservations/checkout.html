@@ -31,6 +31,7 @@
             <ul class="checkout-services">
               <li class="checkout-stay-cost"><span th:text="|Accommodation · $ ${#numbers.formatDecimal(room.roomType.nightlyPrice, 0, 'POINT', 0, 'COMMA')} × ${nights} night(s)|">Accommodation</span><strong th:text="|$ ${#numbers.formatDecimal(stayTotal, 0, 'POINT', 0, 'COMMA')}|">$ 0</strong></li>
               <li th:each="service : ${selectedServices}"><span th:text="${service.name}">Service</span><strong th:text="|$ ${#numbers.formatDecimal(service.price, 0, 'POINT', 0, 'COMMA')}|">$ 0</strong></li>
+              <li class="checkout-taxes"><span>Taxes</span><strong th:text="|$ ${#numbers.formatDecimal(taxes, 0, 'POINT', 0, 'COMMA')}|">$ 0</strong></li>
             </ul>
             <strong th:text="|Total stay: $ ${#numbers.formatDecimal(total, 0, 'POINT', 0, 'COMMA')}|">Total stay: $ 0</strong>
             <a th:href="|/reservation/payment?${reservationQuery}|">Pay now <span aria-hidden="true">→</span></a>

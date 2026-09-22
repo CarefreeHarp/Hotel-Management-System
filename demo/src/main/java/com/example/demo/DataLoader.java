@@ -56,6 +56,9 @@ public class DataLoader implements CommandLineRunner {
         @Autowired
         private PaymentService paymentService;
 
+        @Autowired
+        private com.example.demo.service.interfaces.FolioService folioService;
+
         @Override
         public void run(String... args) throws Exception {
 
@@ -403,7 +406,6 @@ public class DataLoader implements CommandLineRunner {
                                         .checkOutDate(baseDate.plusDays(index * 2L + nights))
                                         .guestCount(1 + (index % room.getRoomType().getMaxCapacity()))
                                         .nightlyPrice(nightlyPrice)
-                                        .estimatedTotal(nightlyPrice.multiply(BigDecimal.valueOf(nights)))
                                         .status(ReservationStatus.PENDING)
                                         .createdAt(createdAt.plusDays(index))
                                         .client(clients.get(index))
@@ -417,9 +419,6 @@ public class DataLoader implements CommandLineRunner {
                 for (int index = 0; index < reservations.size(); index++) {
                         Folio folio = Folio.builder()
                                         .reservation(reservations.get(index))
-                                        .subtotal(BigDecimal.ZERO)
-                                        .taxes(BigDecimal.ZERO)
-                                        .total(BigDecimal.ZERO)
                                         .status(FolioStatus.PENDING)
                                         .issuedAt(createdAt.plusDays(index))
                                         .build();
@@ -428,48 +427,29 @@ public class DataLoader implements CommandLineRunner {
                 }
                 entityManager.flush();
 
+                // Los importes ya no se siembran: FolioService los deriva al leerlos.
                 for (int index = 0; index < folios.size(); index++) {
                         Folio folio = folios.get(index);
-                        Reservation reservation = reservations.get(index);
-                        Room room = rooms.get(index);
-                        int nights = 2 + (index % 3);
-                        BigDecimal stayTotal = room.getRoomType().getNightlyPrice().multiply(BigDecimal.valueOf(nights));
-
                         int itemCount = index % 2 == 0 ? 2 : 3;
-                        BigDecimal servicesSubtotal = BigDecimal.ZERO;
                         for (int itemIndex = 0; itemIndex < itemCount; itemIndex++) {
                                 Service service = services.get((index * 3 + itemIndex) % services.size());
                                 int quantity = itemIndex == 0 ? 1 : 2;
-                                BigDecimal itemSubtotal = service.getPrice()
-                                                .multiply(BigDecimal.valueOf(quantity));
                                 entityManager.persist(FolioItem.builder()
                                                 .folio(folio)
                                                 .service(service)
                                                 .concept(service.getName())
                                                 .unitPrice(service.getPrice())
                                                 .quantity(quantity)
-                                                .subtotal(itemSubtotal)
                                                 .chargedAt(createdAt.plusDays(index).plusHours(itemIndex))
                                                 .build());
-                                servicesSubtotal = servicesSubtotal.add(itemSubtotal);
                         }
-                        BigDecimal subtotal = stayTotal.add(servicesSubtotal);
-                        BigDecimal taxes = subtotal.multiply(new BigDecimal("0.19")).setScale(2, java.math.RoundingMode.HALF_UP);
-                        BigDecimal total = subtotal.add(taxes);
-
-                        folio.setSubtotal(subtotal);
-                        folio.setTaxes(taxes);
-                        folio.setTotal(total);
-
-                        reservation.setEstimatedTotal(total);
-                        entityManager.merge(reservation);
-                        entityManager.merge(folio);
                 }
                 entityManager.flush();
 
                 for (int index = 0; index < 5; index++) {
                         Folio folio = folios.get(index);
-                        BigDecimal customerAmount = folio.getTotal().divide(new BigDecimal("2"), 2, java.math.RoundingMode.HALF_UP);
+                        BigDecimal folioTotal = folioService.calculateTotal(folio.getFolioId());
+                        BigDecimal customerAmount = folioTotal.divide(new BigDecimal("2"), 2, java.math.RoundingMode.HALF_UP);
                         paymentService.create(Payment.builder()
                                         .folio(folio)
                                         .operator(null)
@@ -481,7 +461,7 @@ public class DataLoader implements CommandLineRunner {
                         paymentService.create(Payment.builder()
                                         .folio(folio)
                                         .operator(operators.get(index))
-                                        .amount(folio.getTotal().subtract(customerAmount))
+                                        .amount(folioTotal.subtract(customerAmount))
                                         .paymentMethod("Front desk payment")
                                         .status(PaymentStatus.APPROVED)
                                         .paidAt(createdAt.plusDays(index).plusHours(11))

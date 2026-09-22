@@ -35,8 +35,6 @@ public class FolioItem {
     private BigDecimal unitPrice; // Precio unitario cobrado.
     @Column(nullable = false)
     private Integer quantity; // Cantidad de unidades cobradas.
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal subtotal; // Monto antes de impuestos.
     @Column(name = "charged_at", nullable = false)
     private LocalDateTime chargedAt; // Fecha y hora en que se registró el cargo.
 

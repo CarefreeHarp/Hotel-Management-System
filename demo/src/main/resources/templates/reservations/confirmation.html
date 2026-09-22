@@ -28,7 +28,8 @@
           <div><dt>Check-out</dt><dd th:text="${#temporals.format(checkOut, 'MMM d, yyyy')}">Jan 2, 2026</dd></div>
           <div><dt>Guests</dt><dd th:text="${guests}">1</dd></div>
           <div><dt>Paid today</dt><dd th:text="|$ ${#numbers.formatDecimal(paymentAmount, 0, 'POINT', 0, 'COMMA')}|">$ 0</dd></div>
-          <div th:each="item : ${serviceItems}"><dt th:text="${item.concept}">Service</dt><dd th:text="|$ ${#numbers.formatDecimal(item.subtotal, 0, 'POINT', 0, 'COMMA')}|">$ 0</dd></div>
+          <div th:each="item : ${serviceItems}"><dt th:text="${item.concept}">Service</dt><dd th:text="|$ ${#numbers.formatDecimal(serviceItemSubtotals[item.itemId], 0, 'POINT', 0, 'COMMA')}|">$ 0</dd></div>
+          <div><dt>Taxes</dt><dd th:text="|$ ${#numbers.formatDecimal(taxes, 0, 'POINT', 0, 'COMMA')}|">$ 0</dd></div>
           <div><dt>Total</dt><dd th:text="|$ ${#numbers.formatDecimal(total, 0, 'POINT', 0, 'COMMA')}|">$ 0</dd></div>
         </dl>
       </section>

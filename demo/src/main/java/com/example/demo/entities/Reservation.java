@@ -31,8 +31,6 @@ public class Reservation {
     private Integer guestCount; // Cantidad de huéspedes de la reserva.
     @Column(name = "nightly_price", nullable = false, precision = 10, scale = 2)
     private BigDecimal nightlyPrice; // Tarifa acordada por noche.
-    @Column(name = "estimated_total", nullable = false, precision = 10, scale = 2)
-    private BigDecimal estimatedTotal; // Costo total estimado de la reserva.
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private ReservationStatus status; // Estado actual del registro.

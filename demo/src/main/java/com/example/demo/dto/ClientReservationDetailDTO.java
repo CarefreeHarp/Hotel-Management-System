@@ -4,9 +4,11 @@ import com.example.demo.entities.Folio;
 import com.example.demo.entities.FolioItem;
 import com.example.demo.entities.Payment;
 import com.example.demo.entities.Reservation;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +29,18 @@ public class ClientReservationDetailDTO {
     private List<FolioItem> folioItems = Collections.emptyList();
     @Builder.Default
     private List<Payment> payments = Collections.emptyList();
+
+    // Importes calculados por FolioService: no existen como columnas y por eso
+    // viajan hasta la vista dentro de este objeto de transporte.
+    @Builder.Default
+    private BigDecimal subtotal = BigDecimal.ZERO;
+    @Builder.Default
+    private BigDecimal taxes = BigDecimal.ZERO;
+    @Builder.Default
+    private BigDecimal total = BigDecimal.ZERO;
+    /** Importe de cada cargo, indexado por el identificador del cargo. */
+    @Builder.Default
+    private Map<Integer, BigDecimal> itemSubtotals = Collections.emptyMap();
 
     public boolean hasPayments() {
         return payments != null && !payments.isEmpty();

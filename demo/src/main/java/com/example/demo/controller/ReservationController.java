@@ -258,6 +258,8 @@ public class ReservationController {
         Folio folio = folioService.findByReservationId(reservationId);
         var reservation = folio.getReservation();
         BigDecimal amountPaidToday = paymentAmount == null ? BigDecimal.ZERO : paymentAmount;
+        // Los importes los deriva el servicio: no viajan dentro del folio.
+        BigDecimal folioTotal = folioService.calculateTotal(folio.getFolioId());
 
         model.addAttribute("room", reservation.getRoom());
         model.addAttribute("checkIn", reservation.getCheckInDate());
@@ -265,10 +267,12 @@ public class ReservationController {
         model.addAttribute("guests", reservation.getGuestCount());
         model.addAttribute("nights", ChronoUnit.DAYS.between(reservation.getCheckInDate(), reservation.getCheckOutDate()));
         model.addAttribute("serviceItems", folioService.listItemsByFolioId(folio.getFolioId()));
-        model.addAttribute("total", folio.getTotal());
+        model.addAttribute("serviceItemSubtotals", folioService.calculateItemSubtotals(folio.getFolioId()));
+        model.addAttribute("taxes", folioService.calculateTaxes(folio.getFolioId()));
+        model.addAttribute("total", folioTotal);
         model.addAttribute("paymentAmount", amountPaidToday);
         model.addAttribute("paymentRecorded", amountPaidToday.compareTo(BigDecimal.ZERO) > 0);
-        model.addAttribute("reservationConfirmed", amountPaidToday.compareTo(folio.getTotal()) >= 0);
+        model.addAttribute("reservationConfirmed", amountPaidToday.compareTo(folioTotal) >= 0);
         return "reservations/confirmation";
     }
 
@@ -299,7 +303,12 @@ public class ReservationController {
         model.addAttribute("servicesTotal", servicesTotal);
         model.addAttribute("serviceIds", serviceIds == null ? List.of() : serviceIds);
         model.addAttribute("reservationQuery", reservationQuery(roomId, checkIn, checkOut, guests, serviceIds));
-        model.addAttribute("total", stayTotal.add(servicesTotal));
+        // Los impuestos los aplica el servicio, para que el importe mostrado aquí
+        // coincida con el que despues exigira el folio.
+        BigDecimal subtotal = stayTotal.add(servicesTotal);
+        model.addAttribute("subtotal", subtotal);
+        model.addAttribute("taxes", folioService.calculateTaxesFor(subtotal));
+        model.addAttribute("total", folioService.calculateTotalFor(subtotal));
     }
 
     /** Determina si los parámetros mínimos describen una estancia válida. */
