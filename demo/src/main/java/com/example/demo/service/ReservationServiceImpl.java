@@ -24,6 +24,10 @@ import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import com.example.demo.dto.ClientReservationDetailDTO;
+import com.example.demo.repository.PaymentRepository;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +44,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
     private FolioItemRepository folioItemRepository;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     @Autowired
     private ClientService clientService;
@@ -204,5 +211,32 @@ public class ReservationServiceImpl implements ReservationService {
         reservationRepository.saveAll(expiredReservations);
         roomService.synchronizeOccupancyStatus();
         return expiredReservations.size();
+    }
+
+    /** Obtiene el historial completo de reservas de un cliente con sus folios, servicios y pagos asociados. */
+    @Override
+    public List<ClientReservationDetailDTO> getClientReservationHistory(Integer clientId) {
+        if (clientId == null) {
+            return Collections.emptyList();
+        }
+        List<Reservation> reservations = reservationRepository.findByClient_ClientIdOrderByCreatedAtDesc(clientId);
+        List<ClientReservationDetailDTO> history = new ArrayList<>();
+        for (Reservation reservation : reservations) {
+            Folio folio = folioRepository.findByReservationReservationId(reservation.getReservationId()).orElse(null);
+            List<FolioItem> items = folio != null
+                    ? folioItemRepository.findByFolioFolioIdOrderByChargedAtAsc(folio.getFolioId())
+                    : Collections.emptyList();
+            List<Payment> payments = folio != null
+                    ? paymentRepository.findByFolioFolioIdOrderByPaidAtAsc(folio.getFolioId())
+                    : Collections.emptyList();
+
+            history.add(ClientReservationDetailDTO.builder()
+                    .reservation(reservation)
+                    .folio(folio)
+                    .folioItems(items)
+                    .payments(payments)
+                    .build());
+        }
+        return history;
     }
 }

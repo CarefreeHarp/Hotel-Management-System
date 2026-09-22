@@ -17,4 +17,5 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
             + "WHERE payment.folio.folioId = :folioId AND payment.status = :status")
     BigDecimal sumAmountsByFolioIdAndStatus(Integer folioId, PaymentStatus status);
     java.util.List<Payment> findByOperator_OperatorId(Integer operatorId);
+    java.util.List<Payment> findByFolioFolioIdOrderByPaidAtAsc(Integer folioId);
 }

@@ -1,5 +1,6 @@
 package com.example.demo.service.interfaces;
 
+import com.example.demo.dto.ClientReservationDetailDTO;
 import com.example.demo.entities.Reservation;
 import java.time.LocalDate;
 import java.util.List;
@@ -27,4 +28,7 @@ public interface ReservationService {
             List<Integer> serviceIds);
 
     int runMidnightReservationAndRoomStatusActions();
+
+    /** Obtiene el historial completo de reservas de un cliente con sus folios, servicios y pagos asociados. */
+    List<ClientReservationDetailDTO> getClientReservationHistory(Integer clientId);
 }

@@ -21,7 +21,8 @@
       </div>
 
       <div class="header-actions">
-        <a th:href="@{/login}" class="btn btn-glass">Login <span aria-hidden="true">↗</span></a>
+        <a th:if="${session.clientId == null}" th:href="@{/login}" class="btn btn-glass">Login <span aria-hidden="true">↗</span></a>
+        <a th:if="${session.clientId != null}" th:href="@{/clients/read/{clientId}(clientId=${session.clientId})}" class="btn btn-glass" th:classappend="${activePage == 'profile'} ? ' is-active' : ''">My profile <span aria-hidden="true">↗</span></a>
         <a th:href="@{/reservation/book}" class="btn btn-glass">Book now <span aria-hidden="true">↗</span></a>
         <button
           class="nav-toggle public-nav-toggle"
