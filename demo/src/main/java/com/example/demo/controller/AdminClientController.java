@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.errors.DeletionRestrictedException;
 import com.example.demo.service.interfaces.ClientService;
 import com.example.demo.security.SessionAccess;
 import jakarta.servlet.http.HttpSession;
@@ -38,10 +39,16 @@ public class AdminClientController {
      */
     // Full URL: http://localhost:8080/admin/clients/delete/{clientId}
     @PostMapping("/delete/{clientId}")
-    public String deleteClient(@PathVariable Integer clientId, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId, Model model) {
+    public String deleteClient(@PathVariable Integer clientId, @RequestParam(required = false) Integer adminId,
+                               @RequestParam(required = false) Integer operatorId, Model model, HttpSession session) {
         prepareNavigation(model, adminId, operatorId);
-        clientService.deleteProfile(clientId);
-        return "redirect:/admin/clients/read" + navigationQuery(adminId, operatorId);
+        try {
+            clientService.deleteProfile(clientId);
+            return "redirect:/admin/clients/read" + navigationQuery(adminId, operatorId);
+        } catch (DeletionRestrictedException exception) {
+            model.addAttribute("error", exception.getMessage());
+            return listClients(model, adminId, operatorId, session);
+        }
     }
     // El identificador se conserva en la URL; no se guarda en sesion.
     private void prepareNavigation(Model model, Integer adminId, Integer operatorId) {

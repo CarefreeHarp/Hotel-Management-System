@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entities.RoomType;
+import com.example.demo.errors.DeletionRestrictedException;
 import com.example.demo.errors.InvalidRoomTypeDataException;
 import com.example.demo.service.interfaces.RoomTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,8 +121,15 @@ public class RoomTypeController {
     @PostMapping("/delete/{name}")
     public String delete(@PathVariable("name") String name, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId, Model model) {
         prepareNavigation(model, adminId, operatorId);
-        roomTypeService.delete(name);
-        return "redirect:/admin/room-types/read" + navigationQuery(adminId, operatorId);
+        try {
+            roomTypeService.delete(name);
+            return "redirect:/admin/room-types/read" + navigationQuery(adminId, operatorId);
+        } catch (DeletionRestrictedException exception) {
+            // La restriccion no es un fallo del sistema sino una regla de negocio:
+            // se avisa dentro del listado, igual que los errores de los formularios.
+            model.addAttribute("error", exception.getMessage());
+            return listTypes(model, adminId, operatorId);
+        }
     }
 
     /** Atributos que necesita la vista del formulario, tanto al crear como al editar. */

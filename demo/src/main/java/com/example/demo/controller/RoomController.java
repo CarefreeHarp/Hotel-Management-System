@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entities.enums.RoomStatus;
 import com.example.demo.entities.Room;
+import com.example.demo.errors.DeletionRestrictedException;
 import com.example.demo.errors.InvalidRoomDataException;
 import com.example.demo.errors.ResourceNotFoundException;
 import com.example.demo.service.interfaces.RoomService;
@@ -119,8 +120,13 @@ public class RoomController {
     @PostMapping("/delete/{number}")
     public String delete(@PathVariable int number, @RequestParam(required = false) Integer adminId, @RequestParam(required = false) Integer operatorId, Model model) {
         prepareNavigation(model, adminId, operatorId);
-        roomService.delete(number);
-        return "redirect:/admin/rooms/read" + navigationQuery(adminId, operatorId);
+        try {
+            roomService.delete(number);
+            return "redirect:/admin/rooms/read" + navigationQuery(adminId, operatorId);
+        } catch (DeletionRestrictedException exception) {
+            model.addAttribute("error", exception.getMessage());
+            return listRooms(model, adminId, operatorId);
+        }
     }
 
     private void prepareForm(Model model, Room room, String title, String action) {

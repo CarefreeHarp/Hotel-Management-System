@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title th:text="${status != null} ? ${status + ' — Error | Atlan Suites'} : 'Notice | Atlan Suites'">Error | Atlan Suites</title>
+    <title>Notice | Atlan Suites</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -30,45 +30,20 @@
           />
         </a>
 
-        <p class="error-badge" th:if="${status != null and status >= 500}">
-            <span aria-hidden="true">●</span>
-            <span>Server Interruption</span>
-        </p>
-        <p class="error-badge error-badge--warning" th:if="${status == null or status < 500}">
+        <p class="error-badge error-badge--warning">
             <span aria-hidden="true">●</span>
             <span>Notice</span>
         </p>
 
-        <h1 class="error-code" th:text="${status != null} ? ${status} : '404'">404</h1>
+        <h2 class="error-title">Notice</h2>
 
-        <h2 class="error-title" th:if="${status == 404 or (status == null and error == null)}">
-          Page Not Found
-        </h2>
-        <h2 class="error-title" th:if="${status != null and status != 404 and (error == null or error == '')}">
-          An Unexpected Event Occurred
-        </h2>
-        <h2 class="error-title" th:if="${error != null and error != '' and status != 404}">
-          Notice Encountered
-        </h2>
-
+        <!-- Solo el aviso: ni codigo de estado ni detalles tecnicos. -->
         <p class="error-desc" th:if="${error != null and error != ''}" th:text="${error}">
-          We could not find the resource you requested or an unexpected error occurred.
+          We could not complete the action you requested.
         </p>
         <p class="error-desc" th:if="${error == null or error == ''}">
           The page or resource you are looking for might have been removed, had its name changed, or is temporarily unavailable.
         </p>
-
-        <!-- Technical details (if available) -->
-        <dl class="error-meta" th:if="${path != null or timestamp != null}">
-          <div class="error-meta-item" th:if="${path != null}">
-            <dt class="error-meta-label">Path</dt>
-            <dd th:text="${path}">/unknown</dd>
-          </div>
-          <div class="error-meta-item" th:if="${timestamp != null}">
-            <dt class="error-meta-label">Timestamp</dt>
-            <dd th:text="${#dates.format(timestamp, 'yyyy-MM-dd HH:mm:ss')}">2026-09-07 00:00:00</dd>
-          </div>
-        </dl>
 
         <nav class="error-actions" aria-label="Error page actions">
           <a th:if="${param.operatorId != null and param.adminId == null}" th:href="@{/operators/panel/{id}(id=${param.operatorId[0]})}" class="btn-error-primary">Back to operator panel</a>

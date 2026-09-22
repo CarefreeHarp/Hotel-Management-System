@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entities.Operator;
+import com.example.demo.errors.DeletionRestrictedException;
 import com.example.demo.errors.InvalidOperatorDataException;
 import com.example.demo.service.interfaces.LoginService;
 import com.example.demo.service.interfaces.OperatorService;
@@ -163,7 +164,7 @@ public class OperatorController {
             login.confirmAdministratorPassword(adminId, passwordCurrent);
             operators.deleteManagedBy(id, adminId);
             return "redirect:/admins/" + adminId + "/operators";
-        } catch (SecurityException exception) {
+        } catch (SecurityException | DeletionRestrictedException exception) {
             model.addAttribute("error", exception.getMessage());
             return managedDetails(adminId, id, model, session);
         }
