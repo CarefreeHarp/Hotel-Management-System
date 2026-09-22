@@ -63,7 +63,10 @@ public class ReservationServiceImpl implements ReservationService {
     @Autowired
     private Clock applicationClock;
 
-    /** Crea una reserva pendiente junto con el folio inicial que recibirá pagos posteriores. */
+    /**
+     * Crea una reserva pendiente junto con el folio inicial que recibirá pagos
+     * posteriores.
+     */
     @Override
     @Transactional
     public Reservation createPendingReservation(
@@ -73,7 +76,10 @@ public class ReservationServiceImpl implements ReservationService {
                 .getReservation();
     }
 
-    /** Crea una reserva y registra un pago de tarjeta que puede cubrir solo parte del folio. */
+    /**
+     * Crea una reserva y registra un pago de tarjeta que puede cubrir solo parte
+     * del folio.
+     */
     @Override
     @Transactional
     public Reservation createReservationWithCardPayment(
@@ -101,7 +107,10 @@ public class ReservationServiceImpl implements ReservationService {
         return folio.getReservation();
     }
 
-    /** Valida los campos del formulario de pago antes de persistir la reserva y su abono. */
+    /**
+     * Valida los campos del formulario de pago antes de persistir la reserva y su
+     * abono.
+     */
     private BigDecimal validateCardPaymentData(
             String paymentAmount,
             BigDecimal total,
@@ -138,12 +147,16 @@ public class ReservationServiceImpl implements ReservationService {
             throw new InvalidPaymentDataException(InvalidPaymentDataException.Reason.EXPIRY_DATE_INVALID, expiryDate);
         }
         if (securityCode == null || !securityCode.matches("\\d{3}")) {
-            throw new InvalidPaymentDataException(InvalidPaymentDataException.Reason.SECURITY_CODE_INVALID, securityCode);
+            throw new InvalidPaymentDataException(InvalidPaymentDataException.Reason.SECURITY_CODE_INVALID,
+                    securityCode);
         }
         return amount;
     }
 
-    /** Crea el encabezado de la reserva pendiente y el folio inicial asociado a ella. */
+    /**
+     * Crea el encabezado de la reserva pendiente y el folio inicial asociado a
+     * ella.
+     */
     private Folio createReservationAndFolio(
             Integer clientId, Integer roomId, LocalDate checkInDate, LocalDate checkOutDate, Integer guests,
             List<Integer> serviceIds) {
@@ -201,7 +214,10 @@ public class ReservationServiceImpl implements ReservationService {
         return folio;
     }
 
-    /** Cancela reservas pendientes vencidas y sincroniza el estado de ocupación de las habitaciones. */
+    /**
+     * Cancela reservas pendientes vencidas y sincroniza el estado de ocupación de
+     * las habitaciones.
+     */
     @Override
     @Transactional
     public int runMidnightReservationAndRoomStatusActions() {
@@ -213,7 +229,10 @@ public class ReservationServiceImpl implements ReservationService {
         return expiredReservations.size();
     }
 
-    /** Obtiene el historial completo de reservas de un cliente con sus folios, servicios y pagos asociados. */
+    /**
+     * Obtiene el historial completo de reservas de un cliente con sus folios,
+     * servicios y pagos asociados.
+     */
     @Override
     public List<ClientReservationDetailDTO> getClientReservationHistory(Integer clientId) {
         if (clientId == null) {
